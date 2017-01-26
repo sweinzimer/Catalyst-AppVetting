@@ -1,0 +1,23 @@
+td{
+    width: 200px;
+}
+
+th
+{
+    width: 200px;
+}
+
+.declined
+{
+    color: darkred;
+}
+
+.processing
+{
+    color: orange;
+}
+
+.new
+{
+    color: darkred;
+}

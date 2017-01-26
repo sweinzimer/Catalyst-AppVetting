@@ -1,0 +1,34 @@
+body {
+  padding: 10px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+div.formLine {
+	padding: 10px;
+}
+
+div.formSection {
+	padding: 10px;
+	border-bottom: 1px solid black;
+
+}
+
+.tinyField {
+	width: 45px;
+}
+
+.smallField {
+	width: 50px;
+}
+
+.mediumField {
+	width: 150px;
+}
+
+.largeField {
+	width: 250px;
+}
