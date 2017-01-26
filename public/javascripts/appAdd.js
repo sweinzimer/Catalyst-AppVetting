@@ -48,6 +48,8 @@ function init() {
 		$.extend(data, getFinanceData());
 		$.extend(data, getPropertyData());
 		$.extend(data, getRecruitmentData());
+		$.extend(data, getSignatureData());
+		
 		
 		return JSON.stringify(data);
 	}
@@ -288,6 +290,18 @@ function init() {
 		data.recruitment = {
 			fbo_help: getVal('input[name="fbo_help"]:checked'),
 			fbo_name: getVal('input[name="fbo_name"]')
+		};
+		return data;
+	}
+	
+	//This function handles the data that goes into the "signature: "
+	//section of documentPackage.js
+	function getSignatureData() {
+		var data = {};
+		
+		data.signature = {
+			client_terms: getVal('input[name="tac-yes"]:checked'),
+			client_sig: getVal('input[name="signature"]')
 		};
 		return data;
 	}
