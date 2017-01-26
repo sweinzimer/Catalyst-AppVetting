@@ -1,0 +1,429 @@
+<!-- This is the application form.  It should be self explanetory.
+  -- It uses appAdd.js as its back-end form handler, as well as ifyes.js and 
+  -- noalert.js for some front end goodies, all stored in public/javascripts -->
+
+  <!-- NOTE: REQUIRED FIELDS have been deleted from this form,
+    -- other than the final checkbox and digital signature.
+	-- The required fields include (by name or textarea id):
+	-- owns_home
+	-- mortgage_up_to_date
+	-- firstName
+	-- lastName
+	-- dob
+	-- add1
+	-- city
+	-- state
+	-- zip
+	-- eContactName
+	-- ecRelationship
+	-- ecPhone
+	-- language
+	-- hearAboutCatalyst
+	-- monthlyMortgage
+	-- annualIncome
+	-- propertyType
+	-- timePropertyOwned
+	-- yearPropertyBuilt
+	-- tac-yes (already required)
+	-- signature (already required)
+	-->
+<link rel="stylesheet" type="text/css" href="/stylesheets/formStyle.css">
+<center><h2>Catalyst Partnerships Recipient Application</h2></center>
+<!--Begin the actual Form -->
+<form id="appForm" method="post">
+
+	<input type="hidden" name="status" value="new">
+
+	<div class="formSection"><h4>Welcome!</h4>
+		<p>Dear Applicant:</p>
+		<p>Catalyst Partnerships provides construction repairs, remodeling, and other services to homeowners who are elderly, disabled, and/or low-income. We also do projects for other like minded non-profit organizations. Our mission is to bring together useful resources and caring volunteers to meet the needs of under-resourced people in our community. Work is performed by skilled and unskilled volunteers, and overseen by licensed contractors. Funds and materials are provided through donations from generous individuals, businesses, and organizations in the community. Recipients are not required to pay for help, but are encouraged to contribute whatever labor and/or funds they are able to. Please complete the following application and click Submit. </p>
+		
+		<p>This form may take some time to complete - usually between 15 and 30 minutes. At this time, there is no way to save your work and come back, so be sure to complete everything at one sitting.</p>
+		
+		<p>After we receive your completed application, we will contact you by phone within 1 week of receipt. Small projects may be approved & scheduled immediately, while larger projects will take longer and require you to submit additional documentation (such as pay stub, social security benefits, housing assistance, proof of ownership, documentation of assets, previous year taxes, etc.).  Please call with any questions (971) 245-6555.</p>
+		
+		<p>Please note that Catalyst does not provide services for rental properties. Check the appropriate buttons below to indicate that you are the owner, and up to date on your mortgage payments.</p>
+
+		<div class="formLine">
+			I own the home for which I am requesting work.
+			<input type="radio" name="owns_home" value="true">Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="radio" id="alertOwn" name="owns_home" value="false">No
+			<!-- THIS IS THE ALERT MODAL BOX THAT POPS UP 
+			  -- if NO is selected (uses noalert.js) -->
+            <div id="owns_home_modal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Home Ownership</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>We are so sorry, but Catalyst does not provide services for properties that applicants do not own.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+		</div>
+		<div class="formLine">
+			I am up to date on my mortgage payments.
+			<input type="radio" name="mortgage_up_to_date" value="true">Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="radio" id="alertMortgage" name="mortgage_up_to_date" value="false">No
+			<!-- THIS IS THE ALERT MODAL BOX THAT POPS UP 
+			  -- if NO is selected (uses noalert.js) -->
+            <div id="mortgage_modal" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Mortgage Payments</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>We are so sorry, but if you are not up to date on your mortgage payments, Catalyst cannot provide services for your property.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+		</div>
+	</div>
+
+<!-- BEGIN ADVOCATE INFORMATION PORTION -->
+	<div class="formSection"><h4>Are you Advocating for Someone Else?</h4>
+		<div class="formLine">
+			If so, please select the type of advocate you are, and fill in the appropriate information below.<br>
+			If not, feel free to skip this section and begin at <b>Personal Information</b>.
+		</div>
+		<div class="formLine">
+			<input type="radio" name="advocate" value="adv_individual">I am a private individual advocating for this applicant.
+		</div>
+		<div class="formLine">
+			<input type="radio" name="advocate" value="adv_npo">I represent a non-profit organization advocating for this applicant.
+		</div>
+		<div class="formLine">
+			<input type="radio" name="advocate" value="adv_gov">I represent a governmental agency advocating for this applicant.
+		</div>
+		<div class="formLine">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Name: <input type="text" name="advocate_name" placeholder="Name">
+		</div>
+		<div class="formLine">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Phone Number: <input type="text" name="advocate_phone" placeholder="Phone">
+		</div>
+		<div class="formLine">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Relationship to client (if individual): <input type="text" name="advocate_individual_relationship" placeholder="Relationship">
+		</div>
+		<div class="formLine">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name of Organization/Agency (if applicable): <input class="largeField" type="text" name="advocate_npo_organization" placeholder="Organization Name">
+		</div>
+	</div>
+
+<!-- BEGIN PERSONAL CONTACT INFORMATION PORTION -->
+
+	<div class="formSection"><h4>Personal Information</h4>
+		<div class="formLine">
+			First Name: <input type="text" name="firstName" placeholder="First Name" >
+		</div>
+		
+		<div class="formLine">
+			Middle Name/Initial: <input type="text" name="middleName" placeholder="Middle Name">
+		</div>
+		
+		<div class="formLine">
+			Last Name: <input type="text" name="lastName" placeholder="Last Name" >
+		</div>
+		
+		<div class="formLine">
+			Preferred Name (if different from above): <input type="text" name="preferredName" placeholder="Nickname">
+		</div>
+		
+		<div class="formLine">
+			Date of Birth: <input type="date" name="dob" >
+		</div>
+		
+		<div class="formLine">
+			Driver's License Number: <input type="text" name="driversLicense" placeholder="Driver's License Number" >
+		</div>
+		
+		<div class="formLine">
+			Marital Status: <input type="radio" name="mStatus" value="Single">Single&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="mStatus" value="Married">Married&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="radio" name="mStatus" value="Widowed">Widowed
+		</div>
+		
+		<div class="formLine">
+			If Married, Spouse's Name: <input type="text" name="spouse" placeholder="Spouse's name">
+		</div>
+		
+		<div class="formLine">
+			Preferred Phone: <input type="text" name="pPhone" placeholder="Preferred Number">
+		</div>
+		
+		<div class="formLine">
+			Other Phone: <input type="text" name="oPhone" placeholder="Other Number">
+		</div>
+		
+		<div class="formLine">
+			Email: <input class="largeField" type="email" name="emailaddy" placeholder="E-mail address">
+		</div>
+		
+		<div class="formLine">
+			Home Address 1: <input class="largeField" type="text" name="add1" placeholder="Address 1" >
+		</div>
+		
+		<div class="formLine">
+			Home Address 2: <input class="largeField" type="text" name="add2" placeholder="Address 2 (optional)">
+		</div>
+		
+		<div class="formLine">
+			City: <input type="text" name="city" placeholder="City" >&nbsp;&nbsp;&nbsp;&nbsp;
+			State: <input class="tinyField" type="text" name="state" placeholder="State" size="2">
+		</div>
+		
+		<div class="formLine">
+			Zip: <input type="number" name="zip" placeholder="Zip" maxlength="5" >
+		</div>
+		
+		<div class="formLine">
+			Emergency Contact: <input type="text" name="eContactName" placeholder="Emergency Contact Name" >
+		</div>
+		
+		<div class="formLine">
+			Emergency Contact Relationship: <input type="text" name="ecRelationship" placeholder="Relationship" >
+		</div>
+		
+		<div class="formLine">
+			Emergency Contact Phone: <input type="text" name="ecPhone" placeholder="Emergency Phone" >
+		</div>
+		
+		<div class="formLine">If you have others residing in your home, please list them below:
+			<div class="formLine">
+				<input class="mediumField" type="text" name="additional_1" placeholder="Name">&nbsp;&nbsp;<input class="tinyField" type="number" name="a1age" placeholder="Age" size="3">&nbsp;&nbsp;<input class="mediumField" type="text" name="a1relationship" placeholder="Relationship">
+			</div>
+			
+			<div class="formLine">
+				<input class="mediumField" type="text" name="additional_2" placeholder="Name">&nbsp;&nbsp;<input class="tinyField" type="number" name="a2age" placeholder="Age">&nbsp;&nbsp;<input class="mediumField" type="text" name="a2relationship" placeholder="Relationship">
+			</div>
+			
+			<div class="formLine">
+				<input class="mediumField" type="text" name="additional_3" placeholder="Name">&nbsp;&nbsp;<input class="tinyField" type="number" name="a3age" placeholder="Age">&nbsp;&nbsp;<input class="mediumField" type="text" name="a3relationship" placeholder="Relationship">
+			</div>
+			
+			<div class="formLine">
+				<input class="mediumField" type="text" name="additional_4" placeholder="Name">&nbsp;&nbsp;<input class="tinyField" type="number" name="a4age" placeholder="Age">&nbsp;&nbsp;<input class="mediumField" type="text" name="a4relationship" placeholder="Relationship">
+			</div>
+			
+			<div class="formLine">
+				<input class="mediumField" type="text" name="additional_5" placeholder="Name">&nbsp;&nbsp;<input class="tinyField" type="number" name="a5age" placeholder="Age">&nbsp;&nbsp;<input class="mediumField" type="text" name="a5relationship" placeholder="Relationship">
+			</div>
+			<div class="formLine">
+				<input class="mediumField" type="text" name="additional_6" placeholder="Name">&nbsp;&nbsp;<input class="tinyField" type="number" name="a6age" placeholder="Age">&nbsp;&nbsp;<input class="mediumField" type="text" name="a6relationship" placeholder="Relationship">
+			</div>
+			<div class="formLine">
+				<input class="mediumField" type="text" name="additional_7" placeholder="Name">&nbsp;&nbsp;<input class="tinyField" type="number" name="a7age" placeholder="Age">&nbsp;&nbsp;<input class="mediumField" type="text" name="a7relationship" placeholder="Relationship">
+			</div>
+			<div class="formLine">
+				<input class="mediumField" type="text" name="additional_8" placeholder="Name">&nbsp;&nbsp;<input class="tinyField" type="number" name="a8age" placeholder="Age">&nbsp;&nbsp;<input class="mediumField" type="text" name="a8relationship" placeholder="Relationship">
+			</div>
+		</div>
+		
+		<div class="formLine">Are you currently in, or a veteran of, the U.S. Military?
+			<div class="formLine">
+				<input type="radio" name="military" value="true">Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="radio" name="military" value="false">No
+			</div>
+		</div>
+		
+		<div class="formLine">What language do you speak?
+			<div class="formLine">
+				<input type="radio" name="language" value="English" >I speak English<br>
+				<input type="radio" name="language" value="Other">I only speak another language<br>
+				&nbsp;&nbsp;&nbsp;&nbsp; Please enter language here: <input type="text" name="language_other" placeholder="Language you speak"><br>
+			</div>
+		</div>
+		
+		<div class="formLine">How did you hear about Catalyst?
+			<div class="formLine">
+				<textarea rows="4" cols="60" id="hearAboutCatalyst" placeholder="How you heard about Catalyst" ></textarea>
+			</div>
+		</div>
+	</div>
+
+<!-- BEGIN FINANCIAL INFORMATION PORTION -->
+	
+	<div class="formSection"><h4>Financial Information</h4>
+		<div class="formLine">
+			What is your monthly mortgage payment (in dollars)? <input type="number" name="monthlyMortgage" placeholder="Monthly Mortgage" >
+		</div>
+		
+		<div class="formLine">What is your approximate total annual household income (in dollars)?<br>(Please include all sources from all residents):
+			<div class="formLine">
+				<input class="largeField" type="number" name="annualIncome" placeholder="Approximate Annual Income" >
+			</div>
+		</div>
+	
+		<div class="formLine">Please list any other financial assets, and their current values (e.g. savings, retirements, physical assets, etc.):
+			<div class="formLine">
+				<input class="largeField" type="text" name="assets1" placeholder="Other assets">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Value (in dollars): <input class="mediumField" type="number" name="assets1_value" placeholder="Value">
+			</div>
+			<div class="formLine">
+				<input class="largeField" type="text" name="assets2" placeholder="Other assets">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Value (in dollars): <input class="mediumField" type="number" name="assets2_value" placeholder="Value">
+			</div>
+			<div class="formLine">
+				<input class="largeField" type="text" name="assets3" placeholder="Other assets">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Value (in dollars): <input class="mediumField" type="number" name="assets3_value" placeholder="Value">
+			</div>
+			<div class="formLine">
+				<input class="largeField" type="text" name="assets4" placeholder="Other assets">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Value (in dollars): <input class="mediumField" type="number" name="assets4_value" placeholder="Value">
+			</div>
+			<div class="formLine">
+				<input class="largeField" type="text" name="assets5" placeholder="Other assets">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Value (in dollars): <input class="mediumField" type="number" name="assets5_value" placeholder="Value">
+			</div>
+		</div>
+		
+		<div class="formLine">Are you able to contribute financially to implement the project you are requesting?
+			<div class="formLine">
+				<input type="radio" id="showContribute" name="contribute" value="true">Yes&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="radio" id="hideContribute" name="contribute" value="false">No
+				<!--If yes, please provide the approximate amount: <input class="largeField" type="number" name="contribute_amount" placeholder="Amount you can contribute"> -->
+			</div>
+		</div>
+		
+		<div class="formLine">Do you have adult children and/or other relatives who may be able to help financially?
+			<div class="formLine">
+				<input type="radio" id="showRelativeContribute" name="relativeContribute" value="true">Yes&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="radio" id="hideRelativeContribute" name="relativeContribute" value="false">No
+				<!-- If yes, please describe what financial help they might provide:<br>
+				<textarea rows="3" cols="60" id="relativeContribute_provide" placeholder="Help others can provide"></textarea> -->
+			</div>
+		</div>
+		
+		<div class="formLine">Have you already requested help from other Non-Profits, from your City, from your County, or other Organization?
+			<div class="formLine">
+				<input type="radio" id="showOtherHelp" name="otherHelp" value="true">Yes&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="radio" id="hideOtherHelp" name="otherHelp" value="false">No
+				<!-- If yes, please describe what help they might provide:<br>
+				<textarea rows="3" cols="60" id="otherHelp_provide" placeholder="Help you have requested from other organizations"></textarea> -->
+			</div>
+		</div>
+	</div>
+
+<!-- BEGIN PROPERTY INFORMATION PORTION -->
+
+	<div class="formSection"><h4>Property Information</h4>
+		
+		<div class="formLine">Type of Property
+			<div class="formLine">
+				<input type="radio" name="propertyType" value="Single Family Home" > Single Family Home<br>
+				<input type="radio" name="propertyType" value="Mobile Home"> Mobile Home<br>
+				<input type="radio" name="propertyType" value="Manufactured Home"> Manufactured Home<br>
+				<input type="radio" name="propertyType" value="Other"> Other: 
+				<input type="text" name="propertyType_other" placeholder="Other type of property">
+			</div>
+		</div>
+		
+		<div class="formLine">How many years have you owned the home/property? 
+			<input class="largeField" type="number" name="timePropertyOwned" placeholder="Years you've owned property" >
+		</div>
+		
+		<div class="formLine">In what year was this property built?
+			<input type="number" name="yearPropertyBuilt" placeholder="Year property built" >
+		</div>
+		
+		<div class="formLine">What type of repairs would you like to request?  Please include as much information as you can:
+			<div class="formLine">
+				<textarea rows="5" cols="60" id="repairsNeeded" placeholder="Repairs you need..."></textarea>
+			</div>
+		</div>
+		
+		<div class="formLine">Are you able to provide any help (labor/materials) for these repairs?
+			<div class="formLine">
+				<input type="radio" id="showLaborHelp" name="laborHelp" value="true">Yes&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="radio" id="hideLaborHelp" name="laborHelp" value="false">No<!-- <br>
+				If yes, please describe:<br>
+				<textarea rows="3" cols="60" id="laborHelp_personal" placeholder="Help you can provide"></textarea> -->
+			</div>
+		</div>
+		
+		<div class="formLine">Do you have friends or family who may be able to help Catalyst perform the work of this project?
+			<div class="formLine">
+				<input type="radio" id="showOthersLaborHelp" name="othersLaborHelp" value="true">Yes&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="radio" id="hideOthersLaborHelp" name="othersLaborHelp" value="false">No<!-- <br>
+				If yes, please describe:<br>
+				<textarea rows="3" cols="60" id="others_laborHelp" placeholder="Help other people could provide"></textarea> -->
+			</div>
+		</div>
+
+<!-- BEGIN MISCELLANEOUS INFORMATION PORTION -->
+
+		<div class="formLine">Many of our volunteers come from faith-based organizations.  Are you connected with a faith-based community who may have volunteers willing to help?
+			<div class="formLine">
+				<input type="radio" id="showFboHelp" name="fbo_help" value="true">Yes&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="radio" id="hideFboHelp" name="fbo_help" value="false">No<!-- <br>
+				If yes, please give details below:
+				<div class="formLine">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Organization Name: <input class="largeField" type="text" name="fbo_name" placeholder="Name">
+				</div> -->
+			</div>
+		</div>
+		
+		<div class="formLine">What else would you like us to know?
+			<div class="formLine">
+				<textarea rows="6" cols="60" id="otherCircumstances" placeholder="Feel free to share your story here, if applicable..."></textarea>
+			</div>
+		</div>
+    </div>
+	
+	
+	<div class="formSection"><h4>Approval Process</h4>
+		<p>As stated above, after we receive your completed application, we will contact you by phone within 1 week of receipt. Small projects may be approved & scheduled immediately, while larger projects will take longer and require you to submit additional documentation (such as pay stub, social security benefits, housing assistance, proof of ownership, documentation of assets, previous year taxes, etc.).</p>
+	</div>
+	
+	<div class="formSection"><h4>Please read and sign below:</h4>
+		<p>NATURE OF NON-PROFIT CATALYST PARTNERSHIPS ACTIVITY: I understand and acknowledge that my involvement in this endeavor with Catalyst Partnerships, its agents and contractors, and any partnering organizations, hereafter referred to as ‘Catalyst,’ is voluntary. I understand and acknowledge my willingness to allow my property to be associated with this Catalyst activity in the manner described in this Recipent Application, I also voluntarily submit myself to the supervision of Catalyst staff, officers, agents, employees, volunteers, etc., for all activities which are part of this project. I understand that the services being provided to me may be through volunteers who freely donate their time without any compensation to themselves, and that the overall quality of service and/or craftsmanship I receive may not reflect professional standards. I also give Catalyst the irrevocable right and unrestricted permission to use and/or publish photos and/or video images of/including me, for purposes of art, display, advertising, editorial use, or any other lawful purpose, and waive any right I may have to inspect and approve the finished product of any piece that may use such.</p>
+		
+		<p>RELEASE OF LIABILITY: I understand and acknowledge that this Activity and any related activities, by their very nature, pose the potential risk of damage to my property. I also realize that Catalyst and its personnel, agents, or volunteers, or any other person or entity associated with this Activity, may not be professionally trained for this Activity, and are not legally or financially responsible or liable for any claim arising from any damage done to my property during this Activity.</p>
+		
+		<p>I understand that Catalyst carries liability insurance for its service activities. In the event of liability claim, I hereby voluntarily agree, on behalf of myself and my heirs, executors, administrators and assigns, that I will not seek remuneration beyond that which is necessary and reasonable for any damage and/or loss which is incident to/associated with preparing for/while participating in any activity in any way connected with said Activity. In the same manner, I also voluntarily exempt and relieve Catalyst officers, agents, servants, employees, volunteers, or any other person or entity associated with this Activity, from any liability or responsibility, whether same shall arise by the negligence of any of said persons, or otherwise.</p>
+		
+		<p>MEDICAL TREATMENT AUTHORIZATION: In the event of accident or illness to me/my child, I do hereby consent to whatever x-ray examination, anesthetic, medical, surgical or dental diagnosis or treatment and hospital care considered necessary in the best judgment of the attending physician, surgeon, or dentist and performed under the supervision of a member of the medical staff of the hospital or facility furnishing medical or dental services. Further, I agree that Catalyst and its personnel, agents, or volunteers, or any other person or entity associated with these Activities, are not personally responsible or liable for any claim arising from any consent given in good faith in connection with diagnosis or advised treatment.</p>
+		
+		<p>I/my child understand(s) that Catalyst DOES NOT CARRY HAZARD INSURANCE TO COVER ME/MY CHILD for any accidents/injuries to me/ my child. I understand that, in the event that I/my child am/is injured in any way, any personal medical and hospitalization insurance available to me/my family will provide sole coverage. I/my child voluntarily elect(s) to participate in this Catalyst Activity. I agree to assume any and all liability and responsibility for any and all potential risks which may be associated with participation in such Activities or any activities incidental thereto.</p>
+		
+		<p>NO PLANS TO SELL: I also certify that I do not intend to sell my property within the next 12 months following the date herein; and that, in the case of sale, if I receive additional profit because of the work performed under this agreement, I agree to return funds to Catalyst equaling an appropriately prorated value of said improvements. I acknowledge that, if this case arise upon the sale of my property within the next 12 months, and I am unwilling to return said funds, Catalyst Partnerships reserves the right to place a lien on my property in order to recuperate said funds.</p>
+		
+		<p>CERTIFICATION: By submitting this form, I certify that all information provided in this application is true and complete. I give Catalyst the right to verify and request additional information when necessary. I also give Catalyst permission to check personal & criminal background, using the information I’ve provided in this application. I understand that the background check process, or any false or misleading information I have given, may disqualify me from involvement. I understand that information will be held confidential.
+
+	</div>
+
+<!-- BEGIN SIGNATURE PORTION -->
+
+	<div class="formSection"><h4>Digital Signature</h4>
+	
+		<div class="formLine">I have read and agree to the above terms and conditions:
+			<input type="checkbox" name="tac-yes" value="true" required>Yes
+		</div>
+		
+		<div class="formLine">
+			Please type your full name in the box below.  This will be considered your digital signature.<br>
+			<input class="largeField" type="text" name="signature" placeholder="Type Name Here" required>
+		</div>
+		
+
+		<input type="submit" value="Submit Form">
+	</div>
+</form>
+
+
+
+<script type="text/javascript" src="/javascript/appAdd.js"></script>
+<script type="text/javascript" src="/javascript/noalert.js"></script>
+<script type="text/javascript" src="/javascript/ifyes.js"></script>
+
+

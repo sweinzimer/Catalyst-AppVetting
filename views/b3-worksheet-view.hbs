@@ -1,0 +1,951 @@
+<!-- This view handles the Vetting Worksheet. -->
+
+<!-- This part is the fixed Vetting Notes INPUT area so Vetting Agents
+  -- can make notes whenever they need to without having to scroll around
+  -->
+<nav class="navbar navbar-fixed-top">
+	 <div class="input-group">
+		<input type="text" id="note" class="form-control" placeholder="Enter Vetting Note Here...">
+		<span class="input-group-btn">
+			<button id="addNote" class="btn btn-primary" type="submit">Add Note</button>
+		</span>
+	</div>
+</nav>
+
+<br><br> <!-- spacer gets past the Vetting Notes Input -->
+
+<a href="/view" class="btn btn-primary">Back to Vetting Home</a> 
+<a href="/view/{{doc._id}}" class="btn btn-primary">Back to Application View</a>
+
+<div class="container col-xs-12">
+		<h1>{{doc.application.name.first}} {{doc.application.name.last}} - Vetting Worksheet</h1>
+		<h3>Status: <a href="#" id="status" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="status" data-title="Select status"></a></h3>
+</div>
+
+
+<div class="container col-xs-12">
+		<!--VETTING NOTES-->
+		<h3>Vetting Notes</h3>
+    <div class="form-group">
+        <form method="post">
+            <input type="hidden" value="{{doc._id}}" id="appId"/>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="col-sm-2">Date</th>
+                    <th class="col-sm-6">Note</th>
+                    <th class="col-sm-6"> </th>
+                </tr>
+                </thead>
+                <tbody id="notes-body">
+                {{#if vettingNotes}}
+                    {{#each vettingNotes}}
+                        <tr>
+                            <td>{{this.date}}</td>
+                            <td class="note-descrip">{{this.description}}</td>
+                            <td>
+                                <form>
+                                    <input type="hidden" value="{{this._id}}" name="noteId" />
+                                    <input type="submit" class="update-button btn btn-info" value="Update Note"/>
+                                    <input type="submit" class="delete-button btn btn-danger" value="Delete Note"/>
+                                </form>
+                            </td>
+                        </tr>
+                    {{/each}}
+                {{else}}
+                    <tr>
+                        <td id="empty-notes" class="alert-danger danger" colspan="3">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
+                        </td>
+                    </tr>
+                {{/if}}
+
+				<tr><!--THIS EMPTY ROW IS NECESSARY FOR addNote.js TO WORK ON MULTIPLE PAGES--></tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+<hr>
+
+		<!-- ADDRESS AREA AND MAP IT LINK -->
+<div class="container col-xs-12">
+            <h3>Address</h3>
+			<div class="col-xs-12">
+				<div class="row">
+					<div class="col-sm-5">
+						<a id="VWaddress" href="#" data-type="address" data-pk="1" data-url="/edit/address/{{doc._id}}" data-title="Enter Address"></a>
+					</div>
+					<div class="col-sm-7">
+						<a href="http://maps.google.com/?q={{doc.application.address.line_1}} {{doc.application.address.city}} {{doc.application.address.state}} {{doc.application.address.zip}}" target="_blank"><b>Map it!</b></a>
+					</div>
+				</div>
+			</div>
+			
+			<br><h4>Is this Property within our Service Area?</h4>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-2">
+					
+			<!-- THESE RADIO BUTTONS ARE NOT IMPLEMENTED
+			  -- No DB Model holds anything about "service_area"
+			  -- so that needs to be created first, then some sort of 
+			  -- onclick that puts stuff in the database you create
+			  -->
+						<input type="radio" id="sa_yes" name="service_area" value="true"> Yes<br>
+						<input type="radio" id="sa_no" name="service_area" value="false"> No
+					</div>
+					<div class="col-sm-9">
+						<i>If no, change Application Status to "On Hold - Pending Discussion" and enter an applicable Vetting Note.</i>
+					</div>
+				</div>
+			</div>
+</div>
+
+<hr>
+
+{{#if doc.advocate.is_advocate}}
+<div class="container col-xs-12">
+	<table>
+		<tr>
+			<td valign="baseline"><h3>Advocate Info</h3></td>
+			<td valign="baseline"> &nbsp; &nbsp; (if applicable...)</td>
+		</tr>
+	</table>
+	<div class="col-xs-12">
+		<table class="table table-striped">
+            <thead>
+			<tr>
+				<th class="col-sm-2">Advocate Name</th>
+				<th class="col-sm-2">Advocate Phone</th>
+				<th class="col-sm-2">Relationship to Client</th>
+				<th class="col-md-2">Organization</th>
+			</tr>
+            </thead>
+            <tbody>
+			<tr>
+				<td>{{doc.advocate.name}}</td>
+				<td>{{doc.advocate.phone}}</td>
+				<td>{{doc.advocate.relationship}}</td>
+				<td>{{doc.advocate.organization_name}}</td>
+			</tr>
+            </tbody>
+		</table>
+	</div>
+</div>
+{{/if}}
+
+<div class="container col-xs-12">
+	<h3>Applicant Contact Information</h3>
+	<div class="col-xs-12">
+		<table class="table table-striped">
+			<tr>
+				<th class="col-sm-2">Name</th>
+				<th class="col-sm-2">Phone</th>
+				<th class="col-sm-2">Other Phone</th>
+				<th class="col-md-2">Email</th>
+			</tr>
+			<tr>
+				<td>{{doc.application.name.first}} {{doc.application.name.last}} </td>
+				<td>{{doc.application.phone.preferred}}</td>
+				<td>{{doc.application.phone.other}}</td>
+				<td>{{doc.application.email}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<hr>
+
+<div class="container col-xs-12">
+{{#if doc.advocate.is_advocate}}
+	<h3>Advocate Conversation Script</h3>
+	<p class="scriptText">Hello. My name is ______________ and  I’m calling from Catalyst Partnerships. You are listed as an advocate on {{doc.application.name.first}} {{doc.application.name.last}}'s application for our help with repairs on their home. I have some questions for you. Is this a good time to talk?</p>
+	
+	<p><i>
+	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF YES:</b> (proceed)<br>
+	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF NO:</b> (reschedule for call back - make vetting note)
+	</i></p>
+	
+	<p class="scriptText">Is there any information you would like to share with us regarding {{doc.application.name.first}} or their situation that hasn't been captured by the application that might help us better serve them?</p>
+	
+	<p class="scriptText">We have some questions regarding {{doc.application.name.first}}'s application. Can we contact {{doc.application.name.first}} directly or should we work through you?
+	
+	<p><i>
+	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF CONTACT APPLICANT</b> (Thank Advocate, call Applicant)<br>
+	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF WORK THROUGH ADVOCATE:</b> <a href="#targettwo">Skip to [2]</a>
+	</i></p>
+
+	<hr>
+{{/if}}
+	
+	<b>[1]</b>
+	<h3>Applicant Conversation Script:</h3>
+	<p class="scriptText">Good Morning. My name is _________________ and I’m calling from Catalyst Partnerships.  You contacted us for some help with repairs to your home. To process your application I need a little more information. Is this a good time to talk?
+	
+	<p><i>
+	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF YES:</b> (proceed)<br>
+	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF NO:</b> (reschedule for call back - make vetting note)
+	</i></p>
+	
+	<p id="targettwo"><br></p>
+	<b>[2]</b>
+	<p class="scriptText">Before I ask my questions let me take a minute to describe our process.  Today my focus will be on confirming that you meet our financial guidelines. If you do, next we would arrange to visit your home to determine whether the requested repairs are things that Catalyst has the expertise and resources to do. Then, If we can do the work, we would find a mutually agreeable date and get you on our project schedule. Finally we would show up at your home on the agreed date and do the work. Does all that make sense to you?</p>
+ 
+	<p class="scriptText">Now, the first thing we need is your proof of home ownership. Can you provide us with, for example, either a copy of your latest mortgage statement, or possibly a copy of deed or title, or maybe your most recent home insurance statement?</p>
+	
+
+	<i><b>Give them the address to send it to:</b></i><br>
+	<table cellpadding=10>
+		<tr><td> &nbsp;&nbsp;&nbsp;&nbsp; 
+			</td><td valign="middle">
+				<b>Catalyst Partnerships<br>
+				PO Box 1922<br>			
+				Beaverton, OR 97075</b><br>
+			</td><td valign="middle">
+				<h4>OR</h4>
+			</td><td valign="middle">
+				<b>office@catalystnw.org</b>
+			</td>
+		</tr>
+	</table>
+	
+	<hr>
+	
+	<h3>Requested Repairs</h3>
+	
+	<p><i>The Vetting Agent’s job is to create Work Items (a quick title) and their descriptions (as long as is necessary to be helpful...) These items will be sent to the Site Assessors/Handle-It team.</i></p>
+	
+		
+	<span><i>[From the application:]</i></span>
+	<table class=table table-striped><tr><td>
+	&nbsp;&nbsp;&nbsp;&nbsp; {{doc.property.requested_repairs}}
+	</td></tr></table>
+
+	<p class="scriptText">Okay. Let’s talk about the repairs you requested:</p>
+	
+	<p><i><b>Conversation starters/helpers:</b><br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your application says…<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tell me more about…<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; How long has this condition existed?</i></p>
+	
+<!-- THIS AREA IS NOT IMPLEMENTED JUST YET, although it SHOULD work something like
+--- the way the Vetting Notes are added on the App View page.  They should populate
+--- above (or below) the input fields.  The ids are not set in stone, but are here
+--- just to give someone an idea for how it could get set up -->
+	<table class="table">
+		<tr><td id="empty-work_items" class="alert-danger danger" colspan="3">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Work Items Yet To Display
+        </td></tr>
+	</table>
+	
+	<h4><i>Enter Work Items Below</i></h4>
+	<div class="input-group">
+		<input type="text" id="work_item_title" class="form-control" placeholder="Enter brief Work Item Title Here...(not currently functional)"><br>
+		<textarea rows="3" cols="60" id="work_item_description" class="form-control" placeholder="Enter detailed Work Item Description Here...(not currently functional)"></textarea>
+		
+		<button id="add_work_item" class="btn btn-primary" type="submit">Add Work Item</button>
+	</div>
+	
+	<hr>
+</div>
+	
+<div class="container col-xs-12"> <!-- Begin HUGE Application Clarification Section -->
+
+	<!--lone, hidden input for the Highlight Package Id-->
+	<input type="hidden" value="{{highlight._id}}" id="hl_Id"/>
+	
+	<h3>Application Clarification</h3>
+	<table class="table table-striped">
+	<tbody>
+		<colgroup>
+			<col class="col-md-1 col-sm-1 col-xs-1">
+			<col class="col-md-3 col-sm-1 col-xs-2">
+			<col class="col-md-6 col-sm-4 col-xs-2">
+		</colgroup>
+		<tr><td colspan="3"><b>Contact Clarification:</b></td></tr>
+		
+		{{#if highlight.application.name}}
+			<tr>
+				<td><a id="application.name" class="highlight">{{highlight.application.name}}</a></td>
+				<td>Name</td>
+				<td>
+					<a id="VWname" href="#" data-type="name" data-pk="1" data-url="/edit/name/{{doc._id}}" data-title="Enter Name"></a>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Preferred Name</td>
+				<td><a href="#" id="pref_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.name.preferred" data-title="Enter Preferred Name">{{doc.application.name.preferred}}</a></td>
+			</tr>
+		{{/if}}
+		{{#if highlight.application.phone}}
+			<tr>
+				<td><a id="application.phone" class="highlight">{{highlight.application.phone}}</a></td>
+				<td>Preferred Phone</td>
+				<td><a href="#" id="phone_number" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.phone.preferred" data-title="Enter Preferred Phone Number">{{doc.application.phone.preferred}}</a></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Other Phone</td>
+				<td><a href="#" id="cell_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.phone.other" data-title="Enter Other Phone Number">{{doc.application.phone.other}}</a></td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.address}}
+			<tr>
+				<td><a id="application.address" class="highlight">{{highlight.application.address}}</a></td>
+				<td>Address</td>
+				<td>
+					<a id="VWaddress" href="#" data-type="address" data-pk="1" data-url="/edit/address/{{doc._id}}" data-title="Enter Address"></a>
+				</td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.dob}}
+			<tr>
+				<td><a id="application.dob" class="highlight">{{highlight.application.dob}}</a></td>
+				<td>Date Of Birth</td>
+				<td><a href="#" id="dob" data-type="date" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.dob.date" data-title="Select date">{{doc.application.dob.date}}</a></td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.marital}}
+			<tr>
+				<td><a id="application.marital" class="highlight">{{highlight.application.marital}}</a></td>
+				<td>Marital Status</td>
+				<td>
+					<a href="#" id="marital_status" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.marital.status" data-title="Enter Marital Status">{{doc.application.marital.status}}</a>
+				</td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.spouse}}
+			<tr>
+				<td><a id="application.spouse" class="highlight">{{highlight.application.spouse}}</a></td>
+				<td>Spouse</td>
+				<td>
+					<a href="#" id="spouse" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.marital.spouse" data-title="Enter Spouse Name">{{doc.application.marital.spouse}}</a>
+				</td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.email}}
+			<tr>
+				<td><a id="application.email" class="highlight">{{highlight.application.email}}</a></td>
+				<td>Email</td>
+				<td><a href="#" id="email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.email" data-title="Enter Email">{{doc.application.email}}</a></td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.driver_license}}
+			<tr>
+				<td><a id="application.driver_license" class="highlight">{{highlight.application.driver_license}}</a></td>
+				<td>Driver's License</td>
+				<td><a href="#" id="driver_license" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.driver_license.number" data-title="Enter Driver's License Number">{{doc.application.driver_license.number}}</a></td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.emergency_contact}}
+			<tr>
+				<td><a id="application.emergency_contact" class="highlight">{{highlight.application.emergency_contact}}</a></td>
+				<td>Emergency Contact</td>
+				<td>Name: <a href="#" id="emergency_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.name" data-title="Enter Emergency Contact Name">{{doc.application.emergency_contact.name}}</a>
+					<br>
+					Relationship: <a href="#" id="emergency_relation" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.relationship" data-title="Enter Emergency Contact Relationship">{{doc.application.emergency_contact.relationship}}</a>
+					<br>
+					Phone: <a href="#" id="emergency_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.phone" data-title="Enter Emergency Contact Phone Number">{{doc.application.emergency_contact.phone}}</a>
+				</td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.language}}
+			<tr>
+				<td><a id="application.language" class="highlight">{{highlight.application.language}}</a></td>
+				<td>Language</td>
+				<td>{{doc.application.language}}</td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.veteran}}
+			<tr>
+				<td><a id="application.veteran" class="highlight">{{highlight.application.veteran}}</a></td>
+				<td>Veteran</td>
+				<td>
+					<a href="#" id="veteran" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.veteran" data-title="Select Veteran Status"></a>
+				</td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.owns_home}}
+			<tr>
+				<td><a id="application.owns_home" class="highlight">{{highlight.application.owns_home}}</a></td>
+				<td>Owns Home</td>
+				<td>
+					<a href="#" id="owns_home" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.owns_home" data-title="Select Home Ownership Status"></a>
+				</td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.special_circumstances}}
+			<tr>
+				<td><a id="application.special_circumstances" class="highlight">{{highlight.application.special_circumstances}}</a></td>
+				<td>Special Circumstances</td>
+				<td>
+					<a href="#" id="special_circumstances" data-type="textarea" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.special_circumstances.note" data-title="Enter Special Circumstances">{{doc.application.special_circumstances.note}}</a>
+				</td>
+			</tr>
+		{{/if}}
+		
+		<tr><td colspan="3"><b>Property Clarification:</b></td></tr>
+		
+		{{#if highlight.property.home_type}}
+			<tr>
+				<td><a id="property.home_type" class="highlight">{{highlight.property.home_type}}</a></td>
+				<td>Home Type</td>
+				<td><a href="#" id="home_type" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.home_type" data-title="Enter Home Type">{{doc.property.home_type}}</a></td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.property.ownership_length}}
+			<tr>
+				<td><a id="property.ownership_length" class="highlight">{{highlight.property.ownership_length}}</a></td>
+				<td>Length of Ownership</td>
+				<td><a href="#" id="ownership_length" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.ownership_length" data-title="Enter Ownership Length">{{doc.property.ownership_length}}</a></td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.property.year_constructed}}
+			<tr>
+				<td><a id="property.year_constructed" class="highlight">{{highlight.property.year_constructed}}</a></td>
+				<td>Year Constructed</td>
+				<td><a href="#" id="year_constructed" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.year_constructed" data-title="Enter Year Constructed">{{doc.property.year_constructed}}</a></td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.property.requested_repairs}}
+			<tr>
+				<td><a id="property.requested_repairs" class="highlight">{{highlight.property.requested_repairs}}</a></td>
+				<td>Requested Repairs</td>
+				<td><a href="#" id="requested_repairs" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.requested_repairs" data-title="Enter Requested Repairs">{{doc.property.requested_repairs}}</a></td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.application.other_residents}}
+			<tr>
+				<td><a id="application.other_residents" class="highlight">{{highlight.application.other_residents}}</a></td>
+				<td>Other Residents</td>
+				<td>
+					<table class="table table-striped">
+						<thead>
+						<tr>
+							<th>Name</th>
+							<th>Age</th>
+							<th>Relationship</th>
+						</tr>
+						</thead>
+						<tbody>
+						{{#each doc.application.other_residents.name}}
+							<tr>
+								<td><a href="#" class="residents_name" id="residents_name_{{@index}}" data-type="text" data-pk="{{this}}" data-url="/edit/array/{{../doc._id}}" data-name="application.other_residents.name">{{this}}</a></td>
+								<td><a href="#" class="residents_age" id="residents_age_{{@index}}" data-type="text" data-pk="{{lookup ../doc.application.other_residents.age @index}}" data-url="/edit/array/{{../doc._id}}" data-name="application.other_residents.age">{{lookup ../doc.application.other_residents.age @index}}</a></td>
+								<td><a href="#" class="residents_relationship" id="residents_relationship_{{@index}}" data-type="text" data-pk="{{lookup ../doc.application.other_residents.relationship @index}}" data-url="/edit/array/{{../doc._id}}" data-name="application.other_residents.relationship">{{lookup ../doc.application.other_residents.relationship @index}}</a></td>
+							</tr>
+						{{/each}}
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		{{/if}}
+		
+	<tr><td colspan="3"><b>Financial Clarification:</b></td></tr>
+		
+		{{#if highlight.finance.mortgage}}
+		<tr>
+			<td><a id="finance.mortgage" class="highlight">{{highlight.finance.mortgage}}</a></td>
+			<td>Mortgage Payment</td>
+			<td><a href="#" id="mortgage_payment" data-type="number" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.payment" data-title="Enter Mortgage Payment">{{doc.finance.mortgage.payment}}</a></td>
+		</tr>
+		{{/if}}
+		
+		{{#if highlight.finance.mort_up_to_date}}
+		<tr>
+			<td><a id="finance.mort_up_to_date" class="highlight">{{highlight.finance.mort_up_to_date}}</a></td>
+			<td>Mortgage Up-to-Date</td>
+			<td><a href="#" id="mortgage" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.up_to_date" data-title="Is Mortgage Up-to-Date?"></a></td>
+		</tr>
+		{{/if}}
+							
+		{{#if highlight.finance.income}}
+		<tr>
+			<td><a id="finance.income" class="highlight">{{highlight.finance.income}}</a></td>
+			<td>Income Amount</td>
+			<td><a href="#" id="income" data-type="number" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.income.amount" data-title="Enter Income">{{doc.finance.income.amount}}</a></td>
+		</tr>
+		{{/if}}
+							
+		{{#if highlight.finance.client_can_contribute}}
+		<tr>
+			<td><a id="finance.client_can_contribute" class="highlight">{{highlight.finance.client_can_contribute}}</a></td>
+			<td>Client Can Contribute Financially</td>
+			<td>
+				<a href="#" id="f_client_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.client_can_contribute.value" data-title="Can Client Contribute Financially?"></a>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Client Financial Contribution</td>
+			<td><a href="#" id="f_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.client_can_contribute.description" data-title="Enter Contribution Description">{{doc.finance.client_can_contribute.description}}</a></td>
+		</tr>
+		{{/if}}
+							
+		{{#if highlight.finance.associates_can_contribute}}
+		<tr>
+			<td><a id="finance.associates_can_contribute" class="highlight">{{highlight.finance.associates_can_contribute}}</a></td>
+			<td>Associates Can Contribute Financially</td>
+			<td>
+				<a href="#" id="f_associate_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.associates_can_contribute.value" data-title="Can Associates Contribute Financially?"></a>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>Associate Financial Contribution</td>
+			<td><a href="#" id="f_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.associates_can_contribute.description" data-title="Enter Contribution Description">{{doc.finance.associates_can_contribute.description}}</a></td>
+		</tr>
+		{{/if}}
+							
+		{{#if highlight.finance.assets}}
+		<tr>
+			<td><a id="finance.assets" class="highlight">{{highlight.finance.assets}}</a></td>
+			<td>Assets</td>
+			<td>
+				<table class="table table-striped">
+					<thead>
+					<tr>
+						<th>Asset</th>
+						<th>Amount</th>
+					</tr>
+					</thead>
+					{{#each doc.finance.assets.name}}
+						<tr>
+							<td><a href="#" class="asset_name" id="f_asset_name_{{@index}}" data-type="text" data-pk="{{this}}" data-url="/edit/array/{{../doc._id}}" data-name="finance.assets.name">{{this}}</a></td>
+							<td><a href="#" class="asset_value" id="f_asset_value_{{@index}}" data-type="text" data-pk="{{lookup ../doc.finance.assets.value @index}}" data-url="/edit/array/{{../doc._id}}" data-name="finance.assets.value">{{lookup ../doc.finance.assets.value @index}}</a></td>
+						</tr>
+					{{/each}}
+				</table>
+			</td>
+		</tr>
+		{{/if}}
+		
+	<tr><td colspan="3"><b>Assistance Clarification:</b></td></tr>
+		
+		{{#if highlight.property.client_can_contribute}}
+			<tr>
+				<td><a id="property.client_can_contribute" class="highlight">{{highlight.property.client_can_contribute}}</a></td>
+				<td>Client Can Contribute Labor</td>
+				<td>
+					<a href="#" id="l_client_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.client_can_contribute.value" data-title="Can Client Contribute Labor?"></a>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Client Labor Contribution</td>
+				<td><a href="#" id="l_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.client_can_contribute.description" data-title="Enter Contribution Description">{{doc.property.client_can_contribute.description}}</a></td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.property.associates_can_contribute}}
+			<tr>
+				<td><a id="property.associates_can_contribute" class="highlight">{{highlight.property.associates_can_contribute}}</a></td>
+				<td>Associates Can Contribute Labor</td>
+				<td>
+					<a href="#" id="l_associate_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.associates_can_contribute.value" data-title="Can Associates Contribute Labor?"></a>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Associate Labor Contribution</td>
+				<td><a href="#" id="l_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.associates_can_contribute.description" data-title="Enter Contribution Description">{{doc.property.associates_can_contribute.description}}</a></td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.recruitment.fbo_help}}
+			<tr>
+				<td><a id="recruitment.fbo_help"class="highlight">{{highlight.recruitment.fbo_help}}</a></td>
+				<td>Involved with a Faith-Based Organization</td>
+				<td>
+					<a href="#" id="fbo_help" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="recruitment.fbo_help" data-title="Does client belong to an FBO?"></a>
+				</td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.recruitment.fbo_name}}
+			<tr>
+				<td><a id="recruitment.fbo_name"class="highlight">{{highlight.recruitment.fbo_name}}</a></td>
+				<td>Faith-Based Organization Name</td>
+				<td><a href="#" id="fbo_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="recruitment.fbo_name" data-title="Enter Name of FBO">{{doc.recruitment.fbo_name}}</a></td>
+			</tr>
+		{{/if}}
+		
+		{{#if highlight.finance.requested_other_help}}
+			<tr>
+				<td><a id="finance.requested_other_help"class="highlight">{{highlight.finance.requested_other_help}}</a></td>
+				<td>Requested Other Help</td>
+				<td><a href="#" id="request_help" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.requested_other_help.value" data-title="Client Requested Other Help?"></a></td>
+			</tr>
+		{{/if}}
+		
+	{{#if doc.advocate.is_advocate}}
+	<tr><td colspan="3"><b>Advocate Clarification:</b></td></tr>
+
+		{{#if highlight.advocate.is_advocate}}
+			<tr>
+				<td><a id="advocate.is_advocate" class="highlight">{{highlight.advocate.is_advocate}}</a></td>
+				<td>Does the Client have an Advocate?</td>
+				<td>
+					Is Advocate: <a href="#" id="is_advocate" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.is_advocate" data-title="Is Client an Advocate?"></a></br>
+					Is Individual: <a href="#" id="individual" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.individual" data-title="Is Client an Individual?"></a></br>
+					Is Non-profit Org: <a href="#" id="npo" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.npo" data-title="Is Client from a Non-Profit?"></a></br>
+					Is Government Agency: <a href="#" id="gov" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.gov" data-title="Is Client from a Government Agency?"></a>
+				</td>
+			</tr>
+		{{/if}}
+
+		{{#if highlight.advocate.name}}
+			<tr>
+				<td><a id="advocate.name" class="highlight">{{highlight.advocate.name}}</a></td>
+				<td>Advocate Name</td>
+				<td><a href="#" id="advocate_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.name" data-title="Enter Advocate Name">{{doc.advocate.name}}</a></td>
+			</tr>
+		{{/if}}
+
+		{{#if highlight.advocate.organization_name}}
+			<tr>
+				<td><a id="advocate.organization_name" class="highlight">{{highlight.advocate.organization_name}}</a></td>
+				<td>Advocate Organization Name</td>
+				<td>
+					<a href="#" id="advocate_org_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.organization_name" data-title="Enter Advocate Organization">{{doc.advocate.organization_name}}</a>
+				</td>
+			</tr>
+		{{/if}}
+
+		{{#if highlight.advocate.relationship}}
+			<tr>
+				<td><a id="advocate.relationship" class="highlight">{{highlight.advocate.relationship}}</a></td>
+				<td>Advocate Relationship</td>
+				<td><a href="#" id="advocate_relationship" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.relationship" data-title="Enter Advocate Relationship">{{doc.advocate.relationship}}</a></td>
+			</tr>
+		{{/if}}
+
+		{{#if highlight.advocate.phone}}
+			<tr>
+				<td><a id="advocate.phone" class="highlight">{{highlight.advocate.phone}}</a></td>
+				<td>Advocate Phone Number</td>
+				<td>
+					<a href="#" id="advocate_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.phone" data-title="Enter Advocate Phone Number">{{doc.advocate.phone}}</a>
+				</td>
+			</tr>
+		{{/if}}
+	{{/if}}
+	</tbody>
+	</table>
+</div>   <!-- End HUGE Application Clarification Section -->
+	
+<div class="container col-xs-12">
+	<h3>A Decision to Make</h3>
+	<p><i>Can this be referred to Handle-It? (less than $500, 2-3 volunteers, one day)</i></p>
+
+	<p><i>
+	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF YES:</b><br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Explain Handle-it process<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Set Status to Handle-It, make appropriate Vetting Note.<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#targetClosing"><b>Move to Closing Comments</b></a><br>
+	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF NO:</b> (even if it’s close)<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Set the status to Hold Pending Discussion<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Proceed with Financial Questions
+	</i></p>
+</div>
+
+
+
+
+<div class="container col-xs-12">
+	<h3>Financial Questions</h3>
+	<h4>Income Documentation</h4>
+	<p>This table needs work, and is here as a placeholder...</p>
+	<table class="table table-striped">
+		<tr>
+			<td></td>
+			<td>{{doc.application.name.first}} {{doc.application.name.last}}</td>
+			<td>[Other Resident 1]</td>
+			<td>[Other Resident 2]</td>
+			<td>[etc...]</td>
+		<tr>
+			<td colspan=5> 
+			<!-- change 5 to {{doc.application.other_residents.count}} + 2 (if possible) -->
+				<p class="scriptText">Q: Do you receive food stamp benefits?</p>
+				&nbsp;&nbsp;&nbsp;&nbsp; <i>If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a></i>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="checkbox"> Requested<br>
+				<input type="checkbox"> Received
+			</td>
+		</tr>
+		<tr>
+			<td class="scriptText" colspan=5> 
+				<p class="scriptText">Q: Did you or anyone else in your home file a federal income tax form last year?</p>
+				&nbsp;&nbsp;&nbsp;&nbsp; <i>If yes, request copies of their main tax form(s) (1040 or 1040EZ), and skip the next question.<br>
+				&nbsp;&nbsp;&nbsp;&nbsp; If no proceed to next question.</i>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			Federal Tax Records
+			</td>
+			<td>
+				<input type="checkbox"> Requested<br>
+				<input type="checkbox"> Received
+			</td>
+			<td>
+				<input type="checkbox"> Requested<br>
+				<input type="checkbox"> Received
+			</td>
+			<td>
+				<input type="checkbox"> Requested<br>
+				<input type="checkbox"> Received
+			</td>
+			<td>
+				<input type="checkbox"> Requested<br>
+				<input type="checkbox"> Received
+			</td>
+		</tr>
+		<tr>
+			<td class="scriptText" colspan=5> 
+				The table will continue through all the questions as per the requirements
+			</td>
+		</tr>
+	</table>
+</div>
+
+
+<p id="targetClosing"><br></p>
+<div class="container col-xs-12">
+	<h3>Closing Comments</h3>
+	<p class="scriptText">
+		I believe that completes my questions. Thank you for your time and patience. Please mail/email the documents we have discussed at your earliest convenience. We will be in touch within one week after receiving your documents to inform you about whether or not we can proceed to the next step. As you will recall, that would involve a visit to your home to confirm that the requested repairs are things that Catalyst has the expertise and resources to do.</p>
+ 
+	<p class="scriptText">Thanks again. I have enjoyed talking to you.</p>
+</div>
+
+<div class="container col-xs-12">
+	<h3>Still to come...</h3>
+	<ul>
+		<li>Another area where the Vetting Notes will be displayed...</li>
+		<li>An input area much like the Vetting notes input - but this will be for Vetting Agents to input Notes to pass along to Site Assessment Team OR Handle-It Team</li>
+	</ul>
+
+</div>
+
+
+
+<script>
+    /**
+     * Handles the back button located at the top of the page
+     */
+    function goBack() {
+        window.history.back();
+    }
+    /**
+     * Some inline-editable fields require data from the DB to properly work
+     *  They are defined here instead of a separate file since it needs access
+     *  to the handlebars template system
+     */
+    $(document).ready(function() {
+        $('#VWaddress').editable({
+            value: {
+                line_1: '{{doc.application.address.line_1}}',
+                line_2: '{{doc.application.address.line_2}}',
+                city: '{{doc.application.address.city}}',
+                state: '{{doc.application.address.state}}',
+                zip: '{{doc.application.address.zip}}'
+            }
+        });
+        $('#VWname').editable({
+            value: {
+                first: '{{doc.application.name.first}}',
+                middle: '{{doc.application.name.middle}}',
+                last: '{{doc.application.name.last}}'
+            }
+        });
+        $('#veteran').editable({
+            value: '{{doc.application.veteran}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#mortgage').editable({
+            value: '{{doc.finance.mortgage.up_to_date}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#status').editable({
+            value: '{{doc.status}}',
+            source:
+                    [
+                        {value: 'discuss', text: 'On Hold - Pending Discussion'},
+                        {value: 'new', text: 'NEW'},
+                        {value: 'phone', text: 'Phone Call Needed'},
+                        {value: 'handle', text: 'Handle-It'},
+                        {value: 'documents', text: 'Awaiting Documents'},
+                        {value: 'assess', text: 'Site Assessment'},
+                        {value: 'approval', text: 'Approval Process'},
+                        {value: 'declined', text: 'Declined'},
+                        {value: 'withdrawn', text: 'Withdrawn'},
+                        {value: 'project', text: 'Approved Project'}
+                    ]
+        });
+        $('#owns_home').editable({
+            value: '{{doc.application.owns_home}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#f_client_can_contrib').editable({
+            value: '{{doc.finance.client_can_contribute.value}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#f_associate_can_contrib').editable({
+            value: '{{doc.finance.associates_can_contribute.value}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#l_client_can_contrib').editable({
+            value: '{{doc.property.client_can_contribute.value}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#l_associate_can_contrib').editable({
+            value: '{{doc.property.associates_can_contribute.value}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#request_help').editable({
+            value: '{{doc.finance.requested_other_help.value}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#fbo_help').editable({
+            value: '{{doc.recruitment.fbo_help}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#is_advocate').editable({
+            value: '{{doc.advocate.is_advocate}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#individual').editable({
+            value: '{{doc.advocate.individual}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#npo').editable({
+            value: '{{doc.advocate.npo}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#gov').editable({
+            value: '{{doc.advocate.gov}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+
+        /**
+         * iterate through all dynamic array fields to make them editable
+         * data-pk is set to the current value of the element
+         * An event listener for each link updates data-pk with the edited value
+         **/
+        $('.asset_name').each(function () {
+            var id = '#' + $(this).attr("id");
+            $(id).editable();
+            $(id).click(function () {
+                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+                $(id).editable("option", "pk", pk);
+            })
+        });
+        $('.asset_value').each(function () {
+            var id = '#' + $(this).attr("id");
+            $(id).editable();
+            $(id).click(function () {
+                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+                $(id).editable("option", "pk", pk);
+            })
+        });
+        $('.residents_name').each(function () {
+            var id = '#' + $(this).attr("id");
+            $(id).editable();
+            $(id).click(function () {
+                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+                $(id).editable("option", "pk", pk);
+            });
+        });
+        $('.residents_age').each(function () {
+            var id = '#' + $(this).attr("id");
+            $(id).editable();
+            $(id).click(function () {
+                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+                $(id).editable("option", "pk", pk);
+            })
+        });
+        $('.residents_relationship').each(function () {
+            var id = '#' + $(this).attr("id");
+            $(id).editable();
+            $(id).click(function () {
+                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+                $(id).editable("option", "pk", pk);
+            })
+        });
+    });
+</script>
