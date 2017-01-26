@@ -286,6 +286,35 @@ module.exports = {
             })
             .catch(next);
     },
+	
+	postUser: function(req, res, next) {
+        // Data will be submitted using req.body
+        console.log('[ API ] postUser :: Call invoked');
+
+        // For debugging
+        var debug = 0;
+        if (debug == 1) {
+            console.log(req.body);
+        }
+
+        //create new mongoose object
+        var doc = new UserPackage(req.body);
+
+        
+
+        
+        // Save the user package to the database with a callback to handle flow control
+        doc.saveAsync(function (err, doc, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+                console.log('[ API ] postUser :: User Created with ID: ' + doc._id);
+				res.send( { status : 200 } );
+            }
+        });
+
+    },
 
     /**
      * Description: add a vetting note to the database

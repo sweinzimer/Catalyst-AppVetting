@@ -22,6 +22,8 @@ var view = require('./routes/view');
 var edit = require('./routes/edit');
 var appform = require('./routes/appform');
 var vettingworksheet = require('./routes/vettingworksheet');
+//new
+var regUser = require('./routes/regUser');
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Init the Express App Engine
@@ -88,6 +90,8 @@ app.use('/view', view);
 app.use('/edit', edit);
 app.use('/application', appform);
 app.use('/vettingworksheet', vettingworksheet);
+//new
+app.use('/user', regUser);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries
