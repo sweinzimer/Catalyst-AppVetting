@@ -9,7 +9,7 @@ router.route('/register')
 	.get(function(req, res) {
 		res.render('newuserform');
 	})
-	.post(function(req, res) {
+	.post(api.postUser, function(req, res) {
 		res.json(res.locals);
 	})
 
