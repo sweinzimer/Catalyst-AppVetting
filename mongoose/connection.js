@@ -22,7 +22,7 @@ var uri = 'mongodb://'
     + '27017'
     + '/'
     + config.mongo.db
-    + '?authSource=catalyst';
+    + '?authSource=' + config.mongo.authSource;
 
 // Connect to the URL
 // mongoose.connect(uri, options);
