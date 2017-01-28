@@ -38,6 +38,7 @@ function init() {
     let formData = {}
     let inputFields = $('input', form)
     inputFields.each(function(idx) {
+			let objectType = this.type
       let objectPath = this.name
       let objectPieces = objectPath.split('.')
       let currentObjectPlace = formData
@@ -46,9 +47,14 @@ function init() {
           if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
           currentObjectPlace = currentObjectPlace[p]
         } else {
-          currentObjectPlace[p] = this.value
+					if (this.type === 'date') {
+						currentObjectPlace[p] = new Date(this.value)
+					} else if (this.type === 'checkbox') {
+						currentObjectPlace[p] = this.checked
+					} else {
+						currentObjectPlace[p] = this.value
+					}
         }
-        console.log(formData)
       })
     })
 

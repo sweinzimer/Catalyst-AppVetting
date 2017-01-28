@@ -20,101 +20,145 @@
 
 <div class="row">
   <div class="col-xs-12 col-sm-8">
-    <form id="userRegistration" class="form-horizontal">
+    <form id="userRegistration">
 
-      <div class="form-group">
-        <label for="email" class="control-label col-xs-12 col-sm-2">Email</label>
-        <div class="col-xs-12 col-sm-10">
+      <div class="form-group row">
+        <label for="email" class="control-label col-xs-12">Email*</label>
+        <div class="col-xs-12">
           <input type="email" class="form-control" name="contact_info.user_email" id="email" />
         </div>
       </div>
 
-      <p>&nbsp;</p>
+      <hr />
 
       <div class="form-group">
-        <label for="userNameFirst" class="control-label col-xs-12 col-sm-2">First name</label>
-        <div class="col-xs-12 col-sm-10">
-          <input type="text" class="form-control" name="contact_info.user_name.user_first" id="userNameFirst" />
+        <div class="row">
+          <label for="userNameFirst" class="control-label col-xs-12">Name</label>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 col-md-4">
+            <input type="text" class="form-control" name="contact_info.user_name.user_first" id="userNameFirst" placeholder="First name"/>
+          </div>
+          <div class="col-xs-6 col-md-4">
+            <input type="text" class="form-control" name="contact_info.user_name.user_first" id="userNameFirst" placeholder="Middle name"/>
+          </div>
+          <div class="col-xs-12 col-md-4">
+            <input type="text" class="form-control" name="contact_info.user_name.user_first" id="userNameFirst" placeholder="Last name"/>
+          </div>
         </div>
       </div>
 
-      <p>&nbsp;</p>
-
-      <div class="form-group">
-        <label for="userMiddleName" class="control-label col-xs-12 col-sm-2">Middle name</label>
-        <div class="col-xs-12 col-sm-10">
-          <input type="text" class="form-control" name="contact_info.user_name.user_middle" id="userMiddleName" />
+      <div class="form-group row">
+        <div class="col-xs-12">
+          <label for="birthday" class="control-label">Birthday</label>
         </div>
-      </div>
-
-      <p>&nbsp;</p>
-
-      <div class="form-group">
-        <label for="userLastName" class="control-label col-xs-12 col-sm-2">Last name</label>
-        <div class="col-xs-12 col-sm-10">
-          <input type="text" class="form-control" name="contact_info.user_name.user_last" id="userLastName" />
-        </div>
-      </div>
-
-      <p>&nbsp;</p>
-
-      <div class="form-group">
-        <label for="birthday" class="control-label col-xs-12 col-sm-2">Birthday</label>
-        <div class="col-xs-12 col-sm-10">
+        <div class="col-xs-12 col-sm-8">
           <input type="date" class="form-control" name="contact_info.user_dob.dob_date" id="birthday" />
         </div>
       </div>
 
-      <p>&nbsp;</p>
+      <hr />
 
-      <div class="form-group">
+      <div class="row form-group">
         <label for="address1" class="control-label col-xs-12 col-sm-2">Address</label>
-        <div class="col-xs-12 col-sm-10">
-          <input type="text" class="form-control" name="contact_info.user_address.u_line1" id="address1" />
+      </div>
+      <div class="row form-group">
+        <div class="col-xs-12">
+          <input type="text" class="form-control" name="contact_info.user_address.u_line1" id="address1" placeholder="Address 1"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-xs-12">
+          <input type="text" class="form-control" name="contact_info.user_address.u_line2" id="address2" placeholder="Address 2"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-xs-12 col-sm-5">
+          <input type="text" class="form-control" name="contact_info.user_address.u_city" id="city" placeholder="City"/>
+        </div>
+        <div class="col-xs-12 col-sm-4">
+          <input type="text" class="form-control" name="contact_info.user_address.u_state" id="state" placeholder="State"/>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+          <input type="text" class="form-control" name="contact_info.user_address.u_zip" id="zip" placeholder="Zip"/>
         </div>
       </div>
 
-      <p>&nbsp;</p>
+      <hr />
 
-      <div class="form-group">
-        <label for="address2" class="control-label col-xs-12 col-sm-2">Address 2</label>
-        <div class="col-xs-12 col-sm-10">
-          <input type="text" class="form-control" name="contact_info.user_address.u_line2" id="address2" />
+      <div class="row form-group">
+        <label for="userEmergency" class="control-label col-xs-12">Emergency contact</label>
+      </div>
+      <div class="row form-group">
+        <div class="col-xs-12">
+          <input type="text" class="form-control" name="contact_info.user_emergency.uec_name" id="userEmergency" placeholder="Emergency contact name"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-xs-6">
+          <input type="text" class="form-control" name="contact_info.user_emergency.uec_relationship" id="address2" placeholder="Relationship"/>
+        </div>
+        <div class="col-xs-6">
+          <input type="text" class="form-control" name="contact_info.user_emergency.uec_phone" id="city" placeholder="Phone number"/>
         </div>
       </div>
 
-      <p>&nbsp;</p>
+      <hr />
 
-      <div class="form-group">
-        <label for="city" class="control-label col-xs-12 col-sm-2">City</label>
-        <div class="col-xs-12 col-sm-10">
-          <input type="text" class="form-control" name="contact_info.user_address.u_city" id="city" />
+
+      <div class="row form-group">
+        <div class="col-xs-12">
+          <label for="userStatus" class="control-label">User status</label>
+        </div>
+        <div class="col-xs-12">
+          <input type="text" class="form-control" name="user_status" id="userStatus" />
         </div>
       </div>
 
-      <p>&nbsp;</p>
-
-      <div class="form-group">
-        <label for="state" class="control-label col-xs-12 col-sm-2">State</label>
-        <div class="col-xs-12 col-sm-10">
-          <input type="text" class="form-control" name="contact_info.user_address.u_state" id="state" />
+      <div class="row form-group">
+        <div class="col-xs-12">
+          <label for="userActivity" class="control-label">User activity</label>
+        </div>
+        <div class="col-xs-12">
+          <input type="text" class="form-control" name="user_activity" id="userActivity" />
         </div>
       </div>
 
-      <p>&nbsp;</p>
+      <hr />
 
-      <div class="form-group">
-        <label for="zip" class="control-label col-xs-12 col-sm-2">Zip Code</label>
-        <div class="col-xs-12 col-sm-10">
-          <input type="text" class="form-control" name="contact_info.user_address.u_zip" id="zip" />
+      <div class="row">
+        <div class="col-xs-12">
+          <label class="control-label">Documents</label>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <label>
+            <input type="checkbox" name="user_documents.waiver_signed" />
+            Waiver signed
+          </label>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <label>
+            <input type="checkbox" name="user_documents.background_check" />
+            Background check
+          </label>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <label>
+            <input type="checkbox" name="user_documents.ID_badge" />
+            ID Badge
+          </label>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <label>
+            <input type="checkbox" name="user_documents.ID_Date" />
+            ID Date
+          </label>
         </div>
       </div>
 
-      <p>&nbsp;</p>
-
-      <div class="form-group">
-        <div class="offset-sm-2 col-sm-10">
-          <button type="submit" class="btn btn-default">Register</button>
+      <div class="form-group row">
+        <div class="col-xs-12 col-sm-5">
+          <button type="submit" class="btn btn-default btn-block">Register</button>
         </div>
       </div>
 
