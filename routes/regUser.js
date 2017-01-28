@@ -5,11 +5,12 @@ var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var api = require('../controllers/api');
 
-router.route('/addUser')
+router.route('/register')
 	.get(function(req, res) {
 		res.render('newuserform');
 	})
 	.post(api.postUser, function(req, res) {
+		console.log("In post request");
 		res.json(res.locals);
 	})
 	

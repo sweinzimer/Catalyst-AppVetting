@@ -290,7 +290,7 @@ module.exports = {
 	postUser: function(req, res, next) {
         // Data will be submitted using req.body
         console.log('[ API ] postUser :: Call invoked');
-
+		console.log(req.body);
         // For debugging
         var debug = 0;
         if (debug == 1) {
@@ -299,6 +299,7 @@ module.exports = {
 
         //create new mongoose object
         var doc = new UserPackage(req.body);
+		
 
         
 
