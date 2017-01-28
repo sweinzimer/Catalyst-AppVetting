@@ -10,6 +10,7 @@ router.route('/register')
 		res.render('newuserform');
 	})
 	.post(api.postUser, function(req, res) {
+		console.log("In post request");
 		res.json(res.locals);
 	})
 

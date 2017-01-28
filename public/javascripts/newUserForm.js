@@ -50,7 +50,7 @@ function init() {
 					if (this.type === 'date') {
 						currentObjectPlace[p] = new Date(this.value)
 					} else if (this.type === 'checkbox') {
-						currentObjectPlace[p] = this.checked
+						currentObjectPlace[p] = this.chec
 					} else {
 						currentObjectPlace[p] = this.value
 					}
