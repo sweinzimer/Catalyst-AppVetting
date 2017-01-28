@@ -47,8 +47,8 @@ function init() {
 		
 		//data.user_status: getVal('input[name="status"]'),
 		data.user_status = getVal('input[name="contact_info.user_name.user_first"]'),
-		data.user_created =  {type: Date, default: Date.now},
-		data.user_updated =  {type: Date, default: Date.now},
+		//data.user_created =  {type: Date, default: Date.now},
+		//data.user_updated =  {type: Date, default: Date.now},
 		data.user_role =  getVal('input[name="contact_info.user_name.user_first"]'), //getVal('input[name="userRole"]'),
 		data.user_activity = getVal('input[name="contact_info.user_name.user_first"]') //getVal('input[name="userAct"]')
 		

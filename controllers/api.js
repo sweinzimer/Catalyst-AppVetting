@@ -35,6 +35,7 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
+var UserPackage = require('../models/userPackage');
 var bluebird = require('bluebird');
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose to use bluebird
@@ -169,7 +170,7 @@ module.exports = {
     postDocument: function(req, res, next) {
         // Data will be submitted using req.body
         console.log('[ API ] postDocument :: Call invoked');
-
+		console.log(req.body);
         // For debugging
         var debug = 0;
         if (debug == 1) {
