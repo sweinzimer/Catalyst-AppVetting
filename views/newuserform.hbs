@@ -21,9 +21,13 @@
 <div class="row">
   <div class="col-xs-12 col-sm-8">
     <form id="userRegistration">
+      <div class="row">
+        <div class="col-xs-12 form_errors">
+        </div>
+      </div>
 
       <div class="form-group row">
-        <label for="email" class="control-label col-xs-12">Email*</label>
+        <label for="email" class="form-control-label col-xs-12">Email*</label>
         <div class="col-xs-12">
           <input type="email" class="form-control" name="contact_info.user_email" id="email" />
         </div>
@@ -33,24 +37,30 @@
 
       <div class="form-group">
         <div class="row">
-          <label for="userNameFirst" class="control-label col-xs-12">Name</label>
+          <label for="userNameFirst" class="form-control-label col-xs-12">Name</label>
         </div>
         <div class="row">
           <div class="col-xs-6 col-md-4">
-            <input type="text" class="form-control" name="contact_info.user_name.user_first" id="userNameFirst" placeholder="First name"/>
+            <input type="text" class="form-control" name="contact_info.user_name.user_first" id="userNameFirst" placeholder="First name*"/>
           </div>
           <div class="col-xs-6 col-md-4">
-            <input type="text" class="form-control" name="contact_info.user_name.user_first" id="userNameFirst" placeholder="Middle name"/>
+            <input type="text" class="form-control" name="contact_info.user_name.user_middle" id="userNameFirst" placeholder="Middle name"/>
           </div>
           <div class="col-xs-12 col-md-4">
-            <input type="text" class="form-control" name="contact_info.user_name.user_first" id="userNameFirst" placeholder="Last name"/>
+            <input type="text" class="form-control" name="contact_info.user_name.user_last" id="userNameFirst" placeholder="Last name*"/>
           </div>
         </div>
       </div>
 
       <div class="form-group row">
         <div class="col-xs-12">
-          <label for="birthday" class="control-label">Birthday</label>
+          <input type="text" class="form-control" name="contact_info.user_name.user_preferred" id="userNameFirst" placeholder="Preferred name"/>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-xs-12">
+          <label for="birthday" class="form-control-label">Birthday</label>
         </div>
         <div class="col-xs-12 col-sm-8">
           <input type="date" class="form-control" name="contact_info.user_dob.dob_date" id="birthday" />
@@ -60,9 +70,7 @@
       <hr />
 
       <div class="row form-group">
-        <label for="address1" class="control-label col-xs-12 col-sm-2">Address</label>
-      </div>
-      <div class="row form-group">
+        <label for="address1" class="form-control-label col-xs-12 col-sm-2">Address</label>
         <div class="col-xs-12">
           <input type="text" class="form-control" name="contact_info.user_address.u_line1" id="address1" placeholder="Address 1"/>
         </div>
@@ -87,9 +95,7 @@
       <hr />
 
       <div class="row form-group">
-        <label for="userEmergency" class="control-label col-xs-12">Emergency contact</label>
-      </div>
-      <div class="row form-group">
+        <label for="userEmergency" class="form-control-label col-xs-12">Emergency contact</label>
         <div class="col-xs-12">
           <input type="text" class="form-control" name="contact_info.user_emergency.uec_name" id="userEmergency" placeholder="Emergency contact name"/>
         </div>
@@ -108,7 +114,7 @@
 
       <div class="row form-group">
         <div class="col-xs-12">
-          <label for="userStatus" class="control-label">User status</label>
+          <label for="userStatus" class="form-control-label">User status</label>
         </div>
         <div class="col-xs-12">
           <input type="text" class="form-control" name="user_status" id="userStatus" />
@@ -117,7 +123,7 @@
 
       <div class="row form-group">
         <div class="col-xs-12">
-          <label for="userActivity" class="control-label">User activity</label>
+          <label for="userActivity" class="form-control-label">User activity</label>
         </div>
         <div class="col-xs-12">
           <input type="text" class="form-control" name="user_activity" id="userActivity" />
@@ -126,9 +132,9 @@
 
       <hr />
 
-      <div class="row">
+      <div class="row form-group">
         <div class="col-xs-12">
-          <label class="control-label">Documents</label>
+          <label class="form-control-label">Documents</label>
         </div>
         <div class="col-xs-12 col-sm-6">
           <label>
@@ -155,6 +161,8 @@
           </label>
         </div>
       </div>
+
+      <hr/>
 
       <div class="form-group row">
         <div class="col-xs-12 col-sm-5">
