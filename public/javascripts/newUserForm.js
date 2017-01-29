@@ -22,7 +22,7 @@ function init() {
 		let validationResult = validateFormData($(this), validationRules)
 		if (validationResult === false) return
 
-		let jsonToSend = getFormData($(this));  //stringified in that function
+		let jsonToSend = getFormJsonString($(this)); 
 		jsonToSend.user_created = new Date().getTime()
 		jsonToSend.user_role = []
 
@@ -76,6 +76,10 @@ function init() {
 
     return formData
   }
+
+	function getFormJsonString(form) {
+		return JSON.stringify(getFormData(form))
+	}
 
 	function validateFormData(form, rules) {
 		let formValid = true
