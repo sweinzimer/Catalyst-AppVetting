@@ -35,6 +35,7 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
+var WorkItemPackage = require('../models/workItemPackage');
 var bluebird = require('bluebird');
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose to use bluebird
@@ -287,6 +288,70 @@ module.exports = {
             .catch(next);
     },
 
+	updateService: function(req, res, next) {
+        // When executed this will apply updates to a doc and return the MODIFIED doc
+
+        // Log the _id, name, and value that are passed to the function
+        console.log('[ API ] updateService :: Call invoked with _id: ' + req.body.appId
+            + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
+        console.log(req.body.name + ' + ' + req.body.value);
+
+        // Build the name:value pairs to be updated
+        // Since there is only one name and one value, we can use the method below
+        var updates = {};
+        updates[req.body.name] = req.body.value;
+        // Record Update time
+        //filters
+        var conditions = {};
+        conditions['_id'] = req.body.appId;
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
+        updates['updated'] = Date.now();
+        console.log(updates);
+
+        Promise.props({
+            doc: DocumentPackage.findOneAndUpdate(
+                // Condition
+                conditions,
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: updates
+                },
+                // Options
+                {
+                    // new - defaults to false, returns the modified document when true, or the original when false
+                    new: true,
+                    // runValidators - defaults to false, make sure the data fits the model before applying the update
+                    runValidators: true
+                }
+                // Callback if needed
+                // { }
+            ).execAsync()
+        })
+            .then(function (results) {
+				console.log(results);
+                // TODO: Confirm true/false is correct
+                if (results) {
+                    console.log('[ API ] putUpdateDocument :: Documents package found: TRUE');
+                }
+                else {
+                    console.log('[ API ] putUpdateDocument :: Documents package found: FALSE');
+                }
+                res.locals.results = results;
+                //sending a status of 200 for now
+                res.locals.status = '200';
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
     /**
      * Description: add a vetting note to the database
      * Type: POST
@@ -307,6 +372,26 @@ module.exports = {
                 console.log('[ API ] postVettingNote :: Note created with _id: ' + note._id);
                 //send note ID so it can be referenced without page refresh
                 res.send( { status : 200, noteId: note._id } );
+            }
+        });
+
+    },
+	
+	//post new work item
+	addWorkItem: function(req, res, next) {
+        console.log('[ API ] addWorkItem :: Call invoked');
+		console.log(req.body);
+        var item = new WorkItemPackage(req.body);
+
+        item.saveAsync(function (err, note, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+				console.log("saved!");
+                console.log('[ API ] add Work Item :: Note created with _id: ' + item._id);
+                //send note ID so it can be referenced without page refresh
+                res.send( { status : 200, itemId: item._id } );
             }
         });
 
@@ -345,6 +430,33 @@ module.exports = {
         });
     },
 
+	//delete work item
+	deleteWorkItem: function(req, res, next) {
+        console.log('[ API ] deleteWorkItem :: Call invoked');
+		console.log(req.body)
+        Promise.props({
+            note: WorkItemPackage.remove(
+                {
+                    _id: req.body.itemId
+                }
+            ).execAsync()
+        })
+        .then(function (results) {
+            if (results) {
+                console.log('[ API ] deleteWorkItem :: Note found: TRUE');
+                res.locals.results = results;
+                //sending a status of 200 for now
+                res.locals.status = '200';
+            }
+            else {
+                console.log('[ API ] removeVettingNote :: Note found: FALSE');
+            }
+            next();
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+    },
     /**
      * Description: update or edit a Vetting Note
      * Type: POST
@@ -410,6 +522,64 @@ module.exports = {
             .catch(next);
     },
 
+	
+	updateWorkItem: function(req, res, next) {
+        // Log the _id, name, and value that are passed to the function
+        console.log('[ API ] WorkItem :: Call invoked with item _id: ' + req.body.id
+            + ' | description: ' + req.body.description);
+
+        var updates = {};
+        updates.description = req.body.description;
+
+        //filters
+        var conditions = {};
+        conditions['_id'] = req.body.id;
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
+        console.log(updates);
+
+        Promise.props({
+            item: WorkItemPackage.findOneAndUpdate(
+                // Condition
+                conditions,
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: updates
+                },
+                // Options
+                {
+                    // new - defaults to false, returns the modified document when true, or the original when false
+                    new: true,
+                    // runValidators - defaults to false, make sure the data fits the model before applying the update
+                    runValidators: true
+                }
+                // Callback if needed
+                // { }
+            ).execAsync()
+        })
+            .then(function (results) {
+                console.log(results);
+                if (results.item != null) {
+                    console.log('[ API ] updateWorkItem :: Note found: TRUE');
+                    res.locals.status = '200';
+                }
+                else {
+                    console.log('[ API ] updateWorkItem :: Note found: FALSE');
+                    res.locals.status = '500';
+                }
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
     /**
      * Description: retrieve a Highlight Package from the database by id
      * Type: GET

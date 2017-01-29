@@ -87,14 +87,18 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-sm-2">
-					
+						<div id="inline_content">
+						<form class="service_area">
 			<!-- THESE RADIO BUTTONS ARE NOT IMPLEMENTED
 			  -- No DB Model holds anything about "service_area"
 			  -- so that needs to be created first, then some sort of 
 			  -- onclick that puts stuff in the database you create
 			  -->
-						<input type="radio" id="sa_yes" name="service_area" value="true"> Yes<br>
-						<input type="radio" id="sa_no" name="service_area" value="false"> No
+							<input type="hidden" value="{{doc._id}}" id="applicationID"/>
+							<input type="radio" id="sa_yes" name="service_area" value="true"> Yes<br>
+							<input type="radio" id="sa_no" name="service_area" value="false"> No
+						</form>
+						</div>
 					</div>
 					<div class="col-sm-9">
 						<i>If no, change Application Status to "On Hold - Pending Discussion" and enter an applicable Vetting Note.</i>
@@ -234,16 +238,56 @@
 --- the way the Vetting Notes are added on the App View page.  They should populate
 --- above (or below) the input fields.  The ids are not set in stone, but are here
 --- just to give someone an idea for how it could get set up -->
-	<table class="table">
-		<tr><td id="empty-work_items" class="alert-danger danger" colspan="3">
+<!--	<table class="table">
+---		<tr><td id="empty-work_items" class="alert-danger danger" colspan="3">
+---                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Work Items Yet To Display
+---        </td></tr>
+---	</table> -->
+	<div class="form-group">
+        <form method="post">
+            <input type="hidden" value="{{doc._id}}" id="appId"/>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th class="col-sm-2">Date</th>
+					<th class="col-sm-6">Name</th>
+                    <th class="col-sm-6">Description</th>
+                    <th class="col-sm-6"> </th>
+                </tr>
+                </thead>
+                <tbody id="work-body">
+                {{#if workItems}}
+                    {{#each workItems}}
+                        <tr>
+                            <td>{{this.date}}</td>
+							<td class="item-name">{{this.name}}</td>
+                            <td class="item-descrip">{{this.description}}</td>
+                            <td>
+                                <form>
+                                    <input type="hidden" value="{{this._id}}" name="itemId" />
+                                    <input type="submit" class="update-button btn btn-info" value="Update Work Item"/>
+                                    <input type="submit" class="delete-button btn btn-danger" value="Delete Work Item"/>
+                                </form>
+                            </td>
+                        </tr>
+                    {{/each}}
+                {{else}}
+                    <tr>
+                        <td id="empty-work_items" class="alert-danger danger" colspan="3">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Work Items Yet To Display
-        </td></tr>
-	</table>
-	
+						</td>
+                    </tr>
+                {{/if}}
+
+				<tr><!--THIS EMPTY ROW IS NECESSARY FOR addNote.js TO WORK ON MULTIPLE PAGES--></tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
 	<h4><i>Enter Work Items Below</i></h4>
 	<div class="input-group">
-		<input type="text" id="work_item_title" class="form-control" placeholder="Enter brief Work Item Title Here...(not currently functional)"><br>
-		<textarea rows="3" cols="60" id="work_item_description" class="form-control" placeholder="Enter detailed Work Item Description Here...(not currently functional)"></textarea>
+		<input type="text" id="work_item_title" class="form-control" placeholder="Enter brief Work Item Title Here..."><br>
+		<textarea rows="3" cols="60" id="work_item_description" class="form-control" placeholder="Enter detailed Work Item Description Here..."></textarea>
 		
 		<button id="add_work_item" class="btn btn-primary" type="submit">Add Work Item</button>
 	</div>
@@ -751,8 +795,9 @@
 </div>
 
 
-
+<script src="/javascript/serviceArea.js" type="text/javascript"></script>
 <script>
+
     /**
      * Handles the back button located at the top of the page
      */

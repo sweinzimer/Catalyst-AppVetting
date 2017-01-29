@@ -5,6 +5,7 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var highlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
+var WorkItemPackage = require('../models/workItemPackage');
 var api = require('../controllers/api');
 
 
@@ -26,6 +27,7 @@ router.get('/:id', function(req, res) {
     Promise.props({
         doc: DocumentPackage.findOne({_id: ObjectId(req.params.id)}).lean().execAsync(),
         vettingNotes: VettingNotePackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
+		workItems: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
 		highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync()
     })
         .then(function(result) {
@@ -50,6 +52,23 @@ router.get('/:id', function(req, res) {
                     result.vettingNotes[index].date = Mon + "/" + Day + "/" + Year;
                 });
             }
+			
+			if(result.workItems.length != 0)
+            {
+				console.log("there are work items");
+                result.workItems.forEach(function(item, index){
+					console.log(item.name);
+					console.log(item.description);
+                    var Year = item.date.getFullYear();
+                    //get month and day with padding since they are 0 indexed
+                    var Day = ( "00" + item.date.getDate()).slice(-2);
+                    var Mon = ("00" + (item.date.getMonth()+1)).slice(-2);
+                    result.workItems[index].date = Mon + "/" + Day + "/" + Year;
+					console.log(item.date);
+                });
+            }
+			
+			
             res.locals.layout = 'b3-layout';
 
             result.title = "Vetting Worksheet";
@@ -59,8 +78,49 @@ router.get('/:id', function(req, res) {
         .catch(function(err) {
             console.error(err);
         });
-
 });
+
+router.route('/servicearea')
+    .post(api.updateService, function(req, res) {
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not update field");
+    }
+    else{
+        res.json(res.locals);
+    }
+	});	
+
+
+router.route('/additem')
+	.post(api.addWorkItem, function(req, res) {
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not add field");
+    }
+    else{
+        res.json(res.locals);
+    }
+	});	
+	
+router.route('/deleteitem')
+	.post(api.deleteWorkItem, function(req, res) {
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not delete field");
+    }
+    else{
+        res.json(res.locals);
+    }
+	});		
+	
+router.route('/updateitem')
+	.post(api.updateWorkItem, function(req, res) {
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not update field");
+    }
+    else{
+        res.json(res.locals);
+    }
+	});		
+	
 
 module.exports = router;
 
