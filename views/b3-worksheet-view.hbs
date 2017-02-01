@@ -14,7 +14,7 @@
 
 <br><br> <!-- spacer gets past the Vetting Notes Input -->
 
-<a href="/view" class="btn btn-primary">Back to Vetting Home</a> 
+<a href="/view" class="btn btn-primary">Back to Vetting Home</a>
 <a href="/view/{{doc._id}}" class="btn btn-primary">Back to Application View</a>
 
 <div class="container col-xs-12">
@@ -82,15 +82,15 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<br><h4>Is this Property within our Service Area?</h4>
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-sm-2">
-					
+
 			<!-- THESE RADIO BUTTONS ARE NOT IMPLEMENTED
 			  -- No DB Model holds anything about "service_area"
-			  -- so that needs to be created first, then some sort of 
+			  -- so that needs to be created first, then some sort of
 			  -- onclick that puts stuff in the database you create
 			  -->
 						<input type="radio" id="sa_yes" name="service_area" value="true"> Yes<br>
@@ -162,16 +162,16 @@
 {{#if doc.advocate.is_advocate}}
 	<h3>Advocate Conversation Script</h3>
 	<p class="scriptText">Hello. My name is ______________ and  I’m calling from Catalyst Partnerships. You are listed as an advocate on {{doc.application.name.first}} {{doc.application.name.last}}'s application for our help with repairs on their home. I have some questions for you. Is this a good time to talk?</p>
-	
+
 	<p><i>
 	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF YES:</b> (proceed)<br>
 	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF NO:</b> (reschedule for call back - make vetting note)
 	</i></p>
-	
+
 	<p class="scriptText">Is there any information you would like to share with us regarding {{doc.application.name.first}} or their situation that hasn't been captured by the application that might help us better serve them?</p>
-	
+
 	<p class="scriptText">We have some questions regarding {{doc.application.name.first}}'s application. Can we contact {{doc.application.name.first}} directly or should we work through you?
-	
+
 	<p><i>
 	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF CONTACT APPLICANT</b> (Thank Advocate, call Applicant)<br>
 	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF WORK THROUGH ADVOCATE:</b> <a href="#targettwo">Skip to [2]</a>
@@ -179,29 +179,29 @@
 
 	<hr>
 {{/if}}
-	
+
 	<b>[1]</b>
 	<h3>Applicant Conversation Script:</h3>
 	<p class="scriptText">Good Morning. My name is _________________ and I’m calling from Catalyst Partnerships.  You contacted us for some help with repairs to your home. To process your application I need a little more information. Is this a good time to talk?
-	
+
 	<p><i>
 	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF YES:</b> (proceed)<br>
 	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF NO:</b> (reschedule for call back - make vetting note)
 	</i></p>
-	
+
 	<p id="targettwo"><br></p>
 	<b>[2]</b>
 	<p class="scriptText">Before I ask my questions let me take a minute to describe our process.  Today my focus will be on confirming that you meet our financial guidelines. If you do, next we would arrange to visit your home to determine whether the requested repairs are things that Catalyst has the expertise and resources to do. Then, If we can do the work, we would find a mutually agreeable date and get you on our project schedule. Finally we would show up at your home on the agreed date and do the work. Does all that make sense to you?</p>
- 
+
 	<p class="scriptText">Now, the first thing we need is your proof of home ownership. Can you provide us with, for example, either a copy of your latest mortgage statement, or possibly a copy of deed or title, or maybe your most recent home insurance statement?</p>
-	
+
 
 	<i><b>Give them the address to send it to:</b></i><br>
 	<table cellpadding=10>
-		<tr><td> &nbsp;&nbsp;&nbsp;&nbsp; 
+		<tr><td> &nbsp;&nbsp;&nbsp;&nbsp;
 			</td><td valign="middle">
 				<b>Catalyst Partnerships<br>
-				PO Box 1922<br>			
+				PO Box 1922<br>
 				Beaverton, OR 97075</b><br>
 			</td><td valign="middle">
 				<h4>OR</h4>
@@ -210,26 +210,26 @@
 			</td>
 		</tr>
 	</table>
-	
+
 	<hr>
-	
+
 	<h3>Requested Repairs</h3>
-	
+
 	<p><i>The Vetting Agent’s job is to create Work Items (a quick title) and their descriptions (as long as is necessary to be helpful...) These items will be sent to the Site Assessors/Handle-It team.</i></p>
-	
-		
+
+
 	<span><i>[From the application:]</i></span>
 	<table class=table table-striped><tr><td>
 	&nbsp;&nbsp;&nbsp;&nbsp; {{doc.property.requested_repairs}}
 	</td></tr></table>
 
 	<p class="scriptText">Okay. Let’s talk about the repairs you requested:</p>
-	
+
 	<p><i><b>Conversation starters/helpers:</b><br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your application says…<br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tell me more about…<br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; How long has this condition existed?</i></p>
-	
+
 <!-- THIS AREA IS NOT IMPLEMENTED JUST YET, although it SHOULD work something like
 --- the way the Vetting Notes are added on the App View page.  They should populate
 --- above (or below) the input fields.  The ids are not set in stone, but are here
@@ -239,23 +239,23 @@
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Work Items Yet To Display
         </td></tr>
 	</table>
-	
+
 	<h4><i>Enter Work Items Below</i></h4>
 	<div class="input-group">
 		<input type="text" id="work_item_title" class="form-control" placeholder="Enter brief Work Item Title Here...(not currently functional)"><br>
 		<textarea rows="3" cols="60" id="work_item_description" class="form-control" placeholder="Enter detailed Work Item Description Here...(not currently functional)"></textarea>
-		
+
 		<button id="add_work_item" class="btn btn-primary" type="submit">Add Work Item</button>
 	</div>
-	
+
 	<hr>
 </div>
-	
+
 <div class="container col-xs-12"> <!-- Begin HUGE Application Clarification Section -->
 
 	<!--lone, hidden input for the Highlight Package Id-->
 	<input type="hidden" value="{{highlight._id}}" id="hl_Id"/>
-	
+
 	<h3>Application Clarification</h3>
 	<table class="table table-striped">
 	<tbody>
@@ -265,7 +265,7 @@
 			<col class="col-md-6 col-sm-4 col-xs-2">
 		</colgroup>
 		<tr><td colspan="3"><b>Contact Clarification:</b></td></tr>
-		
+
 		{{#if highlight.application.name}}
 			<tr>
 				<td><a id="application.name" class="highlight">{{highlight.application.name}}</a></td>
@@ -292,7 +292,7 @@
 				<td><a href="#" id="cell_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.phone.other" data-title="Enter Other Phone Number">{{doc.application.phone.other}}</a></td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.address}}
 			<tr>
 				<td><a id="application.address" class="highlight">{{highlight.application.address}}</a></td>
@@ -302,7 +302,7 @@
 				</td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.dob}}
 			<tr>
 				<td><a id="application.dob" class="highlight">{{highlight.application.dob}}</a></td>
@@ -310,7 +310,7 @@
 				<td><a href="#" id="dob" data-type="date" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.dob.date" data-title="Select date">{{doc.application.dob.date}}</a></td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.marital}}
 			<tr>
 				<td><a id="application.marital" class="highlight">{{highlight.application.marital}}</a></td>
@@ -320,7 +320,7 @@
 				</td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.spouse}}
 			<tr>
 				<td><a id="application.spouse" class="highlight">{{highlight.application.spouse}}</a></td>
@@ -330,7 +330,7 @@
 				</td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.email}}
 			<tr>
 				<td><a id="application.email" class="highlight">{{highlight.application.email}}</a></td>
@@ -338,7 +338,7 @@
 				<td><a href="#" id="email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.email" data-title="Enter Email">{{doc.application.email}}</a></td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.driver_license}}
 			<tr>
 				<td><a id="application.driver_license" class="highlight">{{highlight.application.driver_license}}</a></td>
@@ -346,7 +346,7 @@
 				<td><a href="#" id="driver_license" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.driver_license.number" data-title="Enter Driver's License Number">{{doc.application.driver_license.number}}</a></td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.emergency_contact}}
 			<tr>
 				<td><a id="application.emergency_contact" class="highlight">{{highlight.application.emergency_contact}}</a></td>
@@ -359,7 +359,7 @@
 				</td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.language}}
 			<tr>
 				<td><a id="application.language" class="highlight">{{highlight.application.language}}</a></td>
@@ -367,7 +367,7 @@
 				<td>{{doc.application.language}}</td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.veteran}}
 			<tr>
 				<td><a id="application.veteran" class="highlight">{{highlight.application.veteran}}</a></td>
@@ -377,7 +377,7 @@
 				</td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.owns_home}}
 			<tr>
 				<td><a id="application.owns_home" class="highlight">{{highlight.application.owns_home}}</a></td>
@@ -387,7 +387,7 @@
 				</td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.special_circumstances}}
 			<tr>
 				<td><a id="application.special_circumstances" class="highlight">{{highlight.application.special_circumstances}}</a></td>
@@ -397,9 +397,9 @@
 				</td>
 			</tr>
 		{{/if}}
-		
+
 		<tr><td colspan="3"><b>Property Clarification:</b></td></tr>
-		
+
 		{{#if highlight.property.home_type}}
 			<tr>
 				<td><a id="property.home_type" class="highlight">{{highlight.property.home_type}}</a></td>
@@ -407,7 +407,7 @@
 				<td><a href="#" id="home_type" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.home_type" data-title="Enter Home Type">{{doc.property.home_type}}</a></td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.property.ownership_length}}
 			<tr>
 				<td><a id="property.ownership_length" class="highlight">{{highlight.property.ownership_length}}</a></td>
@@ -415,7 +415,7 @@
 				<td><a href="#" id="ownership_length" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.ownership_length" data-title="Enter Ownership Length">{{doc.property.ownership_length}}</a></td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.property.year_constructed}}
 			<tr>
 				<td><a id="property.year_constructed" class="highlight">{{highlight.property.year_constructed}}</a></td>
@@ -423,7 +423,7 @@
 				<td><a href="#" id="year_constructed" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.year_constructed" data-title="Enter Year Constructed">{{doc.property.year_constructed}}</a></td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.property.requested_repairs}}
 			<tr>
 				<td><a id="property.requested_repairs" class="highlight">{{highlight.property.requested_repairs}}</a></td>
@@ -431,7 +431,7 @@
 				<td><a href="#" id="requested_repairs" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.requested_repairs" data-title="Enter Requested Repairs">{{doc.property.requested_repairs}}</a></td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.application.other_residents}}
 			<tr>
 				<td><a id="application.other_residents" class="highlight">{{highlight.application.other_residents}}</a></td>
@@ -458,9 +458,9 @@
 				</td>
 			</tr>
 		{{/if}}
-		
+
 	<tr><td colspan="3"><b>Financial Clarification:</b></td></tr>
-		
+
 		{{#if highlight.finance.mortgage}}
 		<tr>
 			<td><a id="finance.mortgage" class="highlight">{{highlight.finance.mortgage}}</a></td>
@@ -468,7 +468,7 @@
 			<td><a href="#" id="mortgage_payment" data-type="number" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.payment" data-title="Enter Mortgage Payment">{{doc.finance.mortgage.payment}}</a></td>
 		</tr>
 		{{/if}}
-		
+
 		{{#if highlight.finance.mort_up_to_date}}
 		<tr>
 			<td><a id="finance.mort_up_to_date" class="highlight">{{highlight.finance.mort_up_to_date}}</a></td>
@@ -476,7 +476,7 @@
 			<td><a href="#" id="mortgage" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.up_to_date" data-title="Is Mortgage Up-to-Date?"></a></td>
 		</tr>
 		{{/if}}
-							
+
 		{{#if highlight.finance.income}}
 		<tr>
 			<td><a id="finance.income" class="highlight">{{highlight.finance.income}}</a></td>
@@ -484,7 +484,7 @@
 			<td><a href="#" id="income" data-type="number" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.income.amount" data-title="Enter Income">{{doc.finance.income.amount}}</a></td>
 		</tr>
 		{{/if}}
-							
+
 		{{#if highlight.finance.client_can_contribute}}
 		<tr>
 			<td><a id="finance.client_can_contribute" class="highlight">{{highlight.finance.client_can_contribute}}</a></td>
@@ -499,7 +499,7 @@
 			<td><a href="#" id="f_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.client_can_contribute.description" data-title="Enter Contribution Description">{{doc.finance.client_can_contribute.description}}</a></td>
 		</tr>
 		{{/if}}
-							
+
 		{{#if highlight.finance.associates_can_contribute}}
 		<tr>
 			<td><a id="finance.associates_can_contribute" class="highlight">{{highlight.finance.associates_can_contribute}}</a></td>
@@ -514,7 +514,7 @@
 			<td><a href="#" id="f_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.associates_can_contribute.description" data-title="Enter Contribution Description">{{doc.finance.associates_can_contribute.description}}</a></td>
 		</tr>
 		{{/if}}
-							
+
 		{{#if highlight.finance.assets}}
 		<tr>
 			<td><a id="finance.assets" class="highlight">{{highlight.finance.assets}}</a></td>
@@ -537,9 +537,9 @@
 			</td>
 		</tr>
 		{{/if}}
-		
+
 	<tr><td colspan="3"><b>Assistance Clarification:</b></td></tr>
-		
+
 		{{#if highlight.property.client_can_contribute}}
 			<tr>
 				<td><a id="property.client_can_contribute" class="highlight">{{highlight.property.client_can_contribute}}</a></td>
@@ -554,7 +554,7 @@
 				<td><a href="#" id="l_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.client_can_contribute.description" data-title="Enter Contribution Description">{{doc.property.client_can_contribute.description}}</a></td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.property.associates_can_contribute}}
 			<tr>
 				<td><a id="property.associates_can_contribute" class="highlight">{{highlight.property.associates_can_contribute}}</a></td>
@@ -569,7 +569,7 @@
 				<td><a href="#" id="l_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.associates_can_contribute.description" data-title="Enter Contribution Description">{{doc.property.associates_can_contribute.description}}</a></td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.recruitment.fbo_help}}
 			<tr>
 				<td><a id="recruitment.fbo_help"class="highlight">{{highlight.recruitment.fbo_help}}</a></td>
@@ -579,7 +579,7 @@
 				</td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.recruitment.fbo_name}}
 			<tr>
 				<td><a id="recruitment.fbo_name"class="highlight">{{highlight.recruitment.fbo_name}}</a></td>
@@ -587,7 +587,7 @@
 				<td><a href="#" id="fbo_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="recruitment.fbo_name" data-title="Enter Name of FBO">{{doc.recruitment.fbo_name}}</a></td>
 			</tr>
 		{{/if}}
-		
+
 		{{#if highlight.finance.requested_other_help}}
 			<tr>
 				<td><a id="finance.requested_other_help"class="highlight">{{highlight.finance.requested_other_help}}</a></td>
@@ -595,7 +595,7 @@
 				<td><a href="#" id="request_help" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.requested_other_help.value" data-title="Client Requested Other Help?"></a></td>
 			</tr>
 		{{/if}}
-		
+
 	{{#if doc.advocate.is_advocate}}
 	<tr><td colspan="3"><b>Advocate Clarification:</b></td></tr>
 
@@ -651,7 +651,7 @@
 	</tbody>
 	</table>
 </div>   <!-- End HUGE Application Clarification Section -->
-	
+
 <div class="container col-xs-12">
 	<h3>A Decision to Make</h3>
 	<p><i>Can this be referred to Handle-It? (less than $500, 2-3 volunteers, one day)</i></p>
@@ -681,52 +681,168 @@
 			<td>[Other Resident 1]</td>
 			<td>[Other Resident 2]</td>
 			<td>[etc...]</td>
-		<tr>
-			<td colspan=5> 
-			<!-- change 5 to {{doc.application.other_residents.count}} + 2 (if possible) -->
-				<p class="scriptText">Q: Do you receive food stamp benefits?</p>
-				&nbsp;&nbsp;&nbsp;&nbsp; <i>If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a></i>
-			</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td>
-				<input type="checkbox"> Requested<br>
-				<input type="checkbox"> Received
-			</td>
+		  <td colspan="5">
+		    <p class="scriptText">Q: Do you receive food stamp benefits?</p>
+		    &nbsp;&nbsp;&nbsp;&nbsp; <i>If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a></i>
+		  </td>
 		</tr>
 		<tr>
-			<td class="scriptText" colspan=5> 
-				<p class="scriptText">Q: Did you or anyone else in your home file a federal income tax form last year?</p>
-				&nbsp;&nbsp;&nbsp;&nbsp; <i>If yes, request copies of their main tax form(s) (1040 or 1040EZ), and skip the next question.<br>
-				&nbsp;&nbsp;&nbsp;&nbsp; If no proceed to next question.</i>
-			</td>
+		  <td>Food Stamps documentation</td>
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
 		</tr>
 		<tr>
-			<td>
-			Federal Tax Records
-			</td>
-			<td>
-				<input type="checkbox"> Requested<br>
-				<input type="checkbox"> Received
-			</td>
-			<td>
-				<input type="checkbox"> Requested<br>
-				<input type="checkbox"> Received
-			</td>
-			<td>
-				<input type="checkbox"> Requested<br>
-				<input type="checkbox"> Received
-			</td>
-			<td>
-				<input type="checkbox"> Requested<br>
-				<input type="checkbox"> Received
-			</td>
+		  <td colspan="5">
+		    <p class="scriptText">Q: Did you or anyone else in your home file a federal income tax form last year?</p>
+		    &nbsp;&nbsp;&nbsp;&nbsp;<i>If yes, request copies of their main tax form(s) (1040 or 1040EZ), and proceed to X. If no proceed to next question.</i>
+		  </td>
 		</tr>
 		<tr>
-			<td class="scriptText" colspan=5> 
-				The table will continue through all the questions as per the requirements
-			</td>
+		  <td>Federal Tax Records</td>
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+		</tr>
+		<tr>
+		  <td colspan="5">
+		    <p class="scriptText">Q: Are you or anyone else in your home currently employed?</p>
+		    <i>If yes, request Income Documentation for all employed residents and proceed. If no, proceed to next question.</i>
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    Income Documentation [e.g. Pay Stubs]
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+		</tr>
+		<tr>
+		  <td colspan="5">
+		    <p class="scriptText">Q: Do you or anyone else in your home receive Social Security benefits? (retirement; disability; SSI)</p>
+		    <i>If yes, request copies of their benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</i>
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    Social Security-Documentation
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+		</tr>
+		<tr>
+		  <td colspan="5">
+		    <p class="scriptText">Q: Do you or anyone else in your home receive pension payments?</p>
+		    <i>If yes, request copies of check stubs or deposit notices showing total benefit received. If no, proceed to next question.</i>
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    Pension Benefit-Documentation
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+		</tr>
+		<tr>
+		  <td colspan="5">
+		    <p class="scriptText">Q: Do you or anyone else in your home receive housing assistance?</p>
+		    <i>If yes, request copies of benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</i>
+		  </td>
+		</tr>
+		<tr>
+		  <td>
+		    Housing assistance documentation
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
+		  <td>
+		    <input type="checkbox"> Requested</input><br/>
+		    <input type="checkbox"> Received</input>
+		  </td>
 		</tr>
 	</table>
 </div>
@@ -737,7 +853,7 @@
 	<h3>Closing Comments</h3>
 	<p class="scriptText">
 		I believe that completes my questions. Thank you for your time and patience. Please mail/email the documents we have discussed at your earliest convenience. We will be in touch within one week after receiving your documents to inform you about whether or not we can proceed to the next step. As you will recall, that would involve a visit to your home to confirm that the requested repairs are things that Catalyst has the expertise and resources to do.</p>
- 
+
 	<p class="scriptText">Thanks again. I have enjoyed talking to you.</p>
 </div>
 
