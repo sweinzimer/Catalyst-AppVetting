@@ -11,7 +11,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 var fs = require('fs');
+var passport = require('passport');
+var flash = require('connect-flash');
+var morgan = require('morgan');
+var session = require('express-session');
 
+//configure passport
+//require(./config/passport'(passport));
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Route Naming and Importing
 // Define routes that will be used
@@ -22,7 +28,15 @@ var view = require('./routes/view');
 var edit = require('./routes/edit');
 var appform = require('./routes/appform');
 var vettingworksheet = require('./routes/vettingworksheet');
+var regUser = require('./routes/regUser');
 
+require('./routes/index')(app, passport);
+require('./routes/test')(app, passport);
+require('./routes/view')(app, passport);
+require('./routes/edit')(app, passport);
+require('./routes/appform')(app, passport);
+require('./routes/vettingworksheet')(app, passport);
+require('./routes/regUser')(app, passport);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Init the Express App Engine
 // Start Express and serve the favicon
@@ -62,6 +76,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(morgan('dev'));
+app.use(session({ secret: 'hidethissomewhere'}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Middleware the will -ALWAYS- be executed
@@ -88,6 +107,9 @@ app.use('/view', view);
 app.use('/edit', edit);
 app.use('/application', appform);
 app.use('/vettingworksheet', vettingworksheet);
+app.use('/user', regUser);
+//new
+app.use('/user', regUser);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries
@@ -98,6 +120,7 @@ app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/javascript', express.static(__dirname + '/public/javascripts'));
 app.use('/fonts/', express.static(__dirname + '/node_modules/bootstrap/dist/fonts'));
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Error handlers
