@@ -243,6 +243,8 @@
 ---                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Work Items Yet To Display
 ---        </td></tr>
 ---	</table> -->
+
+<!--START OF NEW WORK ITEM IMPLEMENTATION -->
 	<div class="form-group">
         <form method="post">
             <input type="hidden" value="{{doc._id}}" id="appId"/>
@@ -250,8 +252,10 @@
                 <thead>
                 <tr>
                     <th class="col-sm-2">Date</th>
-					<th class="col-sm-6">Name</th>
-                    <th class="col-sm-6">Description</th>
+					<th class="col-sm-2">Name</th>
+                    <th class="col-sm-4">Description</th>
+					<th class="col-sm-2">Cost</th>
+					<th class="col-sm-4">Vetting Comments</th>
                     <th class="col-sm-6"> </th>
                 </tr>
                 </thead>
@@ -262,6 +266,8 @@
                             <td>{{this.date}}</td>
 							<td class="item-name">{{this.name}}</td>
                             <td class="item-descrip">{{this.description}}</td>
+							<td class="item-cost">{{this.cost}}</td>
+							<td class="item-comments">{{this.vettingComments}}</td>
                             <td>
                                 <form>
                                     <input type="hidden" value="{{this._id}}" name="itemId" />
@@ -288,7 +294,8 @@
 	<div class="input-group">
 		<input type="text" id="work_item_title" class="form-control" placeholder="Enter brief Work Item Title Here..."><br>
 		<textarea rows="3" cols="60" id="work_item_description" class="form-control" placeholder="Enter detailed Work Item Description Here..."></textarea>
-		
+		<input type="number" id="work_item_cost" class="form-control" placeholder="Enter estimated cost here..."><br>
+		<textarea rows="3" cols="60" id="work_item_vaComment" class="form-control" placeholder="Enter Comments Here..."></textarea>
 		<button id="add_work_item" class="btn btn-primary" type="submit">Add Work Item</button>
 	</div>
 	

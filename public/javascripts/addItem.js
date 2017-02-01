@@ -26,6 +26,8 @@ function addItem(e) {
         var payload = {};
 		payload.name = $('#work_item_title').val();
         payload.description = $('#work_item_description').val();
+		payload.cost = $('#work_item_cost').val();
+		payload.vettingComments = $('#work_item_vaComment').val();
         payload.applicationId = $('#appId').val();
 
         //POST the data to the database
@@ -52,18 +54,22 @@ function addItem(e) {
                 //new column for the new note
 				var newName = '<td>' + $('#work_item_title').val() + '</td>';
                 var newNote = '<td>' + $('#work_item_description').val() + '</td>';
+				var newCost = '<td>' + $('#work_item_cost').val() + '</td>';
+				var newComment = '<td>' + $('#work_item_vaComment').val() + '</td>';
                 //need to get the new note ID so it is available for immediate update/deletion
                 var hiddenNoteId = '<input type="hidden" value="' + xhr.workId + '" name="workId" />';
                 //build delete button
 				//var updateButton = '<button type="submit" class="update-button btn btn-info">Update Work Item</button>';
                 var deleteButton = '<button type="submit" class="delete-button btn btn-danger">Delete Work Item</button>';
                 //assemble all parts to build the new note row
-                var newRow = '<tr class="success">' + date + newName + newNote + '<td><form>' + hiddenNoteId + deleteButton + '</form></td></tr>';
+                var newRow = '<tr class="success">' + date + newName + newNote + newCost + newComment + '<td><form>' + hiddenNoteId + deleteButton + '</form></td></tr>';
                 //add new row before the very last row in the table (input form row)
                 $('#work-body tr:last').before(newRow);
                 //clear text area to prepare for new note
                 $('#work_item_description').val("");
 				$('#work_item_title').val("");
+				$('#work_item_cost').val("");
+				$('#work_item_vaComment').val("");
 				
             }
             else{
@@ -119,9 +125,12 @@ function setUpForm(e) {
     e.preventDefault();
     //the note we want will be the first child of the following search since it finds the closest <tr> to the button clicked
     var item_description = $(this).closest("tr").find(".item-descrip");
+	var item_cost = $(this).closest("tr").find(".item-cost");
+	var item_comment = $(this).closest("tr").find(".item-comments");
     //transform the text into a text area for editing
     item_description.html('<textarea id="item_desc" class="form-control desc-textarea" placeholder="Update Description Here...">' + item_description[0].innerText + '</textarea>');
-
+	item_cost.html('<textarea id="item_ct" class="form-control cost-textarea" placeholder="Update Cost Here...">' + item_cost[0].innerText + '</textarea>');
+	item_comment.html('<textarea id="item_cmmt" class="form-control cmmt-textarea" placeholder="Update Comment Here...">' + item_comment[0].innerText + '</textarea>');
     //change update note button to submit change button that will handle update submission
     $(this).val("Submit Update");
     $(this).attr("class", "submit-update-button btn btn-warning");
@@ -135,16 +144,23 @@ function updateItem(e) {
     e.preventDefault();
     //save items for after POST
 	//var item_name = $(this).closest("tr").find(".item-name");
-    var item_desc = $(this).closest("tr").find(".item-descrip");                     //the note row html object
+    var item_desc = $(this).closest("tr").find(".item-descrip");
+	var item_cost = $(this).closest("tr").find(".item-cost");
+	var item_comment = $(this).closest("tr").find(".item-comments");
+	//the note row html object
     var updateButton = $(this);                                                 //associated update button
     var cancelButton = $(this).closest("td").find(".cancel-button");            //associated cancel button
     var itemId = $(this).closest("form").find("input[name='itemId']").val();    //associated note ID
     //using .value since innerHTML and others don't get updated when textarea is edited
     var itemDescrip = $(this).closest("tr").find(".desc-textarea")[0].value;
+	var itemCost = $(this).closest("tr").find(".cost-textarea")[0].value;
+	var itemComment = $(this).closest("tr").find(".cmmt-textarea")[0].value;
 
     //build payload with the note idea and new note description
     var payload = {};
     payload.description = itemDescrip;
+	payload.cost = itemCost;
+	payload.vettingComments = itemComment;
     payload.id = itemId;
 
     //POST the data to the database
@@ -159,6 +175,8 @@ function updateItem(e) {
         if(xhr.status == 200) {
             //revert form into just text after success
             item_desc[0].innerHTML = itemDescrip;
+			item_cost[0].innerHTML = itemCost;
+			item_comment[0].innerHTML = itemComment;
             //revert buttonsby changing button value and class
             updateButton.val("Update Item");
             updateButton.attr("class", "update-button btn btn-info");

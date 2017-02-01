@@ -530,6 +530,8 @@ module.exports = {
 
         var updates = {};
         updates.description = req.body.description;
+		updates.cost = req.body.cost;
+		updates.vettingComments = req.body.vettingComments;
 
         //filters
         var conditions = {};
