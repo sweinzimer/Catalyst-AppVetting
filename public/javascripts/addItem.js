@@ -203,11 +203,17 @@ function cancelUpdate(e){
     e.preventDefault();
     var item = $(this).closest("tr").find(".item-descrip");
     var itemDescrip = $(this).closest("tr").find(".desc-textarea")[0].innerHTML;
+	var cost = $(this).closest("tr").find(".item-cost");
+    var costDescrip = $(this).closest("tr").find(".cost-textarea")[0].innerHTML;
+	var comment = $(this).closest("tr").find(".item-comments");
+    var cmmtDescrip = $(this).closest("tr").find(".cmmt-textarea")[0].innerHTML;
     var cancelButton = $(this);
     var updateButton = $(this).closest("td").find(".submit-update-button");
 
     //revert form into just text
     item[0].innerHTML = itemDescrip;
+	cost[0].innerHTML = costDescrip;
+	comment[0].innerHTML = cmmtDescrip;
     //revert buttons
     updateButton.val("Update Item");
     updateButton.attr("class", "update-button btn btn-info");
