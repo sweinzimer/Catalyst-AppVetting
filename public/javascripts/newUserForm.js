@@ -23,9 +23,15 @@ function init() {
 		if (validationResult === false) return
 
 		let jsonToSend = getFormJsonString($(this)); 
+		jsonToSend = JSON.parse(jsonToSend);
 		jsonToSend.user_created = new Date().getTime()
 		jsonToSend.user_role = []
-
+		jsonToSend.local = {
+			email: 'passport@passport',
+			password: 'password123'
+		};
+		jsonToSend = JSON.stringify(jsonToSend);
+		console.log(jsonToSend);
 		//post to database
 		var posting = $.ajax({
 			type : 'POST',

@@ -2,8 +2,9 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt-nodejs');
-
+//var bcrypt = require('bcrypt-nodejs');
+var crypto = require('crypto');
+//var jwt = require('jsonwebtoken');
 
 var UserPackageSchema = new Schema({
 	user_status:		String,
@@ -11,10 +12,10 @@ var UserPackageSchema = new Schema({
 	user_updated:	{type: Date, default: Date.now},
 	user_role:		String,
 	user_activity:		String,
-	local: {
+	/*local: {
 		email: 	String,
 		password: 	String,
-	},
+	},*/
 	contact_info:	{
 		user_name:	{
 			user_first:		String,
@@ -49,6 +50,8 @@ var UserPackageSchema = new Schema({
 		},
 		
 	},
+	hash : String,
+	salt: String,
 	
 	
 	user_documents: {
@@ -64,12 +67,14 @@ var UserPackageSchema = new Schema({
 	
 });
 
-UserPackageSchema.methods.generateHash = function(password) {
-	return bcrypt.hashSynch(password, bcrypt.genSaltSync(8), null);
+UserPackageSchema.methods.setPassword = function(password) {
+	this.salt = crypto.randomBytes(16).toString('hex');
+	this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
 };
 UserPackageSchema.methods.validPassword = function(password) {
-	return bcrypt.compareSync(password, this.local.password);
-}
+	var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+	return this.hash == hash;
+};
 
 var UserPackage = mongoose.model('UserPackage', UserPackageSchema);
 module.exports = UserPackage;

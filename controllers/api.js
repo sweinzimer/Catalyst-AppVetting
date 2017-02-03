@@ -300,7 +300,7 @@ module.exports = {
 
         //create new mongoose object
         var doc = new UserPackage(req.body);
-		
+		doc.setPassword(req.body.local.password);
 
         
 

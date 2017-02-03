@@ -15,9 +15,15 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var morgan = require('morgan');
 var session = require('express-session');
-
+var app = express();
 //configure passport
-//require(./config/passport'(passport));
+app.use(session({ secret: 'hidethissomewhere'}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
+var initPassport = require('./passport/init');
+initPassport(passport);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Route Naming and Importing
 // Define routes that will be used
@@ -28,20 +34,14 @@ var view = require('./routes/view');
 var edit = require('./routes/edit');
 var appform = require('./routes/appform');
 var vettingworksheet = require('./routes/vettingworksheet');
-var regUser = require('./routes/regUser');
+var regUser = require('./routes/regUser')(passport);
 
-require('./routes/index')(app, passport);
-require('./routes/test')(app, passport);
-require('./routes/view')(app, passport);
-require('./routes/edit')(app, passport);
-require('./routes/appform')(app, passport);
-require('./routes/vettingworksheet')(app, passport);
-require('./routes/regUser')(app, passport);
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Init the Express App Engine
 // Start Express and serve the favicon
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-var app = express();
+
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -77,10 +77,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(morgan('dev'));
-app.use(session({ secret: 'hidethissomewhere'}));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Middleware the will -ALWAYS- be executed

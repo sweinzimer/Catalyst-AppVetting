@@ -5,17 +5,18 @@ var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var api = require('../controllers/api');
 
+module.exports = function(passport) {
 router.route('/register')
 	.get(function(req, res) {
 		res.render('newuserform');
 	})
-	.post(passport.authenticate('local-signup', function(req, res) {
+	.post(api.postUser, function(req, res) {
 		console.log("In post request");
 		res.json(res.locals);
-	}));
-
+	})
+	
 router.get('/userSuccess', function(req, res) {
-	res.render('userSuccess');
+	res.render('/');
 });
 
 /***** Temp login route created by Dave, 1/29/17... delete at will *****/
@@ -34,4 +35,7 @@ function isLoggedIn(req, res, next) {
 	}
 	res.redirect('/login');
 }
-module.exports = router;
+
+return router;
+//module.exports = router;
+}
