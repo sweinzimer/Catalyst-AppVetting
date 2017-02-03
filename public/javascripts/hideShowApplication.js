@@ -38,7 +38,7 @@ $(document).ready(function() {
     $('.formSection').each(function(i) {
       // Skip the first, since that's the initial question being asked
       // Those should always stay visible
-      if (i > 1) {
+      if (i > 0) {
         let currentState = $(this).css('display')
         $(this).css('display', (formState.restOfFormVisible ? 'inherit' : 'none'))
       }

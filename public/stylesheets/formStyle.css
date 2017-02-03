@@ -32,3 +32,11 @@ div.formSection {
 .largeField {
 	width: 250px;
 }
+
+.hasError {
+  color: red;
+}
+
+.hasError > input, .hasError > textarea {
+  border: 1px solid red;
+}
