@@ -7,7 +7,7 @@ var api = require('../controllers/api');
 
 module.exports = function(passport) {
 router.route('/register')
-	.get(isLoggedIn, function(req, res) {
+	.get(function(req, res) {
 		res.render('newuserform');
 	})
 	.post(api.postUser, function(req, res) {
