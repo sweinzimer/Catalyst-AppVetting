@@ -30,7 +30,7 @@ initPassport(passport);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 var routes = require('./routes/index');
 var test = require('./routes/test');
-var view = require('./routes/view');
+var view = require('./routes/view')(passport);
 var edit = require('./routes/edit');
 var appform = require('./routes/appform');
 var vettingworksheet = require('./routes/vettingworksheet');

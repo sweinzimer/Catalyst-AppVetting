@@ -7,7 +7,7 @@ var api = require('../controllers/api');
 
 module.exports = function(passport) {
 router.route('/register')
-	.get(function(req, res) {
+	.get(isLoggedIn, function(req, res) {
 		res.render('newuserform');
 	})
 	.post(api.postUser, function(req, res) {
@@ -24,16 +24,17 @@ router.route('/login')
 	.get(function(req, res) {
 		res.render('userloginform');
 	})
-	.post(api.postUser, function(req, res) {
-		console.log("In post request");
-		res.json(res.locals);
-	})
+	.post(passport.authenticate('local', {
+		successRedirect: '/',
+		failureRedirect: '/user/login',
+		failureFlash: true})
+	);
 
 function isLoggedIn(req, res, next) {
 	if(req.isAuthenticated()) {
 		return next();
 	}
-	res.redirect('/login');
+	res.redirect('/user/login');
 }
 
 return router;

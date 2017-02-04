@@ -16,7 +16,7 @@ Promise.promisifyAll(mongoose); // Convert mongoose API to always return promise
 //Need ObjectID to search by ObjectID
 var ObjectId = require('mongodb').ObjectID;
 
-
+module.exports = function(passport) {
 /**
  * This Router handles GET Requests for viewing the vetting home page and specific application pages
  *
@@ -36,7 +36,7 @@ var ObjectId = require('mongodb').ObjectID;
      project - the project has been approved and the document package will be converted to a project package
  **/
 
-router.get('/', api.getDocumentByStatus, function(req, res, next) {
+router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
 
     var payload = {};
 
@@ -289,5 +289,14 @@ function formatStatus(element) {
     return element;
 }
 
-module.exports = router;
+//module.exports = router;
+return router;
+}
 
+function isLoggedIn(req, res, next) {
+	if(req.isAuthenticated()) {
+		return next();
+		
+	}
+	res.redirect('/user/login');
+}
