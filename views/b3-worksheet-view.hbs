@@ -89,11 +89,6 @@
 					<div class="col-sm-2">
 						<div id="inline_content">
 						<form class="service_area">
-			<!-- THESE RADIO BUTTONS ARE NOT IMPLEMENTED
-			  -- No DB Model holds anything about "service_area"
-			  -- so that needs to be created first, then some sort of 
-			  -- onclick that puts stuff in the database you create
-			  -->
 							<input type="hidden" value="{{doc._id}}" id="applicationID"/>
 							<input type="radio" id="sa_yes" name="service_area" value="true"> Yes<br>
 							<input type="radio" id="sa_no" name="service_area" value="false"> No
@@ -811,6 +806,21 @@
     function goBack() {
         window.history.back();
     }
+	
+	/*service Area buttons
+	*
+	*/
+	$(document).ready(function() {
+		if({{doc.service_area}}) {
+		console.log("service area true");
+		document.getElementById('sa_yes').checked = true;
+		}
+		else if(!{{doc.service_area}}) {
+		console.log("service area false");
+		document.getElementById('sa_no').checked = true;
+		}
+	
+	});
     /**
      * Some inline-editable fields require data from the DB to properly work
      *  They are defined here instead of a separate file since it needs access

@@ -299,8 +299,14 @@ module.exports = {
         // Build the name:value pairs to be updated
         // Since there is only one name and one value, we can use the method below
         var updates = {};
-        updates[req.body.name] = req.body.value;
-        // Record Update time
+		updates.service_area = req.body.value;
+		
+		//if out of service area, change status to "on hold, pending discussion"
+		if(req.body.value == false) {
+			updates.status = "discuss";
+		}
+		
+		// Record Update time
         //filters
         var conditions = {};
         conditions['_id'] = req.body.appId;

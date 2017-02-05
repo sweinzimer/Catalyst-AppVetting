@@ -68,8 +68,7 @@ router.get('/:id', function(req, res) {
                 });
             }
 			
-			
-            res.locals.layout = 'b3-layout';
+			res.locals.layout = 'b3-layout';
 
             result.title = "Vetting Worksheet";
 
