@@ -6,6 +6,7 @@ var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var api = require('../controllers/api');
+var User = require('../models/userPackage');
 
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose we are using the Bluebird promise library
@@ -156,7 +157,7 @@ router.post('/addNote', api.postVettingNote, function(req, res, next) {
 /**
  * Route for deleting notes
  **/
-router.post('/delNote', api.removeVettingNote, function(req, res, next) {
+router.post('/delNote', isLoggedIn, api.removeVettingNote, function(req, res, next) {
     if(res.locals.status != '200'){
         res.status(500).send("Could not delete note");
     }
@@ -293,10 +294,30 @@ function formatStatus(element) {
 return router;
 }
 
+//check to see if user is logged in and a vetting agent
 function isLoggedIn(req, res, next) {
 	if(req.isAuthenticated()) {
-		return next();
+		console.log("user id in vetting request");
+		console.log(req.user._id);
+		var userID = req.user._id.toString();
+		User.findOne({'_id' : ObjectId(userID)}, function(err, user) {
+			console.log("in user find");
+			console.log(user.user_role);
+			if(err)
+				{return done(err);}
+			if(!user) {
+				console.log("user does not exist");
+				res.redirect('/user/login');
+			}
+			if(!user.isVetting()) {
+				console.log("not vetting agent");
+				res.redirect('/user/register');
+			}
 		
+		//user is a vetting agent
+		//return next();
+		});
+		return next();
 	}
 	res.redirect('/user/login');
 }

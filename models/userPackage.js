@@ -76,5 +76,13 @@ UserPackageSchema.methods.validPassword = function(password) {
 	return this.hash == hash;
 };
 
+UserPackageSchema.methods.isVetting = function() {
+	if(this.user_role == "VET") {
+		return true;
+	}
+	else
+		return false;
+}
+
 var UserPackage = mongoose.model('UserPackage', UserPackageSchema);
 module.exports = UserPackage;
