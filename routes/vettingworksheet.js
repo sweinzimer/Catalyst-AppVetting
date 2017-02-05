@@ -5,6 +5,7 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var highlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
+var FinPackage = ('../models/finPackage');
 var api = require('../controllers/api');
 
 
@@ -26,7 +27,8 @@ router.get('/:id', function(req, res) {
     Promise.props({
         doc: DocumentPackage.findOne({_id: ObjectId(req.params.id)}).lean().execAsync(),
         vettingNotes: VettingNotePackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
-		highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync()
+		highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync(),
+		finances: FinPackage.findOne({appID: ObjectId(req.params.id}).lean().execAsync()
     })
         .then(function(result) {
             //format birth date for display
