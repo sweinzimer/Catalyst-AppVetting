@@ -234,11 +234,22 @@ function formatElement(element) {
  */
 function formatDate(element)
 {
+	console.log("element updated");
+	console.log(element.updated);
     var Year = element.updated.getFullYear();
     //get month and day with padding since they are 0 indexed
     var Day = ( "00" + element.updated.getDate()).slice(-2);
     var Mon = ("00" + (element.updated.getMonth()+1)).slice(-2);
     element.updated = Mon + "/" + Day + "/" + Year;
+	
+	if(element.signature.client_date != "") {
+	console.log("element sig");
+	console.log(element.signature.client_date);
+	var appYear = element.signature.client_date.getFullYear();
+	var appDay = ("00" + element.signature.client_date.getDate()).slice(-2);
+	var appMon = ("00" + (element.signature.client_date.getMonth()+1)).slice(-2);
+	element.signature.client_date = appMon + "/" + appDay + "/" + Year;
+	}
     return element;
 }
 
