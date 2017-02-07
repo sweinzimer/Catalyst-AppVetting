@@ -25,12 +25,14 @@ function init() {
 		let jsonToSend = getFormJsonString($(this)); 
 		jsonToSend = JSON.parse(jsonToSend);
 		jsonToSend.user_created = new Date().getTime()
+		//TEST CODE!!!!
 		//jsonToSend.user_role = "VET";
 		jsonToSend.user_role = "SITE";
 		jsonToSend.local = {
 			email: 'passport@passport',
 			password: 'password123'
 		};
+		//end TEST CODE
 		jsonToSend = JSON.stringify(jsonToSend);
 		console.log(jsonToSend);
 		//post to database

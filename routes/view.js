@@ -311,13 +311,13 @@ function isLoggedIn(req, res, next) {
 			}
 			if(!user.isVetting()) {
 				console.log("not vetting agent");
-				res.redirect('/user/register');
+				res.redirect('/');
 			}
 		
-		//user is a vetting agent
-		//return next();
 		});
+		//user is vetting agent, move on
 		return next();
 	}
+	//user not authenticated
 	res.redirect('/user/login');
 }

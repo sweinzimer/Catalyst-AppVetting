@@ -76,6 +76,7 @@ UserPackageSchema.methods.validPassword = function(password) {
 	return this.hash == hash;
 };
 
+//determine if user has vetting privilages
 UserPackageSchema.methods.isVetting = function() {
 	if(this.user_role == "VET") {
 		return true;

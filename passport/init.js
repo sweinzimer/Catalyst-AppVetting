@@ -1,5 +1,5 @@
 var login = require('./login');
-var register = require('./register');
+
 
 var User = require('../models/userPackage');
 
@@ -10,8 +10,6 @@ module.exports = function(passport) {
 	passport.serializeUser(function(user,done) {
 		console.log("serializing user");
 		console.log(user);
-		console.log("serial");
-		//console.log(req.session.passport.user);
 		done(null, user._id);
 		
 	});
@@ -26,8 +24,6 @@ module.exports = function(passport) {
 	});
 	
 	
-	//login(passport);
-	//register(passport);
 }
 
 
