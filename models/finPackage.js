@@ -25,8 +25,8 @@ var FinPackageSchema = new Schema({
 	},
 
 	employment {
-		_req : Boolean,
-		 _rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	},
 
 	ss_ben {
@@ -35,8 +35,8 @@ var FinPackageSchema = new Schema({
 	},
 
 	pension {
-		_req : Boolean,
-		_rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	},
 
 	house_assist {
@@ -70,7 +70,7 @@ var FinPackageSchema = new Schema({
 	},
 
 	other_resources {
-		pa_desc : String,
+		desc : String,
 		req : Boolean,
 		rec : Boolean
 	},
