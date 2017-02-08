@@ -12,73 +12,74 @@ var FinPackageSchema = new Schema({
 		first : String,
 		last : String
 	},
-	
+
+	// BUG: No colons between key and value
 	food_stamps {
-		fs_req : Boolean,
-		fs_rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	},
-	
+
 	income_tax {
-		it_req : Boolean,
-		it_rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	},
-	
+
 	employment {
-		emp_req : Boolean,
-		emp _rec : Boolean
+		_req : Boolean,
+		 _rec : Boolean
 	},
-	
+
 	ss_ben {
-		ss_req : Boolean,
-		ss_rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	},
-	
+
 	pension {
-		pen_req : Boolean,
-		pen_rec : Boolean
+		_req : Boolean,
+		_rec : Boolean
 	},
-	
+
 	house_assist {
-		ha_req : Boolean,
-		ha_rec : Boolean,
+		req : Boolean,
+		rec : Boolean,
 	},
-	
+
 	check_account {
-		ca_req : Boolean,
-		ca_rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	},
-	
+
 	saving_account {
-		sa_req : Boolean,
-		sa_rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	},
-	
+
 	ret_fund {
-		rf_req : Boolean,
-		rf_rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	},
-	
+
 	invest {
-		in_req : Boolean,
-		in_rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	},
-	
+
 	physical {
-		pa_req : Boolean,
-		pa_rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	},
-	
+
 	other_resources {
 		pa_desc : String,
-		pa_req : Boolean,
-		pa_rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	},
-	
+
 	proof_own {
-		po_req : Boolean,
-		po_rec : Boolean
+		req : Boolean,
+		rec : Boolean
 	}
-	
+
 });
 
 var FinPackage = mongoose.model('FinPackage', FinPackageSchema);

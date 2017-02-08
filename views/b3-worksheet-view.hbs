@@ -672,8 +672,8 @@
 
 <div class="container col-xs-12">
 	<h3>Financial Questions</h3>
+
 	<h4>Income Documentation</h4>
-	<p>This table needs work, and is here as a placeholder...</p>
 	<table class="table table-striped">
 		<tr>
 			<td></td>
@@ -1332,5 +1332,103 @@
                 $(id).editable("option", "pk", pk);
             })
         });
-    });
+
+			let fpb = new FinacialPackageBuilder()
+			fpb.populateHtml()
+		});
+
+	/* Finacial Package Builder - Dave Martinez, Feb. 7, 2017
+	 * Builds the vetting worksheet for the appropriate number of financial packages
+	 * in the document.
+	 */
+
+	function FinacialPackageBuilder() {
+		this.htmlTargetSelector = '#finacialForm'
+		this.schema = [
+		  {
+		    sectionName: 'Income Documentation',
+		    items: [
+		      {
+		        question: 'Do you receive food stamp benefits?',
+		        subtext: 'If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a>',
+		        fieldPath: 'food_stamps',
+		        objects: ['Food Stamps documentation']
+		      },
+		      {
+		        question: 'Did you or anyone else in your home file a federal income tax form last year?',
+		        subtext: 'If yes, request copies of their main tax form(s) (1040 or 1040EZ), and proceed to X. If no proceed to next question.',
+		        fieldPath: 'income_tax',
+		        objects: ['Federal Tax Records']
+		      },
+		      {
+		        question: 'Are you or anyone else in your home currently employed?',
+		        subtext: 'If yes, request Income Documentation for all employed residents and proceed. If no, proceed to next question.',
+		        fieldPath: 'employment',
+		        objects: ['Income Documentation [e.g. Pay Stubs]']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home receive Social Security benefits? (retirement; disability; SSI)',
+		        subtext: 'If yes, request copies of their benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.',
+		        fieldPath: 'ss_ben',
+		        objects: ['Social Security-Documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home receive pension payments?',
+		        subtext: 'If yes, request copies of check stubs or deposit notices showing total benefit received. If no, proceed to next question.',
+		        fieldPath: 'pension',
+		        objects: ['Pension Benefit-Documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home receive housing assistance?',
+		        subtext: 'If yes, request copies of benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.',
+		        fieldPath: 'house_assist',
+		        objects: ['Housing assistance documentation']
+		      }
+		    ]
+		  },
+		  {
+		    sectionName: 'Asset Documentation',
+		    items: [
+		      {
+		        question: 'Do you anyone else in your home have a checking or a savings account with more than $5,000 on deposit?',
+		        subtext: 'If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.</i>',
+		        fieldPath: 'check_account',
+		        objects: ['Checking Account documentation', 'Savings Account documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home have money in a retirement account? (e.g. IRA, 401k, etc.)',
+		        subtext: 'If yes, request copies of most recent account statements. If no, proceed to the next question.</i>',
+		        fieldPath: 'saving_account',
+		        objects: ['Retirement Fund documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home have any other investment or trust accounts?',
+		        subtext: 'If yes, request copies of most recent account statements. If no, proceed to the next question.</i>',
+		        fieldPath: 'ret_fund',
+		        objects: ['Other Investments/Trusts documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home have one or more physical assets (collections, works of art, antique vehicles) worth more than a total of $5,000?',
+		        subtext: 'If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.</i>',
+		        fieldPath: 'invest',
+		        objects: ['Physical Assets-Documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home have other financial resources that my questions haven’t given you an opportunity to tell me about?',
+		        subtext: 'If yes, record below and proceed to closing. If no, proceed to closing.</i>',
+		        fieldPath: 'physical',
+		        hasDescription: true,
+		        objects: ['Other', 'Proof of Ownership (could be latest mortgage statement or insurance record)']
+		      }
+		    ]
+		  }
+		] // end schema
+
+		this.populateHtml = function() {
+			debugger
+		}
+	}
+
+
+
 </script>
