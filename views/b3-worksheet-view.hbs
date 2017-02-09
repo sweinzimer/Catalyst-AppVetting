@@ -3,6 +3,7 @@
 <!-- This part is the fixed Vetting Notes INPUT area so Vetting Agents
   -- can make notes whenever they need to without having to scroll around
   -->
+
 <nav class="navbar navbar-fixed-top">
 	 <div class="input-group">
 		<input type="text" id="note" class="form-control" placeholder="Enter Vetting Note Here...">
@@ -673,7 +674,9 @@
 <div class="container col-xs-12">
 	<h3>Financial Questions</h3>
 
-	<h4>Income Documentation</h4>
+	<div id="finacialForm"></div>
+
+	<!-- <h4>Income Documentation</h4>
 	<table class="table table-striped">
 		<tr>
 			<td></td>
@@ -1111,7 +1114,7 @@
 	      </td>
 	    </tr>
 	  </tbody>
-	</table>
+	</table> -->
 </div>
 
 
@@ -1344,6 +1347,20 @@
 
 	function FinacialPackageBuilder() {
 		this.htmlTargetSelector = '#finacialForm'
+
+		this.appID = 123
+		this.people = [
+			{
+				first: 'test', last: 'test',
+			},
+			{
+				first: 'test2', last: 'test',
+			},
+			{
+				first: 'test3', last: 'test',
+			},
+		]
+
 		this.schema = [
 		  {
 		    sectionName: 'Income Documentation',
@@ -1391,31 +1408,31 @@
 		    items: [
 		      {
 		        question: 'Do you anyone else in your home have a checking or a savings account with more than $5,000 on deposit?',
-		        subtext: 'If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.</i>',
+		        subtext: 'If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.',
 		        fieldPath: 'check_account',
 		        objects: ['Checking Account documentation', 'Savings Account documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have money in a retirement account? (e.g. IRA, 401k, etc.)',
-		        subtext: 'If yes, request copies of most recent account statements. If no, proceed to the next question.</i>',
+		        subtext: 'If yes, request copies of most recent account statements. If no, proceed to the next question.',
 		        fieldPath: 'saving_account',
 		        objects: ['Retirement Fund documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have any other investment or trust accounts?',
-		        subtext: 'If yes, request copies of most recent account statements. If no, proceed to the next question.</i>',
+		        subtext: 'If yes, request copies of most recent account statements. If no, proceed to the next question.',
 		        fieldPath: 'ret_fund',
 		        objects: ['Other Investments/Trusts documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have one or more physical assets (collections, works of art, antique vehicles) worth more than a total of $5,000?',
-		        subtext: 'If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.</i>',
+		        subtext: 'If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.',
 		        fieldPath: 'invest',
 		        objects: ['Physical Assets-Documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have other financial resources that my questions haven’t given you an opportunity to tell me about?',
-		        subtext: 'If yes, record below and proceed to closing. If no, proceed to closing.</i>',
+		        subtext: 'If yes, record below and proceed to closing. If no, proceed to closing.',
 		        fieldPath: 'physical',
 		        hasDescription: true,
 		        objects: ['Other', 'Proof of Ownership (could be latest mortgage statement or insurance record)']
@@ -1425,7 +1442,58 @@
 		] // end schema
 
 		this.populateHtml = function() {
-			debugger
+			var root = $(this.htmlTargetSelector)
+
+			this.schema.forEach((section) => {
+				let sectionNode = $('<div></div>')
+				sectionNode.append('<h4>' + section.sectionName + '</h4>')
+
+				let sectionTableNode = $('<table></table>').append('<tbody></tbody>')
+
+				section.items.forEach((item) => {
+					let itemRowNode = $('<tr></tr>')
+
+					let itemQuestionNode = $('<td></td>').appendTo(itemRowNode).attr('colspan', '5')
+					// let itemQuestionNode = $('<tr></tr>').append('<td></td>')
+					// itemQuestionNode.attr('colspan', '5')
+
+
+					itemQuestionNode.append($('<p></p>').addClass('scriptText').text('Q: ' + item.question))
+
+
+					itemQuestionNode.append($('<i></i>').text(item.subtext))
+
+
+					sectionTableNode.append(itemRowNode)
+
+					item.objects.forEach((obj) => {
+						let checkboxRowNode = $('<tr></tr>')
+						$('<td>' + obj + '</td>').appendTo(checkboxRowNode).attr('colspan', '2')
+
+						this.people.forEach((person) => {
+							let checkboxCellNode = $('<td></td>').appendTo(checkboxRowNode)
+							checkboxCellNode.append('<input type="checkbox"> Requested</input>')
+							checkboxCellNode.append('<br/>')
+							checkboxCellNode.append('<input type="checkbox"> Received</input>')
+
+							checkboxRowNode.append(checkboxCellNode)
+						})
+
+						sectionTableNode.append(checkboxRowNode)
+
+					})
+
+
+
+
+				})
+
+				sectionNode.append(sectionTableNode)
+
+				root.append(sectionNode)
+			})
+
+
 		}
 	}
 

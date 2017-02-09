@@ -14,73 +14,74 @@ var FinPackageSchema = new Schema({
 	},
 
 	// BUG: No colons between key and value
-	food_stamps {
+	food_stamps : {
 		req : Boolean,
 		rec : Boolean
 	},
 
-	income_tax {
+	income_tax : {
 		req : Boolean,
 		rec : Boolean
 	},
 
-	employment {
+	employment : {
 		req : Boolean,
 		rec : Boolean
 	},
 
-	ss_ben {
+	ss_ben : {
 		req : Boolean,
 		rec : Boolean
 	},
 
-	pension {
+	pension : {
 		req : Boolean,
 		rec : Boolean
 	},
 
-	house_assist {
+	house_assist : {
 		req : Boolean,
 		rec : Boolean,
 	},
 
-	check_account {
+	check_account : {
 		req : Boolean,
 		rec : Boolean
 	},
 
-	saving_account {
+	saving_account : {
 		req : Boolean,
 		rec : Boolean
 	},
 
-	ret_fund {
+	ret_fund : {
 		req : Boolean,
 		rec : Boolean
 	},
 
-	invest {
+	invest : {
 		req : Boolean,
 		rec : Boolean
 	},
 
-	physical {
+	physical : {
 		req : Boolean,
 		rec : Boolean
 	},
 
-	other_resources {
+	other_resources : {
 		desc : String,
 		req : Boolean,
 		rec : Boolean
 	},
 
-	proof_own {
+	proof_own : {
 		req : Boolean,
 		rec : Boolean
 	}
 
 });
+
 
 var FinPackage = mongoose.model('FinPackage', FinPackageSchema);
 module.exports = FinPackage;

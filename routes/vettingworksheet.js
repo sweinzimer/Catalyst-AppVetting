@@ -5,7 +5,7 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var highlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
-var FinPackage = ('../models/finPackage');
+var FinPackage = require('../models/finPackage');
 var api = require('../controllers/api');
 
 
@@ -22,13 +22,12 @@ var ObjectId = require('mongodb').ObjectID;
 router.get('/:id', function(req, res) {
     //Checking what's in params
     console.log("Vetting Worksheet for " + ObjectId(req.params.id));
-
     /* search by _id. */
     Promise.props({
         doc: DocumentPackage.findOne({_id: ObjectId(req.params.id)}).lean().execAsync(),
         vettingNotes: VettingNotePackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
-		highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync(),
-		finances: FinPackage.findOne({appID: ObjectId(req.params.id}).lean().execAsync()
+	      highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync(),
+	      finances: FinPackage.findOne({appID: ObjectId(req.params.id)}).lean().execAsync()
     })
         .then(function(result) {
             //format birth date for display
@@ -65,4 +64,3 @@ router.get('/:id', function(req, res) {
 });
 
 module.exports = router;
-
