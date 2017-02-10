@@ -37,7 +37,7 @@ module.exports = function(passport) {
      project - the project has been approved and the document package will be converted to a project package
  **/
 
-router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
+router.get('/', api.getDocumentByStatus, function(req, res, next) {
 
     var payload = {};
 
@@ -139,7 +139,7 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
         });
     }
 
-    res.render('vetting', payload);
+	res.render('vetting', payload);
 });
 
 /**
@@ -157,7 +157,7 @@ router.post('/addNote', api.postVettingNote, function(req, res, next) {
 /**
  * Route for deleting notes
  **/
-router.post('/delNote', isLoggedIn, api.removeVettingNote, function(req, res, next) {
+router.post('/delNote', isLoggedInPost, api.removeVettingNote, function deleteNote(req, res, next) {
     if(res.locals.status != '200'){
         res.status(500).send("Could not delete note");
     }
@@ -178,10 +178,15 @@ router.post('/updateNote', api.updateVettingNote, function(req, res, next) {
     }
 });
 
+
 /* Route to specific application by DocumentPackage Object ID */
 router.get('/:id', function(req, res, next) {
     //Checking what's in params
     console.log("Rendering application " + ObjectId(req.params.id));
+	console.log("user requested: ");
+	console.log(req.user._id);
+	
+	
 
     /* search by _id. */
     Promise.props({
@@ -213,13 +218,26 @@ router.get('/:id', function(req, res, next) {
         res.locals.layout = 'b3-layout';        // Change default from layout.hbs to b3-layout.hbs
 
         results.title = "Application View";     //Page <title> in header
-
+		//results.user = JSON.stringify(req.user._id);
+		results.user = req.user._id;
+		console.log("results");
+		console.log(results);
+		console.log("result user");
+		console.log(results.user);
         res.render('b3-view', results);
     })
     .catch(function(err) {
         console.error(err);
     });
 
+});
+
+router.use('*', function route2(req, res, next) {
+	if(res.locals.status == '406'){
+		console.log("in error function");
+        //res.status(500).send("Could not update note");
+		res.redirect('/user/login');
+    }
 });
 
 function formatElement(element) {
@@ -296,28 +314,160 @@ return router;
 
 //check to see if user is logged in and a vetting agent
 function isLoggedIn(req, res, next) {
-	if(req.isAuthenticated()) {
 		console.log("user id in vetting request");
 		console.log(req.user._id);
 		var userID = req.user._id.toString();
-		User.findOne({'_id' : ObjectId(userID)}, function(err, user) {
-			console.log("in user find");
-			console.log(user.user_role);
-			if(err)
-				{return done(err);}
-			if(!user) {
-				console.log("user does not exist");
+		console.log("userID");
+		console.log(userID);
+		var ObjectId = require('mongodb').ObjectID;
+		var authenticated = false;
+		Promise.props({
+            user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+        })
+		.then(function (results) {
+				//console.log(user);
+				console.log(results);
+				
+				if(req.isAuthenticated()) {
+                
+					if (!results) {
+						authenticated = false;
+					}
+					else {
+						console.log("in first else");
+						if(results.user.user_role == "VET") {
+							console.log("user is vet");
+							authenticated = true;
+
+						}
+						else {
+							console.log("user is not vet");
+							authenticated = false;
+						}
+					}
+                            
+				}
+				else {
+					authenticated = false;
+				}
+			console.log("authenticated")
+			console.log(authenticated);
+			if(authenticated == true) {
+				console.log("user authenticated");
+				return next();
+			}
+			else {
+				//user not authenticated
 				res.redirect('/user/login');
 			}
-			if(!user.isVetting()) {
-				console.log("not vetting agent");
-				res.redirect('/');
-			}
-		
-		});
-		//user is vetting agent, move on
-		return next();
-	}
-	//user not authenticated
-	res.redirect('/user/login');
+		})
+            
+		.catch(function(err) {
+                console.error(err);
+        })
+         .catch(next);
 }
+
+function isLoggedInPost(req, res, next) {
+		console.log("user id in vetting request");
+		console.log(req.user._id);
+		var userID = req.user._id.toString();
+		console.log("userID");
+		console.log(userID);
+		var ObjectId = require('mongodb').ObjectID;
+		var authenticated = false;
+		Promise.props({
+            user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+        })
+		.then(function (results) {
+				//console.log(user);
+				console.log(results);
+				
+				if(req.isAuthenticated()) {
+                
+					if (!results) {
+						authenticated = false;
+					}
+					else {
+						console.log("in first else");
+						if(results.user.user_role == "VET") {
+							console.log("user is vet");
+							authenticated = true;
+
+						}
+						else {
+							console.log("user is not vet");
+							authenticated = false;
+						}
+					}
+                            
+				}
+				else {
+					authenticated = false;
+				}
+			console.log("authenticated")
+			console.log(authenticated);
+			if(authenticated == true) {
+				console.log("user authenticated");
+				return next();
+			}
+			else {
+				//user not authenticated
+				res.locals.status = 406;
+				return next('route');
+			}
+		})
+            
+		.catch(function(err) {
+                console.error(err);
+        })
+         .catch(next);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+			

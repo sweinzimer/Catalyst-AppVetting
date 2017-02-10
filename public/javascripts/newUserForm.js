@@ -27,7 +27,8 @@ function init() {
 		jsonToSend.user_created = new Date().getTime()
 		//TEST CODE!!!!
 		//jsonToSend.user_role = "VET";
-		jsonToSend.user_role = "SITE";
+		//jsonToSend.user_role = "SITE";
+		jsonToSend.user_role = "ADMIN";
 		jsonToSend.local = {
 			email: 'passport@passport',
 			password: 'password123'

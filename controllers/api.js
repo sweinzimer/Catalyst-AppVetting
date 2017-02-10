@@ -40,7 +40,7 @@ var bluebird = require('bluebird');
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose to use bluebird
 Promise.promisifyAll(mongoose); // Convert all of mongoose to promises with bluebird
-
+var ObjectId = require('mongodb').ObjectId;
 module.exports = {
     /**
      * Description: retrieve all Document Packages from the database
@@ -326,20 +326,50 @@ module.exports = {
      * Returns: _id of newly created Vetting Note
      */
     postVettingNote: function(req, res, next) {
-        console.log('[ API ] postVettingNote :: Call invoked');
+        console.log('[ API ] postVettingNote :: Call invoked user id' + req.body.user);
+		var userId = req.body.user.toString();
+		Promise.props({
+            user: UserPackage.findOne({'_id' : ObjectId(userId)}).lean().execAsync()
+        })
+		.then(function (results) {
+				//console.log(user);
+				console.log(results);
+                if (!results) {
+                    console.log('[ API ] getDocumentByStatus :: Documents package found: FALSE');
+					res.send({status : 400});
+                }
+                else {
+					if(results.user.user_role == "VET") {
+						console.log('[ API ] getDocumentByStatus :: Documents package found: TRUE');
+						var note = new VettingNotePackage(req.body);
 
-        var note = new VettingNotePackage(req.body);
+						note.saveAsync(function (err, note, numAffected) {
+						if (err) {
+							console.error(err);
+						}
+						else if (numAffected == 1) {
+							console.log('[ API ] postVettingNote :: Note created with _id: ' + note._id);
+							//send note ID so it can be referenced without page refresh
+							res.send( { status : 200, noteId: note._id } );
+						}
+						});
+					}
+					else {
+						console.log("not vetting agent");
+						res.send({status : 400});
+					}
+				}
+                //res.locals.results = results;
 
-        note.saveAsync(function (err, note, numAffected) {
-            if (err) {
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+               // next();
+            })
+            .catch(function(err) {
                 console.error(err);
-            }
-            else if (numAffected == 1) {
-                console.log('[ API ] postVettingNote :: Note created with _id: ' + note._id);
-                //send note ID so it can be referenced without page refresh
-                res.send( { status : 200, noteId: note._id } );
-            }
-        });
+            })
+            .catch(next);
+        
 
     },
 
@@ -352,6 +382,7 @@ module.exports = {
      */
     removeVettingNote: function(req, res, next) {
         console.log('[ API ] removeVettingNote :: Call invoked');
+		//console.log(req.locals.status);
         Promise.props({
             note: VettingNotePackage.remove(
                 {

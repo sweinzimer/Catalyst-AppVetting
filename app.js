@@ -33,7 +33,7 @@ var test = require('./routes/test');
 var view = require('./routes/view')(passport);
 var edit = require('./routes/edit');
 var appform = require('./routes/appform');
-var vettingworksheet = require('./routes/vettingworksheet');
+var vettingworksheet = require('./routes/vettingworksheet')(passport);
 var regUser = require('./routes/regUser')(passport);
 
 

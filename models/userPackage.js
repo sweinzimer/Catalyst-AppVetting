@@ -78,12 +78,31 @@ UserPackageSchema.methods.validPassword = function(password) {
 
 //determine if user has vetting privilages
 UserPackageSchema.methods.isVetting = function() {
-	if(this.user_role == "VET") {
+	if(this.user_role == "VET"  || this.user_role == "ADMIN") {
 		return true;
 	}
 	else
 		return false;
 }
 
+//determine if user has admin privilages
+UserPackageSchema.methods.isAdmin = function() {
+	if(this.user_role == "ADMIN") {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+//determine if user has site agent privilages
+UserPackageSchema.methods.isSite = function() {
+	if(this.user_role == "SITE" || this.user_role == "ADMIN") {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 var UserPackage = mongoose.model('UserPackage', UserPackageSchema);
 module.exports = UserPackage;

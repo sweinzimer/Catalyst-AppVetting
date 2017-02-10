@@ -6,7 +6,7 @@ var DocumentPackage = require('../models/documentPackage');
 var highlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var api = require('../controllers/api');
-
+var User = require('../models/userPackage');
 
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose we are using the Bluebird promise library
@@ -16,9 +16,9 @@ Promise.promisifyAll(mongoose); // Convert mongoose API to always return promise
 
 //Need ObjectID to search by ObjectID
 var ObjectId = require('mongodb').ObjectID;
-
+module.exports = function(passport) {
 /* Route to specific application by Object ID */
-router.get('/:id', function(req, res) {
+router.get('/:id', isVettingAgent, function(req, res) {
     //Checking what's in params
     console.log("Vetting Worksheet for " + ObjectId(req.params.id));
 
@@ -62,5 +62,33 @@ router.get('/:id', function(req, res) {
 
 });
 
-module.exports = router;
+//module.exports = router;
+return router;
+}
+function isVettingAgent(req, res, next) {
+	if(req.isAuthenticated()) {
+		console.log("user id in vetting request");
+		console.log(req.user._id);
+		var userID = req.user._id.toString();
+		User.findOne({'_id' : ObjectId(userID)}, function(err, user) {
+			console.log("in user find");
+			console.log(user.user_role);
+			if(err)
+				{return done(err);}
+			if(!user) {
+				console.log("user does not exist");  //need logout/end session logic
+				res.redirect('/user/login');
+			}
+			if(!user.isVetting()) {
+				console.log("not vetting agent");
+				res.redirect('/');
+			}
+		
+		});
+		//user is vetting agent, move on
+		return next();
+	}
+	//user not authenticated
+	res.redirect('/user/login');
+}
 
