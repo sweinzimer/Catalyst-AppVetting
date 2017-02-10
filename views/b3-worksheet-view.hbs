@@ -1347,6 +1347,7 @@
 
 	function FinacialPackageBuilder() {
 		this.htmlTargetSelector = '#finacialForm'
+		this.root = false
 
 		this.appID = 123
 		this.people = [
@@ -1442,7 +1443,7 @@
 		] // end schema
 
 		this.populateHtml = function() {
-			var root = $(this.htmlTargetSelector)
+			this.root = $(this.htmlTargetSelector)
 
 			this.schema.forEach((section) => {
 				let sectionNode = $('<div></div>')
@@ -1452,49 +1453,45 @@
 
 				section.items.forEach((item) => {
 					let itemRowNode = $('<tr></tr>')
-
 					let itemQuestionNode = $('<td></td>').appendTo(itemRowNode).attr('colspan', '5')
-					// let itemQuestionNode = $('<tr></tr>').append('<td></td>')
-					// itemQuestionNode.attr('colspan', '5')
-
 
 					itemQuestionNode.append($('<p></p>').addClass('scriptText').text('Q: ' + item.question))
-
-
 					itemQuestionNode.append($('<i></i>').text(item.subtext))
-
-
 					sectionTableNode.append(itemRowNode)
 
-					item.objects.forEach((obj) => {
+					item.objects.forEach((obj, objIdx) => {
 						let checkboxRowNode = $('<tr></tr>')
 						$('<td>' + obj + '</td>').appendTo(checkboxRowNode).attr('colspan', '2')
 
-						this.people.forEach((person) => {
+						this.people.forEach((person, personIdx) => {
 							let checkboxCellNode = $('<td></td>').appendTo(checkboxRowNode)
-							checkboxCellNode.append('<input type="checkbox"> Requested</input>')
-							checkboxCellNode.append('<br/>')
-							checkboxCellNode.append('<input type="checkbox"> Received</input>')
+
+							$('<input type="checkbox"> Requested</input>').appendTo(checkboxCellNode)
+							.attr('name', objIdx.toString() + '.' + personIdx + '.' + item.fieldPath + '.' + 'req')
+							$('<br/>').appendTo(checkboxCellNode)
+							$('<input type="checkbox"> Received</input>').appendTo(checkboxCellNode)
+							.attr('name', objIdx.toString() + '.' + personIdx + '.' + item.fieldPath + '.' + 'rec')
 
 							checkboxRowNode.append(checkboxCellNode)
 						})
 
 						sectionTableNode.append(checkboxRowNode)
-
 					})
-
-
-
-
 				})
 
 				sectionNode.append(sectionTableNode)
-
-				root.append(sectionNode)
+				this.root.append(sectionNode)
 			})
+		}
+		// end this.populateHtml
+
+		this.getData = function() {
+			let data = {}
 
 
 		}
+
+
 	}
 
 
