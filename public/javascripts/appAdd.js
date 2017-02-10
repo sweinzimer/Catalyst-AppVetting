@@ -8,9 +8,12 @@ $(document).ready(init)
 function init() {
 	$('#appForm').submit(function (event) {
 		event.preventDefault();
+
+		if (validateForm() === false) { return }
+
 		var jsonToSend = getApplicationFormJSON();  //stringified in that function
 		console.log(jsonToSend);
-		
+
 		//POST the data to the database
 		var posting = $.ajax({
 			type : 'POST',
@@ -18,8 +21,8 @@ function init() {
 			dataType: 'json',
 			contentType: 'application/json; charset=UTF-8',
 			data: jsonToSend
-		}); 
-		
+		});
+
 		//upon return, check for 200, then redirect so success page
 		posting.done(function (xhr) {
 			if(xhr.status == 200) {
@@ -30,30 +33,30 @@ function init() {
 			}
 			// If code is not 200 forward below to .fail()
 		});
-		
-		posting.fail(function (data) 
+
+		posting.fail(function (data)
 		{
 			console.log("Whoops, something went wrong");
 			// The save failed, just do nothing and leave the form without losing their typed data
-		}); 
+		});
 	});
 
 	//THIS is the function that calls all the other functions that piece together (extend)
 	//all of the JSON in proper API format.
 	function getApplicationFormJSON() {
 		var data = {};
-		
+
 		$.extend(data, getAdvocateData());   //these should be self-explanetory
 		$.extend(data, getApplicationData());
 		$.extend(data, getFinanceData());
 		$.extend(data, getPropertyData());
 		$.extend(data, getRecruitmentData());
-		
+
 		return JSON.stringify(data);
 	}
 
 /// FIRST, we need to make some Helper Functions in order to
-/// grab some specific items and turn them into 
+/// grab some specific items and turn them into
 /// data variables we can use in the above function calls.
 
 	//this function figures out and returns the Language
@@ -81,24 +84,24 @@ function init() {
 	}
 
 ///Okay, so NOW we can call the rest of the functions listed in getApplicationFormJSON().
-	
+
 	//This function handles the data that goes into "advocate:"
 	//section of the documentPackage.js
 	function getAdvocateData() {
 		var data = {};
-		
+
 		//start by setting variables to false
 		var ind_bool = false;
 		var npo_bool = false;
 		var gov_bool = false;
 		var advocate_bool = false;
-		
+
 		//check for different advocate types, set proper variables to true
 		if (getVal('input[name="advocate"]:checked') == "adv_npo") {
 			npo_bool = true;
 			advocate_bool = true;
 		}
-			
+
 		if (getVal('input[name="advocate"]:checked') == "adv_gov") {
 			gov_bool = true;
 			advocate_bool = true;
@@ -107,7 +110,7 @@ function init() {
 			ind_bool = true;
 			advocate_bool = true;
 		}
-		
+
 		// create the JSON data object
 		data.advocate = {
 			is_advocate: advocate_bool,
@@ -122,11 +125,11 @@ function init() {
 		return data;
 	}
 
-	
+
 	//This function handles MOST of the data that goes into "application:"
-	//section of the documentPackage.js (as well as status, which will 
+	//section of the documentPackage.js (as well as status, which will
 	//send "new" from a hidden field)
-	
+
 	function getApplicationData() {
 		var data = {};
 
@@ -292,20 +295,69 @@ function init() {
 		return data;
 	}
 
-	
+
 	//This is a helper function so you can getVal on an input from the form
 	function getVal(selector) {
 		return $(selector).val();
+	}
+
+	// validations -- object containing validation tests
+	let validations = [
+		{
+			fields: [
+				'firstName', 'lastName', 'dob', 'driversLicense', 'mStatus', 'pPhone',
+				'add1', 'city', 'state', 'zip', 'eContactName', 'ecRelationship',
+				'ecPhone', 'monthlyMortgage', 'annualIncome', 'timePropertyOwned',
+				'yearPropertyBuilt', 'repairsNeeded', 'signature'
+			],
+			isValid: (node) => { return node.val().length > 0 }
+		},
+		{
+			fields: [
+				'mStatus', 'military', 'language', 'contribute', 'relativeContribute',
+				'otherHelp', 'propertyType', 'laborHelp', 'othersLaborHelp', 'fbo_help',
+			],
+			isValid: (node) => {
+				// At least one is selected...
+				let oneSelected = false
+				node.each(function(idx) {
+					if (this.checked === true) { oneSelected = true }
+				})
+
+				return oneSelected
+			}
+		}
+	]
+
+	// validateForm -- Runs through validations and returns true if the form
+	// is valid, false otherwise.
+	function validateForm() {
+		let result = true
+
+		$('.hasError').removeClass('hasError')
+
+		validations.forEach((rule) => {
+			rule.fields.forEach((fieldName) => {
+				let inputField = $('[name=' + fieldName + ']')
+				let fieldResult = rule.isValid(inputField)
+
+				if (fieldResult === false) {
+					result = false
+					$(inputField.parent()).addClass('hasError')
+				}
+			})
+		})
+
+		return result
 	}
 }
 
 
 
 
-//DATA EXTRACTION WORK PARTS	
+//DATA EXTRACTION WORK PARTS
 // for most inputs... (change name to id when necessary)
 //: getVal('input[name=""]'),
 
 //for text areas
 //jQuery("textarea#otherCircumstances").val()
-
