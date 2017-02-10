@@ -1349,8 +1349,10 @@
 	function FinacialPackageBuilder() {
 		this.htmlTargetSelector = '#finacialForm'
 		this.root = false
-
+		this.applicationId = '{{ doc._id }}'
 		this.appID = 123
+		this.docStatus = '{{doc.status}}'
+
 		this.people = [
 			{
 				first: 'test', last: 'test',
@@ -1444,12 +1446,26 @@
 		] // end schema
 
 		this.handleChange = function(e) {
+			if (this.docStatus === 'new') {
+				// Changes document status to 'awaiting documents'
+				xhr(
+					{ name: 'status', value: 'documents' },
+					'POST',
+					'/edit/' + this.applicationId,
+					(err) => {
+						if (!err) { $('#status').editable('setValue', 'documents') }
+					}
+				)
+			}
+
 			let changedValue = changeObjectValueByPath({}, e.target.name, e.target.checked)
 			xhr(changedValue, 'POST', '/finacialForm', (err) => {
-				debugger
+
 			})
 
-		}
+		}.bind(this)
+
+
 
 		this.populateHtml = function() {
 			this.root = $(this.htmlTargetSelector)
@@ -1558,7 +1574,7 @@
 
 		//check for error
 		posting.done(function (xhr) {
-			if(xhr.status == 200) {
+			if(xhr.status === 'success' || xhr.status === 200) {
 				next(null)
 			}
 			else {
