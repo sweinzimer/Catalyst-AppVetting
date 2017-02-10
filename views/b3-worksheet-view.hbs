@@ -1338,6 +1338,7 @@
 
 			let fpb = new FinacialPackageBuilder()
 			fpb.populateHtml()
+			fpb.getData()
 		});
 
 	/* Finacial Package Builder - Dave Martinez, Feb. 7, 2017
@@ -1442,6 +1443,14 @@
 		  }
 		] // end schema
 
+		this.handleChange = function(e) {
+			let changedValue = changeObjectValueByPath({}, e.target.name, e.target.checked)
+			xhr(changedValue, 'POST', '/finacialForm', (err) => {
+				debugger
+			})
+
+		}
+
 		this.populateHtml = function() {
 			this.root = $(this.htmlTargetSelector)
 
@@ -1468,9 +1477,13 @@
 
 							$('<input type="checkbox"> Requested</input>').appendTo(checkboxCellNode)
 							.attr('name', objIdx.toString() + '.' + personIdx + '.' + item.fieldPath + '.' + 'req')
+							.on('change', this.handleChange)
+
 							$('<br/>').appendTo(checkboxCellNode)
+
 							$('<input type="checkbox"> Received</input>').appendTo(checkboxCellNode)
 							.attr('name', objIdx.toString() + '.' + personIdx + '.' + item.fieldPath + '.' + 'rec')
+							.on('change', this.handleChange)
 
 							checkboxRowNode.append(checkboxCellNode)
 						})
@@ -1486,14 +1499,76 @@
 		// end this.populateHtml
 
 		this.getData = function() {
-			let data = {}
-
-
+			return getFormData(this.root)
 		}
+
+
 
 
 	}
 
+	function getFormData(form) {
+		let formData = {}
+		let inputFields = $('input', form)
+		inputFields.each(function(idx) {
+			let objectPath = this.name
+			let objectPieces = objectPath.split('.')
+			let currentObjectPlace = formData
+			objectPieces.forEach((p, i) => {
+				if (i < (objectPieces.length-1)) {
+					if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
+					currentObjectPlace = currentObjectPlace[p]
+				} else {
+					if (this.getAttribute('type') == 'checkbox') {
+						currentObjectPlace[p] = this.checked
+					} else {
+						currentObjectPlace[p] = this.value
+					}
+				}
+			})
+		})
 
+		return formData
+	}
+
+	function changeObjectValueByPath(obj, path, value) {
+		let objectPieces = path.split('.')
+		let currentObjectPlace = obj
+		objectPieces.forEach((p, i) => {
+			if (i < (objectPieces.length-1)) {
+				if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
+				currentObjectPlace = currentObjectPlace[p]
+			} else {
+				currentObjectPlace[p] = value
+			}
+		})
+
+		return obj
+	}
+
+	function xhr(data, method, url, next) {
+		//post to database
+		var posting = $.ajax({
+			type : method,
+			url : url,
+			dataType : 'json',
+			contentType : 'application/json; charset=UTF-8',
+			data : JSON.stringify(data)
+		});
+
+		//check for error
+		posting.done(function (xhr) {
+			if(xhr.status == 200) {
+				next(null)
+			}
+			else {
+				next(new Error('Could not complete xhr'))
+			}
+		});
+
+		posting.fail(function (res) {
+			next(new Error('Could not complete xhr'))
+		});
+	}
 
 </script>
