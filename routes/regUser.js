@@ -18,4 +18,15 @@ router.get('/userSuccess', function(req, res) {
 	res.render('userSuccess');
 });
 
+/***** Temp login route created by Dave, 1/29/17... delete at will *****/
+router.route('/login')
+	.get(function(req, res) {
+		res.render('userloginform');
+	})
+	.post(api.postUser, function(req, res) {
+		console.log("In post request");
+		res.json(res.locals);
+	})
+
+
 module.exports = router;
