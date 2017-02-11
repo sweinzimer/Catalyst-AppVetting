@@ -235,8 +235,8 @@ router.get('/:id', function(req, res, next) {
 router.use('*', function route2(req, res, next) {
 	if(res.locals.status == '406'){
 		console.log("in error function");
-        //res.status(500).send("Could not update note");
-		res.redirect('/user/login');
+        res.status(406).send("Could not update note");
+		res.render('/user/login');
     }
 });
 
@@ -315,115 +315,102 @@ return router;
 //check to see if user is logged in and a vetting agent
 function isLoggedIn(req, res, next) {
 		console.log("user id in vetting request");
-		console.log(req.user._id);
-		var userID = req.user._id.toString();
-		console.log("userID");
-		console.log(userID);
-		var ObjectId = require('mongodb').ObjectID;
-		var authenticated = false;
-		Promise.props({
-            user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
-        })
-		.then(function (results) {
+		if(req.isAuthenticated()) {
+			console.log(req.user._id);
+			var userID = req.user._id.toString();
+		
+			console.log("userID");
+			console.log(userID);
+			var ObjectId = require('mongodb').ObjectID;
+			//var authenticated = false;
+			Promise.props({
+				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+			})
+			.then(function (results) {
 				//console.log(user);
 				console.log(results);
-				
-				if(req.isAuthenticated()) {
+					
                 
 					if (!results) {
-						authenticated = false;
+						res.redirect('/user/login');
 					}
 					else {
 						console.log("in first else");
 						if(results.user.user_role == "VET") {
 							console.log("user is vet");
-							authenticated = true;
+							return next();
 
 						}
 						else {
 							console.log("user is not vet");
-							authenticated = false;
+							res.redirect('/user/login');
 						}
 					}
                             
-				}
-				else {
-					authenticated = false;
-				}
-			console.log("authenticated")
-			console.log(authenticated);
-			if(authenticated == true) {
-				console.log("user authenticated");
-				return next();
-			}
-			else {
-				//user not authenticated
-				res.redirect('/user/login');
-			}
-		})
+				
+				
+			})
             
 		.catch(function(err) {
                 console.error(err);
         })
          .catch(next);
+		}
+		else {
+			console.log("no user id");
+			res.redirect('/user/login');
+		}
 }
 
 function isLoggedInPost(req, res, next) {
 		console.log("user id in vetting request");
-		console.log(req.user._id);
-		var userID = req.user._id.toString();
-		console.log("userID");
-		console.log(userID);
-		var ObjectId = require('mongodb').ObjectID;
-		var authenticated = false;
-		Promise.props({
-            user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
-        })
-		.then(function (results) {
+		if(req.isAuthenticated()) {
+			console.log(req.user._id);
+			var userID = req.user._id.toString();
+		
+			console.log("userID");
+			console.log(userID);
+			var ObjectId = require('mongodb').ObjectID;
+			//var authenticated = false;
+			Promise.props({
+				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+			})
+			.then(function (results) {
 				//console.log(user);
 				console.log(results);
-				
-				if(req.isAuthenticated()) {
+					
                 
 					if (!results) {
-						authenticated = false;
+						return next('route');
 					}
 					else {
 						console.log("in first else");
 						if(results.user.user_role == "VET") {
 							console.log("user is vet");
-							authenticated = true;
+							return next();
 
 						}
 						else {
+							res.locals.status = 406;
 							console.log("user is not vet");
-							authenticated = false;
+							return next('route');
 						}
 					}
                             
-				}
-				else {
-					authenticated = false;
-				}
-			console.log("authenticated")
-			console.log(authenticated);
-			if(authenticated == true) {
-				console.log("user authenticated");
-				return next();
-			}
-			else {
-				//user not authenticated
-				res.locals.status = 406;
-				return next('route');
-			}
-		})
+				
+				
+			})
             
 		.catch(function(err) {
                 console.error(err);
         })
          .catch(next);
+		}
+		else {
+			console.log("no user id");
+			return next('route');
+		}
 }
-
 
 
 
