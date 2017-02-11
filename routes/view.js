@@ -6,6 +6,7 @@ var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var api = require('../controllers/api');
+var User = require('../models/userPackage');
 
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose we are using the Bluebird promise library
@@ -16,7 +17,7 @@ Promise.promisifyAll(mongoose); // Convert mongoose API to always return promise
 //Need ObjectID to search by ObjectID
 var ObjectId = require('mongodb').ObjectID;
 
-
+module.exports = function(passport) {
 /**
  * This Router handles GET Requests for viewing the vetting home page and specific application pages
  *
@@ -36,7 +37,7 @@ var ObjectId = require('mongodb').ObjectID;
      project - the project has been approved and the document package will be converted to a project package
  **/
 
-router.get('/', api.getDocumentByStatus, function(req, res, next) {
+router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
 
     var payload = {};
 
@@ -138,13 +139,13 @@ router.get('/', api.getDocumentByStatus, function(req, res, next) {
         });
     }
 
-    res.render('vetting', payload);
+	res.render('vetting', payload);
 });
 
 /**
  * Route for adding notes
 **/
-router.post('/addNote', api.postVettingNote, function(req, res, next) {
+router.post('/addNote', isLoggedInPost, api.postVettingNote, function(req, res, next) {
     if(res.locals.status != '200'){
         res.status(500).send("Could not add note");
     }
@@ -156,7 +157,7 @@ router.post('/addNote', api.postVettingNote, function(req, res, next) {
 /**
  * Route for deleting notes
  **/
-router.post('/delNote', api.removeVettingNote, function(req, res, next) {
+router.post('/delNote', isLoggedInPost, api.removeVettingNote, function deleteNote(req, res, next) {
     if(res.locals.status != '200'){
         res.status(500).send("Could not delete note");
     }
@@ -168,7 +169,7 @@ router.post('/delNote', api.removeVettingNote, function(req, res, next) {
 /**
  * Route for updating notes
  **/
-router.post('/updateNote', api.updateVettingNote, function(req, res, next) {
+router.post('/updateNote', isLoggedInPost, api.updateVettingNote, function(req, res, next) {
     if(res.locals.status != '200'){
         res.status(500).send("Could not update note");
     }
@@ -177,10 +178,15 @@ router.post('/updateNote', api.updateVettingNote, function(req, res, next) {
     }
 });
 
+
 /* Route to specific application by DocumentPackage Object ID */
-router.get('/:id', function(req, res, next) {
+router.get('/:id', isLoggedIn, function(req, res, next) {
     //Checking what's in params
     console.log("Rendering application " + ObjectId(req.params.id));
+	console.log("user requested: ");
+	console.log(req.user._id);
+	
+	
 
     /* search by _id. */
     Promise.props({
@@ -212,13 +218,26 @@ router.get('/:id', function(req, res, next) {
         res.locals.layout = 'b3-layout';        // Change default from layout.hbs to b3-layout.hbs
 
         results.title = "Application View";     //Page <title> in header
-
+		//results.user = JSON.stringify(req.user._id);
+		results.user = req.user._id;
+		console.log("results");
+		console.log(results);
+		console.log("result user");
+		console.log(results.user);
         res.render('b3-view', results);
     })
     .catch(function(err) {
         console.error(err);
     });
 
+});
+
+router.use('*', function route2(req, res, next) {
+	if(res.locals.status == '406'){
+		console.log("in error function");
+        res.status(406).send("Could not update note");
+		res.render('/user/login');
+    }
 });
 
 function formatElement(element) {
@@ -300,5 +319,153 @@ function formatStatus(element) {
     return element;
 }
 
-module.exports = router;
+//module.exports = router;
+return router;
+}
 
+//check to see if user is logged in and a vetting agent
+function isLoggedIn(req, res, next) {
+		console.log("user id in vetting request");
+		if(req.isAuthenticated()) {
+			console.log(req.user._id);
+			var userID = req.user._id.toString();
+		
+			console.log("userID");
+			console.log(userID);
+			var ObjectId = require('mongodb').ObjectID;
+			//var authenticated = false;
+			Promise.props({
+				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+			})
+			.then(function (results) {
+				//console.log(user);
+				console.log(results);
+					
+                
+					if (!results) {
+						res.redirect('/user/login');
+					}
+					else {
+						console.log("in first else");
+						if(results.user.user_role == "VET") {
+							console.log("user is vet");
+							return next();
+
+						}
+						else {
+							console.log("user is not vet");
+							res.redirect('/user/login');
+						}
+					}
+                            
+				
+				
+			})
+            
+		.catch(function(err) {
+                console.error(err);
+        })
+         .catch(next);
+		}
+		else {
+			console.log("no user id");
+			res.redirect('/user/login');
+		}
+}
+
+function isLoggedInPost(req, res, next) {
+		console.log("user id in vetting request");
+		if(req.isAuthenticated()) {
+			console.log(req.user._id);
+			var userID = req.user._id.toString();
+		
+			console.log("userID");
+			console.log(userID);
+			var ObjectId = require('mongodb').ObjectID;
+			//var authenticated = false;
+			Promise.props({
+				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+			})
+			.then(function (results) {
+				//console.log(user);
+				console.log(results);
+					
+                
+					if (!results) {
+						return next('route');
+					}
+					else {
+						console.log("in first else");
+						if(results.user.user_role == "VET") {
+							console.log("user is vet");
+							return next();
+
+						}
+						else {
+							res.locals.status = 406;
+							console.log("user is not vet");
+							return next('route');
+						}
+					}
+                            
+				
+				
+			})
+            
+		.catch(function(err) {
+                console.error(err);
+        })
+         .catch(next);
+		}
+		else {
+			console.log("no user id");
+			return next('route');
+		}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+			

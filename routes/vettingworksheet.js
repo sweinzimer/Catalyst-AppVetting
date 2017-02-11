@@ -7,7 +7,7 @@ var highlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var WorkItemPackage = require('../models/workItemPackage');
 var api = require('../controllers/api');
-
+var User = require('../models/userPackage');
 
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose we are using the Bluebird promise library
@@ -17,9 +17,9 @@ Promise.promisifyAll(mongoose); // Convert mongoose API to always return promise
 
 //Need ObjectID to search by ObjectID
 var ObjectId = require('mongodb').ObjectID;
-
+module.exports = function(passport) {
 /* Route to specific application by Object ID */
-router.get('/:id', function(req, res) {
+router.get('/:id', isLoggedIn, function(req, res) {
     //Checking what's in params
     console.log("Vetting Worksheet for " + ObjectId(req.params.id));
 
@@ -79,6 +79,7 @@ router.get('/:id', function(req, res) {
         });
 });
 
+
 router.route('/servicearea')
     .post(api.updateService, function(req, res) {
 	if(res.locals.status != '200'){
@@ -119,7 +120,56 @@ router.route('/updateitem')
         res.json(res.locals);
     }
 	});		
-	
 
-module.exports = router;
+return router;
+}
+function isLoggedIn(req, res, next) {
+		console.log("user id in vetting request");
+		if(req.isAuthenticated()) {
+			console.log(req.user._id);
+			var userID = req.user._id.toString();
+		
+			console.log("userID");
+			console.log(userID);
+			var ObjectId = require('mongodb').ObjectID;
+			//var authenticated = false;
+			Promise.props({
+				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+			})
+			.then(function (results) {
+				//console.log(user);
+				console.log(results);
+					
+                
+					if (!results) {
+						res.redirect('/user/login');
+					}
+					else {
+						console.log("in first else");
+						if(results.user.user_role == "VET") {
+							console.log("user is vet");
+							return next();
+
+						}
+						else {
+							console.log("user is not vet");
+							res.redirect('/user/login');
+						}
+					}
+                            
+				
+				
+			})
+            
+		.catch(function(err) {
+                console.error(err);
+        })
+         .catch(next);
+		}
+		else {
+			console.log("no user id");
+			res.redirect('/user/login');
+		}
+}
+
 

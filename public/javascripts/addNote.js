@@ -23,12 +23,16 @@ function init() {
  */
 function addNote(e) {
     e.preventDefault(); //prevent page refresh/POST to this page
-
+    console.log("user ID in addNote");
+	//payload.user = $('#userId').val();
+	
     //don't bother doing anything if text field was empty
     if($('#note').val() != "") {
 
         //otherwise, prepare payload with the application ID and the note contents
         var payload = {};
+		payload.user = $('#userId').val();
+		console.log(payload.user);
         payload.description = $('#note').val();
         payload.applicationId = $('#appId').val();
 

@@ -36,11 +36,12 @@ var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var WorkItemPackage = require('../models/workItemPackage');
+var UserPackage = require('../models/userPackage');
 var bluebird = require('bluebird');
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose to use bluebird
 Promise.promisifyAll(mongoose); // Convert all of mongoose to promises with bluebird
-
+var ObjectId = require('mongodb').ObjectId;
 module.exports = {
     /**
      * Description: retrieve all Document Packages from the database
@@ -170,7 +171,7 @@ module.exports = {
     postDocument: function(req, res, next) {
         // Data will be submitted using req.body
         console.log('[ API ] postDocument :: Call invoked');
-
+		console.log(req.body);
         // For debugging
         var debug = 0;
         if (debug == 1) {
@@ -287,6 +288,36 @@ module.exports = {
             })
             .catch(next);
     },
+	
+	postUser: function(req, res, next) {
+        // Data will be submitted using req.body
+        console.log('[ API ] postUser :: Call invoked');
+		console.log(req.body);
+        // For debugging
+        var debug = 0;
+        if (debug == 1) {
+            console.log(req.body);
+        }
+
+        //create new mongoose object
+        var doc = new UserPackage(req.body);
+		doc.setPassword(req.body.local.password);
+
+        
+
+        
+        // Save the user package to the database with a callback to handle flow control
+        doc.saveAsync(function (err, doc, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+                console.log('[ API ] postUser :: User Created with ID: ' + doc._id);
+				res.send( { status : 200 } );
+            }
+        });
+
+    },
 
 	updateService: function(req, res, next) {
         // When executed this will apply updates to a doc and return the MODIFIED doc
@@ -366,21 +397,20 @@ module.exports = {
      * Returns: _id of newly created Vetting Note
      */
     postVettingNote: function(req, res, next) {
-        console.log('[ API ] postVettingNote :: Call invoked');
+        console.log('[ API ] postVettingNote :: call invoked');
+				
+		var note = new VettingNotePackage(req.body);
 
-        var note = new VettingNotePackage(req.body);
-
-        note.saveAsync(function (err, note, numAffected) {
-            if (err) {
-                console.error(err);
-            }
-            else if (numAffected == 1) {
-                console.log('[ API ] postVettingNote :: Note created with _id: ' + note._id);
-                //send note ID so it can be referenced without page refresh
-                res.send( { status : 200, noteId: note._id } );
-            }
-        });
-
+		note.saveAsync(function (err, note, numAffected) {
+			if (err) {
+				console.error(err);
+			}
+			else if (numAffected == 1) {
+				console.log('[ API ] postVettingNote :: Note created with _id: ' + note._id);
+				//send note ID so it can be referenced without page refresh
+				res.send( { status : 200, noteId: note._id } );
+			}
+		});
     },
 	
 	//post new work item
@@ -412,6 +442,7 @@ module.exports = {
      */
     removeVettingNote: function(req, res, next) {
         console.log('[ API ] removeVettingNote :: Call invoked');
+		//console.log(req.locals.status);
         Promise.props({
             note: VettingNotePackage.remove(
                 {
