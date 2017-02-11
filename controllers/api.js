@@ -398,19 +398,46 @@ module.exports = {
      */
     postVettingNote: function(req, res, next) {
         console.log('[ API ] postVettingNote :: call invoked');
-				
-		var note = new VettingNotePackage(req.body);
+		console.log(req.body);
+		var userID = req.body.user.toString();
+		Promise.props({
+            user: UserPackage.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+        })
+            .then(function(results) {
+				console.log(results);
+                if (!results) {
+                    console.log('[ API ] postVettingNote :: User package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] postVettingNote :: User package found: TRUE');
+					var note = new VettingNotePackage(req.body);
+					var firstName = results.user.contact_info.user_name.user_first;
+					console.log('first name');
+					console.log(firstName);
+					note.vetAgent = results.user.contact_info.user_name.user_first + " " + results.user.contact_info.user_name.user_last;
+					console.log(note.vetAgent);
 
-		note.saveAsync(function (err, note, numAffected) {
-			if (err) {
-				console.error(err);
-			}
-			else if (numAffected == 1) {
-				console.log('[ API ] postVettingNote :: Note created with _id: ' + note._id);
-				//send note ID so it can be referenced without page refresh
-				res.send( { status : 200, noteId: note._id } );
-			}
-		});
+					note.saveAsync(function (err, note, numAffected) {
+						if (err) {
+							console.error(err);
+						}
+						else if (numAffected == 1) {
+							console.log('[ API ] postVettingNote :: Note created with _id: ' + note._id);
+							//send note ID so it can be referenced without page refresh
+							res.send( { status : 200, noteId: note._id, vetAgent: note.vetAgent } );
+						}		
+					})
+				
+
+                
+				}
+			})
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+				
+		
     },
 	
 	//post new work item

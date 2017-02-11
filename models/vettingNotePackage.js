@@ -27,6 +27,7 @@ ObjectId = Schema.ObjectId;
 var VettingNote = new Schema({
     date:   { type: Date, default: Date.now},
     description: String,
+	vetAgent: String,
     applicationId: {type: ObjectId, ref: 'DocumentPackage'}
 });
 

@@ -20,7 +20,8 @@
                         <tr>
                             <th class="col-sm-2">Date</th>
                             <th class="col-sm-6">Note</th>
-                            <th class="col-sm-6"></th>
+                            <th class="col-sm-3">Submitted By</th>
+							<th class="col-sm-3"></th>
                         </tr>
                         </thead>
                         <tbody id="notes-body">
@@ -29,7 +30,8 @@
                                 <tr>
                                     <td>{{this.date}}</td>
                                     <td class="note-descrip">{{this.description}}</td>
-                                    <td>
+									<td class="note-vetAgent">{{this.vetAgent}}</td>
+									<td>
                                         <form>
                                             <!--Hidden field contains the ID for the note in this row-->
 											

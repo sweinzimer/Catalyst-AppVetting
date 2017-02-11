@@ -58,12 +58,14 @@ function addNote(e) {
                 var date = '<td>' + getDate() + '</td>';
                 //new column for the new note
                 var newNote = '<td>' + $('#note').val() + '</td>';
-                //need to get the new note ID so it is available for immediate update/deletion
+				//new column for vetting agent
+				var newVet = '<td>' + xhr.vetAgent + '</td>';
+				//need to get the new note ID so it is available for immediate update/deletion
                 var hiddenNoteId = '<input type="hidden" value="' + xhr.noteId + '" name="noteId" />';
                 //build delete button
                 var deleteButton = '<button type="submit" class="delete-button btn btn-danger">Delete Note</button>';
                 //assemble all parts to build the new note row
-                var newRow = '<tr class="success">' + date + newNote + '<td><form>' + hiddenNoteId + deleteButton + '</form></td></tr>';
+                var newRow = '<tr class="success">' + date + newNote + newVet + '<td><form>' + hiddenNoteId + deleteButton + '</form></td></tr>';
                 //add new row before the very last row in the table (input form row)
                 $('#notes-body tr:last').before(newRow);
                 //clear text area to prepare for new note

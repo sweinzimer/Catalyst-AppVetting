@@ -28,7 +28,7 @@ var WorkItemSchema = new Schema({
     description: String,
 	vettingComments: String,
 	cost: String,
-    applicationId: { type: ObjectId }
+	applicationId: { type: ObjectId }
 });
 
 var WorkItemPackage = mongoose.model('WorkItemPackage', WorkItemSchema);
