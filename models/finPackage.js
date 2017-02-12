@@ -12,74 +12,76 @@ var FinPackageSchema = new Schema({
 		first : String,
 		last : String
 	},
+
 	
-	food_stamps {
-		fs_req : Boolean,
-		fs_rec : Boolean
+	food_stamps : {
+		req : Boolean,
+		rec : Boolean
 	},
-	
-	income_tax {
-		it_req : Boolean,
-		it_rec : Boolean
+
+	income_tax : {
+		req : Boolean,
+		rec : Boolean
 	},
-	
-	employment {
-		emp_req : Boolean,
-		emp _rec : Boolean
+
+	employment : {
+		req : Boolean,
+		rec : Boolean
 	},
-	
-	ss_ben {
-		ss_req : Boolean,
-		ss_rec : Boolean
+
+	ss_ben : {
+		req : Boolean,
+		rec : Boolean
 	},
-	
-	pension {
-		pen_req : Boolean,
-		pen_rec : Boolean
+
+	pension : {
+		req : Boolean,
+		rec : Boolean
 	},
-	
-	house_assist {
-		ha_req : Boolean,
-		ha_rec : Boolean,
+
+	house_assist : {
+		req : Boolean,
+		rec : Boolean,
 	},
-	
-	check_account {
-		ca_req : Boolean,
-		ca_rec : Boolean
+
+	check_account : {
+		req : Boolean,
+		rec : Boolean
 	},
-	
-	saving_account {
-		sa_req : Boolean,
-		sa_rec : Boolean
+
+	saving_account : {
+		req : Boolean,
+		rec : Boolean
 	},
-	
-	ret_fund {
-		rf_req : Boolean,
-		rf_rec : Boolean
+
+	ret_fund : {
+		req : Boolean,
+		rec : Boolean
 	},
-	
-	invest {
-		in_req : Boolean,
-		in_rec : Boolean
+
+	invest : {
+		req : Boolean,
+		rec : Boolean
 	},
-	
-	physical {
-		pa_req : Boolean,
-		pa_rec : Boolean
+
+	physical : {
+		req : Boolean,
+		rec : Boolean
 	},
-	
-	other_resources {
-		pa_desc : String,
-		pa_req : Boolean,
-		pa_rec : Boolean
+
+	other_resources : {
+		desc : String,
+		req : Boolean,
+		rec : Boolean
 	},
-	
-	proof_own {
-		po_req : Boolean,
-		po_rec : Boolean
+
+	proof_own : {
+		req : Boolean,
+		rec : Boolean
 	}
-	
+
 });
+
 
 var FinPackage = mongoose.model('FinPackage', FinPackageSchema);
 module.exports = FinPackage;

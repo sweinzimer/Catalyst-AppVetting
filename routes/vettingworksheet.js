@@ -5,7 +5,7 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var highlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
-var FinPackage = ('../models/finPackage');
+var FinPackage = require('../models/finPackage');
 var api = require('../controllers/api');
 
 
@@ -22,13 +22,12 @@ var ObjectId = require('mongodb').ObjectID;
 router.get('/:id', function(req, res) {
     //Checking what's in params
     console.log("Vetting Worksheet for " + ObjectId(req.params.id));
-
     /* search by _id. */
     Promise.props({
         doc: DocumentPackage.findOne({_id: ObjectId(req.params.id)}).lean().execAsync(),
         vettingNotes: VettingNotePackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
-		highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync(),
-		finances: FinPackage.findOne({appID: ObjectId(req.params.id}).lean().execAsync()
+	      highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync(),
+	      finances: FinPackage.findOne({appID: ObjectId(req.params.id)}).lean().execAsync()
     })
         .then(function(result) {
             //format birth date for display
@@ -52,6 +51,8 @@ router.get('/:id', function(req, res) {
                     result.vettingNotes[index].date = Mon + "/" + Day + "/" + Year;
                 });
             }
+			
+			console.log(result.finances);
             res.locals.layout = 'b3-layout';
 
             result.title = "Vetting Worksheet";
@@ -64,5 +65,14 @@ router.get('/:id', function(req, res) {
 
 });
 
-module.exports = router;
+router.route('/finacialForm')
+	.post(api.updateFinance, function(req, res) {
+		if(res.locals.status != 200) {
+			res.status(500).send("could not update field");
+		}
+		else {
+			res.json(res.locals);
+		}
+	});
 
+module.exports = router;

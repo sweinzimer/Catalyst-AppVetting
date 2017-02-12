@@ -35,6 +35,7 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
+var FinancialPackage = require('../models/finPackage');
 var bluebird = require('bluebird');
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose to use bluebird
@@ -187,11 +188,16 @@ module.exports = {
 
         // Create a corresponding highlight package
         var highlight = new HighlightPackage();
-
+		var finance = new FinancialPackage();
         // Make each reference the others ObectId
         // TODO: Add support for work items and site assessment
         doc.highlightPackage = highlight._id;
         highlight.documentPackage = doc._id;
+		finance.appID = doc._id;
+		finance.name.first = req.body.application.name.first;
+		console.log("fin first");
+		console.log(finance.name.first);
+		finance.name.last = req.body.application.name.last;
 
         // Save the document package to the database with a callback to handle flow control
         doc.saveAsync(function (err, doc, numAffected) {
@@ -211,9 +217,20 @@ module.exports = {
             else if (numAffected == 1) {
                 console.log('[ API ] postDocument :: highlightPackage created with _id: ' + highlight._id);
                 console.log('[ API ] postDocument :: highlightPackage references document package _id: ' + highlight.reference);
+            }
+        });
+		
+		finance.saveAsync(function (err, highlight, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+                console.log('[ API ] postDocument :: finPackage created with _id: ' + finance._id);
+                console.log('[ API ] postDocument :: highlightPackage references document package _id: ' + finance.appID);
                 res.send( { status : 200 } );
             }
         });
+		
     },
 
     /**
@@ -410,6 +427,76 @@ module.exports = {
             .catch(next);
     },
 
+	//update financial package
+	updateFinance: function(req, res, next) {
+        // When executed this will apply updates to a doc and return the MODIFIED doc
+
+        // Log the _id, name, and value that are passed to the function
+        console.log('[ API ] updateFinance :: Call invoked with _id: ');
+        console.log(req.body);
+		
+
+        // Build the name:value pairs to be updated
+        
+        var updates = {};
+		res.locals.status = '200';
+		next();
+		/*updates.GETNAME = req.body.NAME;
+		
+		
+		
+		// Record Update 
+        //filters
+        var conditions = {};
+        conditions['_id'] = req.body.FINPACKAGEID;
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
+        updates['updated'] = Date.now();
+        console.log(updates);
+
+        Promise.props({
+            fin: finPackage.findOneAndUpdate(
+                // Condition
+                conditions,
+                // Updates
+                {
+                    // $set: {name: VALUE}
+                    $set: updates
+                },
+                // Options
+                {
+                    // new - defaults to false, returns the modified document when true, or the original when false
+                    new: true,
+                    // runValidators - defaults to false, make sure the data fits the model before applying the update
+                    runValidators: true
+                }
+                // Callback if needed
+                // { }
+            ).execAsync()
+        })
+            .then(function (results) {
+				console.log(results);
+                
+                if (results) {
+                    console.log('[ API ] updateFinance :: Fin package found: TRUE');
+                }
+                else {
+                    console.log('[ API ] updateFinance :: Fin package found: FALSE');
+                }
+                res.locals.results = results;
+                //sending a status of 200 for now
+                res.locals.status = '200';
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);*/
+    },
     /**
      * Description: retrieve a Highlight Package from the database by id
      * Type: GET
