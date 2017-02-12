@@ -90,6 +90,7 @@ function addItem(e) {
 function deleteItem(e) {
     e.preventDefault(); //prevent page refresh/POST
     //get the note ID from the nearest hidden input field
+	console.log("In delete item");
     var itemId = $(this).closest("form").find("input[name='itemId']").val();
     //save note row object in variable
     var itemSelected = $(this);
@@ -123,6 +124,8 @@ function deleteItem(e) {
 
 function setUpForm(e) {
     e.preventDefault();
+	console.log("in setup form item");
+	console.log(e);
     //the note we want will be the first child of the following search since it finds the closest <tr> to the button clicked
     var item_description = $(this).closest("tr").find(".item-descrip");
 	var item_cost = $(this).closest("tr").find(".item-cost");
@@ -142,6 +145,7 @@ function setUpForm(e) {
 
 function updateItem(e) {
     e.preventDefault();
+	console.log("in update item");
     //save items for after POST
 	//var item_name = $(this).closest("tr").find(".item-name");
     var item_desc = $(this).closest("tr").find(".item-descrip");

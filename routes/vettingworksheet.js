@@ -69,7 +69,7 @@ router.get('/:id', isLoggedIn, function(req, res) {
             }
 			
 			res.locals.layout = 'b3-layout';
-
+			result.user = req.user._id;
             result.title = "Vetting Worksheet";
 
             res.render('b3-worksheet-view', result);

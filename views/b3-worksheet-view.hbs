@@ -29,12 +29,14 @@
     <div class="form-group">
         <form method="post">
             <input type="hidden" value="{{doc._id}}" id="appId"/>
+			<input type="hidden" value="{{user}}" id="userId"/>
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <th class="col-sm-2">Date</th>
                     <th class="col-sm-6">Note</th>
-                    <th class="col-sm-6"> </th>
+					<th class="col-sm-3">Submitted By</th>
+                    <th class="col-sm-3"></th>
                 </tr>
                 </thead>
                 <tbody id="notes-body">
@@ -43,11 +45,12 @@
                         <tr>
                             <td>{{this.date}}</td>
                             <td class="note-descrip">{{this.description}}</td>
+							<td class="note-vetAgent">{{this.vetAgent}}</td>
                             <td>
                                 <form>
                                     <input type="hidden" value="{{this._id}}" name="noteId" />
-                                    <input type="submit" class="update-button btn btn-info" value="Update Note"/>
-                                    <input type="submit" class="delete-button btn btn-danger" value="Delete Note"/>
+                                    <input type="submit" class="update-note btn btn-info" value="Update Note"/>
+                                    <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
                                 </form>
                             </td>
                         </tr>
@@ -240,7 +243,7 @@
 ---	</table> -->
 
 <!--START OF NEW WORK ITEM IMPLEMENTATION -->
-	<div class="form-group">
+	<div class="form-work">
         <form method="post">
             <input type="hidden" value="{{doc._id}}" id="appId"/>
             <table class="table table-striped">
@@ -798,7 +801,10 @@
 
 
 <script src="/javascript/serviceArea.js" type="text/javascript"></script>
+
+	<script src="/javascript/addItem.js" type="text/javascript"></script>
 <script>
+
 
     /**
      * Handles the back button located at the top of the page
