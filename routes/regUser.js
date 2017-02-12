@@ -29,6 +29,11 @@ router.route('/login')
 		failureRedirect: '/user/login',
 		failureFlash: true})
 	);
+	
+router.get('/logout', function(req, res) {
+	req.logout();
+	res.redirect('/');
+});
 
 function isLoggedIn(req, res, next) {
 	if(req.isAuthenticated()) {
