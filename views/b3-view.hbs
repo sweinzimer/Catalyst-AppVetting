@@ -607,10 +607,13 @@
     $('#csvExportButton').on('click', function(e) {
       let urlParts = window.location.pathname.split('/')
       let applicationId = urlParts[urlParts.length-1]
+	let firstname = '{{{doc.application.name.first}}}';
+	let lastname = '{{{doc.application.name.last}}}';
       let payload = {
-        application: applicationId
+        application: applicationId,
+		firstname: firstname,
+		lastname: lastname
       }
-
       let csvRequest = $.ajax({
         type: 'POST',
         url: '/view/csvExport',
@@ -618,15 +621,14 @@
         contentType: 'application/json; chartset=UTF-8',
         data: JSON.stringify(payload)
       })
-
       csvRequest.done(function(xhr) {
         if (xhr.status === 200) {
           // TODO: Set window.location.href equal to the download file
+		window.location.href = 'exports/export.csv';
         } else {
 
         }
       })
-
       csvRequest.fail(function(data) {
         debugger
       })

@@ -36,6 +36,32 @@ var ObjectId = require('mongodb').ObjectID;
      project - the project has been approved and the document package will be converted to a project package
  **/
 
+
+router.post('/csvExport', function(req, res){
+	var applicationID = req.body.application;
+	var firstname = req.body.firstname;
+	var lastname = req.body.lastname;
+	var firstANDlast = lastname + ',' + firstname;
+	var query =  "'"+'{"_id" : ObjectId("'+applicationID+'")}'+"'";
+	const exec = require('child_process').exec;
+	exec('mongoexport -d catalyst -c documentpackages --type=csv --fields application.name.first,application.name.last,application.address.line_1,application.address.line_2,application.address.city,application.address.state,application.address.zip,application.phone.preferred,application.phone.other,finance.mortgage.up_to_date,application.owns_home -q ' + query + ' -o exports/'+firstANDlast+'.csv', function(error, stdout, stderr) {
+		if(error){
+			console.error('exec error: ${error}');
+			return;
+		}
+		console.log('stdout: ${stdout}');
+		console.log('stderr: ${stderr}');
+	});
+
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not export");
+   	}
+    else{
+        res.status(200).send({ status: 'success' });
+   	}	
+})
+
+
 router.get('/', api.getDocumentByStatus, function(req, res, next) {
 
     var payload = {};
