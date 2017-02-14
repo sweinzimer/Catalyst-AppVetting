@@ -174,48 +174,75 @@ module.exports = {
 		console.log(req.body);
         // For debugging
         var debug = 0;
+		//var app_name;
         if (debug == 1) {
             console.log(req.body);
         }
+		Promise.props({
+			docInSys: DocumentPackage.count({}).lean().execAsync()
+		})
+		.then(function (results) {
+                if (!results) {
+                    console.log('[ API ] count failed');
+                }
+                else {
+                    console.log('[ API ] count sucuess');
+					console.log(results);
+					var count = results.docInSys;
+					count++;
+					console.log(count);
+					var currentTime = new Date();
+					var year = currentTime.getFullYear();
+					var app_name = "A" + year.toString() + "-" + count.toString();
+					console.log(app_name);
+					// Normally we would create a new mongoose object to be instantiated
+					// var doc = new DocumentPackage();
+					// And then add data to it
+					// doc.status = 'a string here';
+					// doc.application.name.first = 'name here'
 
-        // Normally we would create a new mongoose object to be instantiated
-        // var doc = new DocumentPackage();
-        // And then add data to it
-        // doc.status = 'a string here';
-        // doc.application.name.first = 'name here'
+					// Instead we will do it in one line
+					var doc = new DocumentPackage(req.body);
 
-        // Instead we will do it in one line
-        var doc = new DocumentPackage(req.body);
+					// Create a corresponding highlight package
+					var highlight = new HighlightPackage();
 
-        // Create a corresponding highlight package
-        var highlight = new HighlightPackage();
+					// Make each reference the others ObectId
+					// TODO: Add support for work items and site assessment
+					doc.highlightPackage = highlight._id;
+					doc.app_name = app_name;
+					console.log(doc.app_name);
+					highlight.documentPackage = doc._id;
 
-        // Make each reference the others ObectId
-        // TODO: Add support for work items and site assessment
-        doc.highlightPackage = highlight._id;
-        highlight.documentPackage = doc._id;
+					// Save the document package to the database with a callback to handle flow control
+					doc.saveAsync(function (err, doc, numAffected) {
+						if (err) {
+							console.error(err);
+						}
+						else if (numAffected == 1) {
+							console.log('[ API ] postDocument :: Document created with _id: ' + doc._id);
+						}
+					});
 
-        // Save the document package to the database with a callback to handle flow control
-        doc.saveAsync(function (err, doc, numAffected) {
-            if (err) {
+					// Save the highlight package to the database with a callback to handle flow control
+					highlight.saveAsync(function (err, highlight, numAffected) {
+						if (err) {
+							console.error(err);
+						}
+						else if (numAffected == 1) {
+							console.log('[ API ] postDocument :: highlightPackage created with _id: ' + highlight._id);
+							console.log('[ API ] postDocument :: highlightPackage references document package _id: ' + highlight.reference);
+							res.send( { status : 200 } );
+						}
+					});
+				}
+                
+            })
+            .catch(function(err) {
                 console.error(err);
-            }
-            else if (numAffected == 1) {
-                console.log('[ API ] postDocument :: Document created with _id: ' + doc._id);
-            }
-        });
-
-        // Save the highlight package to the database with a callback to handle flow control
-        highlight.saveAsync(function (err, highlight, numAffected) {
-            if (err) {
-                console.error(err);
-            }
-            else if (numAffected == 1) {
-                console.log('[ API ] postDocument :: highlightPackage created with _id: ' + highlight._id);
-                console.log('[ API ] postDocument :: highlightPackage references document package _id: ' + highlight.reference);
-                res.send( { status : 200 } );
-            }
-        });
+            })
+            .catch(next);
+        
     },
 
     /**

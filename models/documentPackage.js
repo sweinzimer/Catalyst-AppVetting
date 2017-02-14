@@ -48,6 +48,7 @@ var DocumentPackageSchema = new Schema({
     updated:        { type: Date, default: Date.now},
     highlightPackage: { type: ObjectId },
     service_area : Boolean,
+	app_name : String,
 	
     advocate:       {
         is_advocate:        Boolean,
