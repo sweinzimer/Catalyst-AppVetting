@@ -42,23 +42,29 @@ router.post('/csvExport', function(req, res){
 	var firstname = req.body.firstname;
 	var lastname = req.body.lastname;
 	var firstANDlast = lastname + ',' + firstname;
-	var query =  "'"+'{"_id" : ObjectId("'+applicationID+'")}'+"'";
-	const exec = require('child_process').exec;
-	exec('mongoexport -d catalyst -c documentpackages --type=csv --fields application.name.first,application.name.last,application.address.line_1,application.address.line_2,application.address.city,application.address.state,application.address.zip,application.phone.preferred,application.phone.other,finance.mortgage.up_to_date,application.owns_home -q ' + query + ' -o exports/'+firstANDlast+'.csv', function(error, stdout, stderr) {
+	var query =  "{'_id' : ObjectId("+"'"+applicationID+"'"+")}";
+	const execFile = require('child_process').execFile;
+	const child = execFile('mongoexport', ['-d', 'catalyst', 
+	'-c', 'documentpackages', '--type=csv', '--fields', 	'application.name.first,application.name.last,application.address.line_1,application.address.line_2,application.address.city,application.address.state,application.address.zip,application.phone.preferred,application.phone.other,finance.mortgage.up_to_date,application.owns_home', 		'-q', query, '-o', 'exports/'+firstANDlast+'.csv']
+	, function(error, stdout, stderr) {
 		if(error){
-			console.error('exec error: ${error}');
-			return;
+			console.error('stderr', stderr);
+			throw error;
 		}
-		console.log('stdout: ${stdout}');
-		console.log('stderr: ${stderr}');
+		else{
+			console.log('stdout', stdout);
+		}
 	});
 
-	if(res.locals.status != '200'){
-        res.status(500).send("Could not export");
-   	}
-    else{
-        res.status(200).send({ status: 'success' });
-   	}	
+	child.on('exit', function(code,signal){
+
+		if(res.locals.status != '200'){
+			res.status(500).send("Export failed: Code 500");
+	   	}
+		else{
+		    res.status(200).send({ status: 'success' });
+	   	}	
+	})
 })
 
 
