@@ -31,10 +31,15 @@ function init() {
 				rule: function (d) { return d && d.length > 0 ? true : false },
 				message: 'Some required fields are not complete'
 			},
+			{
+				fields: [ 'password' ],
+				rule: function(d) { return d === $('[name="password-confirm"]').val() },
+				message: 'Password fields must match'
+			}
 		]
 
 		let validationResult = validateFormData($(this), validationRules)
-		// if (validationResult === false) return
+		if (validationResult === false) return
 
 		let jsonToSend = getFormData($(this));
 
@@ -68,7 +73,8 @@ function init() {
 		//check for error
 		posting.done(function (xhr) {
 			if(xhr.status == 200) {
-				window.location.replace("/user/userSuccess");
+				// TODO: Clear form data
+				// Display notif that user has been created
 			}
 			else {
 				console.log("Error Occured");
@@ -167,6 +173,18 @@ function init() {
 		}
 
 		return formValid
+	}
+
+	function clearFormData(form) {
+		let inputFields = $('input', form)
+    inputFields.each(function(idx) {
+			if (this.type === 'checkbox') { this.checked = false }
+			else { this.value = '' }
+		})
+
+		$('.btn-primary', '#role-selector')
+		.toggleClass('btn-primary')
+		.toggleClass('btn-secondary')
 	}
 
 }
