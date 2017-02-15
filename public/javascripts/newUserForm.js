@@ -1,6 +1,20 @@
 $(document).ready(init)
 
 function init() {
+	// Add event listeners to buttons
+	$('button', '#role-selector').on('click', function(e) {
+		if (e) e.preventDefault()
+
+		$(this).siblings().each(function(idx) {
+			$(this).removeClass('btn-primary')
+			$(this).addClass('btn-secondary')
+		})
+
+		$(this).toggleClass('btn-secondary')
+		$(this).toggleClass('btn-primary')
+
+	})
+
 	$('#userRegistration').submit(function (event) {
 		event.preventDefault();
 
@@ -20,19 +34,25 @@ function init() {
 		]
 
 		let validationResult = validateFormData($(this), validationRules)
-		if (validationResult === false) return
+		// if (validationResult === false) return
 
-		let jsonToSend = getFormJsonString($(this)); 
-		jsonToSend = JSON.parse(jsonToSend);
+		let jsonToSend = getFormData($(this));
+
 		jsonToSend.user_created = new Date().getTime()
+
+		let selectedRole = $('.btn-primary', '#role-selector')
+		if (selectedRole.length > 0) { jsonToSend.user_role = selectedRole[0].value }
+
+
+		// jsonToSend = JSON.parse(jsonToSend);
 		//TEST CODE!!!!
 		//jsonToSend.user_role = "VET";
 		//jsonToSend.user_role = "SITE";
-		jsonToSend.user_role = "ADMIN";
-		jsonToSend.local = {
-			email: 'passport@passport',
-			password: 'password123'
-		};
+		// jsonToSend.user_role = "ADMIN";
+		// jsonToSend.local = {
+			// email: 'passport@passport',
+			// password: 'password123'
+		// };
 		//end TEST CODE
 		jsonToSend = JSON.stringify(jsonToSend);
 		console.log(jsonToSend);

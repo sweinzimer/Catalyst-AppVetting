@@ -19,8 +19,8 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12 col-sm-8">
-    <form id="userRegistration">
+  <form id="userRegistration">
+    <div class="col-xs-12 col-sm-8">
       <div class="row">
         <div class="col-xs-12 form_errors">
         </div>
@@ -170,8 +170,17 @@
         </div>
       </div>
 
-    </form>
-  </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <h5>Roles</h5>
+      <p>Roles selected will appear in blue.</p>
+      <div class="btn-group-vertical btn-block" id="role-selector" name="user_role">
+        {{#each roles}}
+          <button class="btn btn-secondary" value="{{ role_name }}">{{ role_display }}</button>
+        {{/each}}
+      </div>
+    </div>
+  </form>
 </div>
 
 <script type="text/javascript" src="/javascript/newUserForm.js"></script>

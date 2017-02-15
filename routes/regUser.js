@@ -11,13 +11,14 @@ router.route('/register')
 		console.log(res.locals.results);
 		var payload = {};
 		payload.roles = res.locals.results.roles;
+		payload.rolesString = JSON.stringify(res.locals.results.roles)
 		res.render('newuserform', payload);
 	})
 	.post(api.postUser, function(req, res) {
 		console.log("In post request");
 		res.json(res.locals);
 	})
-	
+
 router.get('/userSuccess', function(req, res) {
 	res.render('/');
 });
@@ -32,7 +33,7 @@ router.route('/login')
 		failureRedirect: '/user/login',
 		failureFlash: true})
 	);
-	
+
 router.get('/logout', function(req, res) {
 	req.logout();
 	res.redirect('/');
