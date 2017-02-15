@@ -7,8 +7,11 @@ var api = require('../controllers/api');
 
 module.exports = function(passport) {
 router.route('/register')
-	.get(function(req, res) {
-		res.render('newuserform');
+	.get(api.getUserRoles, function(req, res) {
+		console.log(res.locals.results);
+		var payload = {};
+		payload.roles = res.locals.results.roles;
+		res.render('newuserform', payload);
 	})
 	.post(api.postUser, function(req, res) {
 		console.log("In post request");

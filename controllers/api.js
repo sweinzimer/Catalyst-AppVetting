@@ -37,6 +37,7 @@ var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var WorkItemPackage = require('../models/workItemPackage');
 var UserPackage = require('../models/userPackage');
+var RolePackage = require('../models/rolePackage');
 var bluebird = require('bluebird');
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose to use bluebird
@@ -115,6 +116,32 @@ module.exports = {
             })
             .catch(next);
     },
+	
+	getUserRoles: function(req, res, next) {
+		console.log("getting user roles");
+		 Promise.props({
+            roles: RolePackage.find().lean().execAsync()
+        })
+            .then(function(results) {
+                if (!results) {
+                    console.log('No roles found');
+                }
+                else {
+                    console.log('roles found');
+                }
+
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+	
 
     /**
      * Description: retrieve all Document Packages from the database and group by status code

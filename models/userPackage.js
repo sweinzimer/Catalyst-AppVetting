@@ -2,9 +2,8 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-//var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
-//var jwt = require('jsonwebtoken');
+
 
 var UserPackageSchema = new Schema({
 	user_status:		String,
