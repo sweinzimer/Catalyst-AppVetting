@@ -41,12 +41,13 @@ router.post('/csvExport', function(req, res){
 	var applicationID = req.body.application;
 	var firstname = req.body.firstname;
 	var lastname = req.body.lastname;
-	var firstANDlast = lastname + ',' + firstname;
 	var query =  "{'_id' : ObjectId("+"'"+applicationID+"'"+")}";
+	var filename = lastname + ', ' + firstname + ' - ' + applicationID;
 	const execFile = require('child_process').execFile;
-	const child = execFile('mongoexport', ['-d', 'catalyst', 
-	'-c', 'documentpackages', '--type=csv', '--fields', 	'application.name.first,application.name.last,application.address.line_1,application.address.line_2,application.address.city,application.address.state,application.address.zip,application.phone.preferred,application.phone.other,finance.mortgage.up_to_date,application.owns_home', 		'-q', query, '-o', 'exports/'+firstANDlast+'.csv']
-	, function(error, stdout, stderr) {
+	const exec = require('child_process').exec;
+	const mongoexport_child = execFile('mongoexport', ['-d', 'catalyst', 
+	'-c', 'documentpackages', '--type=csv', '--fields', 	'application.name.first,application.name.last,application.address.line_1,application.address.line_2,application.address.city,application.address.state,application.address.zip,application.phone.preferred,application.phone.other,finance.mortgage.up_to_date,application.owns_home', 		'-q', query, '-o', 'public/exports/'+filename+'.csv'], 
+	function(error, stdout, stderr) {
 		if(error){
 			console.error('stderr', stderr);
 			throw error;
@@ -56,15 +57,35 @@ router.post('/csvExport', function(req, res){
 		}
 	});
 
-	child.on('exit', function(code,signal){
+	mongoexport_child.on('exit', function(code,signal){
+		
+		const rename_child = exec('cd public/exports; var="First Name,Last Name,Address Line 1,Address Line 2,City,State,Zip,Phone,Phone Other,Up to Date on Mortgage,Owns Home "; sed -i "1s/.*/$var/" "Lincoln, Abraham - 5888e758a1e63e37d6820e6c.csv"', 
+			function(error, stdout, stderr){
+					if(error){
+						console.error('stderr', stderr);
+						throw error;				
+					}
+					else{
+						console.log('stdout', stdout);				
+					}
+		})
 
-		if(res.locals.status != '200'){
+	rename_child.on('exit', function(code,signal){
+		if(code !== 0){
 			res.status(500).send("Export failed: Code 500");
-	   	}
+			debugger			
+		}
 		else{
-		    res.status(200).send({ status: 'success' });
-	   	}	
+			res.status(200).send({status: 'success'});
+		}
 	})
+
+
+
+	});
+	
+
+
 })
 
 

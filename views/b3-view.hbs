@@ -605,32 +605,33 @@
     });
 
     $('#csvExportButton').on('click', function(e) {
-      let urlParts = window.location.pathname.split('/')
-      let applicationId = urlParts[urlParts.length-1]
+	let urlParts = window.location.pathname.split('/')
+    let applicationID = urlParts[urlParts.length-1]
 	let firstname = '{{{doc.application.name.first}}}';
 	let lastname = '{{{doc.application.name.last}}}';
-      let payload = {
-        application: applicationId,
+    let payload = {
+      	application: applicationID,
 		firstname: firstname,
 		lastname: lastname
-      }
-      let csvRequest = $.ajax({
-        type: 'POST',
+    }
+    let csvRequest = $.ajax({
+      type: 'POST',
         url: '/view/csvExport',
         dataType: 'json',
         contentType: 'application/json; chartset=UTF-8',
         data: JSON.stringify(payload)
       })
       csvRequest.done(function(xhr) {
-        if (xhr.status === 200) {
+        if (xhr.status === 'success') {
           // TODO: Set window.location.href equal to the download file
-		window.location.href = 'exports/export.csv';
+			
+			window.location = '../exports/' + '{{{doc.application.name.last}}}' + ', ' + '{{{doc.application.name.first}}}' + ' - ' + applicationID + '.csv'
         } else {
-		
+			console.log(xhr.status);
         }
       })
       csvRequest.fail(function(data) {
-		console.log(data)
+		console.log(data.status)
         debugger
       })
     })
