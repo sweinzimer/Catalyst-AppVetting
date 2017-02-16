@@ -59,7 +59,7 @@ router.post('/csvExport', function(req, res){
 
 	mongoexport_child.on('exit', function(code,signal){
 		
-		const rename_child = exec('cd public/exports; var="First Name,Last Name,Address Line 1,Address Line 2,City,State,Zip,Phone,Phone Other,Up to Date on Mortgage,Owns Home "; sed -i "1s/.*/$var/" "Lincoln, Abraham - 5888e758a1e63e37d6820e6c.csv"', 
+		const rename_child = exec('cd public/exports; var="First Name,Last Name,Address Line 1,Address Line 2,City,State,Zip,Phone,Phone Other,Up to Date on Mortgage,Owns Home "; sed -i "1s/.*/$var/" ' + "'" + filename + '.csv' + "'", 
 			function(error, stdout, stderr){
 					if(error){
 						console.error('stderr', stderr);
