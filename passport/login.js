@@ -22,6 +22,10 @@ function(username, password, done) {
 			return done(null, false, {message: 'Wrong password'});
 		}
 		//credentials correct
+		if(user.user_status != "ACTIVE") {
+			console.log("user not active");
+			return done(null, false, {message: 'user not active'});
+		}
 		console.log("login successful!");
 		console.log(user);
 		return done(null, user);

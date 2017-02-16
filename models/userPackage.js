@@ -11,10 +11,6 @@ var UserPackageSchema = new Schema({
 	user_updated:	{type: Date, default: Date.now},
 	user_role:		String,
 	user_activity:		String,
-	/*local: {
-		email: 	String,
-		password: 	String,
-	},*/
 	contact_info:	{
 		user_name:	{
 			user_first:		String,
@@ -76,7 +72,7 @@ UserPackageSchema.methods.validPassword = function(password) {
 };
 
 //determine if user has vetting privilages
-UserPackageSchema.methods.isVetting = function() {
+UserPackageSchema.methods.isVetting = function(cb) {
 	if(this.user_role == "VET"  || this.user_role == "ADMIN") {
 		return true;
 	}

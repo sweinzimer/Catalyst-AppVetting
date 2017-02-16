@@ -355,7 +355,7 @@ module.exports = {
 
         //create new mongoose object
         var doc = new UserPackage(req.body);
-		doc.setPassword(req.body.local.password);
+		doc.setPassword(req.body.password);
 
         
 
@@ -372,6 +372,117 @@ module.exports = {
         });
 
     },
+	
+	updateUser: function(req, res, next) {
+        // When executed this will apply updates to a user and return the MODIFIED user
+        // Log the _id, name, and value that are passed to the function
+        console.log('[ API ] updateUser :: Call invoked with _id: ' + req.body.userId
+            + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
+        console.log(req.body.name + ' + ' + req.body.value);
+
+        // Build the name:value pairs to be updated
+        // Since there is only one name and one value, we can use the method below
+        var updates = {};
+        updates[req.body.name] = req.body.value;
+		
+				
+		// Record Update time
+        //filters
+        var conditions = {};
+        conditions['_id'] = req.body.userId;
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
+        updates['updated'] = Date.now();
+        console.log(updates);
+
+        Promise.props({
+            user: UserPackage.findOneAndUpdate(
+                // Condition
+                conditions,
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: updates
+                },
+                // Options
+                {
+                    // new - defaults to false, returns the modified document when true, or the original when false
+                    new: true,
+                    // runValidators - defaults to false, make sure the data fits the model before applying the update
+                    runValidators: true
+                }
+                // Callback if needed
+                // { }
+            ).execAsync()
+        })
+            .then(function (results) {
+				console.log(results);
+                // TODO: Confirm true/false is correct
+                if (results) {
+                    console.log('[ API ] putUpdateDocument :: Documents package found: TRUE');
+                }
+                else {
+                    console.log('[ API ] putUpdateDocument :: Documents package found: FALSE');
+                }
+                res.locals.results = results;
+                //sending a status of 200 for now
+                res.locals.status = '200';
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+	
+	//create user roles on initial site deployment
+	createRoles: function(req, res, next) {
+		var vet = new RolePackage();
+		vet.role_name = "VET";
+		vet.role_display = "Vetting Agent";
+		
+		var site = new RolePackage();
+		site.role_name = "SITE";
+		site.role_display = "Site Agent";
+		
+		var admin = new RolePackage();
+		admin.role_name = "ADMIN";
+		admin.role_display = "Admin";
+		
+		vet.saveAsync(function (err, doc, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+                console.log('[ API ] role vet created');
+				//res.send( { status : 200 } );
+            }
+        });
+		
+		site.saveAsync(function (err, doc, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+                console.log('[ API ] role site created');
+				//res.send( { status : 200 } );
+            }
+        });
+		
+		admin.saveAsync(function (err, doc, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+                console.log('[ API ] role admin created');
+				next();
+            }
+        });
+	},
 
 	updateService: function(req, res, next) {
         // When executed this will apply updates to a doc and return the MODIFIED doc

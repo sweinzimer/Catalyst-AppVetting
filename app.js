@@ -31,7 +31,7 @@ initPassport(passport);
 var routes = require('./routes/index');
 var test = require('./routes/test');
 var view = require('./routes/view')(passport);
-var edit = require('./routes/edit');
+var edit = require('./routes/edit')(passport);
 var appform = require('./routes/appform');
 var vettingworksheet = require('./routes/vettingworksheet')(passport);
 var regUser = require('./routes/regUser')(passport);

@@ -39,6 +39,10 @@ router.get('/show', api.getAllDocuments, function(req, res) {
     res.json(res.locals.results);
 });
 
+router.get('/createRoles', api.createRoles, function(req, res) {
+	res.redirect('/');
+});
+
 /**
  * This example fetches all documents from the database and returns them in JSON
  * where each document is added to an array depending on its status code

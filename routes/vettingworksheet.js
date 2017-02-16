@@ -123,8 +123,9 @@ router.route('/updateitem')
 
 return router;
 }
+
+//check if user is admin or vetting agent
 function isLoggedIn(req, res, next) {
-		console.log("user id in vetting request");
 		if(req.isAuthenticated()) {
 			console.log(req.user._id);
 			var userID = req.user._id.toString();
@@ -146,8 +147,7 @@ function isLoggedIn(req, res, next) {
 					}
 					else {
 						console.log("in first else");
-						if(results.user.user_role == "VET") {
-							console.log("user is vet");
+						if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
 							return next();
 
 						}

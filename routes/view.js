@@ -232,6 +232,7 @@ router.get('/:id', isLoggedIn, function(req, res, next) {
 
 });
 
+//route catches invalid post requests.  
 router.use('*', function route2(req, res, next) {
 	if(res.locals.status == '406'){
 		console.log("in error function");
@@ -323,9 +324,8 @@ function formatStatus(element) {
 return router;
 }
 
-//check to see if user is logged in and a vetting agent
+//check to see if user is logged in and a vetting agent or an admin
 function isLoggedIn(req, res, next) {
-		console.log("user id in vetting request");
 		if(req.isAuthenticated()) {
 			console.log(req.user._id);
 			var userID = req.user._id.toString();
@@ -333,28 +333,31 @@ function isLoggedIn(req, res, next) {
 			console.log("userID");
 			console.log(userID);
 			var ObjectId = require('mongodb').ObjectID;
-			//var authenticated = false;
 			Promise.props({
 				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
 			})
 			.then(function (results) {
-				//console.log(user);
 				console.log(results);
-					
-                
+					    
 					if (!results) {
-						res.redirect('/user/login');
+						res.redirect('/user/logout');
 					}
 					else {
-						console.log("in first else");
-						if(results.user.user_role == "VET") {
-							console.log("user is vet");
-							return next();
+						if(results.user.user_status == "ACTIVE") {
+							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
+								return next();
 
+							}
+							
+							else {
+								console.log("user is not vet");
+								res.redirect('/user/logout');
+							}
 						}
 						else {
-							console.log("user is not vet");
-							res.redirect('/user/login');
+							//user not active
+							console.log("user not active");
+							res.redirect('/user/logout');
 						}
 					}
                             
@@ -373,37 +376,34 @@ function isLoggedIn(req, res, next) {
 		}
 }
 
+//post request authenticator.  Checks if user is an admin or vetting agent
 function isLoggedInPost(req, res, next) {
-		console.log("user id in vetting request");
 		if(req.isAuthenticated()) {
 			console.log(req.user._id);
 			var userID = req.user._id.toString();
 		
-			console.log("userID");
-			console.log(userID);
 			var ObjectId = require('mongodb').ObjectID;
-			//var authenticated = false;
+			
 			Promise.props({
 				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
 			})
 			.then(function (results) {
-				//console.log(user);
 				console.log(results);
-					
-                
+				              
 					if (!results) {
+						//user not found in db.  Route to error handler
+						res.locals.status = 406;
 						return next('route');
 					}
 					else {
-						console.log("in first else");
-						if(results.user.user_role == "VET") {
-							console.log("user is vet");
+						
+						if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
 							return next();
 
 						}
 						else {
+							//user is not a vetting agent or admin, route to error handler
 							res.locals.status = 406;
-							console.log("user is not vet");
 							return next('route');
 						}
 					}
@@ -418,7 +418,9 @@ function isLoggedInPost(req, res, next) {
          .catch(next);
 		}
 		else {
+			//user is not logged in
 			console.log("no user id");
+			res.locals.status = 406;
 			return next('route');
 		}
 }
