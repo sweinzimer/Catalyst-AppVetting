@@ -88,7 +88,7 @@ function init() {
 
   function getFormData(form) {
     let formData = {}
-    let inputFields = $('input', form)
+    let inputFields = $('input, select', form)
     inputFields.each(function(idx) {
 			let objectType = this.type
       let objectPath = this.name
@@ -100,7 +100,7 @@ function init() {
           currentObjectPlace = currentObjectPlace[p]
         } else {
 					if (this.type === 'date') {
-						currentObjectPlace[p] = new Date(this.value)
+						currentObjectPlace[p] = this.value ? new Date(this.value) : null
 					} else if (this.type === 'checkbox') {
 						currentObjectPlace[p] = this.checked
 					} else {

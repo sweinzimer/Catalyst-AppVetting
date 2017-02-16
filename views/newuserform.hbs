@@ -125,20 +125,28 @@
 
 
       <div class="row form-group">
-        <div class="col-xs-12">
-          <label for="userStatus" class="form-control-label">User status</label>
+        <div class="col-xs-12 col-sm-6">
+          <div class="row">
+            <div class="col-xs-12">
+              <label for="userStatus" class="form-control-label">User status</label>
+            </div>
+            <div class="col-xs-12">
+              <select class="form-control" name="user_status" id="userStatus">
+                <option value="ACTIVE">Active</option>
+                <option value="DISABLED">Disabled</option>
+              </select>
+            </div>
+          </div>
         </div>
-        <div class="col-xs-12">
-          <input type="text" class="form-control" name="user_status" id="userStatus" />
-        </div>
-      </div>
-
-      <div class="row form-group">
-        <div class="col-xs-12">
-          <label for="userActivity" class="form-control-label">User activity</label>
-        </div>
-        <div class="col-xs-12">
-          <input type="text" class="form-control" name="user_activity" id="userActivity" />
+        <div class="col-xs-12 col-sm-6">
+          <div class="row">
+            <div class="col-xs-12">
+              <label for="idDate" class="form-control-label">ID Date</label>
+            </div>
+            <div class="col-xs-12">
+              <input type="date" class="form-control" id="idDate" name="user_documents.ID_Date" />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -164,12 +172,6 @@
           <label>
             <input type="checkbox" name="user_documents.ID_badge" />
             ID Badge
-          </label>
-        </div>
-        <div class="col-xs-12 col-sm-6">
-          <label>
-            <input type="checkbox" name="user_documents.ID_Date" />
-            ID Date
           </label>
         </div>
       </div>
