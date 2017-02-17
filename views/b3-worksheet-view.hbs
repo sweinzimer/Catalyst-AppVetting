@@ -1418,12 +1418,14 @@
 		this.htmlTargetSelector = '#finacialForm'
 		this.root = false
 		this.applicationId = '{{ doc._id }}'
+
 		this.appID = 123
 		this.docStatus = '{{doc.status}}'
 
 		this.people = [
 			{
 				first: 'test', last: 'test',
+
 			},
 			{
 				first: 'test2', last: 'test',
@@ -1526,8 +1528,13 @@
 				)
 			}
 
+			console.log(e.target.name);
+			console.log(e.target.value);
 			let changedValue = changeObjectValueByPath({}, e.target.name, e.target.checked)
-			xhr(changedValue, 'POST', '/finacialForm', (err) => {
+			//console.log('changed value');
+			//console.log(changedValue);
+			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', (err) => {
+
 
 			})
 
@@ -1632,6 +1639,7 @@
 
 	function xhr(data, method, url, next) {
 		//post to database
+
 		var posting = $.ajax({
 			type : method,
 			url : url,

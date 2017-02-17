@@ -5,7 +5,11 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var highlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
+
 var WorkItemPackage = require('../models/workItemPackage');
+
+var FinPackage = require('../models/finPackage');
+
 var api = require('../controllers/api');
 var User = require('../models/userPackage');
 
@@ -26,9 +30,14 @@ router.get('/:id', isLoggedIn, function(req, res) {
     Promise.props({
         doc: DocumentPackage.findOne({_id: ObjectId(req.params.id)}).lean().execAsync(),
         vettingNotes: VettingNotePackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
+
         finances: FinPackage.findOne({appID: ObjectId(req.params.id)}).lean().execAsync(),
     		workItems: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
-    		highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync()
+    		highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync(),
+
+	      
+	      finances: FinPackage.findOne({appID: ObjectId(req.params.id)}).lean().execAsync()
+
     })
         .then(function(result) {
             //format birth date for display
@@ -53,6 +62,7 @@ router.get('/:id', isLoggedIn, function(req, res) {
                 });
             }
 
+
 			if(result.workItems.length != 0)
             {
 				console.log("there are work items");
@@ -71,6 +81,7 @@ router.get('/:id', isLoggedIn, function(req, res) {
 			res.locals.layout = 'b3-layout';
 			result.user = req.user._id;
 
+
             result.title = "Vetting Worksheet";
 
             res.render('b3-worksheet-view', result);
@@ -79,6 +90,7 @@ router.get('/:id', isLoggedIn, function(req, res) {
             console.error(err);
         });
 });
+
 
 
 router.route('/servicearea')
@@ -121,6 +133,17 @@ router.route('/updateitem')
         res.json(res.locals);
     }
 	});
+	
+router.route('/finacialForm')
+	.post(api.updateFinance, function(req, res) {
+		if(res.locals.status != 200) {
+			res.status(500).send("could not update field");
+		}
+		else {
+			res.json(res.locals);
+		}
+	});
+
 
 return router;
 }
@@ -172,3 +195,7 @@ function isLoggedIn(req, res, next) {
 			res.redirect('/user/login');
 		}
 }
+
+
+
+

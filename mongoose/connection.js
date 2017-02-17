@@ -22,7 +22,9 @@ var uri = 'mongodb://'
     + config.mongo.port
     + '/'
     + config.mongo.db
+
     + '?authSource=' + config.mongo.authSource;
+
 
 
 // Connect to the URL

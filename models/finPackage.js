@@ -13,7 +13,7 @@ var FinPackageSchema = new Schema({
 		last : String
 	},
 
-	// BUG: No colons between key and value
+
 	food_stamps : {
 		req : Boolean,
 		rec : Boolean
