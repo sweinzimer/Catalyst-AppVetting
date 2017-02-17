@@ -90,7 +90,7 @@ router.post('/csvExport', function(req, res){
 })
 
 
-router.get('/', api.getDocumentByStatus, function(req, res, next) {
+router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
 
     var payload = {};
 
