@@ -47,7 +47,9 @@ var DocumentPackageSchema = new Schema({
     created:        Date,
     updated:        { type: Date, default: Date.now},
     highlightPackage: { type: ObjectId },
-
+    service_area : Boolean,
+	app_name : String,
+	
     advocate:       {
         is_advocate:        Boolean,
 		individual:         Boolean,
@@ -166,8 +168,14 @@ var DocumentPackageSchema = new Schema({
         fbo_name: String
     },
 	
+	signature:    {
+		client_terms: Boolean,
+		client_sig: String,
+		client_date: { type: Date, default: Date.now}
+	},
+	
 	// Note: upon application submission, the Yes checkbox (name="tac-yes") and the digital signature (name="signature") at the bottom of the form are not captured anywhere.
-
+	//Note above is done, along with timestamp
     project:    {
         // TODO: Complete after application, status, vetting notes, etc -- THIS IS LAST
     }

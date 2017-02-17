@@ -1,6 +1,20 @@
 $(document).ready(init)
 
 function init() {
+	// Add event listeners to buttons
+	$('button', '#role-selector').on('click', function(e) {
+		if (e) e.preventDefault()
+
+		$(this).siblings().each(function(idx) {
+			$(this).removeClass('btn-primary')
+			$(this).addClass('btn-secondary')
+		})
+
+		$(this).toggleClass('btn-secondary')
+		$(this).toggleClass('btn-primary')
+
+	})
+
 	$('#userRegistration').submit(function (event) {
 		event.preventDefault();
 
@@ -17,15 +31,36 @@ function init() {
 				rule: function (d) { return d && d.length > 0 ? true : false },
 				message: 'Some required fields are not complete'
 			},
+			{
+				fields: [ 'password' ],
+				rule: function(d) { return d === $('[name="password-confirm"]').val() },
+				message: 'Password fields must match'
+			}
 		]
 
 		let validationResult = validateFormData($(this), validationRules)
 		if (validationResult === false) return
 
-		let jsonToSend = getFormJsonString($(this)); 
-		jsonToSend.user_created = new Date().getTime()
-		jsonToSend.user_role = []
+		let jsonToSend = getFormData($(this));
 
+		jsonToSend.user_created = new Date().getTime()
+
+		let selectedRole = $('.btn-primary', '#role-selector')
+		if (selectedRole.length > 0) { jsonToSend.user_role = selectedRole[0].value }
+
+
+		// jsonToSend = JSON.parse(jsonToSend);
+		//TEST CODE!!!!
+		//jsonToSend.user_role = "VET";
+		//jsonToSend.user_role = "SITE";
+		// jsonToSend.user_role = "ADMIN";
+		// jsonToSend.local = {
+			// email: 'passport@passport',
+			// password: 'password123'
+		// };
+		//end TEST CODE
+		jsonToSend = JSON.stringify(jsonToSend);
+		console.log(jsonToSend);
 		//post to database
 		var posting = $.ajax({
 			type : 'POST',
@@ -38,7 +73,8 @@ function init() {
 		//check for error
 		posting.done(function (xhr) {
 			if(xhr.status == 200) {
-				window.location.replace("/user/userSuccess");
+				// TODO: Clear form data
+				// Display notif that user has been created
 			}
 			else {
 				console.log("Error Occured");
@@ -52,7 +88,7 @@ function init() {
 
   function getFormData(form) {
     let formData = {}
-    let inputFields = $('input', form)
+    let inputFields = $('input, select', form)
     inputFields.each(function(idx) {
 			let objectType = this.type
       let objectPath = this.name
@@ -64,7 +100,7 @@ function init() {
           currentObjectPlace = currentObjectPlace[p]
         } else {
 					if (this.type === 'date') {
-						currentObjectPlace[p] = new Date(this.value)
+						currentObjectPlace[p] = this.value ? new Date(this.value) : null
 					} else if (this.type === 'checkbox') {
 						currentObjectPlace[p] = this.checked
 					} else {
@@ -137,6 +173,18 @@ function init() {
 		}
 
 		return formValid
+	}
+
+	function clearFormData(form) {
+		let inputFields = $('input', form)
+    inputFields.each(function(idx) {
+			if (this.type === 'checkbox') { this.checked = false }
+			else { this.value = '' }
+		})
+
+		$('.btn-primary', '#role-selector')
+		.toggleClass('btn-primary')
+		.toggleClass('btn-secondary')
 	}
 
 }

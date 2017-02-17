@@ -19,8 +19,8 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12 col-sm-8">
-    <form id="userRegistration">
+  <form id="userRegistration">
+    <div class="col-xs-12 col-sm-8">
       <div class="row">
         <div class="col-xs-12 form_errors">
         </div>
@@ -32,6 +32,18 @@
           <input type="email" class="form-control" name="contact_info.user_email" id="email" />
         </div>
       </div>
+
+      <div class="form-group row">
+        <label for="password" class="form-control-label col-xs-12">Password*</label>
+        <div class="col-xs-6">
+          <input type="password" class="form-control" name="password" id="password" />
+        </div>
+        <div class="col-xs-6">
+          <input type="password" class="form-control" name="password-confirm" id="password" placeholder="Confirm password"/>
+        </div>
+      </div>
+
+
 
       <hr />
 
@@ -113,20 +125,28 @@
 
 
       <div class="row form-group">
-        <div class="col-xs-12">
-          <label for="userStatus" class="form-control-label">User status</label>
+        <div class="col-xs-12 col-sm-6">
+          <div class="row">
+            <div class="col-xs-12">
+              <label for="userStatus" class="form-control-label">User status</label>
+            </div>
+            <div class="col-xs-12">
+              <select class="form-control" name="user_status" id="userStatus">
+                <option value="ACTIVE">Active</option>
+                <option value="DISABLED">Disabled</option>
+              </select>
+            </div>
+          </div>
         </div>
-        <div class="col-xs-12">
-          <input type="text" class="form-control" name="user_status" id="userStatus" />
-        </div>
-      </div>
-
-      <div class="row form-group">
-        <div class="col-xs-12">
-          <label for="userActivity" class="form-control-label">User activity</label>
-        </div>
-        <div class="col-xs-12">
-          <input type="text" class="form-control" name="user_activity" id="userActivity" />
+        <div class="col-xs-12 col-sm-6">
+          <div class="row">
+            <div class="col-xs-12">
+              <label for="idDate" class="form-control-label">ID Date</label>
+            </div>
+            <div class="col-xs-12">
+              <input type="date" class="form-control" id="idDate" name="user_documents.ID_Date" />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -154,12 +174,6 @@
             ID Badge
           </label>
         </div>
-        <div class="col-xs-12 col-sm-6">
-          <label>
-            <input type="checkbox" name="user_documents.ID_Date" />
-            ID Date
-          </label>
-        </div>
       </div>
 
       <hr/>
@@ -170,8 +184,17 @@
         </div>
       </div>
 
-    </form>
-  </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <h5>Roles</h5>
+      <p>Roles selected will appear in blue.</p>
+      <div class="btn-group-vertical btn-block" id="role-selector" name="user_role">
+        {{#each roles}}
+          <button class="btn btn-secondary" value="{{ role_name }}">{{ role_display }}</button>
+        {{/each}}
+      </div>
+    </div>
+  </form>
 </div>
 
 <script type="text/javascript" src="/javascript/newUserForm.js"></script>

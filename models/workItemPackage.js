@@ -1,6 +1,5 @@
 /*
-    //TODO: write a new description
- Highlighters are nice.
+work item schema...still need fields added
 
  This schema will create a mongoDB 'document'.
  The document will have values, like '_id', and sub-documents,
@@ -19,27 +18,19 @@
  ObjectId is similar to a primary key in a relationship based database.
  */
 
- 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 ObjectId = Schema.ObjectId;
 
-var VettingNote = new Schema({
+var WorkItemSchema = new Schema({
     date:   { type: Date, default: Date.now},
+	name:  String,
     description: String,
-	vetAgent: String,
-    applicationId: {type: ObjectId, ref: 'DocumentPackage'}
+	vettingComments: String,
+	cost: String,
+	applicationId: { type: ObjectId }
 });
 
-/**
- * This doesn't seem necessary for the way I did the vettingNote
- */
-// var VettingNotesSchema = new Schema({
-//     notes:  [{type: ObjectId, ref: 'Note'}],
-//     applicationId: {type: ObjectId, ref: 'DocumentPackage'}
-// });
+var WorkItemPackage = mongoose.model('WorkItemPackage', WorkItemSchema);
 
-var Note = mongoose.model('Note', VettingNote);
-//var VettingNotes = mongoose.model('VettingNotes', VettingNotesSchema);
-
-module.exports = Note;
+module.exports = WorkItemPackage;

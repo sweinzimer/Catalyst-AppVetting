@@ -35,12 +35,14 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
+var WorkItemPackage = require('../models/workItemPackage');
 var UserPackage = require('../models/userPackage');
+var RolePackage = require('../models/rolePackage');
 var bluebird = require('bluebird');
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose to use bluebird
 Promise.promisifyAll(mongoose); // Convert all of mongoose to promises with bluebird
-
+var ObjectId = require('mongodb').ObjectId;
 module.exports = {
     /**
      * Description: retrieve all Document Packages from the database
@@ -115,6 +117,32 @@ module.exports = {
             .catch(next);
     },
 
+	getUserRoles: function(req, res, next) {
+		console.log("getting user roles");
+		 Promise.props({
+            roles: RolePackage.find().lean().execAsync()
+        })
+            .then(function(results) {
+                if (!results) {
+                    console.log('No roles found');
+                }
+                else {
+                    console.log('roles found');
+                }
+
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+
+
     /**
      * Description: retrieve all Document Packages from the database and group by status code
      * Type: GET
@@ -173,48 +201,75 @@ module.exports = {
 		console.log(req.body);
         // For debugging
         var debug = 0;
+		//var app_name;
         if (debug == 1) {
             console.log(req.body);
         }
+		Promise.props({
+			docInSys: DocumentPackage.count({}).lean().execAsync()
+		})
+		.then(function (results) {
+                if (!results) {
+                    console.log('[ API ] count failed');
+                }
+                else {
+                    console.log('[ API ] count sucuess');
+					console.log(results);
+					var count = results.docInSys;
+					count++;
+					console.log(count);
+					var currentTime = new Date();
+					var year = currentTime.getFullYear();
+					var app_name = "A" + year.toString() + "-" + count.toString();
+					console.log(app_name);
+					// Normally we would create a new mongoose object to be instantiated
+					// var doc = new DocumentPackage();
+					// And then add data to it
+					// doc.status = 'a string here';
+					// doc.application.name.first = 'name here'
 
-        // Normally we would create a new mongoose object to be instantiated
-        // var doc = new DocumentPackage();
-        // And then add data to it
-        // doc.status = 'a string here';
-        // doc.application.name.first = 'name here'
+					// Instead we will do it in one line
+					var doc = new DocumentPackage(req.body);
 
-        // Instead we will do it in one line
-        var doc = new DocumentPackage(req.body);
+					// Create a corresponding highlight package
+					var highlight = new HighlightPackage();
 
-        // Create a corresponding highlight package
-        var highlight = new HighlightPackage();
+					// Make each reference the others ObectId
+					// TODO: Add support for work items and site assessment
+					doc.highlightPackage = highlight._id;
+					doc.app_name = app_name;
+					console.log(doc.app_name);
+					highlight.documentPackage = doc._id;
 
-        // Make each reference the others ObectId
-        // TODO: Add support for work items and site assessment
-        doc.highlightPackage = highlight._id;
-        highlight.documentPackage = doc._id;
+					// Save the document package to the database with a callback to handle flow control
+					doc.saveAsync(function (err, doc, numAffected) {
+						if (err) {
+							console.error(err);
+						}
+						else if (numAffected == 1) {
+							console.log('[ API ] postDocument :: Document created with _id: ' + doc._id);
+						}
+					});
 
-        // Save the document package to the database with a callback to handle flow control
-        doc.saveAsync(function (err, doc, numAffected) {
-            if (err) {
+					// Save the highlight package to the database with a callback to handle flow control
+					highlight.saveAsync(function (err, highlight, numAffected) {
+						if (err) {
+							console.error(err);
+						}
+						else if (numAffected == 1) {
+							console.log('[ API ] postDocument :: highlightPackage created with _id: ' + highlight._id);
+							console.log('[ API ] postDocument :: highlightPackage references document package _id: ' + highlight.reference);
+							res.send( { status : 200 } );
+						}
+					});
+				}
+
+            })
+            .catch(function(err) {
                 console.error(err);
-            }
-            else if (numAffected == 1) {
-                console.log('[ API ] postDocument :: Document created with _id: ' + doc._id);
-            }
-        });
+            })
+            .catch(next);
 
-        // Save the highlight package to the database with a callback to handle flow control
-        highlight.saveAsync(function (err, highlight, numAffected) {
-            if (err) {
-                console.error(err);
-            }
-            else if (numAffected == 1) {
-                console.log('[ API ] postDocument :: highlightPackage created with _id: ' + highlight._id);
-                console.log('[ API ] postDocument :: highlightPackage references document package _id: ' + highlight.reference);
-                res.send( { status : 200 } );
-            }
-        });
     },
 
     /**
@@ -287,7 +342,7 @@ module.exports = {
             })
             .catch(next);
     },
-	
+
 	postUser: function(req, res, next) {
         // Data will be submitted using req.body
         console.log('[ API ] postUser :: Call invoked');
@@ -300,11 +355,11 @@ module.exports = {
 
         //create new mongoose object
         var doc = new UserPackage(req.body);
-		
+		doc.setPassword(req.body.password);
 
-        
 
-        
+
+
         // Save the user package to the database with a callback to handle flow control
         doc.saveAsync(function (err, doc, numAffected) {
             if (err) {
@@ -318,6 +373,187 @@ module.exports = {
 
     },
 
+	updateUser: function(req, res, next) {
+        // When executed this will apply updates to a user and return the MODIFIED user
+        // Log the _id, name, and value that are passed to the function
+        console.log('[ API ] updateUser :: Call invoked with _id: ' + req.body.userId
+            + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
+        console.log(req.body.name + ' + ' + req.body.value);
+
+        // Build the name:value pairs to be updated
+        // Since there is only one name and one value, we can use the method below
+        var updates = {};
+        updates[req.body.name] = req.body.value;
+
+
+		// Record Update time
+        //filters
+        var conditions = {};
+        conditions['_id'] = req.body.userId;
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
+        updates['updated'] = Date.now();
+        console.log(updates);
+
+        Promise.props({
+            user: UserPackage.findOneAndUpdate(
+                // Condition
+                conditions,
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: updates
+                },
+                // Options
+                {
+                    // new - defaults to false, returns the modified document when true, or the original when false
+                    new: true,
+                    // runValidators - defaults to false, make sure the data fits the model before applying the update
+                    runValidators: true
+                }
+                // Callback if needed
+                // { }
+            ).execAsync()
+        })
+            .then(function (results) {
+				console.log(results);
+                // TODO: Confirm true/false is correct
+                if (results) {
+                    console.log('[ API ] putUpdateDocument :: Documents package found: TRUE');
+                }
+                else {
+                    console.log('[ API ] putUpdateDocument :: Documents package found: FALSE');
+                }
+                res.locals.results = results;
+                //sending a status of 200 for now
+                res.locals.status = '200';
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+
+	//create user roles on initial site deployment
+	createRoles: function(req, res, next) {
+		var vet = new RolePackage();
+		vet.role_name = "VET";
+		vet.role_display = "Vetting Agent";
+
+		var site = new RolePackage();
+		site.role_name = "SITE";
+		site.role_display = "Site Agent";
+
+		var admin = new RolePackage();
+		admin.role_name = "ADMIN";
+		admin.role_display = "Admin";
+
+		vet.saveAsync(function (err, doc, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+                console.log('[ API ] role vet created');
+				//res.send( { status : 200 } );
+            }
+        });
+
+		site.saveAsync(function (err, doc, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+                console.log('[ API ] role site created');
+				//res.send( { status : 200 } );
+            }
+        });
+
+		admin.saveAsync(function (err, doc, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+                console.log('[ API ] role admin created');
+				next();
+            }
+        });
+	},
+
+	updateService: function(req, res, next) {
+        // When executed this will apply updates to a doc and return the MODIFIED doc
+
+        // Log the _id, name, and value that are passed to the function
+        console.log('[ API ] updateService :: Call invoked with _id: ' + req.body.appId
+            + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
+        console.log(req.body.name + ' + ' + req.body.value);
+
+        // Build the name:value pairs to be updated
+        // Since there is only one name and one value, we can use the method below
+        var updates = {};
+		updates.service_area = req.body.value;
+
+		//if out of service area, change status to "on hold, pending discussion"
+		if(req.body.value == false) {
+			updates.status = "discuss";
+		}
+
+		// Record Update time
+        //filters
+        var conditions = {};
+        conditions['_id'] = req.body.appId;
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
+        updates['updated'] = Date.now();
+        console.log(updates);
+
+        Promise.props({
+            doc: DocumentPackage.findOneAndUpdate(
+                // Condition
+                conditions,
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: updates
+                },
+                // Options
+                {
+                    // new - defaults to false, returns the modified document when true, or the original when false
+                    new: true,
+                    // runValidators - defaults to false, make sure the data fits the model before applying the update
+                    runValidators: true
+                }
+                // Callback if needed
+                // { }
+            ).execAsync()
+        })
+            .then(function (results) {
+				console.log(results);
+                // TODO: Confirm true/false is correct
+                if (results) {
+                    console.log('[ API ] putUpdateDocument :: Documents package found: TRUE');
+                }
+                else {
+                    console.log('[ API ] putUpdateDocument :: Documents package found: FALSE');
+                }
+                res.locals.results = results;
+                //sending a status of 200 for now
+                res.locals.status = '200';
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
     /**
      * Description: add a vetting note to the database
      * Type: POST
@@ -326,18 +562,64 @@ module.exports = {
      * Returns: _id of newly created Vetting Note
      */
     postVettingNote: function(req, res, next) {
-        console.log('[ API ] postVettingNote :: Call invoked');
+        console.log('[ API ] postVettingNote :: call invoked');
+		console.log(req.body);
+		var userID = req.body.user.toString();
+		Promise.props({
+            user: UserPackage.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+        })
+            .then(function(results) {
+				console.log(results);
+                if (!results) {
+                    console.log('[ API ] postVettingNote :: User package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] postVettingNote :: User package found: TRUE');
+					var note = new VettingNotePackage(req.body);
+					var firstName = results.user.contact_info.user_name.user_first;
+					console.log('first name');
+					console.log(firstName);
+					note.vetAgent = results.user.contact_info.user_name.user_first + " " + results.user.contact_info.user_name.user_last;
+					console.log(note.vetAgent);
 
-        var note = new VettingNotePackage(req.body);
+					note.saveAsync(function (err, note, numAffected) {
+						if (err) {
+							console.error(err);
+						}
+						else if (numAffected == 1) {
+							console.log('[ API ] postVettingNote :: Note created with _id: ' + note._id);
+							//send note ID so it can be referenced without page refresh
+							res.send( { status : 200, noteId: note._id, vetAgent: note.vetAgent } );
+						}
+					})
 
-        note.saveAsync(function (err, note, numAffected) {
+
+
+				}
+			})
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+
+
+    },
+
+	//post new work item
+	addWorkItem: function(req, res, next) {
+        console.log('[ API ] addWorkItem :: Call invoked');
+		console.log(req.body);
+        var item = new WorkItemPackage(req.body);
+
+        item.saveAsync(function (err, note, numAffected) {
             if (err) {
                 console.error(err);
             }
             else if (numAffected == 1) {
-                console.log('[ API ] postVettingNote :: Note created with _id: ' + note._id);
+				console.log("saved!");
+                console.log('[ API ] add Work Item :: Note created with _id: ' + item._id);
                 //send note ID so it can be referenced without page refresh
-                res.send( { status : 200, noteId: note._id } );
+                res.send( { status : 200, itemId: item._id } );
             }
         });
 
@@ -352,6 +634,7 @@ module.exports = {
      */
     removeVettingNote: function(req, res, next) {
         console.log('[ API ] removeVettingNote :: Call invoked');
+		//console.log(req.locals.status);
         Promise.props({
             note: VettingNotePackage.remove(
                 {
@@ -376,6 +659,33 @@ module.exports = {
         });
     },
 
+	//delete work item
+	deleteWorkItem: function(req, res, next) {
+        console.log('[ API ] deleteWorkItem :: Call invoked');
+		console.log(req.body)
+        Promise.props({
+            note: WorkItemPackage.remove(
+                {
+                    _id: req.body.itemId
+                }
+            ).execAsync()
+        })
+        .then(function (results) {
+            if (results) {
+                console.log('[ API ] deleteWorkItem :: Note found: TRUE');
+                res.locals.results = results;
+                //sending a status of 200 for now
+                res.locals.status = '200';
+            }
+            else {
+                console.log('[ API ] removeVettingNote :: Note found: FALSE');
+            }
+            next();
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+    },
     /**
      * Description: update or edit a Vetting Note
      * Type: POST
@@ -441,6 +751,66 @@ module.exports = {
             .catch(next);
     },
 
+
+	updateWorkItem: function(req, res, next) {
+        // Log the _id, name, and value that are passed to the function
+        console.log('[ API ] WorkItem :: Call invoked with item _id: ' + req.body.id
+            + ' | description: ' + req.body.description);
+
+        var updates = {};
+        updates.description = req.body.description;
+		updates.cost = req.body.cost;
+		updates.vettingComments = req.body.vettingComments;
+
+        //filters
+        var conditions = {};
+        conditions['_id'] = req.body.id;
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
+        console.log(updates);
+
+        Promise.props({
+            item: WorkItemPackage.findOneAndUpdate(
+                // Condition
+                conditions,
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: updates
+                },
+                // Options
+                {
+                    // new - defaults to false, returns the modified document when true, or the original when false
+                    new: true,
+                    // runValidators - defaults to false, make sure the data fits the model before applying the update
+                    runValidators: true
+                }
+                // Callback if needed
+                // { }
+            ).execAsync()
+        })
+            .then(function (results) {
+                console.log(results);
+                if (results.item != null) {
+                    console.log('[ API ] updateWorkItem :: Note found: TRUE');
+                    res.locals.status = '200';
+                }
+                else {
+                    console.log('[ API ] updateWorkItem :: Note found: FALSE');
+                    res.locals.status = '500';
+                }
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
     /**
      * Description: retrieve a Highlight Package from the database by id
      * Type: GET

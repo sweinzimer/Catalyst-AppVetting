@@ -6,6 +6,7 @@ var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var api = require('../controllers/api');
+var User = require('../models/userPackage');
 
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose we are using the Bluebird promise library
@@ -16,7 +17,7 @@ Promise.promisifyAll(mongoose); // Convert mongoose API to always return promise
 //Need ObjectID to search by ObjectID
 var ObjectId = require('mongodb').ObjectID;
 
-
+module.exports = function(passport) {
 /**
  * This Router handles GET Requests for viewing the vetting home page and specific application pages
  *
@@ -45,8 +46,8 @@ router.post('/csvExport', function(req, res){
 	var filename = lastname + ', ' + firstname + ' - ' + applicationID;
 	const execFile = require('child_process').execFile;
 	const exec = require('child_process').exec;
-	const mongoexport_child = execFile('mongoexport', ['-d', 'catalyst', 
-	'-c', 'documentpackages', '--type=csv', '--fields', 	'application.name.first,application.name.last,application.address.line_1,application.address.line_2,application.address.city,application.address.state,application.address.zip,application.phone.preferred,application.phone.other,finance.mortgage.up_to_date,application.owns_home', 		'-q', query, '-o', 'public/exports/'+filename+'.csv'], 
+	const mongoexport_child = execFile('mongoexport', ['-d', 'catalyst',
+	'-c', 'documentpackages', '--type=csv', '--fields', 	'application.name.first,application.name.last,application.address.line_1,application.address.line_2,application.address.city,application.address.state,application.address.zip,application.phone.preferred,application.phone.other,finance.mortgage.up_to_date,application.owns_home', 		'-q', query, '-o', 'public/exports/'+filename+'.csv'],
 	function(error, stdout, stderr) {
 		if(error){
 			console.error('stderr', stderr);
@@ -58,22 +59,22 @@ router.post('/csvExport', function(req, res){
 	});
 
 	mongoexport_child.on('exit', function(code,signal){
-		
-		const rename_child = exec('cd public/exports; var="First Name,Last Name,Address Line 1,Address Line 2,City,State,Zip,Phone,Phone Other,Up to Date on Mortgage,Owns Home "; sed -i "1s/.*/$var/" ' + "'" + filename + '.csv' + "'", 
+
+		const rename_child = exec('cd public/exports; var="First Name,Last Name,Address Line 1,Address Line 2,City,State,Zip,Phone,Phone Other,Up to Date on Mortgage,Owns Home "; sed -i "1s/.*/$var/" ' + "'" + filename + '.csv' + "'",
 			function(error, stdout, stderr){
 					if(error){
 						console.error('stderr', stderr);
-						throw error;				
+						throw error;
 					}
 					else{
-						console.log('stdout', stdout);				
+						console.log('stdout', stdout);
 					}
 		})
 
 	rename_child.on('exit', function(code,signal){
 		if(code !== 0){
 			res.status(500).send("Export failed: Code 500");
-			debugger			
+			debugger
 		}
 		else{
 			res.status(200).send({status: 'success'});
@@ -83,7 +84,7 @@ router.post('/csvExport', function(req, res){
 
 
 	});
-	
+
 
 
 })
@@ -191,13 +192,18 @@ router.get('/', api.getDocumentByStatus, function(req, res, next) {
         });
     }
 
-    res.render('vetting', payload);
+	payload.user = req.user._id;
+
+	payload.user_email = res.locals.email;
+
+
+	res.render('vetting', payload);
 });
 
 /**
  * Route for adding notes
 **/
-router.post('/addNote', api.postVettingNote, function(req, res, next) {
+router.post('/addNote', isLoggedInPost, api.postVettingNote, function(req, res, next) {
     if(res.locals.status != '200'){
         res.status(500).send("Could not add note");
     }
@@ -209,7 +215,7 @@ router.post('/addNote', api.postVettingNote, function(req, res, next) {
 /**
  * Route for deleting notes
  **/
-router.post('/delNote', api.removeVettingNote, function(req, res, next) {
+router.post('/delNote', isLoggedInPost, api.removeVettingNote, function deleteNote(req, res, next) {
     if(res.locals.status != '200'){
         res.status(500).send("Could not delete note");
     }
@@ -221,7 +227,7 @@ router.post('/delNote', api.removeVettingNote, function(req, res, next) {
 /**
  * Route for updating notes
  **/
-router.post('/updateNote', api.updateVettingNote, function(req, res, next) {
+router.post('/updateNote', isLoggedInPost, api.updateVettingNote, function(req, res, next) {
     if(res.locals.status != '200'){
         res.status(500).send("Could not update note");
     }
@@ -230,10 +236,15 @@ router.post('/updateNote', api.updateVettingNote, function(req, res, next) {
     }
 });
 
+
 /* Route to specific application by DocumentPackage Object ID */
-router.get('/:id', function(req, res, next) {
+router.get('/:id', isLoggedIn, function(req, res, next) {
     //Checking what's in params
     console.log("Rendering application " + ObjectId(req.params.id));
+	console.log("user requested: ");
+	console.log(req.user._id);
+
+
 
     /* search by _id. */
     Promise.props({
@@ -263,8 +274,9 @@ router.get('/:id', function(req, res, next) {
         }
 
         res.locals.layout = 'b3-layout';        // Change default from layout.hbs to b3-layout.hbs
-
         results.title = "Application View";     //Page <title> in header
+		//results.user = JSON.stringify(req.user._id);
+		results.user = req.user._id;
 
         res.render('b3-view', results);
     })
@@ -272,6 +284,15 @@ router.get('/:id', function(req, res, next) {
         console.error(err);
     });
 
+});
+
+//route catches invalid post requests.
+router.use('*', function route2(req, res, next) {
+	if(res.locals.status == '406'){
+		console.log("in error function");
+        res.status(406).send("Could not update note");
+		res.render('/user/login');
+    }
 });
 
 function formatElement(element) {
@@ -287,11 +308,22 @@ function formatElement(element) {
  */
 function formatDate(element)
 {
+	console.log("element updated");
+	console.log(element.updated);
     var Year = element.updated.getFullYear();
     //get month and day with padding since they are 0 indexed
     var Day = ( "00" + element.updated.getDate()).slice(-2);
     var Mon = ("00" + (element.updated.getMonth()+1)).slice(-2);
     element.updated = Mon + "/" + Day + "/" + Year;
+
+	if(element.signature && element.signature.client_date != "") {
+	console.log("element sig");
+	console.log(element.signature.client_date);
+	var appYear = element.signature.client_date.getFullYear();
+	var appDay = ("00" + element.signature.client_date.getDate()).slice(-2);
+	var appMon = ("00" + (element.signature.client_date.getMonth()+1)).slice(-2);
+	element.signature.client_date = appMon + "/" + appDay + "/" + Year;
+	}
     return element;
 }
 
@@ -342,5 +374,109 @@ function formatStatus(element) {
     return element;
 }
 
-module.exports = router;
+//module.exports = router;
+return router;
+}
 
+//check to see if user is logged in and a vetting agent or an admin
+function isLoggedIn(req, res, next) {
+		if(req.isAuthenticated()) {
+			console.log(req.user._id);
+			var userID = req.user._id.toString();
+
+			console.log("userID");
+			console.log(userID);
+			var ObjectId = require('mongodb').ObjectID;
+			Promise.props({
+				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+			})
+			.then(function (results) {
+				console.log(results);
+
+					if (!results) {
+						res.redirect('/user/logout');
+					}
+					else {
+						if(results.user.user_status == "ACTIVE") {
+							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
+								res.locals.email = results.user.contact_info.user_email;
+
+								return next();
+
+							}
+
+							else {
+								console.log("user is not vet");
+								res.redirect('/user/logout');
+							}
+						}
+						else {
+							//user not active
+							console.log("user not active");
+							res.redirect('/user/logout');
+						}
+					}
+
+
+
+			})
+
+		.catch(function(err) {
+                console.error(err);
+        })
+         .catch(next);
+		}
+		else {
+			console.log("no user id");
+			res.redirect('/user/login');
+		}
+}
+
+//post request authenticator.  Checks if user is an admin or vetting agent
+function isLoggedInPost(req, res, next) {
+		if(req.isAuthenticated()) {
+			console.log(req.user._id);
+			var userID = req.user._id.toString();
+
+			var ObjectId = require('mongodb').ObjectID;
+
+			Promise.props({
+				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+			})
+			.then(function (results) {
+				console.log(results);
+
+					if (!results) {
+						//user not found in db.  Route to error handler
+						res.locals.status = 406;
+						return next('route');
+					}
+					else {
+
+						if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
+							return next();
+
+						}
+						else {
+							//user is not a vetting agent or admin, route to error handler
+							res.locals.status = 406;
+							return next('route');
+						}
+					}
+
+
+
+			})
+
+		.catch(function(err) {
+                console.error(err);
+        })
+         .catch(next);
+		}
+		else {
+			//user is not logged in
+			console.log("no user id");
+			res.locals.status = 406;
+			return next('route');
+		}
+}

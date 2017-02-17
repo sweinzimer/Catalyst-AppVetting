@@ -11,26 +11,37 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 var fs = require('fs');
+var passport = require('passport');
+var flash = require('connect-flash');
+var morgan = require('morgan');
+var session = require('express-session');
+var app = express();
+//configure passport
+app.use(session({ secret: 'hidethissomewhere'}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
+var initPassport = require('./passport/init');
+initPassport(passport);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Route Naming and Importing
 // Define routes that will be used
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 var routes = require('./routes/index');
 var test = require('./routes/test');
-var view = require('./routes/view');
-var edit = require('./routes/edit');
+var view = require('./routes/view')(passport);
+var edit = require('./routes/edit')(passport);
 var appform = require('./routes/appform');
-var vettingworksheet = require('./routes/vettingworksheet');
-var regUser = require('./routes/regUser')
-//new
-var regUser = require('./routes/regUser');
+var vettingworksheet = require('./routes/vettingworksheet')(passport);
+var regUser = require('./routes/regUser')(passport);
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Init the Express App Engine
 // Start Express and serve the favicon
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-var app = express();
+
 app.use(favicon(__dirname + '/public/images/favicon.ico'));
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,6 +76,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(morgan('dev'));
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Middleware the will -ALWAYS- be executed
@@ -95,7 +108,6 @@ app.use('/user', regUser);
 //new
 app.use('/user', regUser);
 
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries
 // Links to jQuery and Boots strap files
@@ -106,6 +118,7 @@ app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/javascript', express.static(__dirname + '/public/javascripts'));
 app.use('/fonts/', express.static(__dirname + '/node_modules/bootstrap/dist/fonts'));
 app.use('/exports', express.static(__dirname + '/public/exports'));
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Error handlers
