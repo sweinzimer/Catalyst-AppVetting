@@ -385,19 +385,8 @@ module.exports = {
 
 
 
-        // Create a corresponding highlight package
-        var highlight = new HighlightPackage();
-		var finance = new FinancialPackage();
-        // Make each reference the others ObectId
-        // TODO: Add support for work items and site assessment
-        doc.highlightPackage = highlight._id;
-        highlight.documentPackage = doc._id;
-		finance.appID = doc._id;
-		finance.name.first = req.body.application.name.first;
-		console.log("fin first");
-		console.log(finance.name.first);
-		finance.name.last = req.body.application.name.last;
-
+        
+        
 
         // Save the user package to the database with a callback to handle flow control
         doc.saveAsync(function (err, doc, numAffected) {
