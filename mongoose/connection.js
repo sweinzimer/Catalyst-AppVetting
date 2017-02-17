@@ -19,7 +19,7 @@ var uri = 'mongodb://'
     + '@'
     + config.ec2.public_ip
     + ':'
-    + '27017'
+    + config.mongo.port
     + '/'
     + config.mongo.db
     + '?authSource=' + config.mongo.authSource;
