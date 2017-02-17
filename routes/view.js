@@ -138,6 +138,11 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
             payload.processing.push(element);
         });
     }
+	
+	payload.user = req.user._id;
+	
+	payload.user_email = res.locals.email;
+	
 
 	res.render('vetting', payload);
 });
@@ -214,16 +219,12 @@ router.get('/:id', isLoggedIn, function(req, res, next) {
                 results.vettingNotes[index].date = Mon + "/" + Day + "/" + Year;
             });
         }
-
+		
         res.locals.layout = 'b3-layout';        // Change default from layout.hbs to b3-layout.hbs
-
         results.title = "Application View";     //Page <title> in header
 		//results.user = JSON.stringify(req.user._id);
 		results.user = req.user._id;
-		console.log("results");
-		console.log(results);
-		console.log("result user");
-		console.log(results.user);
+		
         res.render('b3-view', results);
     })
     .catch(function(err) {
@@ -345,6 +346,8 @@ function isLoggedIn(req, res, next) {
 					else {
 						if(results.user.user_status == "ACTIVE") {
 							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
+								res.locals.email = results.user.contact_info.user_email;
+								
 								return next();
 
 							}

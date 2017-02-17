@@ -18,6 +18,7 @@ router.route('/register')
 		var payload = {};
 		payload.roles = res.locals.results.roles;
 		payload.rolesString = JSON.stringify(res.locals.results.roles)
+		payload.user_email = res.locals.email;
 		res.render('newuserform', payload);
 	})
 	.post(isLoggedInPost, api.postUser, function(req, res) {
@@ -77,6 +78,7 @@ function isLoggedIn(req, res, next) {
 					else {
 						if(results.user.user_status == "ACTIVE") {
 							if(results.user.user_role == "ADMIN") {
+								res.locals.email = results.user.contact_info.user_email;
 								return next();
 
 							}
