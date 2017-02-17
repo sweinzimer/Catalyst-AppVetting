@@ -1,5 +1,6 @@
 <a href="/view" class="btn btn-primary">Back to Vetting Home</a>
 <a href="/vettingworksheet/{{doc._id}}" class="btn btn-primary">Vetting Worksheet</a>
+<a id="csvExportButton" class="btn btn-primary">Export to CSV</a>
 
 
 <div class="container">
@@ -602,4 +603,36 @@
             })
         });
     });
+
+    $('#csvExportButton').on('click', function(e) {
+	let urlParts = window.location.pathname.split('/')
+    let applicationID = urlParts[urlParts.length-1]
+	let firstname = '{{{doc.application.name.first}}}';
+	let lastname = '{{{doc.application.name.last}}}';
+    let payload = {
+      	application: applicationID,
+		firstname: firstname,
+		lastname: lastname
+    }
+    let csvRequest = $.ajax({
+      type: 'POST',
+        url: '/view/csvExport',
+        dataType: 'json',
+        contentType: 'application/json; chartset=UTF-8',
+        data: JSON.stringify(payload)
+      })
+      csvRequest.done(function(xhr) {
+        if (xhr.status === 'success') {
+          // TODO: Set window.location.href equal to the download file
+			
+			window.location = '../exports/' + '{{{doc.application.name.last}}}' + ', ' + '{{{doc.application.name.first}}}' + ' - ' + applicationID + '.csv'
+        } else {
+			console.log(xhr.status);
+        }
+      })
+      csvRequest.fail(function(data) {
+		console.log(data.status)
+        debugger
+      })
+    })
 </script>

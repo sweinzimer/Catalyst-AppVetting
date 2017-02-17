@@ -95,6 +95,7 @@ app.use('/user', regUser);
 //new
 app.use('/user', regUser);
 
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries
 // Links to jQuery and Boots strap files
@@ -104,6 +105,7 @@ app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/javascript', express.static(__dirname + '/public/javascripts'));
 app.use('/fonts/', express.static(__dirname + '/node_modules/bootstrap/dist/fonts'));
+app.use('/exports', express.static(__dirname + '/public/exports'));
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Error handlers
