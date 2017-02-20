@@ -270,7 +270,7 @@ module.exports = {
 						else if (numAffected == 1) {
 							console.log('[ API ] postDocument :: highlightPackage created with _id: ' + highlight._id);
 							console.log('[ API ] postDocument :: highlightPackage references document package _id: ' + highlight.reference);
-							res.send( { status : 200 } );
+							//res.send( { status : 200 } );
 						}
 					});
 					           
