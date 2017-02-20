@@ -7,6 +7,7 @@ var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var api = require('../controllers/api');
 var User = require('../models/userPackage');
+var config = require('../config')
 
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose we are using the Bluebird promise library
@@ -47,7 +48,7 @@ router.post('/csvExport', function(req, res){
 	const execFile = require('child_process').execFile;
 	const exec = require('child_process').exec;
 	const mongoexport_child = execFile('mongoexport', ['-d', 'catalyst',
-	'-c', 'documentpackages', '--type=csv', '--fields', 	'application.name.first,application.name.last,application.address.line_1,application.address.line_2,application.address.city,application.address.state,application.address.zip,application.phone.preferred,application.phone.other,finance.mortgage.up_to_date,application.owns_home', 		'-q', query, '-o', 'public/exports/'+filename+'.csv'],
+	'-c', 'documentpackages', '--type=csv', '--fields', 	'application.name.first,application.name.last,application.address.line_1,application.address.line_2,application.address.city,application.address.state,application.address.zip,application.phone.preferred,application.phone.other,finance.mortgage.up_to_date,application.owns_home', 		'-q', query, '-o', 'public/exports/'+filename+'.csv', '--port', config.mongo.port],
 	function(error, stdout, stderr) {
 		if(error){
 			console.error('stderr', stderr);
