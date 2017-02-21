@@ -209,6 +209,8 @@ module.exports = {
         if (debug == 1) {
             console.log(req.body);
         }
+		console.log("count");
+		console.log(req.body.count);
 		Promise.props({
 			docInSys: DocumentPackage.count({}).lean().execAsync()
 		})
@@ -251,6 +253,8 @@ module.exports = {
 					console.log("fin first");
 					console.log(finance.name.first);
 					finance.name.last = req.body.application.name.last;
+					
+					
 
 					// Save the document package to the database with a callback to handle flow control
 					doc.saveAsync(function (err, doc, numAffected) {
@@ -285,6 +289,24 @@ module.exports = {
 							res.send( { status : 200 } );
 						}
 					});
+					
+					for (var i=0; i<req.body.count; i++) {
+						var family = new FinancialPackage();
+						family.appID = doc._id;
+						family.name.first = req.body.application.other_residents.name[i];
+						family.name.last = "";
+						family.saveAsync(function (err, highlight, numAffected) {
+							if (err) {
+								console.error(err);
+							}
+							else if (numAffected == 1) {
+								console.log('[ API ] postDocument :: finPackage created with _id: ' + finance._id);
+								console.log('[ API ] postDocument :: finPackage references document package _id: ' + finance.appID);
+								//res.send( { status : 200 } );
+							}
+						});
+						
+					} 
 		
 				}
 
