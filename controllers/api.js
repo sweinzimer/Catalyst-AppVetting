@@ -158,7 +158,8 @@ module.exports = {
     getDocumentByStatus: function(req, res, next) {
         // Log the api call made to the console
         console.log('[ API ] getDocumentByStatus :: Call invoked');
-
+		var currentTime = new Date();
+		var year = currentTime.getFullYear();
         // Access the returned items as results.<status code>[array index].<what you need>
         // Example: results.visit[3].address.line_1 = a string
         Promise.props({
@@ -171,7 +172,7 @@ module.exports = {
             approval: DocumentPackage.find({status: "approval"}).lean().execAsync(),
             handle: DocumentPackage.find({status: "handle"}).lean().execAsync(),
             declined: DocumentPackage.find({status: "declined"}).sort({'updated':-1}).lean().execAsync(),
-            project: DocumentPackage.find({status: "project"}).lean().execAsync()
+            project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync()
         })
             .then(function (results) {
                 if (!results) {
@@ -209,8 +210,11 @@ module.exports = {
         if (debug == 1) {
             console.log(req.body);
         }
+		
+		var currentTime = new Date();
+		var year = currentTime.getFullYear();
 		Promise.props({
-			docInSys: DocumentPackage.count({}).lean().execAsync()
+			docInSys: DocumentPackage.count({app_year : year}).lean().execAsync()
 		})
 		.then(function (results) {
                 if (!results) {
@@ -222,8 +226,8 @@ module.exports = {
 					var count = results.docInSys;
 					count++;
 					console.log(count);
-					var currentTime = new Date();
-					var year = currentTime.getFullYear();
+					
+					
 					var app_name = "A" + year.toString() + "-" + count.toString();
 					console.log(app_name);
 					// Normally we would create a new mongoose object to be instantiated
@@ -242,6 +246,7 @@ module.exports = {
 					// TODO: Add support for work items and site assessment
 					doc.highlightPackage = highlight._id;
 					doc.app_name = app_name;
+					doc.app_year = year;
 					console.log(doc.app_name);
 					highlight.documentPackage = doc._id;
 					
