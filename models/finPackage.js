@@ -8,11 +8,7 @@ ObjectId = Schema.ObjectId;
 
 var FinPackageSchema = new Schema({
 	appID: { type: ObjectId},
-	name : {
-		first : String,
-		last : String
-	},
-
+	name : String,
 
 	food_stamps : {
 		req : Boolean,

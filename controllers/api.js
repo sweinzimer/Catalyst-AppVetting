@@ -249,12 +249,12 @@ module.exports = {
 					
 					var finance = new FinancialPackage();
 					finance.appID = doc._id;
-					finance.name.first = req.body.application.name.first;
-					console.log("fin first");
-					console.log(finance.name.first);
-					finance.name.last = req.body.application.name.last;
-					
-					
+					//finance.name.first = req.body.application.name.first;
+					//console.log("fin first");
+					//console.log(finance.name.first);
+					//finance.name.last = req.body.application.name.last;
+					var name = req.body.application.name.first + " " + req.body.application.name.last;
+					finance.name = name;
 
 					// Save the document package to the database with a callback to handle flow control
 					doc.saveAsync(function (err, doc, numAffected) {
@@ -293,8 +293,8 @@ module.exports = {
 					for (var i=0; i<req.body.count; i++) {
 						var family = new FinancialPackage();
 						family.appID = doc._id;
-						family.name.first = req.body.application.other_residents.name[i];
-						family.name.last = "";
+						family.name = req.body.application.other_residents.name[i];
+					
 						family.saveAsync(function (err, highlight, numAffected) {
 							if (err) {
 								console.error(err);
