@@ -91,7 +91,7 @@ router.post('/csvExport', function(req, res){
 })
 
 
-router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
+router.get('/', api.getDocumentByStatus, function(req, res, next) {
 
     var payload = {};
 
@@ -239,7 +239,7 @@ router.post('/updateNote', isLoggedInPost, api.updateVettingNote, function(req, 
 
 
 /* Route to specific application by DocumentPackage Object ID */
-router.get('/:id', isLoggedIn, function(req, res, next) {
+router.get('/:id', function(req, res, next) {
     //Checking what's in params
     console.log("Rendering application " + ObjectId(req.params.id));
 	console.log("user requested: ");
@@ -381,6 +381,7 @@ return router;
 
 //check to see if user is logged in and a vetting agent or an admin
 function isLoggedIn(req, res, next) {
+		
 		if(req.isAuthenticated()) {
 			console.log(req.user._id);
 			var userID = req.user._id.toString();

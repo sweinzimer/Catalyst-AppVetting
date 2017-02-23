@@ -23,7 +23,7 @@ var uri = 'mongodb://'
     + '/'
     + config.mongo.db
 
-    + '?authSource=' + config.mongo.authSource;
+    + '?authSource=';
 
 
 

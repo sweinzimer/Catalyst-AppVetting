@@ -96,12 +96,30 @@ module.exports = {
     getDocumentById: function (req, res, next) {
         // Log the api call we make along with the _id used by it
         console.log('[ API ] getDocumentById :: Call invoked with id: ' + req.params.id);
-
+		
         // Use results.DocumentPackage.<whatever you need> to access the information
         Promise.props({
-            document: DocumentPackage.findById(req.params.id).lean().execAsync()
+            //document: DocumentPackage.findById(req.params.id).lean().execAsync()
+			document: DocumentPackage.aggregate(
+				[
+				{$match: { _id : mongoose.Types.ObjectId(req.params.id)}},
+					{ $redact: {
+						$cond: {
+							if: { $eq: [ "$level", 5 ] },
+							then: "$$PRUNE",
+							else: "$$DESCEND"
+						}
+					}}
+					
+				]
+			).execAsync()
+			
         })
             .then(function(results) {
+				console.log("results");
+				
+				
+				console.log(results);
                 if (!results) {
                     console.log('[ API ] getDocumentById :: Documents package found: FALSE');
                 }

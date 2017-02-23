@@ -49,6 +49,7 @@ var DocumentPackageSchema = new Schema({
     highlightPackage: { type: ObjectId },
     service_area : Boolean,
 	app_name : String,
+	tags: ["VA", "EX", "SA"],
 	
     advocate:       {
         is_advocate:        Boolean,
