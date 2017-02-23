@@ -66,6 +66,14 @@ hbs.registerHelper("debug", function(optionalValue) {
     }
 });
 
+hbs.registerHelper('stringify', function(val) {
+  return JSON.stringify(val, null, '  ')
+})
+
+hbs.registerHelper('returnObject', function(val) {
+  return val
+})
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Middleware
 // Use any middleware for the application that is needed. bodyParse allows parsing to
