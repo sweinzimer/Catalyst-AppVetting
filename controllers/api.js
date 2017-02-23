@@ -882,29 +882,22 @@ module.exports = {
         var updates = {};
 		res.locals.status = '200';
 		next();
-		/*updates.GETNAME = req.body.NAME;
+		/*updates[req.body.name] = req.body.value;
 		
 		
 		
 		// Record Update 
         //filters
         var conditions = {};
-        conditions['_id'] = req.body.FINPACKAGEID;
+        conditions['_id'] = req.body.id;
         console.log("Search Filter:");
         console.log(conditions);
         console.log("Update:");
-        updates['updated'] = Date.now();
-        console.log(updates);
+        
 
         Promise.props({
             fin: finPackage.findOneAndUpdate(
->>>>>>> fin_schema
-               
-<<<<<<< HEAD
-                    // $set: {name: value}
-=======
-                    // $set: {name: VALUE}
->>>>>>> fin_schema
+
                     $set: updates
                 },
                 // Options
@@ -919,18 +912,7 @@ module.exports = {
             ).execAsync()
         })
             .then(function (results) {
-<<<<<<< HEAD
-                console.log(results);
-                if (results.item != null) {
-                    console.log('[ API ] updateWorkItem :: Note found: TRUE');
-                    res.locals.status = '200';
-                }
-                else {
-                    console.log('[ API ] updateWorkItem :: Note found: FALSE');
-                    res.locals.status = '500';
-                }
-                res.locals.results = results;
-=======
+
 				console.log(results);
                 
                 if (results) {
@@ -942,10 +924,7 @@ module.exports = {
                 res.locals.results = results;
                 //sending a status of 200 for now
                 res.locals.status = '200';
->>>>>>> fin_schema
 
-              
-=======
             .catch(next);*/
 
     },
