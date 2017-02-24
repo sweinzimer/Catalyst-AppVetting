@@ -875,30 +875,66 @@ module.exports = {
         // Log the _id, name, and value that are passed to the function
         console.log('[ API ] updateFinance :: Call invoked with _id: ');
         console.log(req.body);
+		console.log(Object.keys(req.body));
+		var userID;
+		console.log("length");
+		var name1;
+		var name2;
+		var value;
 		
+		Object.keys(req.body).forEach(function(prop) {
+			console.log("in looop");
+			console.log(prop);
+			userID = prop;
+			console.log(req.body[prop]);
+			Object.keys(req.body[prop]).forEach(function(data) {
+				console.log("in second loop");
+				//console.log(req.body[prop]);
+				console.log(data);
+				name1 = data;
+				console.log(name1);
+				console.log((req.body[prop])[data]);
+				Object.keys((req.body[prop])[data]).forEach(function(bool) {
+					console.log("third loop");
+					console.log(bool);
+					name2 = bool;
+					console.log(((req.body[prop])[data])[bool]);
+					value = ((req.body[prop])[data])[bool];
+				});
+			});
+		});
 
         // Build the name:value pairs to be updated
         
         var updates = {};
-		res.locals.status = '200';
-		next();
-		/*updates[req.body.name] = req.body.value;
+		console.log("data built: ");
+		console.log(userID);
+		//console.log(name).toString();
+		var name = name1.toString() + "." + name2.toString();
+		console.log(name);
+		console.log(value);
+		
+		
+		updates[name] = value;
 		
 		
 		
 		// Record Update 
         //filters
         var conditions = {};
-        conditions['_id'] = req.body.id;
+        conditions['_id'] = mongoose.Types.ObjectId(userID);
         console.log("Search Filter:");
         console.log(conditions);
         console.log("Update:");
         
 
         Promise.props({
-            fin: finPackage.findOneAndUpdate(
-
-                    $set: updates
+            fin: FinancialPackage.findOneAndUpdate(
+			 // Condition
+                conditions,
+                // Updates
+                {
+					$set: updates
                 },
                 // Options
                 {
@@ -924,8 +960,13 @@ module.exports = {
                 res.locals.results = results;
                 //sending a status of 200 for now
                 res.locals.status = '200';
+				next();
+			})
+            .catch(function (err) {
+                console.error(err);
+            })
 
-            .catch(next);*/
+            .catch(next);
 
     },
     /**
