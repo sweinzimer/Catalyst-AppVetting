@@ -990,38 +990,38 @@
 		    items: [
 		      {
 		        question: 'Do you receive food stamp benefits?',
-		        subtext: 'If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a>',
-		        fieldPath: 'food_stamps',
+		        subtext: '<p>If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a></p>',
+		        fieldPath: ['food_stamps'],
 		        objects: ['Food Stamps documentation']
 		      },
 		      {
 		        question: 'Did you or anyone else in your home file a federal income tax form last year?',
-		        subtext: 'If yes, request copies of their main tax form(s) (1040 or 1040EZ), and proceed to X. If no proceed to next question.',
-		        fieldPath: 'income_tax',
+		        subtext: '<p>If yes, request copies of their main tax form(s) (1040 or 1040EZ), and proceed to X. If no proceed to next question.</p>',
+		        fieldPath: ['income_tax'],
 		        objects: ['Federal Tax Records']
 		      },
 		      {
 		        question: 'Are you or anyone else in your home currently employed?',
-		        subtext: 'If yes, request Income Documentation for all employed residents and proceed. If no, proceed to next question.',
-		        fieldPath: 'employment',
+		        subtext: '<p>If yes, request Income Documentation for all employed residents and proceed. If no, proceed to next question.</p>',
+		        fieldPath: ['employment'],
 		        objects: ['Income Documentation [e.g. Pay Stubs]']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home receive Social Security benefits? (retirement; disability; SSI)',
-		        subtext: 'If yes, request copies of their benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.',
-		        fieldPath: 'ss_ben',
+		        subtext: '<p>If yes, request copies of their benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
+		        fieldPath: ['ss_ben'],
 		        objects: ['Social Security-Documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home receive pension payments?',
-		        subtext: 'If yes, request copies of check stubs or deposit notices showing total benefit received. If no, proceed to next question.',
-		        fieldPath: 'pension',
+		        subtext: '<p>If yes, request copies of check stubs or deposit notices showing total benefit received. If no, proceed to next question.</p>',
+		        fieldPath: ['pension'],
 		        objects: ['Pension Benefit-Documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home receive housing assistance?',
-		        subtext: 'If yes, request copies of benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.',
-		        fieldPath: 'house_assist',
+		        subtext: '<p>If yes, request copies of benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
+		        fieldPath: ['house_assist'],
 		        objects: ['Housing assistance documentation']
 		      }
 		    ]
@@ -1031,32 +1031,32 @@
 		    items: [
 		      {
 		        question: 'Do you anyone else in your home have a checking or a savings account with more than $5,000 on deposit?',
-		        subtext: 'If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.',
-		        fieldPath: 'check_account',
+		        subtext: '<p>If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.</p>',
+		        fieldPath: ['check_account', 'saving_account'],
 		        objects: ['Checking Account documentation', 'Savings Account documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have money in a retirement account? (e.g. IRA, 401k, etc.)',
-		        subtext: 'If yes, request copies of most recent account statements. If no, proceed to the next question.',
-		        fieldPath: 'saving_account',
+		        subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
+		        fieldPath: ['ret_fund'],
 		        objects: ['Retirement Fund documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have any other investment or trust accounts?',
-		        subtext: 'If yes, request copies of most recent account statements. If no, proceed to the next question.',
-		        fieldPath: 'ret_fund',
+		        subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
+		        fieldPath: ['invest'],
 		        objects: ['Other Investments/Trusts documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have one or more physical assets (collections, works of art, antique vehicles) worth more than a total of $5,000?',
-		        subtext: 'If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.',
-		        fieldPath: 'invest',
+		        subtext: '<p>If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.</p>',
+		        fieldPath: ['physical'],
 		        objects: ['Physical Assets-Documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have other financial resources that my questions haven’t given you an opportunity to tell me about?',
-		        subtext: 'If yes, record below and proceed to closing. If no, proceed to closing.',
-		        fieldPath: 'physical',
+		        subtext: '<p>If yes, record below and proceed to closing. If no, proceed to closing.</p>',
+		        fieldPath: ['other_resources', 'proof_own'],
 		        hasDescription: true,
 		        objects: ['Other', 'Proof of Ownership (could be latest mortgage statement or insurance record)']
 		      }
@@ -1077,34 +1077,33 @@
 				)
 			}
 
-			console.log(e.target.name);
-			console.log(e.target.value);
-			let changedValue = changeObjectValueByPath({}, e.target.name, e.target.checked)
-			//console.log('changed value');
-			//console.log(changedValue);
+			let idx = e.target.name.split('.')[0]
+			let objectVal = changeObjectValueByPath({}, e.target.name, e.target.checked)
+
+			let changedValue = {}
+			changedValue[ this.people[ idx ]._id ] = objectVal[idx]
+
 			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', (err) => {
-
-
+				// TODO: If error, flip the value back and show an error message to the user
 			})
 
 		}.bind(this)
 
 
-
 		this.populateHtml = function() {
 			this.root = $(this.htmlTargetSelector)
 
-			this.schema.forEach((section) => {
+			this.schema.forEach((section, sectionIdx) => {
 				let sectionNode = $('<div></div>').addClass('finacialPackageSection')
 				sectionNode.append('<h4>' + section.sectionName + '</h4>')
 
-				section.items.forEach((item) => {
+				section.items.forEach((item, itemIdx) => {
 					let itemRow = $('<div></div>').addClass('finacialPackageRow')
 
 					// Question text
 					let itemText = $('<div></div>').addClass('finacialPackageText').appendTo(itemRow)
 					$('<p></p>').addClass('scriptText').text('Q: ' + item.question).appendTo(itemText)
-					$('<i></i>').text(item.subtext).appendTo(itemText)
+					$('<i></i>').append(item.subtext).appendTo(itemText)
 
 					// Header row for questions
 					let itemQuestionRow = $('<div></div>').addClass('row').appendTo(itemRow)
@@ -1117,7 +1116,7 @@
 					headerRowTableHeader = $('<tr></tr>').appendTo(headerRowTableHeader)
 					headerRowTableHeader.appendTo(headerRowTable)
 
-					this.people.forEach((person) => {
+					this.people.forEach((person, personIdx) => {
 						$('<th></th>').text(person.name.first + ' ' + person.name.last).appendTo(headerRowTableHeader)
 					})
 
@@ -1131,62 +1130,48 @@
 						let checkBoxTable = $('<table></table>').addClass('table').appendTo(objectCheckBoxColumn)
 						checkBoxTable = $('<tbody></tbody>').appendTo(checkBoxTable)
 
-						// TODO: For each person, add check boxes
+						let checkBoxRow = $('<tr></tr>').appendTo(checkBoxTable)
 
+						this.people.forEach((person, personIdx) => {
+							let personCell = $('<td></td>').appendTo(checkBoxRow)
+
+							$('<input type="checkbox"> Requested</input>').appendTo(personCell)
+							.attr('name', personIdx + '.' + this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] + '.' + 'req')
+							.on('change', this.handleChange)
+
+							$('<br/>').appendTo(personCell)
+
+							$('<input type="checkbox"> Received</input>').appendTo(personCell)
+							.attr('name', personIdx + '.' + this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] + '.' + 'rec')
+							.on('change', this.handleChange)
+
+							checkBoxRow.append(personCell)
+
+							$('<br/>').appendTo(personCell)
+
+							$('<input type="checkbox"> N/A</input>').appendTo(personCell)
+							.attr('name', personIdx + '.' + this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] + '.' + 'na')
+							.on('change', this.handleChange)
+
+							checkBoxRow.append(personCell)
+						})
 
 						objectRow.appendTo(itemRow)
 					})
 
-
 					itemRow.appendTo(sectionNode)
 
-
-
-					// let itemRowNode = $('<tr></tr>')
-					// let itemQuestionNode = $('<td></td>').appendTo(itemRowNode).attr('colspan', '5')
-					//
-					// itemQuestionNode.append($('<p></p>').addClass('scriptText').text('Q: ' + item.question))
-					// itemQuestionNode.append($('<i></i>').text(item.subtext))
-					// sectionTableNode.append(itemRowNode)
-					//
-					// item.objects.forEach((obj, objIdx) => {
-					// 	let checkboxRowNode = $('<tr></tr>')
-					// 	$('<td>' + obj + '</td>').appendTo(checkboxRowNode).attr('colspan', '2')
-					//
-					// 	this.people.forEach((person, personIdx) => {
-					// 		let checkboxCellNode = $('<td></td>').appendTo(checkboxRowNode)
-					//
-					// 		$('<input type="checkbox"> Requested</input>').appendTo(checkboxCellNode)
-					// 		.attr('name', objIdx.toString() + '.' + personIdx + '.' + item.fieldPath + '.' + 'req')
-					// 		.on('change', this.handleChange)
-					//
-					// 		$('<br/>').appendTo(checkboxCellNode)
-					//
-					// 		$('<input type="checkbox"> Received</input>').appendTo(checkboxCellNode)
-					// 		.attr('name', objIdx.toString() + '.' + personIdx + '.' + item.fieldPath + '.' + 'rec')
-					// 		.on('change', this.handleChange)
-					//
-					// 		checkboxRowNode.append(checkboxCellNode)
-					// 	})
-					//
-					// 	sectionTableNode.append(checkboxRowNode)
-					// })
 				})
 
-				// sectionNode.append(sectionTableNode)
 				this.root.append(sectionNode)
 			})
-		}
-		// end this.populateHtml
+		} // END this.populateHtml
 
 		this.getData = function() {
 			return getFormData(this.root)
 		}
 
-
-
-
-	}
+	} // END FinacialPackageBuilder
 
 	function getFormData(form) {
 		let formData = {}
