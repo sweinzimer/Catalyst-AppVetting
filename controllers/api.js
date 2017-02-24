@@ -249,12 +249,12 @@ module.exports = {
 					
 					var finance = new FinancialPackage();
 					finance.appID = doc._id;
-					finance.name.first = req.body.application.name.first;
-					console.log("fin first");
-					console.log(finance.name.first);
-					finance.name.last = req.body.application.name.last;
-					
-					
+					//finance.name.first = req.body.application.name.first;
+					//console.log("fin first");
+					//console.log(finance.name.first);
+					//finance.name.last = req.body.application.name.last;
+					var name = req.body.application.name.first + " " + req.body.application.name.last;
+					finance.name = name;
 
 					// Save the document package to the database with a callback to handle flow control
 					doc.saveAsync(function (err, doc, numAffected) {
@@ -293,8 +293,8 @@ module.exports = {
 					for (var i=0; i<req.body.count; i++) {
 						var family = new FinancialPackage();
 						family.appID = doc._id;
-						family.name.first = req.body.application.other_residents.name[i];
-						family.name.last = "";
+						family.name = req.body.application.other_residents.name[i];
+					
 						family.saveAsync(function (err, highlight, numAffected) {
 							if (err) {
 								console.error(err);
@@ -882,29 +882,22 @@ module.exports = {
         var updates = {};
 		res.locals.status = '200';
 		next();
-		/*updates.GETNAME = req.body.NAME;
+		/*updates[req.body.name] = req.body.value;
 		
 		
 		
 		// Record Update 
         //filters
         var conditions = {};
-        conditions['_id'] = req.body.FINPACKAGEID;
+        conditions['_id'] = req.body.id;
         console.log("Search Filter:");
         console.log(conditions);
         console.log("Update:");
-        updates['updated'] = Date.now();
-        console.log(updates);
+        
 
         Promise.props({
             fin: finPackage.findOneAndUpdate(
->>>>>>> fin_schema
-               
-<<<<<<< HEAD
-                    // $set: {name: value}
-=======
-                    // $set: {name: VALUE}
->>>>>>> fin_schema
+
                     $set: updates
                 },
                 // Options
@@ -919,18 +912,7 @@ module.exports = {
             ).execAsync()
         })
             .then(function (results) {
-<<<<<<< HEAD
-                console.log(results);
-                if (results.item != null) {
-                    console.log('[ API ] updateWorkItem :: Note found: TRUE');
-                    res.locals.status = '200';
-                }
-                else {
-                    console.log('[ API ] updateWorkItem :: Note found: FALSE');
-                    res.locals.status = '500';
-                }
-                res.locals.results = results;
-=======
+
 				console.log(results);
                 
                 if (results) {
@@ -942,10 +924,7 @@ module.exports = {
                 res.locals.results = results;
                 //sending a status of 200 for now
                 res.locals.status = '200';
->>>>>>> fin_schema
 
-              
-=======
             .catch(next);*/
 
     },
