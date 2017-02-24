@@ -746,8 +746,6 @@
 
 </div>
 
-<pre>{{stringify finances}}</pre>
-
 <script src="/javascript/serviceArea.js" type="text/javascript"></script>
 
 	<script src="/javascript/addItem.js" type="text/javascript"></script>
@@ -1134,24 +1132,43 @@
 
 						this.people.forEach((person, personIdx) => {
 							let personCell = $('<td></td>').appendTo(checkBoxRow)
+							let thisField = this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]
 
-							$('<input type="checkbox"> Requested</input>').appendTo(personCell)
-							.attr('name', personIdx + '.' + this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] + '.' + 'req')
+							let thisFieldInputReq = $('<input type="checkbox"> Requested</input>')
+							.appendTo(personCell)
+							.attr('name', personIdx + '.' + thisField + '.' + 'req')
 							.on('change', this.handleChange)
+
+							if (
+								this.people[personIdx][thisField] &&
+								this.people[personIdx][thisField].req === true
+							) { thisFieldInputReq[0].checked = true }
 
 							$('<br/>').appendTo(personCell)
 
-							$('<input type="checkbox"> Received</input>').appendTo(personCell)
-							.attr('name', personIdx + '.' + this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] + '.' + 'rec')
+							let thisFieldInputRec = $('<input type="checkbox"> Received</input>')
+							.appendTo(personCell)
+							.attr('name', personIdx + '.' + thisField + '.' + 'rec')
 							.on('change', this.handleChange)
 
-							checkBoxRow.append(personCell)
+							if (
+								this.people[personIdx][thisField] &&
+								this.people[personIdx][thisField].rec === true
+							) { thisFieldInputRec[0].checked = true }
+
+							// checkBoxRow.append(personCell)
 
 							$('<br/>').appendTo(personCell)
 
-							$('<input type="checkbox"> N/A</input>').appendTo(personCell)
-							.attr('name', personIdx + '.' + this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] + '.' + 'na')
+							let thisFieldInputNA = $('<input type="checkbox"> N/A</input>')
+							.appendTo(personCell)
+							.attr('name', personIdx + '.' + thisField + '.' + 'na')
 							.on('change', this.handleChange)
+
+							if (
+								this.people[personIdx][thisField] &&
+								this.people[personIdx][thisField].na === true
+							) { thisFieldInputNA[0].checked = true }
 
 							checkBoxRow.append(personCell)
 						})
