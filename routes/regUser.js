@@ -13,7 +13,7 @@ Promise.promisifyAll(mongoose); // Convert mongoose API to always return promise
 
 module.exports = function(passport) {
 router.route('/register')
-	.get(isLoggedIn, api.getUserRoles, function(req, res) {
+	.get(isAdmin, api.getUserRoles, function(req, res) {
 		console.log(res.locals.results);
 		var payload = {};
 		payload.roles = res.locals.results.roles;
@@ -31,7 +31,7 @@ router.get('/userSuccess', function(req, res) {
 });
 
 router.route('/userList')
-	.get(isLoggedIn, api.getUsers, function(req, res) {
+	.get(isAdmin, api.getUsers, function(req, res) {
 		console.log(res.locals.results);
 		res.json(res.locals);
 
@@ -39,14 +39,31 @@ router.route('/userList')
 
 
 router.route('/editUser')
-	.get(isLoggedIn, api.findUser, function(req, res) {
+	.get(isLoggedIn, function(req, res) {
 		//do stuff
-		console.log(res.locals.results);
-		res.render('useredit');
+		//console.log(res.locals.results);
+		var payload = {};
+		console.log("res locals");
+		console.log(res.locals.user);
+		payload = res.locals.user;
+		payload.user_email = res.locals.user.user.contact_info.user_email;
+		res.render('useredit', payload);
+           
+		
 
 	})
-	.post(isLoggedInPost, api.updateUser, function(req, res) {
+	.post(api.updateUser, function(req, res) {
 		res.json(res.locals);
+	})
+	
+router.route('/editUser/:id')
+	.get(isAdmin, api.findUser, function(req,res) {
+		var payload = {};
+		payload = res.locals.results;
+		payload.user_email = res.locals.email;
+		console.log(payload);
+		res.render('useredit', payload);
+		
 	})
 
 router.route('/login')
@@ -69,6 +86,54 @@ return router;
 }
 //check to see if user is logged in and is an admin
 function isLoggedIn(req, res, next) {
+		if(req.isAuthenticated()) {
+			console.log(req.user._id);
+			var userID = req.user._id.toString();
+
+			console.log("userID");
+			console.log(userID);
+			var ObjectId = require('mongodb').ObjectID;
+			Promise.props({
+				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+			})
+			.then(function (results) {
+				console.log(results);
+
+					if (!results) {
+						res.redirect('/user/logout');
+					}
+					else {
+							if(results.user.user_status == "ACTIVE") {
+								results.user.salt = "";
+								results.user.hash = "";
+								res.locals.user = results;
+								
+								return next();
+
+							}
+
+							else {
+								console.log("user is not active");
+								res.redirect('/user/logout');
+							}
+					}
+
+
+
+			})
+
+		.catch(function(err) {
+                console.error(err);
+        })
+         .catch(next);
+		}
+		else {
+			console.log("no user id");
+			res.redirect('/user/login');
+		}
+}
+
+function isAdmin(req, res, next) {
 		if(req.isAuthenticated()) {
 			console.log(req.user._id);
 			var userID = req.user._id.toString();
@@ -119,7 +184,6 @@ function isLoggedIn(req, res, next) {
 			res.redirect('/user/login');
 		}
 }
-
 //post request authenticator.  Checks if user is an admin
 function isLoggedInPost(req, res, next) {
 		if(req.isAuthenticated()) {

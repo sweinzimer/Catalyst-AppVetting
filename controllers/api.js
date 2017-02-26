@@ -179,10 +179,11 @@ module.exports = {
 	findUser: function (req, res, next) {
         // Log the api call we make along with the _id used by it
         console.log('[ API ] finduser :: Call invoked with id:');
-		req.body.id = ObjectId("588d02d4cc6b36283886be18");
+		console.log(req.params.id);
+		//req.body.id = ObjectId("588d02d4cc6b36283886be18");
         // Use results.DocumentPackage.<whatever you need> to access the information
         Promise.props({
-            user: UserPackage.findById(req.body.id).lean().execAsync()
+            user: UserPackage.findById(req.params.id).lean().execAsync()
         })
             .then(function(results) {
                 if (!results) {
@@ -190,6 +191,8 @@ module.exports = {
                 }
                 else {
                     console.log('[ API ] findUser :: user package found: TRUE');
+					results.user.hash = "";
+					results.user.salt = "";
                 }
 
                 res.locals.results = results;
@@ -486,14 +489,16 @@ module.exports = {
         // Log the _id, name, and value that are passed to the function
 
         // Note that the _id will actually come in with the key "pk"... Sorry, it's an x-editable thing - DM
-        console.log('[ API ] updateUser :: Call invoked with _id: ' + req.body.userId
-            + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
-        console.log(req.body.name + ' + ' + req.body.value);
+       // console.log('[ API ] updateUser :: Call invoked with _id: ' + req.body.userId
+       //     + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
+       // console.log(req.body.name + ' + ' + req.body.value);
+	   console.log("in req body");
         console.log(req.body)
-
+		res.locals.status = 200;
+		next();
         // Build the name:value pairs to be updated
         // Since there is only one name and one value, we can use the method below
-        var updates = {};
+       /* var updates = {};
         updates[req.body.name] = req.body.value;
 
 
@@ -547,7 +552,7 @@ module.exports = {
             .catch(function (err) {
                 console.error(err);
             })
-            .catch(next);
+            .catch(next);*/
     },
 
 	//create user roles on initial site deployment
