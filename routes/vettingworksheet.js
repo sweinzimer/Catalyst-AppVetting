@@ -31,12 +31,12 @@ router.get('/:id', isLoggedIn, function(req, res) {
         doc: DocumentPackage.findOne({_id: ObjectId(req.params.id)}).lean().execAsync(),
         vettingNotes: VettingNotePackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
 
-        finances: FinPackage.findOne({appID: ObjectId(req.params.id)}).lean().execAsync(),
+        finances: FinPackage.find({appID: ObjectId(req.params.id)}).lean().execAsync(),
     		workItems: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
     		highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync(),
 
 	      
-	      finances: FinPackage.findOne({appID: ObjectId(req.params.id)}).lean().execAsync()
+	      //finances: FinPackage.findOne({appID: ObjectId(req.params.id)}).lean().execAsync()
 
     })
         .then(function(result) {
@@ -80,8 +80,8 @@ router.get('/:id', isLoggedIn, function(req, res) {
 
 			res.locals.layout = 'b3-layout';
 			result.user = req.user._id;
-
-
+			console.log("finances");
+			console.log(result.finances);
             result.title = "Vetting Worksheet";
 
             res.render('b3-worksheet-view', result);
