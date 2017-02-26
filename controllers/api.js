@@ -193,6 +193,13 @@ module.exports = {
                     console.log('[ API ] findUser :: user package found: TRUE');
 					results.user.hash = "";
 					results.user.salt = "";
+					var dobYear = results.user.contact_info.user_dob.dob_date.getFullYear();
+					//get month and day with padding since they are 0 indexed
+					var dobDay = ( "00" + results.user.contact_info.user_dob.dob_date.getDate()).slice(-2);
+					var dobMon = ("00" + (results.user.contact_info.user_dob.dob_date()+1)).slice(-2);
+					results.user.contact_info.user_dob.dob_date = dobYear + "-" + dobMon + "-" + dobDay;
+					console.log("after change");
+					console.log(results.user);
                 }
 
                 res.locals.results = results;
@@ -489,7 +496,7 @@ module.exports = {
         // Log the _id, name, and value that are passed to the function
 
         // Note that the _id will actually come in with the key "pk"... Sorry, it's an x-editable thing - DM
-       // console.log('[ API ] updateUser :: Call invoked with _id: ' + req.body.userId
+       // console.log('[ API ] updateUser :: Call invoked with _id: ' + req.body.pk;
        //     + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
        // console.log(req.body.name + ' + ' + req.body.value);
 	   console.log("in req body");
@@ -505,7 +512,7 @@ module.exports = {
 		// Record Update time
         //filters
         var conditions = {};
-        conditions['_id'] = req.body.userId;
+        conditions['_id'] = req.body.pk;
         console.log("Search Filter:");
         console.log(conditions);
         console.log("Update:");

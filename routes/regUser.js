@@ -43,8 +43,7 @@ router.route('/editUser')
 		//do stuff
 		//console.log(res.locals.results);
 		var payload = {};
-		console.log("res locals");
-		console.log(res.locals.user);
+		
 		payload = res.locals.user;
 		payload.user_email = res.locals.user.user.contact_info.user_email;
 		res.render('useredit', payload);
@@ -106,6 +105,13 @@ function isLoggedIn(req, res, next) {
 							if(results.user.user_status == "ACTIVE") {
 								results.user.salt = "";
 								results.user.hash = "";
+								var dobYear = results.user.contact_info.user_dob.dob_date.getFullYear();
+								//get month and day with padding since they are 0 indexed
+								var dobDay = ( "00" + results.user.contact_info.user_dob.dob_date.getDate()).slice(-2);
+								var dobMon = ("00" + (results.user.contact_info.user_dob.dob_date.getMonth()+1)).slice(-2);
+								results.user.contact_info.user_dob.dob_date = dobYear + "-" + dobMon + "-" + dobDay;
+								console.log("after change");
+								console.log(results.user);
 								res.locals.user = results;
 								
 								return next();
