@@ -131,6 +131,11 @@ module.exports = {
                 }
                 else {
                     console.log('users found');
+					for(var x=0; x<results.users.length; x++) {
+						results.users[x].salt = "";
+						results.users[x].hash = "";
+					}
+					
                 }
 
                 res.locals.results = results;
