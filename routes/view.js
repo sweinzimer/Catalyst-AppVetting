@@ -193,7 +193,7 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
         });
     }
 
-	payload.user = req.user._id;
+	payload.user = req.user._id || false;
 
 	payload.user_email = res.locals.email;
 

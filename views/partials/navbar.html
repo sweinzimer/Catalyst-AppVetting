@@ -55,8 +55,13 @@
             </li>
         </ul>
         <div class="navbar-right">
-          Logged in as: {{user_email}}
-          <a href="/user/logout" class="btn btn-sm btn-info">Log out</a>
+          <div id="noUserNav" style="display:none;">
+            <a href="/user/login" class="btn btn-sm btn-info">Log in</a>
+          </div>
+          <div id="userNav" style="display:none;">
+            Logged in as: <a class="navbar-right-link" href="/user/editUser">{{user_email}}</a>
+            <a href="/user/logout" class="btn btn-sm btn-info">Log out</a>
+          </div>
         </div>
     </div> <!-- navbar-toggleable-s -->
 
@@ -73,3 +78,28 @@
         </div>
     </div>
 </div>
+
+<pre>
+  {{ user_email }}
+  {{ user  }}
+</pre>
+
+<style>
+  .navbar-right-link { color: #88adce; text-decoration: none; }
+  .navbar-right-link:hover { color: #88adce; text-decoration: underline; }
+</style>
+
+<script>
+{{#if user}}
+  let user = "{{{ user_email }}}"
+{{else}}
+  let user = false
+{{/if}}
+
+  if (user !== false) {
+    $('#userNav').css('display', 'inline-block')
+  } else {
+    $('#noUserNav').css('display', 'inline-block')
+  }
+
+</script>

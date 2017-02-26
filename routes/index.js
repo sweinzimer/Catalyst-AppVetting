@@ -10,6 +10,7 @@ router.get('/', function(req, res, next) {
     res.render('index', {
         title: 'Quick link usage examples',
         body: '',
+        user: false, // TODO: Add user (or not) here
         // this would change it from the default layout, layout.hbs to b3-layout.hbs
         // res.locals.layout = 'b3-layout';
     });
