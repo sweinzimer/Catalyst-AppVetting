@@ -42,8 +42,8 @@ router.route('/editUser')
 	.get(isLoggedIn, api.findUser, function(req, res) {
 		//do stuff
 		console.log(res.locals.results);
-		res.json(res.locals);
-		
+		res.render('useredit');
+
 	})
 	.post(isLoggedInPost, api.updateUser, function(req, res) {
 		res.json(res.locals);

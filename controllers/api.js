@@ -135,7 +135,7 @@ module.exports = {
 						results.users[x].salt = "";
 						results.users[x].hash = "";
 					}
-					
+
                 }
 
                 res.locals.results = results;
@@ -175,7 +175,7 @@ module.exports = {
             })
             .catch(next);
     },
-	
+
 	findUser: function (req, res, next) {
         // Log the api call we make along with the _id used by it
         console.log('[ API ] finduser :: Call invoked with id:');
@@ -304,7 +304,7 @@ module.exports = {
 					doc.app_name = app_name;
 					console.log(doc.app_name);
 					highlight.documentPackage = doc._id;
-					
+
 					var finance = new FinancialPackage();
 					finance.appID = doc._id;
 					//finance.name.first = req.body.application.name.first;
@@ -335,8 +335,8 @@ module.exports = {
 							//res.send( { status : 200 } );
 						}
 					});
-					           
-		
+
+
 					finance.saveAsync(function (err, highlight, numAffected) {
 						if (err) {
 							console.error(err);
@@ -347,12 +347,12 @@ module.exports = {
 							res.send( { status : 200 } );
 						}
 					});
-					
+
 					for (var i=0; i<req.body.count; i++) {
 						var family = new FinancialPackage();
 						family.appID = doc._id;
 						family.name = req.body.application.other_residents.name[i];
-					
+
 						family.saveAsync(function (err, highlight, numAffected) {
 							if (err) {
 								console.error(err);
@@ -363,12 +363,12 @@ module.exports = {
 								//res.send( { status : 200 } );
 							}
 						});
-						
-					} 
-		
+
+					}
+
 				}
 
-				
+
 
             })
             .catch(function(err) {
@@ -465,8 +465,8 @@ module.exports = {
 
 
 
-        
-        
+
+
 
         // Save the user package to the database with a callback to handle flow control
         doc.saveAsync(function (err, doc, numAffected) {
@@ -484,9 +484,12 @@ module.exports = {
 	updateUser: function(req, res, next) {
         // When executed this will apply updates to a user and return the MODIFIED user
         // Log the _id, name, and value that are passed to the function
+
+        // Note that the _id will actually come in with the key "pk"... Sorry, it's an x-editable thing - DM
         console.log('[ API ] updateUser :: Call invoked with _id: ' + req.body.userId
             + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
         console.log(req.body.name + ' + ' + req.body.value);
+        console.log(req.body)
 
         // Build the name:value pairs to be updated
         // Since there is only one name and one value, we can use the method below
@@ -921,10 +924,10 @@ module.exports = {
             })
 
             .catch(next);
-				
-					
-		
-	},			
+
+
+
+	},
 
 	//update financial package
 	updateFinance: function(req, res, next) {
@@ -939,7 +942,7 @@ module.exports = {
 		var name1;
 		var name2;
 		var value;
-		
+
 		Object.keys(req.body).forEach(function(prop) {
 			console.log("in looop");
 			console.log(prop);
@@ -963,7 +966,7 @@ module.exports = {
 		});
 
         // Build the name:value pairs to be updated
-        
+
         var updates = {};
 		console.log("data built: ");
 		console.log(userID);
@@ -971,20 +974,20 @@ module.exports = {
 		var name = name1.toString() + "." + name2.toString();
 		console.log(name);
 		console.log(value);
-		
-		
+
+
 		updates[name] = value;
-		
-		
-		
-		// Record Update 
+
+
+
+		// Record Update
         //filters
         var conditions = {};
         conditions['_id'] = mongoose.Types.ObjectId(userID);
         console.log("Search Filter:");
         console.log(conditions);
         console.log("Update:");
-        
+
 
         Promise.props({
             fin: FinancialPackage.findOneAndUpdate(
@@ -1008,7 +1011,7 @@ module.exports = {
             .then(function (results) {
 
 				console.log(results);
-                
+
                 if (results) {
                     console.log('[ API ] updateFinance :: Fin package found: TRUE');
                 }

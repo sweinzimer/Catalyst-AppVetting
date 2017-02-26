@@ -1,0 +1,305 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="/javascript/xedit.js" type="text/javascript"></script>
+<script src="/javascript/addNote.js" type="text/javascript"></script>
+<script src="/javascript/setFlags.js" type="text/javascript"></script>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h2>Your profile</h2>
+  </div>
+
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <h4>Biographical information</h4>
+    <dl class="row">
+      <dt class="col-xs-4">First name</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_name.user_first" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="First name">
+          {{ user.contact_info.user_name.user_first }}
+        </a>
+      </dd>
+
+      <dt class="col-xs-4">Middle name</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_name.user_middle" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="Middle name">
+          {{ user.contact_info.user_name.user_middle }}
+        </a>
+      </dd>
+
+      <dt class="col-xs-4">Last name</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_name.user_last" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="Last name">
+          {{ user.contact_info.user_name.user_last }}
+        </a>
+      </dd>
+
+      <dt class="col-xs-4">Preferred name</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_name.user_preferred" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="Preferred name">
+          {{ user.contact_info.user_name.user_preferred }}
+        </a>
+      </dd>
+    </dl>
+
+    <dl class="row">
+      <dt class="col-xs-4">Birthday</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_dob.dob_date" data-type="date"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="Birthday">
+          {{ user.contact_info.user_dob.dob_date }}
+        </a>
+      </dd>
+    </dl>
+  </div>
+
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <h4>Contact information</h4>
+    <dl class="row">
+      <dt class="col-xs-4">Address 1</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_address.u_line1" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="Address 1">
+          {{ user.contact_info.user_address.u_line1 }}
+        </a>
+      </dd>
+
+      <dt class="col-xs-4">Address 2</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_address.u_line2" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="Address 2">
+          {{ user.contact_info.user_address.u_line2 }}
+        </a>
+      </dd>
+
+      <dt class="col-xs-4">City</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_address.u_city" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="City">
+          {{ user.contact_info.user_address.u_city }}
+        </a>
+      </dd>
+
+      <dt class="col-xs-4">State</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_address.u_state" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="State">
+          {{ user.contact_info.user_address.u_state }}
+        </a>
+      </dd>
+
+      <dt class="col-xs-4">Zip</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_address.u_zip" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="Zip">
+          {{ user.contact_info.user_address.u_zip }}
+        </a>
+      </dd>
+    </dl>
+  </div>
+
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <h4>Emergency Contact</h4>
+    <dl class="row">
+      <dt class="col-xs-4">Emergency Contact Name</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_emergency.uec_name" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="Emergency Contact Name">
+          {{ user.contact_info.user_emergency.uec_name }}
+        </a>
+      </dd>
+
+      <dt class="col-xs-4">Emergency Contact Relationship</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_emergency.uec_relationship" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="Emergency Contact Relationship">
+          {{ user.contact_info.user_emergency.uec_relationship }}
+        </a>
+      </dd>
+
+      <dt class="col-xs-4">Emergency Contact Phone</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_emergency.uec_phone" data-type="text"
+        data-pk="{{ _id }}"
+        data-url="/user/editUser" data-title="Emergency Contact Phone">
+          {{ user.contact_info.user_emergency.uec_phone }}
+        </a>
+      </dd>
+
+
+    </dl>
+  </div>
+
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <h4>Volunteer Information</h4>
+    <dl class="row">
+      <dt class="col-xs-4">Status</dt>
+      <dd class="col-xs-8">{{ user.user_status }}</dd>
+
+      <dt class="col-xs-4">Role</dt>
+      <dd class="col-xs-8">{{ user.user_role }}</dd>
+
+      <dt class="col-xs-4">Activity</dt>
+      <dd class="col-xs-8">{{ user.user_activity }}</dd>
+
+      <dt class="col-xs-4">Waiver signed</dt>
+      <dd class="col-xs-8">
+        {{#if user.user_documents.waiver_signed }}
+          Yes
+        {{else}}
+          No
+        {{/if}}
+      </dd>
+
+      <dt class="col-xs-4">Background check completed</dt>
+      <dd class="col-xs-8">
+        {{#if user.user_documents.background_check }}
+          Yes
+        {{else}}
+          No
+        {{/if}}
+      </dd>
+
+      <dt class="col-xs-4">ID badge assigned</dt>
+      <dd class="col-xs-8">
+        {{#if user.user_documents.ID_badge }}
+          Yes
+        {{else}}
+          No
+        {{/if}}
+      </dd>
+    </dl>
+  </div>
+
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <h4>Change your password</h4>
+    <div id="changePasswordButtonDiv">
+      <button id="changePasswordButton" class="btn btn-info btn-lg">Change password</button>
+    </div>
+    <div id="changePasswordForm" style="display:none;">
+
+      <label class="control-label">Current password</label>
+      <input type="password" class="form-control" name="currentPassword" />
+
+
+      <label class="control-label">New password</label>
+      <input type="password" class="form-control" name="newPassword" />
+
+
+      <label class="control-label">Confirm new password</label>
+      <input type="password" class="form-control" name="newPasswordConfirm" />
+
+      <br />
+
+      <button id="changePasswordSaveButton" class="btn btn-success">Save</button>
+      <button id="changePasswordCancelButton" class="btn btn-danger">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<h3>Testing data: user json:</h3>
+<pre>
+  {{ stringify user }}
+</pre>
+
+<script>
+  // Placeholder example for now...
+  let userData = {
+    _id: '588d02d4cc6b36283886be18',
+    user_status: 'Testing',
+    user_role: 'Testing',
+    user_activity: 'Testing',
+    user_documents: { waiver_signed: true, background_check: true, ID_badge: true },
+    contact_info: {
+      user_email: 'Testing',
+      user_emergency: [Object],
+      user_address: [Object],
+      user_phone: [Object],
+      user_dob: [Object],
+      user_name: [Object]
+    },
+    user_updated: '2017-01-28T20:45:08.914Z',
+    __v: 0
+  }
+
+  // X-Editable
+  $.fn.editable.defaults.mode = 'inline'
+
+  let fields = [
+    'contact_info.user_name.user_first',
+    'contact_info.user_name.user_middle',
+    'contact_info.user_name.user_last',
+    'contact_info.user_name.user_preferred',
+    'contact_info.user_dob.dob_date',
+    'contact_info.user_address.u_line1',
+    'contact_info.user_address.u_line2',
+    'contact_info.user_address.u_city',
+    'contact_info.user_address.u_state',
+    'contact_info.user_address.u_zip',
+    'contact_info.user_emergency.uec_name',
+    'contact_info.user_emergency.uec_relationship',
+    'contact_info.user_emergency.uec_phone',
+  ]
+
+  function changePassword(e) {
+    let inputs = $('input', '#changePasswordForm')
+    let passwordChange = {
+      oldPassword: inputs[0].value,
+      newPassword: inputs[1].value,
+      newPasswordConfirm: inputs[2].value
+    }
+
+    if (passwordChange.newPassword !== passwordChange.newPasswordConfirm) {
+      // TODO: handle this better
+      alert('Your new passwords don\'t match')
+      return
+    }
+
+    // TODO: Send password change request
+    alert('YOUR NEW PASSWORD WAS NOT SAVED')
+    $('#changePasswordButtonDiv').css('display', 'inline-block')
+    $('#changePasswordForm').css('display', 'none')
+  }
+
+  $(document).ready(function() {
+    fields.forEach((f) => { $('[id="' + f + '"]').editable() })
+
+    $('#changePasswordButton').on('click', function(e) {
+      $('#changePasswordButtonDiv').css('display', 'none')
+      $('#changePasswordForm').css('display', 'inline-block')
+    })
+
+    $('#changePasswordSaveButton').on('click', changePassword)
+
+    $('#changePasswordCancelButton').on('click', function(e) {
+      $('#changePasswordButtonDiv').css('display', 'inline-block')
+      $('#changePasswordForm').css('display', 'none')
+    })
+  })
+</script>
