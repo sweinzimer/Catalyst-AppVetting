@@ -120,6 +120,31 @@ module.exports = {
             })
             .catch(next);
     },
+	getUsers: function(req, res, next) {
+		console.log("getting users");
+		 Promise.props({
+            users: UserPackage.find().lean().execAsync()
+        })
+            .then(function(results) {
+                if (!results) {
+                    console.log('No users found');
+                }
+                else {
+                    console.log('users found');
+                }
+
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+
 
 	getUserRoles: function(req, res, next) {
 		console.log("getting user roles");
@@ -132,6 +157,34 @@ module.exports = {
                 }
                 else {
                     console.log('roles found');
+                }
+
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+	
+	findUser: function (req, res, next) {
+        // Log the api call we make along with the _id used by it
+        console.log('[ API ] finduser :: Call invoked with id:');
+		req.body.id = ObjectId("588d02d4cc6b36283886be18");
+        // Use results.DocumentPackage.<whatever you need> to access the information
+        Promise.props({
+            user: UserPackage.findById(req.body.id).lean().execAsync()
+        })
+            .then(function(results) {
+                if (!results) {
+                    console.log('[ API ] findUser :: user package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] findUser :: user package found: TRUE');
                 }
 
                 res.locals.results = results;

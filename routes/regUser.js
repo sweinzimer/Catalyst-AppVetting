@@ -30,10 +30,20 @@ router.get('/userSuccess', function(req, res) {
 	res.render('/');
 });
 
-router.route('/editUser')
-	.get(isLoggedIn, function(req, res) {
-		//do stuff
+router.route('/userList')
+	.get(isLoggedIn, api.getUsers, function(req, res) {
+		console.log(res.locals.results);
+		res.json(res.locals);
 
+});
+
+
+router.route('/editUser')
+	.get(isLoggedIn, api.findUser, function(req, res) {
+		//do stuff
+		console.log(res.locals.results);
+		res.json(res.locals);
+		
 	})
 	.post(isLoggedInPost, api.updateUser, function(req, res) {
 		res.json(res.locals);
