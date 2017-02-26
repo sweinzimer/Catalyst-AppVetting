@@ -35,6 +35,7 @@ var edit = require('./routes/edit')(passport);
 var appform = require('./routes/appform');
 var vettingworksheet = require('./routes/vettingworksheet')(passport);
 var regUser = require('./routes/regUser')(passport);
+var site = require('./routes/site')(passport);
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -105,8 +106,8 @@ app.use('/edit', edit);
 app.use('/application', appform);
 app.use('/vettingworksheet', vettingworksheet);
 app.use('/user', regUser);
-//new
-app.use('/user', regUser);
+
+app.use('/site', site);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries

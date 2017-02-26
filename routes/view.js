@@ -239,7 +239,7 @@ router.post('/updateNote', isLoggedInPost, api.updateVettingNote, function(req, 
 
 
 /* Route to specific application by DocumentPackage Object ID */
-router.get('/:id', function(req, res, next) {
+router.get('/:id', isLoggedIn, function(req, res, next) {
     //Checking what's in params
     console.log("Rendering application " + ObjectId(req.params.id));
 	console.log("user requested: ");

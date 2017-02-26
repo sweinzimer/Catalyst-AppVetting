@@ -99,8 +99,8 @@ module.exports = {
 		
         // Use results.DocumentPackage.<whatever you need> to access the information
         Promise.props({
-            //document: DocumentPackage.findById(req.params.id).lean().execAsync()
-			document: DocumentPackage.aggregate(
+            document: DocumentPackage.findById(req.params.id).lean().execAsync()
+			/*document: DocumentPackage.aggregate(
 				[
 				{$match: { _id : mongoose.Types.ObjectId(req.params.id)}},
 					{ $redact: {
@@ -112,7 +112,7 @@ module.exports = {
 					}}
 					
 				]
-			).execAsync()
+			).execAsync()*/
 			
         })
             .then(function(results) {
@@ -138,7 +138,102 @@ module.exports = {
             })
             .catch(next);
     },
+	//site assessment get docs for view
+	getDocumentStatusSite: function (req, res, next) {
+        // Log the api call we make along with the _id used by it
+        console.log('[ API ] getDocumentStatusSite :: ');
+		
+        // Use results.DocumentPackage.<whatever you need> to access the information
+        Promise.props({
+            //document: DocumentPackage.findById(req.params.id).lean().execAsync()
+			site: DocumentPackage.aggregate(
+				[
+				{$match: { status: "assess" }},
+					{ $redact: {
+						$cond: {
+							if: { $eq: [ "$level", 5 ] },
+							then: "$$PRUNE",
+							else: "$$DESCEND"
+						}
+					}}
+					
+				]
+			).execAsync()
+			
+        })
+            .then(function(results) {
+				console.log("results");
+				
+				
+				console.log(results);
+                if (!results) {
+                    console.log('[ API ] getDocumentStatusSite :: Documents package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] getDocumentStatusSite :: Documents package found: TRUE');
+                }
 
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+	
+	
+	//site assessment get docs for view
+	getDocumentSite: function (req, res, next) {
+        // Log the api call we make along with the _id used by it
+        console.log('[ API ] getDocumentSite :: Call invoked with id: ' + req.params.id);
+		
+        // Use results.DocumentPackage.<whatever you need> to access the information
+        Promise.props({
+            //document: DocumentPackage.findById(req.params.id).lean().execAsync()
+			doc: DocumentPackage.aggregate(
+				[
+				{$match: { _id : mongoose.Types.ObjectId(req.params.id)}},
+					{ $redact: {
+						$cond: {
+							if: { $eq: [ "$level", 5 ] },
+							then: "$$PRUNE",
+							else: "$$DESCEND"
+						}
+					}}
+					
+				]
+			).execAsync(),
+			work: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync()
+			
+        })
+            .then(function(results) {
+				console.log("results");
+				
+				
+				console.log(results);
+                if (!results) {
+                    console.log('[ API ] getDocumentStatusSite :: Documents package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] getDocumentStatusSite :: Documents package found: TRUE');
+                }
+
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+	
 	getUserRoles: function(req, res, next) {
 		console.log("getting user roles");
 		 Promise.props({

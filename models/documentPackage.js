@@ -44,12 +44,13 @@ ObjectId = Schema.ObjectId;
 
 var DocumentPackageSchema = new Schema({
     status:         String,
+	level : {type: Number, default: 1},
     created:        Date,
     updated:        { type: Date, default: Date.now},
     highlightPackage: { type: ObjectId },
     service_area : Boolean,
 	app_name : String,
-	tags: ["VA", "EX", "SA"],
+	
 	
     advocate:       {
         is_advocate:        Boolean,
@@ -71,11 +72,11 @@ var DocumentPackageSchema = new Schema({
             preferred: String
 		},
         dob:            {
-            tags:       ["VA", "EX"],
+            level : {type: Number, default: 5},
             date:       Date
         },
         driver_license: {
-            tags:       ["VA", "EX"],
+			level : {type: Number, default: 5},
             number:     String
         },
         // status can return 3 values:
@@ -120,6 +121,7 @@ var DocumentPackageSchema = new Schema({
     },
 
     finance:    {
+		level : {type: Number, default: 5},
         mortgage:               {
             tags:               ["VA", "EX"],
             payment:            Number,
