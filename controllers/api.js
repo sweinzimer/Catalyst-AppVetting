@@ -286,7 +286,7 @@ module.exports = {
 						else if (numAffected == 1) {
 							console.log('[ API ] postDocument :: finPackage created with _id: ' + finance._id);
 							console.log('[ API ] postDocument :: highlightPackage references document package _id: ' + finance.appID);
-							res.send( { status : 200 } );
+							//res.send( { status : 200 } );
 						}
 					});
 					
@@ -307,6 +307,7 @@ module.exports = {
 						});
 						
 					} 
+					res.send( { status : 200 } );
 		
 				}
 
@@ -1120,6 +1121,12 @@ module.exports = {
         console.log('[ API ] putUpdateArray :: Call invoked with _id: ' + req.params.id
             + ' | key: ' + req.body.name + ' | value: ' + req.body.value + ' | current value: ' + req.body.pk);
         //the $ holds the index of the element
+		if(req.body.name == "application.other_residents.name") {
+			console.log("updating name");
+			if(req.body.pk == "") {
+				console.log("currently empty");
+			}
+		}
         var updateField = req.body.name + ".$";
         var updates = {};
         updates[updateField] = req.body.value;
@@ -1158,6 +1165,26 @@ module.exports = {
                 console.log(results);
                 if (results.doc != null) {
                     console.log('[ API ] putUpdateArray :: Documents package found: TRUE');
+					if(req.body.name == "application.other_residents.name") {
+						console.log("updating name");
+						if(req.body.pk == "") {
+							console.log("currently empty");
+							var finance = new FinancialPackage();
+							finance.appID = req.params.id;
+							finance.name = req.body.value;
+							finance.saveAsync(function (err, highlight, numAffected) {
+								if (err) {
+									console.error(err);
+								}
+								else if (numAffected == 1) {
+									console.log('[ API ] postDocument :: finPackage created with _id: ' + finance._id);
+									console.log('[ API ] postDocument :: finPackage references document package _id: ' + finance.appID);
+									//res.send( { status : 200 } );
+								}
+							});
+						
+						}		
+					}
                     res.locals.status = '200';
                 }
                 else {
