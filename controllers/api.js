@@ -196,7 +196,7 @@ module.exports = {
 					var dobYear = results.user.contact_info.user_dob.dob_date.getFullYear();
 					//get month and day with padding since they are 0 indexed
 					var dobDay = ( "00" + results.user.contact_info.user_dob.dob_date.getDate()).slice(-2);
-					var dobMon = ("00" + (results.user.contact_info.user_dob.dob_date()+1)).slice(-2);
+					var dobMon = ("00" + (results.user.contact_info.user_dob.dob_date.getMonth()+1)).slice(-2);
 					results.user.contact_info.user_dob.dob_date = dobYear + "-" + dobMon + "-" + dobDay;
 					console.log("after change");
 					console.log(results.user);
@@ -496,16 +496,43 @@ module.exports = {
         // Log the _id, name, and value that are passed to the function
 
         // Note that the _id will actually come in with the key "pk"... Sorry, it's an x-editable thing - DM
-       // console.log('[ API ] updateUser :: Call invoked with _id: ' + req.body.pk;
-       //     + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
-       // console.log(req.body.name + ' + ' + req.body.value);
-	   console.log("in req body");
-        console.log(req.body)
-		res.locals.status = 200;
-		next();
+        console.log('[ API ] updateUser :: Call invoked with _id: ' + req.body.pk
+           + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
+        console.log(req.body.name + ' + ' + req.body.value);
+	   //console.log("in req body");
+        //console.log(req.body)
+		//res.locals.status = 200;
+		//next();
         // Build the name:value pairs to be updated
         // Since there is only one name and one value, we can use the method below
-       /* var updates = {};
+		
+		/*if(req.body.name == "password") {
+			Promise.props({
+				user: UserPackage.findById(req.body.pk).lean().execAsync()
+			})
+            .then(function(results) {
+                if (!results) {
+                    console.log('[ API ] findUser :: user package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] findUser :: user package found: TRUE');
+					results.user.setPassword(req.body.value);
+                }
+
+                res.locals.results = results;
+				res.locals.status = 200;
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+		}
+		else {*/
+		
+        var updates = {};
         updates[req.body.name] = req.body.value;
 
 
@@ -543,10 +570,10 @@ module.exports = {
 				console.log(results);
                 // TODO: Confirm true/false is correct
                 if (results) {
-                    console.log('[ API ] putUpdateDocument :: Documents package found: TRUE');
+                    console.log('[ API ] updateUser :: Documents package found: TRUE');
                 }
                 else {
-                    console.log('[ API ] putUpdateDocument :: Documents package found: FALSE');
+                    console.log('[ API ] updateUser :: Documents package found: FALSE');
                 }
                 res.locals.results = results;
                 //sending a status of 200 for now
@@ -559,7 +586,8 @@ module.exports = {
             .catch(function (err) {
                 console.error(err);
             })
-            .catch(next);*/
+            .catch(next);
+		//}
     },
 
 	//create user roles on initial site deployment
