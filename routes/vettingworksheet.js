@@ -144,6 +144,17 @@ router.route('/finacialForm')
 		}
 	});
 
+router.route('/displayYear')
+	.post(api.getDocsByYear, function(req, res) {
+		if(res.locals.status != 200) {
+			res.status(500).send("could not update field");
+		}
+		else {
+			res.json(res.locals);
+		}
+	});
+		
+	
 
 return router;
 }

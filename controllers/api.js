@@ -192,6 +192,39 @@ module.exports = {
             })
             .catch(next);
     },
+	
+	getDocsByYear: function(req, res, next) {
+		console.log('[ API ] getDocumentByStatus :: Call invoked');
+		
+		var year = req.body.year;
+        
+        Promise.props({
+            
+            project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync()
+        })
+            .then(function (results) {
+                if (!results) {
+                    console.log('[ API ] getDocumentByStatus :: Documents package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] getDocumentByStatus :: Documents package found: TRUE');
+					console.log(results);
+					
+					
+                }
+                res.locals.results = results;
+				res.locals.status = 200;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+	
 
     /**
      * Description: add a Document Package to the database

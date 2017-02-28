@@ -132,10 +132,23 @@
                             Approved Applications
                         </a>
                     </h5>
+					<div id="year_select">
+					<form class="display_year">
+						<select name="year" id="displayYear">
+							<option value=2017>2017</option>
+							<option value=2016>2016</option>
+							<option value=2015>2015</option>
+							<option value=2014>2014</option>
+							<option value=2013>2013</option>
+							<option value=2012>2012</option>
+						</select>
+					</form>
+					</div>
+						
                 </div>
                 <div id="collapseThree" class="collapse in" role="tabpanel" aria-labelledby="headingThree">
                     <div class="card-block">
-                        <table class="table table-sm table-bordered table-hover">
+                        <table class="table table-sm table-bordered table-hover" id="project_table">
                             <thead>
                             <tr>
                                 <th class="col-md-2">Name</th>
@@ -165,7 +178,7 @@
 
     </div>
 </div>
-
+<script src="/javascript/searchYear.js" type="text/javascript"></script>
 <!-- Make entire table rows clickable! -->
 <script>
     jQuery(document).ready(function($) {
