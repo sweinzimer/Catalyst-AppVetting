@@ -194,6 +194,8 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
             payload.processing.push(element);
         });
     }
+	
+	
 
 
     /*if (res.locals.results.project[0] == null) {
@@ -330,13 +332,13 @@ function formatDate(element)
     element.updated = Mon + "/" + Day + "/" + Year;
 
 	if(element.signature && element.signature.client_date != "") {
-	console.log("element sig");
-	console.log(element.signature.client_date);
+	//console.log("element sig");
+	//console.log(element.signature.client_date);
 	var appYear = element.signature.client_date.getFullYear();
 	var appDay = ("00" + element.signature.client_date.getDate()).slice(-2);
 	var appMon = ("00" + (element.signature.client_date.getMonth()+1)).slice(-2);
 	element.signature.client_date = appMon + "/" + appDay + "/" + Year;
-	var appYearExp = appYear + 1;
+	/*var appYearExp = appYear + 1;
 	var expDate = new Date();
 	var currentTime = new Date();
 	//var year = currentTime.getFullYear();
@@ -356,7 +358,7 @@ function formatDate(element)
 	else {
 		console.log("expired time");
 		element.display = false;
-	}
+	}*/
 	/*if(element.signature.client_date.getTime() <= expDate.getTime()) {
 		console.log("valid time");
 		element.display = true;

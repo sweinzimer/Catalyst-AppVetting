@@ -209,7 +209,21 @@ module.exports = {
                 else {
                     console.log('[ API ] getDocumentByStatus :: Documents package found: TRUE');
 					console.log(results);
-					
+					for(var x=0; x<results.project.length; x++) {
+						var updateYear = results.project[x].updated.getFullYear();
+						//get month and day with padding since they are 0 indexed
+						var updateDay = ( "00" + results.project[x].updated.getDate()).slice(-2);
+						var updateMon = ("00" + (results.project[x].updated.getMonth()+1)).slice(-2);
+						results.project[x].updated = updateYear + "/" + updateMon + "/" + updateDay;
+						
+						var sigYear = results.project[x].signature.client_date.getFullYear();
+						//get month and day with padding since they are 0 indexed
+						var sigDay = ( "00" + results.project[x].signature.client_date.getDate()).slice(-2);
+						var sigMon = ("00" + (results.project[x].signature.client_date.getMonth()+1)).slice(-2);
+						results.project[x].signature.client_date = sigYear + "/" + sigMon + "/" + sigDay;
+						
+						results.project[x].status = "Approved Project";
+					}
 					
                 }
                 res.locals.results = results;
