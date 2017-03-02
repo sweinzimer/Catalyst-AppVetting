@@ -32,6 +32,7 @@
  handle       - the document package is forwarded to the handle-it team to be completed
  documents    - additional documents are needed from the client before document package can proceed
  assess       - a member of catalyst must visit the property to determine the extent of repairs needed
+ assessComp   - site assessment has been completed
  approval     - client's application is in the approval process that must be blessed by the board of directors
  declined     - the document package was declined for various reasons
  withdrawn    - client has freely withdrawn their application

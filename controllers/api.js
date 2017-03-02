@@ -280,6 +280,7 @@ module.exports = {
             documents: DocumentPackage.find({status: "documents"}).lean().execAsync(),
             discuss: DocumentPackage.find({status: "discuss"}).lean().execAsync(),
             assess: DocumentPackage.find({status: "assess"}).lean().execAsync(),
+			assessComp: DocumentPackage.find({status: "assessComp"}).lean().execAsync(),
             withdrawn: DocumentPackage.find({status: "withdrawn"}).lean().execAsync(),
             approval: DocumentPackage.find({status: "approval"}).lean().execAsync(),
             handle: DocumentPackage.find({status: "handle"}).lean().execAsync(),

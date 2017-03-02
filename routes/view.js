@@ -173,6 +173,15 @@ router.get('/', api.getDocumentByStatus, function(req, res, next) {
             payload.processing.push(element);
         });
     }
+	
+	if (res.locals.results.assessComp[0] == null) {
+        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'assessComp\'');
+    } else {
+        res.locals.results.assessComp.forEach(function (element) {
+            element = formatElement(element);
+            payload.processing.push(element);
+        });
+    }
 
     if (res.locals.results.approval[0] == null) {
         console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'approval\'');
@@ -353,8 +362,11 @@ function formatStatus(element) {
             status = 'On Hold - Pending Discussion';
             break;
         case 'assess':
-            status = 'Site Assessment';
+            status = 'Site Assessment - Pending';
             break;
+		case 'assessComp':
+			status = 'Site Assessment - Complete';
+			break;
         case 'approval':
             status = 'Approval Process';
             break;

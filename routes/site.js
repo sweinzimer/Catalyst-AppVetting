@@ -108,7 +108,7 @@ function formatStatus(element) {
 
     switch (element.status){
         case 'assess':
-            status = 'Site Assessment';
+            status = 'Site Assessment - Pending';
             break;
         default:
             status = element.status;
