@@ -252,9 +252,18 @@
     }
 
     // TODO: Send password change request
-    alert('YOUR NEW PASSWORD WAS NOT SAVED')
-    $('#changePasswordButtonDiv').css('display', 'inline-block')
-    $('#changePasswordForm').css('display', 'none')
+    $.post('/user/editUser/changePassword', {
+      pk: '{{ user._id }}',
+      oldPass: passwordChange.oldPassword,
+      newPass: passwordChange.newPassword
+    }).done(function(data) {
+      alert('Your password has been changed')
+      $('#changePasswordButtonDiv').css('display', 'inline-block')
+      $('#changePasswordForm').css('display', 'none')
+    }).fail(function(data) {
+      alert('Your password change could not be saved')
+      console.error(data)
+    })
   }
 
   $(document).ready(function() {
