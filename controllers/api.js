@@ -506,7 +506,7 @@ module.exports = {
         // Build the name:value pairs to be updated
         // Since there is only one name and one value, we can use the method below
 		
-		/*if(req.body.name == "password") {
+		if(req.body.name == "password") {
 			Promise.props({
 				user: UserPackage.findById(req.body.pk).lean().execAsync()
 			})
@@ -530,7 +530,7 @@ module.exports = {
             })
             .catch(next);
 		}
-		else {*/
+		else {
 		
         var updates = {};
         updates[req.body.name] = req.body.value;
@@ -587,8 +587,60 @@ module.exports = {
                 console.error(err);
             })
             .catch(next);
-		//}
+		}
     },
+	
+	
+	
+	
+	updatePassword: function(req, res, next) {
+        // When executed this will apply updates to a user and return the MODIFIED user
+        // Log the _id, name, and value that are passed to the function
+
+        // Note that the _id will actually come in with the key "pk"... Sorry, it's an x-editable thing - DM
+        console.log('[ API ] updatePassword :: Call invoked with _id: ' + req.body.pk
+           + ' | oldPass : ' + req.body.oldPass + ' | newPass: ' + req.body.newPass);
+        
+	   console.log("in req body");
+       console.log(req.body)
+		//res.locals.status = 200;
+		//next();
+        Promise.props({
+				user: UserPackage.findById(req.body.pk).lean().execAsync()
+			})
+            .then(function(results) {
+                if (!results) {
+                    console.log('[ API ] findUser :: user package found: FALSE');
+					res.locals.status = 200;
+                }
+                else {
+                    console.log('[ API ] findUser :: user package found: TRUE');
+					if(results.user.validPassword(req.body.oldPass)) {
+						results.user.setPassword(req.body.newPass)
+						res.locals.status = 200;
+					}
+					else {
+						//invalid password
+						res.locals.status = 500;
+					}
+					
+                }
+
+                res.locals.results = results;
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+		
+		
+		
+    },
+	
+	
 
 	//create user roles on initial site deployment
 	createRoles: function(req, res, next) {

@@ -69,12 +69,17 @@ router.route('/editUser/:id')
 		res.json(res.locals);
 	})
 
-//possible password route?
-//format to use api.updateUser once current pass is confirmed?	
+
+
 router.route('/editUser/changePassword')
-	.post(verifyUser, api.updateUser, function(req,res) {
-		res.json(res.locals);
-	})
+	.post(isLoggedInPost, api.updatePassword, function(req,res) {
+		if(res.locals.status != '200'){
+			res.status(500).send("Could not update password");
+		}
+		else{
+			res.json(res.locals);
+		}
+	});
 
 router.route('/login')
 	.get(function(req, res) {
@@ -261,7 +266,7 @@ function isLoggedInPost(req, res, next) {
 		}
 }
 
-function verifyUser(req, res, next) {
+/*function verifyUser(req, res, next) {
 		if(req.isAuthenticated()) {
 			console.log(req.user._id);
 			var userID = req.user._id.toString();
@@ -308,4 +313,4 @@ function verifyUser(req, res, next) {
 			res.locals.status = 406;
 			return next('route');
 		}
-}
+}*/
