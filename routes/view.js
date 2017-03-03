@@ -44,7 +44,7 @@ router.post('/csvExport', function(req, res){
 	var firstname = req.body.firstname;
 	var lastname = req.body.lastname;
 	var query =  "{'_id' : ObjectId("+"'"+applicationID+"'"+")}";
-	var filename = lastname + ', ' + firstname + ' - ' + applicationID;
+	var filename = lastname + '-' + firstname + '-' + applicationID;
 	const execFile = require('child_process').execFile;
 	const exec = require('child_process').exec;
 	const mongoexport_child = execFile('mongoexport', ['-d', 'catalyst',
@@ -90,6 +90,29 @@ router.post('/csvExport', function(req, res){
 
 })
 
+router.get('/file/:name', function(req, res, next){
+var fileName = req.params.name;
+	var options = {
+		root: './public/exports',
+		dotfiles: 'deny',
+		headers: {
+			'x-sent': true,
+			'Content-Disposition':'attachment;filename=' + fileName
+		}
+	};
+
+	
+	res.sendFile(fileName, options, function(err){
+		if(err){
+			next(err);		
+		}
+		else{
+			console.log('Sent:', fileName);		
+		}
+	});
+
+
+});
 
 router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
 

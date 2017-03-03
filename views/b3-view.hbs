@@ -610,17 +610,17 @@
     });
 
     $('#csvExportButton').on('click', function(e) {
-	let urlParts = window.location.pathname.split('/')
-    let applicationID = urlParts[urlParts.length-1]
-	let firstname = '{{{doc.application.name.first}}}';
-	let lastname = '{{{doc.application.name.last}}}';
-    let payload = {
+	var urlParts = window.location.pathname.split('/')
+    var applicationID = urlParts[urlParts.length-1]
+	var firstname = '{{{doc.application.name.first}}}';
+	var lastname = '{{{doc.application.name.last}}}';
+    var payload = {
       	application: applicationID,
 		firstname: firstname,
 		lastname: lastname
     }
-    let csvRequest = $.ajax({
-      type: 'POST',
+    var csvRequest = $.ajax({
+      	type: 'POST',
         url: '/view/csvExport',
         dataType: 'json',
         contentType: 'application/json; chartset=UTF-8',
@@ -630,7 +630,8 @@
         if (xhr.status === 'success') {
           // TODO: Set window.location.href equal to the download file
 			
-			window.location = '../exports/' + '{{{doc.application.name.last}}}' + ', ' + '{{{doc.application.name.first}}}' + ' - ' + applicationID + '.csv'
+		window.location.href = '/view/file/' + '{{{doc.application.name.last}}}' + '-' + '{{{doc.application.name.first}}}' + '-' + applicationID + '.csv'
+
         } else {
 			console.log(xhr.status);
         }
