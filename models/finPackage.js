@@ -8,76 +8,85 @@ ObjectId = Schema.ObjectId;
 
 var FinPackageSchema = new Schema({
 	appID: { type: ObjectId},
-	name : {
-		first : String,
-		last : String
-	},
-
+	name : String,
 
 	food_stamps : {
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	},
 
 	income_tax : {
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	},
 
 	employment : {
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	},
 
 	ss_ben : {
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	},
 
 	pension : {
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	},
 
 	house_assist : {
 		req : Boolean,
 		rec : Boolean,
+		na  : Boolean
 	},
 
 	check_account : {
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	},
 
 	saving_account : {
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	},
 
 	ret_fund : {
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	},
 
 	invest : {
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	},
 
 	physical : {
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	},
 
 	other_resources : {
 		desc : String,
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	},
 
 	proof_own : {
 		req : Boolean,
-		rec : Boolean
+		rec : Boolean,
+		na  : Boolean
 	}
 
 });

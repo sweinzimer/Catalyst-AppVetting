@@ -213,6 +213,21 @@ function init() {
 				note: jQuery("textarea#otherCircumstances").val()
 			}
 		};
+		
+		console.log("residents");
+		console.log(data.application.other_residents);
+		//count how many financial packages will need added
+		var count = 0;
+		for(var x=0; x<=data.application.other_residents.name.length-1; x++) {
+			
+			if(data.application.other_residents.name[x] != "") {
+				count++
+				
+			}
+		}
+		data.count = count;
+		
+		
 		return data;
 	}
 

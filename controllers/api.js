@@ -209,6 +209,8 @@ module.exports = {
         if (debug == 1) {
             console.log(req.body);
         }
+		console.log("count");
+		console.log(req.body.count);
 		Promise.props({
 			docInSys: DocumentPackage.count({}).lean().execAsync()
 		})
@@ -247,10 +249,12 @@ module.exports = {
 					
 					var finance = new FinancialPackage();
 					finance.appID = doc._id;
-					finance.name.first = req.body.application.name.first;
-					console.log("fin first");
-					console.log(finance.name.first);
-					finance.name.last = req.body.application.name.last;
+					//finance.name.first = req.body.application.name.first;
+					//console.log("fin first");
+					//console.log(finance.name.first);
+					//finance.name.last = req.body.application.name.last;
+					var name = req.body.application.name.first + " " + req.body.application.name.last;
+					finance.name = name;
 
 					// Save the document package to the database with a callback to handle flow control
 					doc.saveAsync(function (err, doc, numAffected) {
@@ -285,6 +289,24 @@ module.exports = {
 							res.send( { status : 200 } );
 						}
 					});
+					
+					for (var i=0; i<req.body.count; i++) {
+						var family = new FinancialPackage();
+						family.appID = doc._id;
+						family.name = req.body.application.other_residents.name[i];
+					
+						family.saveAsync(function (err, highlight, numAffected) {
+							if (err) {
+								console.error(err);
+							}
+							else if (numAffected == 1) {
+								console.log('[ API ] postDocument :: finPackage created with _id: ' + finance._id);
+								console.log('[ API ] postDocument :: finPackage references document package _id: ' + finance.appID);
+								//res.send( { status : 200 } );
+							}
+						});
+						
+					} 
 		
 				}
 
@@ -853,37 +875,66 @@ module.exports = {
         // Log the _id, name, and value that are passed to the function
         console.log('[ API ] updateFinance :: Call invoked with _id: ');
         console.log(req.body);
+		console.log(Object.keys(req.body));
+		var userID;
+		console.log("length");
+		var name1;
+		var name2;
+		var value;
 		
+		Object.keys(req.body).forEach(function(prop) {
+			console.log("in looop");
+			console.log(prop);
+			userID = prop;
+			console.log(req.body[prop]);
+			Object.keys(req.body[prop]).forEach(function(data) {
+				console.log("in second loop");
+				//console.log(req.body[prop]);
+				console.log(data);
+				name1 = data;
+				console.log(name1);
+				console.log((req.body[prop])[data]);
+				Object.keys((req.body[prop])[data]).forEach(function(bool) {
+					console.log("third loop");
+					console.log(bool);
+					name2 = bool;
+					console.log(((req.body[prop])[data])[bool]);
+					value = ((req.body[prop])[data])[bool];
+				});
+			});
+		});
 
         // Build the name:value pairs to be updated
         
         var updates = {};
-		res.locals.status = '200';
-		next();
-		/*updates.GETNAME = req.body.NAME;
+		console.log("data built: ");
+		console.log(userID);
+		//console.log(name).toString();
+		var name = name1.toString() + "." + name2.toString();
+		console.log(name);
+		console.log(value);
+		
+		
+		updates[name] = value;
 		
 		
 		
 		// Record Update 
         //filters
         var conditions = {};
-        conditions['_id'] = req.body.FINPACKAGEID;
+        conditions['_id'] = mongoose.Types.ObjectId(userID);
         console.log("Search Filter:");
         console.log(conditions);
         console.log("Update:");
-        updates['updated'] = Date.now();
-        console.log(updates);
+        
 
         Promise.props({
-            fin: finPackage.findOneAndUpdate(
->>>>>>> fin_schema
-               
-<<<<<<< HEAD
-                    // $set: {name: value}
-=======
-                    // $set: {name: VALUE}
->>>>>>> fin_schema
-                    $set: updates
+            fin: FinancialPackage.findOneAndUpdate(
+			 // Condition
+                conditions,
+                // Updates
+                {
+					$set: updates
                 },
                 // Options
                 {
@@ -897,18 +948,7 @@ module.exports = {
             ).execAsync()
         })
             .then(function (results) {
-<<<<<<< HEAD
-                console.log(results);
-                if (results.item != null) {
-                    console.log('[ API ] updateWorkItem :: Note found: TRUE');
-                    res.locals.status = '200';
-                }
-                else {
-                    console.log('[ API ] updateWorkItem :: Note found: FALSE');
-                    res.locals.status = '500';
-                }
-                res.locals.results = results;
-=======
+
 				console.log(results);
                 
                 if (results) {
@@ -920,11 +960,13 @@ module.exports = {
                 res.locals.results = results;
                 //sending a status of 200 for now
                 res.locals.status = '200';
->>>>>>> fin_schema
+				next();
+			})
+            .catch(function (err) {
+                console.error(err);
+            })
 
-              
-=======
-            .catch(next);*/
+            .catch(next);
 
     },
     /**
