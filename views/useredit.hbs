@@ -252,7 +252,7 @@
     }
 
     // TODO: Send password change request
-    $.post('/user/editUser/changePassword', {
+    $.post('/user/changePassword', {
       pk: '{{ user._id }}',
       oldPass: passwordChange.oldPassword,
       newPass: passwordChange.newPassword

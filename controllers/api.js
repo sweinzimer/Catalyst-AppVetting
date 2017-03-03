@@ -691,6 +691,10 @@ module.exports = {
         
 	   console.log("in req body");
        console.log(req.body)
+	   var passCorrect = true;
+	   var hash;
+	   var salt;
+	   var newhash;
 		//res.locals.status = 200;
 		//next();
         Promise.props({
@@ -700,11 +704,92 @@ module.exports = {
 				console.log(results);
                 if (!results) {
                     console.log('[ API ] findUser :: user package found: FALSE');
-					res.locals.status = 200;
+					res.locals.status = 500;
                 }
                 else {
                     console.log('[ API ] findUser :: user package found: TRUE');
-					if(results.user.validPassword(req.body.oldPass)) {
+					hash = crypto.pbkdf2Sync(req.body.oldPass, results.user.salt, 1000, 64).toString('hex');
+					if(hash != req.user.hash) {
+						console.log("pass not correct");
+						res.locals.status = 500;
+						next();
+						passCorrect = false;
+						
+					}
+					else {
+						salt = results.user.salt;
+					}
+				}
+			})
+			.then(function(results) {
+						if(passCorrect == false) {
+							console.log("pass was wrong");
+							res.locals.status = 500;
+							next();
+						}
+						else {
+						console.log("salt in 2nd then");
+						console.log(salt);
+						
+						console.log("old pass correct");
+						var conditions = {};
+						var updates = {};
+						conditions['_id'] = req.body.pk;
+						console.log("Search Filter:");
+						console.log(conditions);
+						console.log("Update:");
+						var newsalt = crypto.randomBytes(16).toString('hex');
+						var newhash = crypto.pbkdf2Sync(req.body.newPass, newsalt, 1000, 64).toString('hex');
+						console.log(newhash);
+						console.log(newsalt);
+						//updates['updated'] = Date.now();
+						//console.log(updates);
+						updates.salt = newsalt;
+						updates.hash = newhash;
+						console.log(updates);
+						Promise.props({
+							userChange: UserPackage.findOneAndUpdate(
+								// Condition
+								conditions,
+								// Updates
+								{
+									 $set: updates
+									
+								},
+								// Options
+								{
+									// new - defaults to false, returns the modified document when true, or the original when false
+									new: true,
+									// runValidators - defaults to false, make sure the data fits the model before applying the update
+									runValidators: true
+								}
+								// Callback if needed
+								// { }
+							).execAsync()
+						})
+							.then(function (results) {
+								console.log(results);
+								// TODO: Confirm true/false is correct
+								if (results) {
+									console.log('[ API ] updatepass :: Documents package found: TRUE');
+								}
+								else {
+									console.log('[ API ] updatepass :: Documents package found: FALSE');
+								}
+								res.locals.results = results;
+								//sending a status of 200 for now
+								res.locals.status = '200';
+
+								// If we are at this line all promises have executed and returned
+								// Call next() to pass all of this glorious data to the next express router
+								//next();
+							})
+							.catch(function (err) {
+								console.error(err);
+							})
+							//.catch(next);
+					
+					/*if(results.user.validPassword(req.body.oldPass)) {
 						console.log("valid password");
 						results.user.setPassword(req.body.newPass)
 						res.locals.status = 200;
@@ -712,14 +797,15 @@ module.exports = {
 					else {
 						//invalid password
 						res.locals.status = 500;
-					}
+					}*/
 					
-                }
-
+                
+				res.locals.status = 200;
                 res.locals.results = results;
                 // If we are at this line all promises have executed and returned
                 // Call next() to pass all of this glorious data to the next express router
                 next();
+						}
             })
             .catch(function(err) {
                 console.error(err);

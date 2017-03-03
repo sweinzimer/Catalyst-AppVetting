@@ -72,8 +72,8 @@ router.route('/editUser/:id')
 
 
 
-router.route('/editUser/changePassword')
-	.post(isLoggedInPost, api.updatePassword, function(req,res) {
+router.route('/changePassword')
+	.post(api.updatePassword, function(req,res) {
 		console.log("in change pass route");
 		if(res.locals.status != '200'){
 			res.status(500).send("Could not update password");
