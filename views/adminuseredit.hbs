@@ -263,9 +263,10 @@
     }
 
     // TODO: Send password change request
-    $.post('/user/editUser/changePassword', {
+    $.post('/user/editUser/', {
       pk: '{{ user._id }}',
-      password: passwordChange.newPassword
+	  name: 'password',
+	  value: passwordChange.newPassword
     }).done(function(data) {
       alert('User\'s password has been changed')
       $('#changePasswordButtonDiv').css('display', 'inline-block')

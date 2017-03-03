@@ -41,7 +41,7 @@ var UserPackage = require('../models/userPackage');
 var RolePackage = require('../models/rolePackage');
 
 var FinancialPackage = require('../models/finPackage');
-
+var crypto = require('crypto');
 var bluebird = require('bluebird');
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose to use bluebird
@@ -498,25 +498,111 @@ module.exports = {
         // Note that the _id will actually come in with the key "pk"... Sorry, it's an x-editable thing - DM
         console.log('[ API ] updateUser :: Call invoked with _id: ' + req.body.pk
            + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
-        console.log(req.body.name + ' + ' + req.body.value);
+        //console.log(req.body.name + ' + ' + req.body.value);
 	   //console.log("in req body");
-        //console.log(req.body)
+        console.log(req.body)
 		//res.locals.status = 200;
 		//next();
         // Build the name:value pairs to be updated
         // Since there is only one name and one value, we can use the method below
 		
 		if(req.body.name == "password") {
+			console.log("changing password");
+			var conditions = {};
+			var updates = {};
+			conditions['_id'] = req.body.pk;
+			console.log("Search Filter:");
+			console.log(conditions);
+			console.log("Update:");
+			var salt = crypto.randomBytes(16).toString('hex');
+			var hash = crypto.pbkdf2Sync(req.body.value, salt, 1000, 64).toString('hex');
+			console.log(hash);
+			console.log(salt);
+			//updates['updated'] = Date.now();
+			//console.log(updates);
+			updates.salt = salt;
+			updates.hash = hash;
+			console.log(updates);
+			Promise.props({
+				user: UserPackage.findOneAndUpdate(
+					// Condition
+					conditions,
+					// Updates
+					{
+						 $set: updates
+						
+					},
+					// Options
+					{
+						// new - defaults to false, returns the modified document when true, or the original when false
+						new: true,
+						// runValidators - defaults to false, make sure the data fits the model before applying the update
+						runValidators: true
+					}
+					// Callback if needed
+					// { }
+				).execAsync()
+			})
+				.then(function (results) {
+					console.log(results);
+					// TODO: Confirm true/false is correct
+					if (results) {
+						console.log('[ API ] updateUser :: Documents package found: TRUE');
+					}
+					else {
+						console.log('[ API ] updateUser :: Documents package found: FALSE');
+					}
+					res.locals.results = results;
+					//sending a status of 200 for now
+					res.locals.status = '200';
+
+					// If we are at this line all promises have executed and returned
+					// Call next() to pass all of this glorious data to the next express router
+					next();
+				})
+				.catch(function (err) {
+					console.error(err);
+				})
+				.catch(next);
+		}
+			/*Promise.props({
+			User: findOne({ '_id' : req.body.pk}, function(err, user) {
+				if (err)
+					{return done(err);}
+				if(!user) {
+					console.log("user does not exist");
+					res.locals.status = 500;
+					next();
+				}		
+		
+				//credentials correct
+				user.setPassword(req.body.value);
+				res.locals.status = 200;
+			})
+			})
+			.then (function (results) {
+				next();
+			})
+			 .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);
+			*/
+			/*
 			Promise.props({
 				user: UserPackage.findById(req.body.pk).lean().execAsync()
 			})
-            .then(function(results) {
-                if (!results) {
+            .then(function(user) {
+                if (!user) {
                     console.log('[ API ] findUser :: user package found: FALSE');
                 }
                 else {
                     console.log('[ API ] findUser :: user package found: TRUE');
-					results.user.setPassword(req.body.value);
+					console.log("results");
+					console.log(user);
+					console.log("get user");
+					//console.log(getUser.user);
+					user.setPassword(req.body.value);
                 }
 
                 res.locals.results = results;
@@ -529,7 +615,9 @@ module.exports = {
                 console.error(err);
             })
             .catch(next);
-		}
+		*/
+		
+		
 		else {
 		
         var updates = {};
@@ -609,6 +697,7 @@ module.exports = {
 				user: UserPackage.findById(req.body.pk).lean().execAsync()
 			})
             .then(function(results) {
+				console.log(results);
                 if (!results) {
                     console.log('[ API ] findUser :: user package found: FALSE');
 					res.locals.status = 200;
@@ -616,6 +705,7 @@ module.exports = {
                 else {
                     console.log('[ API ] findUser :: user package found: TRUE');
 					if(results.user.validPassword(req.body.oldPass)) {
+						console.log("valid password");
 						results.user.setPassword(req.body.newPass)
 						res.locals.status = 200;
 					}
