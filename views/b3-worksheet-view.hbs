@@ -1079,11 +1079,11 @@
 			}
 
 
-			let idx = e.target.name.split('.')[0]
-			let objectVal = changeObjectValueByPath({}, e.target.name, e.target.checked)
+			var idx = e.target.name.split('.')[0]
+			var objectVal = changeObjectValueByPath({}, e.target.name, e.target.checked)
 
 
-			let changedValue = {}
+			var changedValue = {}
 			changedValue[ this.people[ idx ]._id ] = objectVal[idx]
 
 			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', (err) => {
@@ -1098,27 +1098,27 @@
 
 
 			this.schema.forEach((section, sectionIdx) => {
-				let sectionNode = $('<div></div>').addClass('finacialPackageSection')
+				var sectionNode = $('<div></div>').addClass('finacialPackageSection')
 				sectionNode.append('<h4>' + section.sectionName + '</h4>')
 
 				section.items.forEach((item, itemIdx) => {
-					let itemRow = $('<div></div>').addClass('finacialPackageRow')
+					var itemRow = $('<div></div>').addClass('finacialPackageRow')
 
 					// Question text
-					let itemText = $('<div></div>').addClass('finacialPackageText').appendTo(itemRow)
+					var itemText = $('<div></div>').addClass('finacialPackageText').appendTo(itemRow)
 					$('<p></p>').addClass('scriptText').text('Q: ' + item.question).appendTo(itemText)
 					$('<i></i>').append(item.subtext).appendTo(itemText)
 
 
 					// Header row for questions
-					let itemQuestionRow = $('<div></div>').addClass('row').appendTo(itemRow)
+					var itemQuestionRow = $('<div></div>').addClass('row').appendTo(itemRow)
 
 
 					$('<div></div>').addClass('col-xs-4').text(' ').appendTo(itemQuestionRow)
 
-					let headerRow = $('<div></div>').addClass('col-xs-8').appendTo(itemQuestionRow)
-					let headerRowTable = $('<table></table>').addClass('table').appendTo(headerRow)
-					let headerRowTableHeader = $('<thead></thead>').addClass('thead-default')
+					var headerRow = $('<div></div>').addClass('col-xs-8').appendTo(itemQuestionRow)
+					var headerRowTable = $('<table></table>').addClass('table').appendTo(headerRow)
+					var headerRowTableHeader = $('<thead></thead>').addClass('thead-default')
 					headerRowTableHeader = $('<tr></tr>').appendTo(headerRowTableHeader)
 					headerRowTableHeader.appendTo(headerRowTable)
 
@@ -1128,22 +1128,22 @@
 
 					// Each document object in the item
 					item.objects.forEach((obj, objIdx) => {
-						let objectRow = $('<div></div>').addClass('row')
+						var objectRow = $('<div></div>').addClass('row')
 
 						$('<div></div>').addClass('col-xs-4').text(obj).appendTo(objectRow)
 
-						let objectCheckBoxColumn = $('<div></div>').addClass('col-xs-8').appendTo(objectRow)
-						let checkBoxTable = $('<table></table>').addClass('table').appendTo(objectCheckBoxColumn)
+						var objectCheckBoxColumn = $('<div></div>').addClass('col-xs-8').appendTo(objectRow)
+						var checkBoxTable = $('<table></table>').addClass('table').appendTo(objectCheckBoxColumn)
 						checkBoxTable = $('<tbody></tbody>').appendTo(checkBoxTable)
 
-						let checkBoxRow = $('<tr></tr>').appendTo(checkBoxTable)
+						var checkBoxRow = $('<tr></tr>').appendTo(checkBoxTable)
 
 						this.people.forEach((person, personIdx) => {
-							let personCell = $('<td></td>').appendTo(checkBoxRow)
-							let thisField = this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]
+							var personCell = $('<td></td>').appendTo(checkBoxRow)
+							var thisField = this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]
 
 
-							let thisFieldInputReq = $('<input type="checkbox"> Requested</input>')
+							var thisFieldInputReq = $('<input type="checkbox"> Requested</input>')
 							.appendTo(personCell)
 							.attr('name', personIdx + '.' + thisField + '.' + 'req')
 							.on('change', this.handleChange)
@@ -1155,7 +1155,7 @@
 
 							$('<br/>').appendTo(personCell)
 
-							let thisFieldInputRec = $('<input type="checkbox"> Received</input>')
+							var thisFieldInputRec = $('<input type="checkbox"> Received</input>')
 							.appendTo(personCell)
 							.attr('name', personIdx + '.' + thisField + '.' + 'rec')
 							.on('change', this.handleChange)
@@ -1170,7 +1170,7 @@
 
 							$('<br/>').appendTo(personCell)
 
-							let thisFieldInputNA = $('<input type="checkbox"> N/A</input>')
+							var thisFieldInputNA = $('<input type="checkbox"> N/A</input>')
 							.appendTo(personCell)
 							.attr('name', personIdx + '.' + thisField + '.' + 'na')
 							.on('change', this.handleChange)
