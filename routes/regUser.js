@@ -43,27 +43,27 @@ router.route('/editUser')
 		//do stuff
 		//console.log(res.locals.results);
 		var payload = {};
-		
+
 		payload = res.locals.user;
 		payload.user_email = res.locals.user.user.contact_info.user_email;
 		res.render('useredit', payload);
-           
-		
+
+
 
 	})
 	.post(isLoggedIn, api.updateUser, function(req, res) {
 		//TODO: compare req.user_id to pk - confirm requesting user = user to be updated
 		res.json(res.locals);
 	})
-	
+
 router.route('/editUser/:id')
 	.get(isAdmin, api.findUser, function(req,res) {
 		var payload = {};
 		payload = res.locals.results;
 		payload.user_email = res.locals.email;
 		console.log(payload);
-		res.render('useredit', payload);
-		
+		res.render('adminuseredit', payload);
+
 	})
 	.post(isAdmin, api.updateUser, function(req, res) {
 		res.json(res.locals);
@@ -102,7 +102,7 @@ router.use('*', function route2(req, res, next) {
 		console.log("in error function");
 		//do something to gracefully exit
         res.status(406).send("Current password not correct");
-		
+
     }
 });
 
@@ -140,7 +140,7 @@ function isLoggedIn(req, res, next) {
 								var dobMon = ("00" + (results.user.contact_info.user_dob.dob_date.getMonth()+1)).slice(-2);
 								results.user.contact_info.user_dob.dob_date = dobYear + "-" + dobMon + "-" + dobDay;
 								res.locals.user = results;
-								
+
 								return next();
 
 							}
