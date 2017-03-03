@@ -5,7 +5,7 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var highlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
-
+var config = require('../config')
 var WorkItemPackage = require('../models/workItemPackage');
 
 var FinPackage = require('../models/finPackage');
@@ -35,7 +35,7 @@ router.get('/:id', isLoggedIn, function(req, res) {
     		workItems: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
     		highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync(),
 
-	      
+
 	      finances: FinPackage.findOne({appID: ObjectId(req.params.id)}).lean().execAsync()
 
     })
@@ -92,6 +92,84 @@ router.get('/:id', isLoggedIn, function(req, res) {
 });
 
 
+//Insert CSV export route here
+router.post('/csvExport', function(req, res){
+
+
+  var applicationID = req.body.application;
+  var firstname = req.body.firstname;
+  var lastname = req.body.lastname;
+  var query =  "{'applicationId' : ObjectId("+"'"+applicationID+"'"+")}";
+  var filename = lastname + '-' + firstname + '-' + applicationID;
+	const execFile = require('child_process').execFile;
+	const exec = require('child_process').exec;
+	const mongoexport_child = execFile('mongoexport', ['-d', 'catalyst',
+	'-c', 'workitempackages', '--type=csv', '--fields', 'name,description,cost,vettingComments', '-q', query, '-o', 'public/exports/'+filename+'-'+'VettingView'+'.csv', '--port', config.mongo.port],
+	function(error, stdout, stderr) {
+		if(error){
+			console.error('stderr', stderr);
+			throw error;
+		}
+		else{
+			console.log('stdout', stdout);
+		}
+	});
+
+	mongoexport_child.on('exit', function(code,signal){
+
+		const rename_child = exec('cd public/exports; var="Name,Description,Cost,Vetting Comments"; sed -i "1s/.*/$var/" ' + "'" + filename + '-' + 'VettingView' + '.csv' + "'",
+			function(error, stdout, stderr){
+					if(error){
+						console.error('stderr', stderr);
+						throw error;
+					}
+					else{
+						console.log('stdout', stdout);
+					}
+		})
+
+	rename_child.on('exit', function(code,signal){
+		if(code !== 0){
+			res.status(500).send("Export failed: Code 500");
+			debugger
+		}
+		else{
+			res.status(200).send({status: 'success'});
+		}
+	})
+
+
+
+	});
+
+
+});
+
+router.get('/file/:name', function(req, res, next){
+var fileName = req.params.name;
+	var options = {
+		root: './public/exports',
+		dotfiles: 'deny',
+		headers: {
+			'x-sent': true,
+			'Content-Disposition':'attachment;filename=' + fileName
+		}
+	};
+
+
+	res.sendFile(fileName, options, function(err){
+		if(err){
+			next(err);
+		}
+		else{
+			console.log('Sent:', fileName);
+		}
+	});
+
+
+});
+
+
 
 router.route('/servicearea')
     .post(api.updateService, function(req, res) {
@@ -133,7 +211,7 @@ router.route('/updateitem')
         res.json(res.locals);
     }
 	});
-	
+
 router.route('/finacialForm')
 	.post(api.updateFinance, function(req, res) {
 		if(res.locals.status != 200) {
@@ -195,7 +273,3 @@ function isLoggedIn(req, res, next) {
 			res.redirect('/user/login');
 		}
 }
-
-
-
-

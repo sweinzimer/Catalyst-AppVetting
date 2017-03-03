@@ -17,6 +17,7 @@
 
 <a href="/view" class="btn btn-primary">Back to Vetting Home</a>
 <a href="/view/{{doc._id}}" class="btn btn-primary">Back to Application View</a>
+<a id="csvExportButton" class="btn btn-primary">Export to CSV</a>
 
 <div class="container col-xs-12">
 		<h1>{{doc.application.name.first}} {{doc.application.name.last}} - Vetting Worksheet</h1>
@@ -194,7 +195,7 @@
 
 	<p id="targettwo"><br></p>
 	<b>[2]</b>
-	<p class="scriptText">Before I ask my questions let me take a minute to describe our process.  Today my focus will be on confirming that you meet our financial guidelines. If you do, next we would arrange to visit your home to determine whether the requested repairs are things that Catalyst has the expertise and resources to do. Then, If we can do the work, we would find a mutually agreeable date and get you on our project schedule. Finally we would show up at your home on the agreed date and do the work. Does all that make sense to you?</p>
+	<p class="scriptText">Before I ask my questions var me take a minute to describe our process.  Today my focus will be on confirming that you meet our financial guidelines. If you do, next we would arrange to visit your home to determine whether the requested repairs are things that Catalyst has the expertise and resources to do. Then, If we can do the work, we would find a mutually agreeable date and get you on our project schedule. Finally we would show up at your home on the agreed date and do the work. Does all that make sense to you?</p>
 
 	<p class="scriptText">Now, the first thing we need is your proof of home ownership. Can you provide us with, for example, either a copy of your latest mortgage statement, or possibly a copy of deed or title, or maybe your most recent home insurance statement?</p>
 
@@ -226,7 +227,7 @@
 	&nbsp;&nbsp;&nbsp;&nbsp; {{doc.property.requested_repairs}}
 	</td></tr></table>
 
-	<p class="scriptText">Okay. Let’s talk about the repairs you requested:</p>
+	<p class="scriptText">Okay. var’s talk about the repairs you requested:</p>
 
 	<p><i><b>Conversation starters/helpers:</b><br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your application says…<br>
@@ -1404,9 +1405,9 @@
             })
         });
 
-			let fpb = new FinacialPackageBuilder()
-			fpb.populateHtml()
-			fpb.getData()
+			var fpb = new FinacialPackageBuilder();
+			fpb.populateHtml();
+			fpb.getData();
 		});
 
 	/* Finacial Package Builder - Dave Martinez, Feb. 7, 2017
@@ -1433,7 +1434,7 @@
 			{
 				first: 'test3', last: 'test',
 			},
-		]
+		];
 
 		this.schema = [
 		  {
@@ -1522,7 +1523,7 @@
 					{ name: 'status', value: 'documents' },
 					'POST',
 					'/edit/' + this.applicationId,
-					(err) => {
+					function(err) {
 						if (!err) { $('#status').editable('setValue', 'documents') }
 					}
 				)
@@ -1530,10 +1531,10 @@
 
 			console.log(e.target.name);
 			console.log(e.target.value);
-			let changedValue = changeObjectValueByPath({}, e.target.name, e.target.checked)
+			var changedValue = changeObjectValueByPath({}, e.target.name, e.target.checked)
 			//console.log('changed value');
 			//console.log(changedValue);
-			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', (err) => {
+			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function(err){
 
 
 			})
@@ -1545,26 +1546,26 @@
 		this.populateHtml = function() {
 			this.root = $(this.htmlTargetSelector)
 
-			this.schema.forEach((section) => {
-				let sectionNode = $('<div></div>')
+			this.schema.forEach(function(section) {
+				var sectionNode = $('<div></div>')
 				sectionNode.append('<h4>' + section.sectionName + '</h4>')
 
-				let sectionTableNode = $('<table></table>').append('<tbody></tbody>')
+				var sectionTableNode = $('<table></table>').append('<tbody></tbody>')
 
-				section.items.forEach((item) => {
-					let itemRowNode = $('<tr></tr>')
-					let itemQuestionNode = $('<td></td>').appendTo(itemRowNode).attr('colspan', '5')
+				section.items.forEach(function(item){
+					var itemRowNode = $('<tr></tr>')
+					var itemQuestionNode = $('<td></td>').appendTo(itemRowNode).attr('colspan', '5')
 
 					itemQuestionNode.append($('<p></p>').addClass('scriptText').text('Q: ' + item.question))
 					itemQuestionNode.append($('<i></i>').text(item.subtext))
 					sectionTableNode.append(itemRowNode)
 
-					item.objects.forEach((obj, objIdx) => {
-						let checkboxRowNode = $('<tr></tr>')
+					item.objects.forEach(function(obj, objIdx) {
+						var checkboxRowNode = $('<tr></tr>')
 						$('<td>' + obj + '</td>').appendTo(checkboxRowNode).attr('colspan', '2')
 
-						this.people.forEach((person, personIdx) => {
-							let checkboxCellNode = $('<td></td>').appendTo(checkboxRowNode)
+						this.people.forEach(function(person, personIdx) {
+							var checkboxCellNode = $('<td></td>').appendTo(checkboxRowNode)
 
 							$('<input type="checkbox"> Requested</input>').appendTo(checkboxCellNode)
 							.attr('name', objIdx.toString() + '.' + personIdx + '.' + item.fieldPath + '.' + 'req')
@@ -1577,16 +1578,16 @@
 							.on('change', this.handleChange)
 
 							checkboxRowNode.append(checkboxCellNode)
-						})
+						});
 
 						sectionTableNode.append(checkboxRowNode)
-					})
-				})
+					});
+				});
 
 				sectionNode.append(sectionTableNode)
 				this.root.append(sectionNode)
-			})
-		}
+			});
+		}.bind(this)
 		// end this.populateHtml
 
 		this.getData = function() {
@@ -1599,13 +1600,13 @@
 	}
 
 	function getFormData(form) {
-		let formData = {}
-		let inputFields = $('input', form)
+		var formData = {}
+		var inputFields = $('input', form)
 		inputFields.each(function(idx) {
-			let objectPath = this.name
-			let objectPieces = objectPath.split('.')
-			let currentObjectPlace = formData
-			objectPieces.forEach((p, i) => {
+			var objectPath = this.name
+			var objectPieces = objectPath.split('.')
+			var currentObjectPlace = formData
+			objectPieces.forEach(function(p, i) {
 				if (i < (objectPieces.length-1)) {
 					if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
 					currentObjectPlace = currentObjectPlace[p]
@@ -1623,9 +1624,9 @@
 	}
 
 	function changeObjectValueByPath(obj, path, value) {
-		let objectPieces = path.split('.')
-		let currentObjectPlace = obj
-		objectPieces.forEach((p, i) => {
+		var objectPieces = path.split('.')
+		var currentObjectPlace = obj
+		objectPieces.forEach(function(p, i) {
 			if (i < (objectPieces.length-1)) {
 				if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
 				currentObjectPlace = currentObjectPlace[p]
@@ -1662,5 +1663,42 @@
 			next(new Error('Could not complete xhr'))
 		});
 	}
+
+
+
+$('#csvExportButton').on('click', function(e) {
+	var urlParts = window.location.pathname.split('/')
+  var applicationID = urlParts[urlParts.length-1]
+	var firstname = '{{{doc.application.name.first}}}';
+	var lastname = '{{{doc.application.name.last}}}';
+  var payload = {
+		application: applicationID,
+		firstname: firstname,
+		lastname: lastname
+    }
+    var csvRequest = $.ajax({
+      	type: 'POST',
+        url: '/vettingworksheet/csvExport',
+        dataType: 'json',
+        contentType: 'application/json; chartset=UTF-8',
+        data: JSON.stringify(payload)
+      })
+      csvRequest.done(function(xhr) {
+        if (xhr.status === 'success') {
+          // TODO: Set window.location.href equal to the download file
+
+		window.location.href = '/vettingworksheet/file/' + '{{{doc.application.name.last}}}' + '-' + '{{{doc.application.name.first}}}' + '-' + applicationID + '-' + 'VettingView' + '.csv'
+
+        } else {
+			console.log(xhr.status);
+        }
+      })
+      csvRequest.fail(function(data) {
+		console.log(data.status)
+        debugger
+      })
+    })
+
+
 
 </script>
