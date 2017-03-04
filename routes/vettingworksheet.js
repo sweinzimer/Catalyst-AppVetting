@@ -130,21 +130,40 @@ router.post('/csvExport', function(req, res){
 					}
 		})
 
-	rename_child.on('exit', function(code,signal){
-		if(code !== 0){
-			res.status(500).send("Export failed: Code 500");
-			debugger
-		}
-		else{
-			res.status(200).send({status: 'success'});
-		}
-	})
+    rename_child.on('exit', function(code,signal){
+      const export_notes = execFile('mongoexport', ['-d', 'catalyst', '-c', 'notes', '--type=csv', '--fields', 'vetAgent,description', '-q', query, '-o', 'public/exports/'+filename+'-'+'notes'+'.csv', '--port', config.mongo.port],
+      function(error,stdout,stderr){
+        if(error){
+          console.error('stderr', stderr);
+          throw error;
+        }
+        else{
+          console.log('stdout', stdout);
+        }
+      });
 
-
-
+      export_notes.on('exit', function(code, signal){
+        const edit_notes_header = exec('cd public/exports; var="Vetting Agent,Description"; sed -i "1s/.*/$var/" ' + "'" + filename + '-' + 'notes' + '.csv'  + "'" + ';cat ' + filename + '-' + 'VettingView' + '.csv' + ' ' + filename + '-'+'notes' + '.csv' + ' > ' + filename + '-' + 'VettingWorksheet' + '.csv',
+        function(error, stdout, stderr){
+          if(error){
+            console.error('stderr', stderr);
+          }
+          else{
+            console.log('stdout', stdout);
+          }
+        });
+        edit_notes_header.on('exit', function(code,signal){
+      		if(code !== 0){
+      			res.status(500).send("Export failed: Code 500");
+      			debugger
+      		}
+      		else{
+      			res.status(200).send({status: 'success'});
+      		}
+      	});
+      });
+    });
 	});
-
-
 });
 
 router.get('/file/:name', function(req, res, next){

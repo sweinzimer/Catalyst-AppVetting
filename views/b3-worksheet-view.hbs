@@ -1291,7 +1291,7 @@ $('#csvExportButton').on('click', function(e) {
         if (xhr.status === 'success') {
           // TODO: Set window.location.href equal to the download file
 
-		window.location.href = '/vettingworksheet/file/' + '{{{doc.application.name.last}}}' + '-' + '{{{doc.application.name.first}}}' + '-' + applicationID + '-' + 'VettingView' + '.csv'
+		window.location.href = '/vettingworksheet/file/' + '{{{doc.application.name.last}}}' + '-' + '{{{doc.application.name.first}}}' + '-' + applicationID + '-' + 'VettingWorksheet' + '.csv'
 
         } else {
 			console.log(xhr.status);
