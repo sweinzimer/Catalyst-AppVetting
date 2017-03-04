@@ -354,7 +354,7 @@ module.exports = {
 						else if (numAffected == 1) {
 							console.log('[ API ] postDocument :: finPackage created with _id: ' + finance._id);
 							console.log('[ API ] postDocument :: highlightPackage references document package _id: ' + finance.appID);
-							res.send( { status : 200 } );
+							//res.send( { status : 200 } );
 						}
 					});
 
@@ -373,8 +373,9 @@ module.exports = {
 								//res.send( { status : 200 } );
 							}
 						});
-
+						
 					}
+					res.send( { status : 200 } );
 
 				}
 
@@ -505,7 +506,7 @@ module.exports = {
 		//next();
         // Build the name:value pairs to be updated
         // Since there is only one name and one value, we can use the method below
-		
+
 		if(req.body.name == "password") {
 			console.log("changing password");
 			var conditions = {};
@@ -530,7 +531,7 @@ module.exports = {
 					// Updates
 					{
 						 $set: updates
-						
+
 					},
 					// Options
 					{
@@ -573,8 +574,8 @@ module.exports = {
 					console.log("user does not exist");
 					res.locals.status = 500;
 					next();
-				}		
-		
+				}
+
 				//credentials correct
 				user.setPassword(req.body.value);
 				res.locals.status = 200;
@@ -616,10 +617,10 @@ module.exports = {
             })
             .catch(next);
 		*/
-		
-		
+
+
 		else {
-		
+
         var updates = {};
         updates[req.body.name] = req.body.value;
 
@@ -677,10 +678,10 @@ module.exports = {
             .catch(next);
 		}
     },
-	
-	
-	
-	
+
+
+
+
 	updatePassword: function(req, res, next) {
         // When executed this will apply updates to a user and return the MODIFIED user
         // Log the _id, name, and value that are passed to the function
@@ -688,7 +689,7 @@ module.exports = {
         // Note that the _id will actually come in with the key "pk"... Sorry, it's an x-editable thing - DM
         console.log('[ API ] updatePassword :: Call invoked with _id: ' + req.body.pk
            + ' | oldPass : ' + req.body.oldPass + ' | newPass: ' + req.body.newPass);
-        
+
 	   console.log("in req body");
        console.log(req.body)
 	   var passCorrect = true;
@@ -714,7 +715,7 @@ module.exports = {
 						res.locals.status = 500;
 						next();
 						passCorrect = false;
-						
+
 					}
 					else {
 						salt = results.user.salt;
@@ -730,7 +731,7 @@ module.exports = {
 						else {
 						console.log("salt in 2nd then");
 						console.log(salt);
-						
+
 						console.log("old pass correct");
 						var conditions = {};
 						var updates = {};
@@ -754,7 +755,7 @@ module.exports = {
 								// Updates
 								{
 									 $set: updates
-									
+
 								},
 								// Options
 								{
@@ -788,7 +789,7 @@ module.exports = {
 								console.error(err);
 							})
 							//.catch(next);
-					
+
 					/*if(results.user.validPassword(req.body.oldPass)) {
 						console.log("valid password");
 						results.user.setPassword(req.body.newPass)
@@ -798,8 +799,8 @@ module.exports = {
 						//invalid password
 						res.locals.status = 500;
 					}*/
-					
-                
+
+
 				res.locals.status = 200;
                 res.locals.results = results;
                 // If we are at this line all promises have executed and returned
@@ -811,12 +812,12 @@ module.exports = {
                 console.error(err);
             })
             .catch(next);
-		
-		
-		
+
+
+
     },
-	
-	
+
+
 
 	//create user roles on initial site deployment
 	createRoles: function(req, res, next) {
@@ -1449,6 +1450,12 @@ module.exports = {
         console.log('[ API ] putUpdateArray :: Call invoked with _id: ' + req.params.id
             + ' | key: ' + req.body.name + ' | value: ' + req.body.value + ' | current value: ' + req.body.pk);
         //the $ holds the index of the element
+		if(req.body.name == "application.other_residents.name") {
+			console.log("updating name");
+			if(req.body.pk == "") {
+				console.log("currently empty");
+			}
+		}
         var updateField = req.body.name + ".$";
         var updates = {};
         updates[updateField] = req.body.value;
@@ -1487,6 +1494,112 @@ module.exports = {
                 console.log(results);
                 if (results.doc != null) {
                     console.log('[ API ] putUpdateArray :: Documents package found: TRUE');
+					if(req.body.name == "application.other_residents.name") {
+						console.log("updating name");
+						var finance = new FinancialPackage();
+						if(req.body.pk == "") {
+							console.log("currently empty");
+							finance.appID = req.params.id;
+							finance.name = req.body.value;
+							finance.saveAsync(function (err, highlight, numAffected) {
+								if (err) {
+									console.error(err);
+								}
+								else if (numAffected == 1) {
+									console.log('[ API ] postDocument :: finPackage created with _id: ' + finance._id);
+									console.log('[ API ] postDocument :: finPackage references document package _id: ' + finance.appID);
+									//res.send( { status : 200 } );
+
+								}
+							});
+
+						}
+						else {
+							console.log("changing name");
+							if(req.body.value == ""){
+								console.log("remove package");
+								Promise.props({
+								fin: FinancialPackage.remove(
+									{
+										appID: req.params.id,
+										name: req.body.pk
+
+									}
+								).execAsync()
+							})
+							.then(function (results) {
+								if (results) {
+									console.log('[ API ] deleteFinancial :: Note found: TRUE');
+									//res.locals.results = results;
+									//sending a status of 200 for now
+									//res.locals.status = '200';
+								}
+								else {
+									console.log('[ API ] deleteFinancial :: Note found: FALSE');
+								}
+								//next();
+							})
+							.catch(function (err) {
+								console.error(err);
+							});
+
+							}
+							else {
+							var finUpdates = {};
+							finUpdates['name'] = req.body.value;
+							// Record Update time
+							//updates['updated'] = Date.now();
+							//filters
+							var finConditions = {};
+							finConditions['appID'] = req.params.id;
+							finConditions['name'] = req.body.pk;
+							console.log("Search Filter:");
+							console.log(finConditions);
+							console.log("Update:");
+							console.log(finUpdates);
+
+							Promise.props({
+								fin: FinancialPackage.findOneAndUpdate(
+									// Condition
+									finConditions,
+									// Updates
+									{
+										// $set: {name: value}
+										$set: finUpdates
+									},
+									// Options
+									{
+										// new - defaults to false, returns the modified document when true, or the original when false
+										new: true,
+										// runValidators - defaults to false, make sure the data fits the model before applying the update
+										runValidators: true
+									}
+									// Callback if needed
+									// { }
+								).execAsync()
+							})
+							 .then(function (results) {
+
+									console.log(results);
+
+									if (results) {
+										console.log('[ API ] updateFinance :: Fin package found: TRUE');
+									}
+									else {
+										console.log('[ API ] updateFinance :: Fin package found: FALSE');
+									}
+
+								})
+								.catch(function (err) {
+									console.error(err);
+								})
+
+								.catch(next);
+							}
+
+						}
+					}
+					res.locals.results = results;
                     res.locals.status = '200';
                 }
                 else {
