@@ -48,14 +48,23 @@
                 <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/view">Vetting</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="/application/add">Apply</a>
             </li>
+            {{#if_eq role "ADMIN"}}
             <li class="nav-item">
-                <a class="nav-link" href="/user/userList">Users</a>
+              <a class="nav-link" href="/view">Vetting</a>
             </li>
+            {{/if_eq}}
+            {{#if_eq role "VET"}}
+            <li class="nav-item">
+              <a class="nav-link" href="/view">Vetting</a>
+            </li>
+            {{/if_eq}}
+            {{#if_eq role "ADMIN"}}
+              <li class="nav-item">
+                  <a class="nav-link" href="/user/userList">Users</a>
+              </li>
+            {{/if_eq}}
         </ul>
         <div class="navbar-right">
           <div id="noUserNav" style="display:none;">

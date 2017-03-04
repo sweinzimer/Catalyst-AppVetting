@@ -67,12 +67,21 @@ hbs.registerHelper("debug", function(optionalValue) {
 });
 
 hbs.registerHelper('stringify', function(val) {
+  if (!val) { return '' }
   return JSON.stringify(val, null, '  ')
 })
 
 hbs.registerHelper('returnObject', function(val) {
   return val
 })
+
+hbs.registerHelper('if_eq', function(a, b, opts) {
+    if (a == b) {
+        return opts.fn(this);
+    } else {
+        return opts.inverse(this);
+    }
+});
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Middleware
