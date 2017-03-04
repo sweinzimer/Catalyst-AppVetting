@@ -44,7 +44,7 @@ ObjectId = Schema.ObjectId;
 
 var DocumentPackageSchema = new Schema({
     status:         String,
-    created:        Date,
+    created:        { type: Date, default: Date.now},
     updated:        { type: Date, default: Date.now},
     highlightPackage: { type: ObjectId },
     service_area : Boolean,
@@ -172,7 +172,7 @@ var DocumentPackageSchema = new Schema({
 	signature:    {
 		client_terms: Boolean,
 		client_sig: String,
-		client_date: { type: Date, default: Date.now}
+		client_date: Date
 	},
 	
 	// Note: upon application submission, the Yes checkbox (name="tac-yes") and the digital signature (name="signature") at the bottom of the form are not captured anywhere.

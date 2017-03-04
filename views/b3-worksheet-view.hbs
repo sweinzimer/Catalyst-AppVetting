@@ -1205,6 +1205,7 @@
 	*
 	*/
 	$(document).ready(function() {
+		{{#if doc.service_area}}
 		if({{doc.service_area}}) {
 		console.log("service area true");
 		document.getElementById('sa_yes').checked = true;
@@ -1213,6 +1214,7 @@
 		console.log("service area false");
 		document.getElementById('sa_no').checked = true;
 		}
+		{{/if}}
 
 	});
     /**

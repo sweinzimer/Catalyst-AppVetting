@@ -258,8 +258,10 @@ module.exports = {
             console.log(req.body);
         }
 		
-		var currentTime = new Date();
-		var year = currentTime.getFullYear();
+		//var currentTime = new Date();
+		//var year = req.body.signature.client_date.getFullYear();
+		var year = new Date(req.body.signature.client_date).getFullYear();
+		console.log("year " + year);
 		Promise.props({
 			docInSys: DocumentPackage.count({app_year : year}).lean().execAsync()
 		})

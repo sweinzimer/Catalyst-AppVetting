@@ -304,7 +304,8 @@ function init() {
 
 		data.signature = {
 			client_terms: getVal('input[name="tac-yes"]:checked'),
-			client_sig: getVal('input[name="signature"]')
+			client_sig: getVal('input[name="signature"]'),
+			client_date: getVal('input[name="client_date"]')
 		};
 		return data;
 	}
