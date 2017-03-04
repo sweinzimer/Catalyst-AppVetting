@@ -286,7 +286,7 @@ module.exports = {
 						else if (numAffected == 1) {
 							console.log('[ API ] postDocument :: finPackage created with _id: ' + finance._id);
 							console.log('[ API ] postDocument :: highlightPackage references document package _id: ' + finance.appID);
-							res.send( { status : 200 } );
+							//res.send( { status : 200 } );
 						}
 					});
 					
@@ -307,6 +307,7 @@ module.exports = {
 						});
 						
 					} 
+					res.send( { status : 200 } );
 		
 				}
 
@@ -1120,6 +1121,12 @@ module.exports = {
         console.log('[ API ] putUpdateArray :: Call invoked with _id: ' + req.params.id
             + ' | key: ' + req.body.name + ' | value: ' + req.body.value + ' | current value: ' + req.body.pk);
         //the $ holds the index of the element
+		if(req.body.name == "application.other_residents.name") {
+			console.log("updating name");
+			if(req.body.pk == "") {
+				console.log("currently empty");
+			}
+		}
         var updateField = req.body.name + ".$";
         var updates = {};
         updates[updateField] = req.body.value;
@@ -1158,6 +1165,112 @@ module.exports = {
                 console.log(results);
                 if (results.doc != null) {
                     console.log('[ API ] putUpdateArray :: Documents package found: TRUE');
+					if(req.body.name == "application.other_residents.name") {
+						console.log("updating name");
+						var finance = new FinancialPackage();
+						if(req.body.pk == "") {
+							console.log("currently empty");
+							finance.appID = req.params.id;
+							finance.name = req.body.value;
+							finance.saveAsync(function (err, highlight, numAffected) {
+								if (err) {
+									console.error(err);
+								}
+								else if (numAffected == 1) {
+									console.log('[ API ] postDocument :: finPackage created with _id: ' + finance._id);
+									console.log('[ API ] postDocument :: finPackage references document package _id: ' + finance.appID);
+									//res.send( { status : 200 } );
+									
+								}
+							});
+						
+						}
+						else {
+							console.log("changing name");
+							if(req.body.value == ""){
+								console.log("remove package");
+								Promise.props({
+								fin: FinancialPackage.remove(
+									{
+										appID: req.params.id,
+										name: req.body.pk
+										
+									}
+								).execAsync()
+							})
+							.then(function (results) {
+								if (results) {
+									console.log('[ API ] deleteFinancial :: Note found: TRUE');
+									//res.locals.results = results;
+									//sending a status of 200 for now
+									//res.locals.status = '200';
+								}
+								else {
+									console.log('[ API ] deleteFinancial :: Note found: FALSE');
+								}
+								//next();
+							})
+							.catch(function (err) {
+								console.error(err);
+							});
+								
+							}
+							else {
+							var finUpdates = {};
+							finUpdates['name'] = req.body.value;
+							// Record Update time
+							//updates['updated'] = Date.now();
+							//filters
+							var finConditions = {};
+							finConditions['appID'] = req.params.id;
+							finConditions['name'] = req.body.pk;
+							console.log("Search Filter:");
+							console.log(finConditions);
+							console.log("Update:");
+							console.log(finUpdates);
+
+							Promise.props({
+								fin: FinancialPackage.findOneAndUpdate(
+									// Condition
+									finConditions,
+									// Updates
+									{
+										// $set: {name: value}
+										$set: finUpdates
+									},
+									// Options
+									{
+										// new - defaults to false, returns the modified document when true, or the original when false
+										new: true,
+										// runValidators - defaults to false, make sure the data fits the model before applying the update
+										runValidators: true
+									}
+									// Callback if needed
+									// { }
+								).execAsync()
+							})
+							 .then(function (results) {
+
+									console.log(results);
+									
+									if (results) {
+										console.log('[ API ] updateFinance :: Fin package found: TRUE');
+									}
+									else {
+										console.log('[ API ] updateFinance :: Fin package found: FALSE');
+									}
+									
+								})
+								.catch(function (err) {
+									console.error(err);
+								})
+
+								.catch(next);
+							}
+							
+						}
+					}
+					res.locals.results = results;
                     res.locals.status = '200';
                 }
                 else {
