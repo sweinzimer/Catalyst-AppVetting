@@ -51,6 +51,15 @@ router.get('/:id', isLoggedIn, function(req, res) {
 
                 result.doc.application.dob.date = dobYear + "-" + dobMon + "-" + dobDay;
             }
+			
+			if(result.doc.service_area == null) {
+				console.log("no service area value");
+				result.service = false;
+			}
+			else {
+				console.log("there is a service area value");
+				result.service = true;
+			}
 
             // format vetting notes dates
             if(result.vettingNotes.length != 0)

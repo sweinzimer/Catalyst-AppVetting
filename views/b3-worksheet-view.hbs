@@ -764,14 +764,20 @@
 	*
 	*/
 	$(document).ready(function() {
-		{{#if doc.service_area}}
-		console.log("service area true");
-		document.getElementById('sa_yes').checked = true;
-		{{else}}
-
-		console.log("service area false");
-		document.getElementById('sa_no').checked = true;
+		{{#if service}}
+			{{#if doc.service_area}}
+			console.log("service area true");
+			document.getElementById('sa_yes').checked = true;
+			{{else}}
+			console.log("service area false");
+			document.getElementById('sa_no').checked = true;
+			
+		    {{/if}}
 		{{/if}}
+		
+		
+		
+		
 
 	});
     /**
