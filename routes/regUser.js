@@ -33,7 +33,7 @@ router.get('/userSuccess', function(req, res) {
 router.route('/userList')
 	.get(isAdmin, api.getUsers, function(req, res) {
 		console.log(res.locals.results);
-		res.json(res.locals);
+		res.render('userlist', res.locals)
 
 });
 
