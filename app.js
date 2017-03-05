@@ -28,11 +28,11 @@ initPassport(passport);
 // Route Naming and Importing
 // Define routes that will be used
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-var routes = require('./routes/index');
+var routes = require('./routes/index')(passport);
 var test = require('./routes/test');
 var view = require('./routes/view')(passport);
 var edit = require('./routes/edit')(passport);
-var appform = require('./routes/appform');
+var appform = require('./routes/appform')(passport);
 var vettingworksheet = require('./routes/vettingworksheet')(passport);
 var regUser = require('./routes/regUser')(passport);
 

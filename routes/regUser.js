@@ -34,6 +34,10 @@ router.get('/userSuccess', function(req, res) {
 
 router.route('/userList')
 	.get(isAdmin, api.getUsers, function(req, res) {
+		var payload = {};
+		payload = res.locals.results;
+		payload.user_email = res.locals.email;
+		payload.user_role = res.locals.role;
 		console.log(res.locals.results);
 		res.render('userlist', res.locals)
 
@@ -64,6 +68,7 @@ router.route('/editUser/:id')
 		var payload = {};
 		payload = res.locals.results;
 		payload.user_email = res.locals.email;
+		payload.user_role = res.locals.role;
 		console.log(payload);
 		res.render('adminuseredit', payload);
 
