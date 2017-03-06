@@ -248,7 +248,7 @@ function isLoggedInPost(req, res, next) {
 					}
 					else {
 
-						if(results.user.user_role == "ADMIN") {
+						if(results.user.user_status == "ACTIVE") {
 							return next();
 
 						}
