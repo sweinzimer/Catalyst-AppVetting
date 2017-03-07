@@ -319,7 +319,8 @@ function init() {
 
 		data.signature = {
 			client_terms: getVal('input[name="tac-yes"]:checked'),
-			client_sig: getVal('input[name="signature"]')
+			client_sig: getVal('input[name="signature"]'),
+			client_date: getVal('input[name="client_date"]')
 		};
 		return data;
 	}
@@ -337,7 +338,7 @@ function init() {
 				'firstName', 'lastName', 'dob', 'driversLicense', 'mStatus', 'pPhone',
 				'add1', 'city', 'state', 'zip', 'eContactName', 'ecRelationship',
 				'ecPhone', 'monthlyMortgage', 'annualIncome', 'timePropertyOwned',
-				'yearPropertyBuilt', 'repairsNeeded', 'signature'
+				'yearPropertyBuilt', 'repairsNeeded', 'signature', 'client_date'
 			],
 			isValid: (node) => { return node.val().length > 0 }
 		},

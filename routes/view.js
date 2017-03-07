@@ -126,6 +126,16 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
         });
     }
     payload.new = res.locals.results.new;
+	
+	//separate bucket for approved applications
+	if (res.locals.results.project[0] == null) {
+        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'project\'');
+    } else {
+        res.locals.results.project.forEach(function (element) {
+            element = formatElement(element);
+		});
+    }
+    payload.project = res.locals.results.project;
 
     //put declined and withdrawn in the same bucket
     payload.unapproved = [];
@@ -205,18 +215,32 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
             payload.processing.push(element);
         });
     }
+	
+	
 
 
-    if (res.locals.results.project[0] == null) {
+    /*if (res.locals.results.project[0] == null) {
         console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'project\'');
     } else {
         res.locals.results.project.forEach(function (element) {
             element = formatElement(element);
             payload.processing.push(element);
         });
-    }
 
-	payload.user = req.user._id || false;
+    }*/
+	var currentYear = new Date().getFullYear();
+	console.log("current year" + currentYear);
+	payload.year = [];
+	var singleYear = {};
+	//var year = {};
+	for(var x=currentYear; x>=2007; x--) {
+		singleYear = {"yearValue" : x};
+		payload.year.push(singleYear);
+		
+	}
+	console.log("years passed: " + payload.year);
+	payload.user = req.user._id;
+
 
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
@@ -333,21 +357,27 @@ function formatElement(element) {
  */
 function formatDate(element)
 {
-	//console.log("element updated");
-	//console.log(element.updated);
+
+	//updated date
+
     var Year = element.updated.getFullYear();
     //get month and day with padding since they are 0 indexed
     var Day = ( "00" + element.updated.getDate()).slice(-2);
     var Mon = ("00" + (element.updated.getMonth()+1)).slice(-2);
     element.updated = Mon + "/" + Day + "/" + Year;
 
+	//signature date (application date)
 	if(element.signature && element.signature.client_date != "") {
-	//console.log("element sig");
-	//console.log(element.signature.client_date);
-	var appYear = element.signature.client_date.getFullYear();
-	var appDay = ("00" + element.signature.client_date.getDate()).slice(-2);
-	var appMon = ("00" + (element.signature.client_date.getMonth()+1)).slice(-2);
-	element.signature.client_date = appMon + "/" + appDay + "/" + Year;
+
+	var appDate = new Date(element.signature.client_date);
+	var appYear = appDate.getFullYear();
+	var appDay = ("00" + appDate.getDate()).slice(-2);
+	var appMon = ("00" + (appDate.getMonth()+1)).slice(-2);
+	element.signature.client_date = appMon + "/" + appDay + "/" + appYear;
+	
+	
+	
+
 	}
     return element;
 }

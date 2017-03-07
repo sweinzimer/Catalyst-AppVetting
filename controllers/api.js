@@ -226,7 +226,8 @@ module.exports = {
     getDocumentByStatus: function(req, res, next) {
         // Log the api call made to the console
         console.log('[ API ] getDocumentByStatus :: Call invoked');
-
+		var currentTime = new Date();
+		var year = currentTime.getFullYear();
         // Access the returned items as results.<status code>[array index].<what you need>
         // Example: results.visit[3].address.line_1 = a string
         Promise.props({
@@ -235,11 +236,11 @@ module.exports = {
             documents: DocumentPackage.find({status: "documents"}).lean().execAsync(),
             discuss: DocumentPackage.find({status: "discuss"}).lean().execAsync(),
             assess: DocumentPackage.find({status: "assess"}).lean().execAsync(),
-            withdrawn: DocumentPackage.find({status: "withdrawn"}).lean().execAsync(),
+            withdrawn: DocumentPackage.find({status: "withdrawn", app_year : year}).lean().execAsync(),
             approval: DocumentPackage.find({status: "approval"}).lean().execAsync(),
             handle: DocumentPackage.find({status: "handle"}).lean().execAsync(),
-            declined: DocumentPackage.find({status: "declined"}).sort({'updated':-1}).lean().execAsync(),
-            project: DocumentPackage.find({status: "project"}).lean().execAsync()
+            declined: DocumentPackage.find({status: "declined", app_year : year}).lean().execAsync(),
+            project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync()
         })
             .then(function (results) {
                 if (!results) {
@@ -259,6 +260,104 @@ module.exports = {
             })
             .catch(next);
     },
+	
+	getDocsByYear: function(req, res, next) {
+		console.log('[ API ] getDocumentByStatus :: Call invoked');
+		
+		var year = req.body.year;
+        if (req.body.doc_status == "project") {
+        Promise.props({
+            
+            project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync()
+        })
+            .then(function (results) {
+                if (!results) {
+                    console.log('[ API ] getDocumentByStatus :: Documents package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] getDocumentByStatus :: Documents package found: TRUE');
+					console.log(results);
+					for(var x=0; x<results.project.length; x++) {
+						var updateYear = results.project[x].updated.getFullYear();
+						//get month and day with padding since they are 0 indexed
+						var updateDay = ( "00" + results.project[x].updated.getDate()).slice(-2);
+						var updateMon = ("00" + (results.project[x].updated.getMonth()+1)).slice(-2);
+						results.project[x].updated = updateYear + "/" + updateMon + "/" + updateDay;
+						
+						var sigYear = results.project[x].signature.client_date.getFullYear();
+						//get month and day with padding since they are 0 indexed
+						var sigDay = ( "00" + results.project[x].signature.client_date.getDate()).slice(-2);
+						var sigMon = ("00" + (results.project[x].signature.client_date.getMonth()+1)).slice(-2);
+						results.project[x].signature.client_date = sigYear + "/" + sigMon + "/" + sigDay;
+						
+						results.project[x].status = "Approved Project";
+					}
+					
+                }
+                res.locals.results = results;
+				res.locals.status = 200;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+		}
+		else if(req.body.doc_status == "unapproved") {
+			console.log("getting unapproved docs");
+			var year = req.body.year;
+			Promise.props({
+            
+            unapproved: DocumentPackage.find( {
+				$and: [
+				{app_year : year},
+				{ $or : [{status : "withdrawn"}, {status : "declined"}]}
+				]
+				
+			}).lean().execAsync()
+			})
+            .then(function (results) {
+                if (!results) {
+                    console.log('[ API ] getDocumentByStatus :: Documents package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] getDocumentByStatus :: Documents package found: TRUE');
+					console.log(results);
+					for(var x=0; x<results.unapproved.length; x++) {
+						var updateYear = results.unapproved[x].updated.getFullYear();
+						//get month and day with padding since they are 0 indexed
+						var updateDay = ( "00" + results.unapproved[x].updated.getDate()).slice(-2);
+						var updateMon = ("00" + (results.unapproved[x].updated.getMonth()+1)).slice(-2);
+						results.unapproved[x].updated = updateYear + "/" + updateMon + "/" + updateDay;
+						
+						var sigYear = results.unapproved[x].signature.client_date.getFullYear();
+						//get month and day with padding since they are 0 indexed
+						var sigDay = ( "00" + results.unapproved[x].signature.client_date.getDate()).slice(-2);
+						var sigMon = ("00" + (results.unapproved[x].signature.client_date.getMonth()+1)).slice(-2);
+						results.unapproved[x].signature.client_date = sigYear + "/" + sigMon + "/" + sigDay;
+						
+						//results.unapproved[x].status = "Unapproved Project";
+					}
+					
+                }
+                res.locals.results = results;
+				res.locals.status = 200;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+			
+		}
+    },
+	
 
     /**
      * Description: add a Document Package to the database
@@ -277,10 +376,14 @@ module.exports = {
         if (debug == 1) {
             console.log(req.body);
         }
-		console.log("count");
-		console.log(req.body.count);
+		
+		//var currentTime = new Date();
+		//var year = req.body.signature.client_date.getFullYear();
+		var year = new Date(req.body.signature.client_date).getFullYear();
+		console.log("year " + year);
+
 		Promise.props({
-			docInSys: DocumentPackage.count({}).lean().execAsync()
+			docInSys: DocumentPackage.count({app_year : year}).lean().execAsync()
 		})
 		.then(function (results) {
                 if (!results) {
@@ -292,8 +395,8 @@ module.exports = {
 					var count = results.docInSys;
 					count++;
 					console.log(count);
-					var currentTime = new Date();
-					var year = currentTime.getFullYear();
+					
+					
 					var app_name = "A" + year.toString() + "-" + count.toString();
 					console.log(app_name);
 					// Normally we would create a new mongoose object to be instantiated
@@ -312,6 +415,7 @@ module.exports = {
 					// TODO: Add support for work items and site assessment
 					doc.highlightPackage = highlight._id;
 					doc.app_name = app_name;
+					doc.app_year = year;
 					console.log(doc.app_name);
 					highlight.documentPackage = doc._id;
 
