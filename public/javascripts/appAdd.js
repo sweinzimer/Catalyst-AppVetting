@@ -323,7 +323,7 @@ function init() {
 				'firstName', 'lastName', 'dob', 'driversLicense', 'mStatus', 'pPhone',
 				'add1', 'city', 'state', 'zip', 'eContactName', 'ecRelationship',
 				'ecPhone', 'monthlyMortgage', 'annualIncome', 'timePropertyOwned',
-				'yearPropertyBuilt', 'repairsNeeded', 'signature'
+				'yearPropertyBuilt', 'repairsNeeded', 'signature', 'client_date'
 			],
 			isValid: (node) => { return node.val().length > 0 }
 		},

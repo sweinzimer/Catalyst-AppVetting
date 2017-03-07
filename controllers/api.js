@@ -168,10 +168,10 @@ module.exports = {
             documents: DocumentPackage.find({status: "documents"}).lean().execAsync(),
             discuss: DocumentPackage.find({status: "discuss"}).lean().execAsync(),
             assess: DocumentPackage.find({status: "assess"}).lean().execAsync(),
-            withdrawn: DocumentPackage.find({status: "withdrawn"}).lean().execAsync(),
+            withdrawn: DocumentPackage.find({status: "withdrawn", app_year : year}).lean().execAsync(),
             approval: DocumentPackage.find({status: "approval"}).lean().execAsync(),
             handle: DocumentPackage.find({status: "handle"}).lean().execAsync(),
-            declined: DocumentPackage.find({status: "declined"}).sort({'updated':-1}).lean().execAsync(),
+            declined: DocumentPackage.find({status: "declined", app_year : year}).lean().execAsync(),
             project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync()
         })
             .then(function (results) {
@@ -197,7 +197,7 @@ module.exports = {
 		console.log('[ API ] getDocumentByStatus :: Call invoked');
 		
 		var year = req.body.year;
-        
+        if (req.body.doc_status == "project") {
         Promise.props({
             
             project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync()
@@ -237,6 +237,57 @@ module.exports = {
                 console.error(err);
             })
             .catch(next);
+		}
+		else if(req.body.doc_status == "unapproved") {
+			console.log("getting unapproved docs");
+			var year = req.body.year;
+			Promise.props({
+            
+            unapproved: DocumentPackage.find( {
+				$and: [
+				{app_year : year},
+				{ $or : [{status : "withdrawn"}, {status : "declined"}]}
+				]
+				
+			}).lean().execAsync()
+			})
+            .then(function (results) {
+                if (!results) {
+                    console.log('[ API ] getDocumentByStatus :: Documents package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] getDocumentByStatus :: Documents package found: TRUE');
+					console.log(results);
+					for(var x=0; x<results.unapproved.length; x++) {
+						var updateYear = results.unapproved[x].updated.getFullYear();
+						//get month and day with padding since they are 0 indexed
+						var updateDay = ( "00" + results.unapproved[x].updated.getDate()).slice(-2);
+						var updateMon = ("00" + (results.unapproved[x].updated.getMonth()+1)).slice(-2);
+						results.unapproved[x].updated = updateYear + "/" + updateMon + "/" + updateDay;
+						
+						var sigYear = results.unapproved[x].signature.client_date.getFullYear();
+						//get month and day with padding since they are 0 indexed
+						var sigDay = ( "00" + results.unapproved[x].signature.client_date.getDate()).slice(-2);
+						var sigMon = ("00" + (results.unapproved[x].signature.client_date.getMonth()+1)).slice(-2);
+						results.unapproved[x].signature.client_date = sigYear + "/" + sigMon + "/" + sigDay;
+						
+						//results.unapproved[x].status = "Unapproved Project";
+					}
+					
+                }
+                res.locals.results = results;
+				res.locals.status = 200;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+			
+		}
     },
 	
 

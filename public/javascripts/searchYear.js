@@ -3,10 +3,10 @@ $('#year_select select[name="year"]').change(function() {
 	var payload = {};
 	
 	console.log($('#displayYear').val());
-	
+	//console.log($('[name]="doc_type"]').val());
 	
 	payload.year = $('#displayYear').val();
-	
+	payload.doc_status = "project";
 	var posting = $.ajax({
         type : 'POST',
         url: "/vettingworksheet/displayYear",
@@ -54,26 +54,19 @@ $('#year_select select[name="year"]').change(function() {
 	
 });
 	
-/*	
+$('#year_selectDeclined select[name="year"]').change(function() {
+	console.log("In search year declined js");
+	var payload = {};
 	
+	console.log($('#displayYearDeclined').val());
+	//console.log($('[name]="doc_type"]').val());
 	
-	payload.name = "service_area";
-	payload.appId = $('#appId').val();
-	console.log(payload.appId);
-	if($('input:radio[name=service_area]:checked').val() == "true") {
-		console.log("true");
-		payload.value = true;
-		
-	}
-	else {
-		payload.value = false;
-	}
+	payload.year = $('#displayYearDeclined').val();
+	payload.doc_status = "unapproved";
 	
-	//post to database
-	
-	 var posting = $.ajax({
+	var posting = $.ajax({
         type : 'POST',
-        url: "/vettingworksheet/servicearea",
+        url: "/vettingworksheet/displayYear",
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(payload)
@@ -81,6 +74,29 @@ $('#year_select select[name="year"]').change(function() {
     posting.done(function (xhr) {
         if(xhr.status == 200) {
            //success!
+		   console.log("get success");
+		   var getYear;
+		   var getDay;
+		   var getMon;
+		   console.log(xhr.results.unapproved);
+		   $('#unapproved_table tbody > tr').remove();
+		   var content = "<tbody>"
+		   for(x=0; x<xhr.results.unapproved.length; x++){
+			   if(xhr.results.unapproved[x].status == "declined") {
+				   xhr.results.unapproved[x].status = "Declined";
+			   }
+			   else if(xhr.results.unapproved[x].status == "withdrawn") {
+				   xhr.results.unapproved[x].status = "Withdrawn";
+			   }
+		   content += '<tr class="clickable-row" data-href="/view/' + xhr.results.unapproved[x]._id +'">';
+		   
+		   content += '<td class="col-md-2"><a href="/view/' + xhr.results.unapproved[x]._id + '">' + xhr.results.unapproved[x].application.name.first + " " +
+		   xhr.results.unapproved[x].application.name.last + '</a></td><td class="col-md-2">' + xhr.results.unapproved[x].updated + '</td><td class="col-md-2"><span class="text-danger">' 
+		   + xhr.results.unapproved[x].status + '</span></td><td class="col-md-2">' + xhr.results.unapproved[x].signature.client_date + '</td><td class="col-md-2">' +
+		   xhr.results.unapproved[x].app_name + '</td></tr>';
+		   }
+		   content += '</tbody>';
+		   $('#unapproved_table').append(content);
         }
         else{
             console.log("API did not return 200 status for service area");
@@ -92,5 +108,5 @@ $('#year_select select[name="year"]').change(function() {
     {
         console.log("Ajax POST failed");
     });
+	
 });
-*/

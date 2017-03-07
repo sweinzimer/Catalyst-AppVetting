@@ -104,15 +104,13 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
     }
     payload.new = res.locals.results.new;
 	
+	//separate bucket for approved applications
 	if (res.locals.results.project[0] == null) {
         console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'project\'');
     } else {
         res.locals.results.project.forEach(function (element) {
             element = formatElement(element);
-			if(element.display == true) {
-				console.log("date is good!");
-			}
-        });
+		});
     }
     payload.project = res.locals.results.project;
 
@@ -206,7 +204,17 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
             payload.processing.push(element);
         });
     }*/
-
+	var currentYear = new Date().getFullYear();
+	console.log("current year" + currentYear);
+	payload.year = [];
+	var singleYear = {};
+	//var year = {};
+	for(var x=currentYear; x>=2007; x--) {
+		singleYear = {"yearValue" : x};
+		payload.year.push(singleYear);
+		
+	}
+	console.log("years passed: " + payload.year);
 	payload.user = req.user._id;
 
 	payload.user_email = res.locals.email;
