@@ -116,24 +116,24 @@ var DocumentPackageSchema = new Schema({
         language:       String,
         heard_about:    String,
         special_circumstances:  {
-            tags:       ["VA", "EX"],
+            level : {type: Number, default: 5},
             note:       String
         }
     },
 
     finance:    {
-		level : {type: Number, default: 5},
+		
         mortgage:               {
-            tags:               ["VA", "EX"],
+            level : {type: Number, default: 5},
             payment:            Number,
             up_to_date:         Boolean
         },
         income:                 {
-            tags:               ["VA", "EX"],
+            level : {type: Number, default: 5},
             amount:             Number
         },
         assets:                 {
-            tags:               ["VA", "EX"],
+            level : {type: Number, default: 5},
             count:              Number,
             name:               [String],
             value:              [Number]
