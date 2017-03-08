@@ -772,13 +772,13 @@
 			{{else}}
 			console.log("service area false");
 			document.getElementById('sa_no').checked = true;
-			
+
 		    {{/if}}
 		{{/if}}
-		
-		
-		
-		
+
+
+
+
 	});
     /**
      * Some inline-editable fields require data from the DB to properly work
@@ -1120,7 +1120,7 @@
 					var itemQuestionRow = $('<div></div>').addClass('row').appendTo(itemRow)
 
 
-					$('<div></div>').addClass('col-xs-4').text(' ').appendTo(itemQuestionRow)
+					$('<div></div>').addClass('col-xs-4').text('test').appendTo(itemQuestionRow)
 
 					var headerRow = $('<div></div>').addClass('col-xs-8').appendTo(itemQuestionRow)
 					var headerRowTable = $('<table></table>').addClass('table').appendTo(headerRow)
@@ -1136,7 +1136,15 @@
 					item.objects.forEach((obj, objIdx) => {
 						var objectRow = $('<div></div>').addClass('row')
 
-						$('<div></div>').addClass('col-xs-4').text(obj).appendTo(objectRow)
+						var objectLabelCell = $('<div></div>').addClass('col-xs-4').text(obj).appendTo(objectRow)
+						objectLabelCell.append('<br/>')
+						let rowNote = $('<textarea></textarea>').addClass('form-control')
+						.attr('rows', '4')
+						.attr('name', this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] + '.note')
+						.appendTo(objectLabelCell)
+						rowNote.keyup(this.handleNoteChange)
+
+
 
 						var objectCheckBoxColumn = $('<div></div>').addClass('col-xs-8').appendTo(objectRow)
 						var checkBoxTable = $('<table></table>').addClass('table').appendTo(objectCheckBoxColumn)
@@ -1206,6 +1214,26 @@
 		this.getData = function() {
 			return getFormData(this.root)
 		}
+
+		this._TIMEOUT = false
+
+		this.handleNoteChange = function(e) {
+			if (this._TIMEOUT) { window.clearTimeout(this._TIMEOUT) }
+
+			this._TIMEOUT = window.setTimeout(function() {
+				var changedValue = {}
+				changedValue[ this.primaryUser._id ] = {}
+				changedValue[ this.primaryUser._id ][ this.field ] = { note: this.noteValue }
+
+				xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function(err) {
+					// TODO: If error, flip the value back and show an error message to the user
+					
+				})
+
+			}.bind({ noteValue: e.target.value, field: e.target.name, primaryUser: this.people[0] }), 2000)
+		}.bind(this)
+
+
 
 	} // END FinacialPackageBuilder
 
