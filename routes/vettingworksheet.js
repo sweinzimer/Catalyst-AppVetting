@@ -31,7 +31,7 @@ router.get('/:id', isLoggedIn, function(req, res) {
         doc: DocumentPackage.findOne({_id: ObjectId(req.params.id)}).lean().execAsync(),
         vettingNotes: VettingNotePackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
 
-        finances: FinPackage.find({appID: ObjectId(req.params.id)}).lean().execAsync(),
+        finances: FinPackage.find({appID: ObjectId(req.params.id)}).sort([['_id', 1]]).lean().execAsync(),
     		workItems: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
     		highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync(),
 
