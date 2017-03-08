@@ -35,11 +35,12 @@ router.get('/userSuccess', function(req, res) {
 router.route('/userList')
 	.get(isAdmin, api.getUsers, function(req, res) {
 		var payload = {};
-		payload = res.locals.results;
+		payload.users = res.locals.results.users;
 		payload.user_email = res.locals.email;
 		payload.user_role = res.locals.role;
-		console.log(res.locals.results);
-		res.render('userlist', res.locals)
+		console.log("payload");
+		console.log(payload);
+		res.render('userlist', payload)
 
 });
 
@@ -51,7 +52,12 @@ router.route('/editUser')
 		var payload = {};
 
 		payload = res.locals.user;
+		console.log("payload 1");
+		console.log(payload);
 		payload.user_email = res.locals.user.user.contact_info.user_email;
+		payload.user_role = payload.user.user_role;
+		console.log("payload");
+		console.log(payload);
 		res.render('useredit', payload);
 
 
@@ -69,6 +75,7 @@ router.route('/editUser/:id')
 		payload = res.locals.results;
 		payload.user_email = res.locals.email;
 		payload.user_role = res.locals.role;
+		console.log("payload");
 		console.log(payload);
 		res.render('adminuseredit', payload);
 
