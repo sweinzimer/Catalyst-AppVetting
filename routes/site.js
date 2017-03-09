@@ -56,18 +56,20 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 	//res.render('siteview', payload);
 });	
 
-router.get('/:id', api.getDocumentSite, function(req, res, next) {
+router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
     //Checking what's in params
     //console.log("Rendering application " + ObjectId(req.params.id));
 	//TEST
 	console.log("rendering test application");
 
 
-	var results = {}
-	results = res.locals.results;
+	var payload = {}
+	payload = res.locals.results;
+	payload.user_email = res.locals.email;
+	payload.user_role = res.locals.role;
 	console.log("results");
 	console.log(results);
-    res.json(res.locals.results);
+    res.json(payload);
 
     //    res.locals.layout = 'b3-layout';        // Change default from layout.hbs to b3-layout.hbs
     //    results.title = "Application View";     //Page <title> in header
@@ -78,6 +80,37 @@ router.get('/:id', api.getDocumentSite, function(req, res, next) {
     
 
 });
+
+router.route('/servicearea')
+    .post(api.updateService, function(req, res) {
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not update field");
+    }
+    else{
+        res.json(res.locals);
+    }
+	});
+
+
+router.route('/additem')
+	.post(api.addWorkItem, function(req, res) {
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not add field");
+    }
+    else{
+        res.json(res.locals);
+    }
+	});
+
+router.route('/updateitem')
+	.post(api.updateWorkItem, function(req, res) {
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not update field");
+    }
+    else{
+        res.json(res.locals);
+    }
+	});
 	
 function formatElement(element) {
     formatStatus(element);
