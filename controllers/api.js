@@ -148,7 +148,21 @@ module.exports = {
             //document: DocumentPackage.findById(req.params.id).lean().execAsync()
 			site: DocumentPackage.aggregate(
 				[
-				{$match: { status: "assess" }},
+				{$match: { status: "assess"}},
+					{ $redact: {
+						$cond: {
+							if: { $eq: [ "$level", 5 ] },
+							then: "$$PRUNE",
+							else: "$$DESCEND"
+						}
+					}}
+					
+				]
+			).execAsync(),
+			
+			complete: DocumentPackage.aggregate(
+				[
+				{$match: { status: "assessComp" }},
 					{ $redact: {
 						$cond: {
 							if: { $eq: [ "$level", 5 ] },
@@ -159,7 +173,6 @@ module.exports = {
 					
 				]
 			).execAsync()
-			
         })
             .then(function(results) {
 				console.log("results");

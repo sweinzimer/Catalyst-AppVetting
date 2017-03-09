@@ -178,6 +178,10 @@ var DocumentPackageSchema = new Schema({
 		client_date: { type: Date, default: Date.now}
 	},
 	
+	notes: {
+		vet_to_site: String
+	}
+	
 	// Note: upon application submission, the Yes checkbox (name="tac-yes") and the digital signature (name="signature") at the bottom of the form are not captured anywhere.
 	//Note above is done, along with timestamp
     project:    {

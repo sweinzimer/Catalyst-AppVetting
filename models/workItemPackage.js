@@ -27,6 +27,7 @@ var WorkItemSchema = new Schema({
 	name:  String,
     description: String,
 	vettingComments: String,
+	siteComments: String,
 	cost: String,
 	applicationId: { type: ObjectId }
 });

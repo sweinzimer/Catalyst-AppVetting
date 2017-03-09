@@ -18,7 +18,7 @@ Promise.promisifyAll(mongoose); // Convert mongoose API to always return promise
 var ObjectId = require('mongodb').ObjectID;
 
 module.exports = function(passport) {
-router.get('/', api.getDocumentStatusSite, function(req, res, next) {
+router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) {
 
 	var payload = {};
     console.log(res.locals.results);
@@ -32,6 +32,19 @@ router.get('/', api.getDocumentStatusSite, function(req, res, next) {
 	}
 	
 	payload.site = res.locals.results.site;
+	
+	if(res.locals.results.complete[0] == null) {
+		console.log('[ ROUTER ] /site :: Unable to find Document Packages with status: \'assess\'');
+	}
+	else {
+		res.locals.results.complete.forEach(function (element) {
+            element = formatElement(element);
+        });
+	}
+	
+	payload.complete = res.locals.results.complete;
+	payload.user_email = res.locals.email;
+	payload.user_role = res.locals.role;
 
 	console.log("payload");
 	console.log(payload);
@@ -79,17 +92,13 @@ function formatElement(element) {
  */
 function formatDate(element)
 {
-	console.log("element updated");
-	console.log(element.updated);
-    var Year = element.updated.getFullYear();
+	var Year = element.updated.getFullYear();
     //get month and day with padding since they are 0 indexed
     var Day = ( "00" + element.updated.getDate()).slice(-2);
     var Mon = ("00" + (element.updated.getMonth()+1)).slice(-2);
     element.updated = Mon + "/" + Day + "/" + Year;
 
 	if(element.signature && element.signature.client_date != "") {
-	console.log("element sig");
-	console.log(element.signature.client_date);
 	var appYear = element.signature.client_date.getFullYear();
 	var appDay = ("00" + element.signature.client_date.getDate()).slice(-2);
 	var appMon = ("00" + (element.signature.client_date.getMonth()+1)).slice(-2);
@@ -110,6 +119,9 @@ function formatStatus(element) {
         case 'assess':
             status = 'Site Assessment - Pending';
             break;
+		case 'assessComp':
+			status = 'Site Assessment - Complete';
+			break;
         default:
             status = element.status;
     }
@@ -147,15 +159,15 @@ function isLoggedIn(req, res, next) {
 					}
 					else {
 						if(results.user.user_status == "ACTIVE") {
-							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
+							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN" || results.user.user_role == "SITE") {
 								res.locals.email = results.user.contact_info.user_email;
-
+								res.locals.role = results.user.user_role;
 								return next();
 
 							}
 
 							else {
-								console.log("user is not vet");
+								console.log("user is not site agent");
 								res.redirect('/user/logout');
 							}
 						}
