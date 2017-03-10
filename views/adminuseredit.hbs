@@ -226,7 +226,7 @@
   // X-Editable
   $.fn.editable.defaults.mode = 'inline'
 
-  let fields = [
+  var fields = [
     'contact_info.user_name.user_first',
     'contact_info.user_name.user_middle',
     'contact_info.user_name.user_last',
@@ -243,15 +243,15 @@
   ]
 
 
-  let booleanFields = [
+  var booleanFields = [
     'user_documents.waiver_signed',
     'user_documents.background_check',
     'user_documents.ID_badge',
   ]
 
   function changePassword(e) {
-    let inputs = $('input', '#changePasswordForm')
-    let passwordChange = {
+    var inputs = $('input', '#changePasswordForm')
+    var passwordChange = {
       newPassword: inputs[0].value,
       newPasswordConfirm: inputs[1].value
     }
@@ -279,7 +279,7 @@
 
   $(document).ready(function() {
     // X-editable
-    fields.forEach((f) => { $('[id="' + f + '"]').editable() })
+    fields.forEach(function(f) { $('[id="' + f + '"]').editable() })
 
     $("#user_status").editable({
       value: "{{ user.user_status }}",
@@ -294,7 +294,6 @@
       source: [
         { value: 'VET', text: 'Vetting Agent'},
         { value: 'SITE', text: 'Site Agent'},
-        { value: 'ADMIN', text: 'Admin'},
       ]
     })
 

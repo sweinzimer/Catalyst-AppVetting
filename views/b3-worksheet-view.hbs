@@ -738,17 +738,6 @@
 	<p class="scriptText">Thanks again. I have enjoyed talking to you.</p>
 </div>
 
-<div class="container col-xs-12">
-	<h3>Still to come...</h3>
-	<ul>
-		<li>Another area where the Vetting Notes will be displayed...</li>
-		<li>An input area much like the Vetting notes input - but this will be for Vetting Agents to input Notes to pass along to Site Assessment Team OR Handle-It Team</li>
-	</ul>
-
-</div>
-
-<pre>{{stringify this}}</pre>
-
 <script src="/javascript/serviceArea.js" type="text/javascript"></script>
 
 	<script src="/javascript/addItem.js" type="text/javascript"></script>
@@ -1094,8 +1083,9 @@
 			var changedValue = {}
 			changedValue[ this.people[ idx ]._id ] = objectVal[idx]
 
-			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', (err) => {
+			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function(err) {
 				// TODO: If error, flip the value back and show an error message to the user
+				alert('Value did not save, please reload the page')
 			})
 
 		}.bind(this)
@@ -1105,11 +1095,11 @@
 			this.root = $(this.htmlTargetSelector)
 
 
-			this.schema.forEach((section, sectionIdx) => {
+			this.schema.forEach(function(section, sectionIdx) {
 				var sectionNode = $('<div></div>').addClass('finacialPackageSection')
 				sectionNode.append('<h4>' + section.sectionName + '</h4>')
 
-				section.items.forEach((item, itemIdx) => {
+				section.items.forEach(function(item, itemIdx) {
 					var itemRow = $('<div></div>').addClass('finacialPackageRow')
 
 					// Question text
@@ -1130,17 +1120,17 @@
 					headerRowTableHeader = $('<tr></tr>').appendTo(headerRowTableHeader)
 					headerRowTableHeader.appendTo(headerRowTable)
 
-					this.people.forEach((person, personIdx) => {
+					this.people.forEach(function(person, personIdx) {
 						$('<th></th>').text(person.name).appendTo(headerRowTableHeader)
 					})
 
 					// Each document object in the item
-					item.objects.forEach((obj, objIdx) => {
+					item.objects.forEach(function(obj, objIdx) {
 						var objectRow = $('<div></div>').addClass('row')
 
 						var objectLabelCell = $('<div></div>').addClass('col-xs-4').text(obj).appendTo(objectRow)
 						objectLabelCell.append('<br/>')
-						let rowNote = $('<textarea></textarea>').addClass('form-control')
+						var rowNote = $('<textarea></textarea>').addClass('form-control')
 						.text(
 							this.people[0] &&
 							this.people[0][ this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] ] ? (
@@ -1160,7 +1150,7 @@
 
 						var checkBoxRow = $('<tr></tr>').appendTo(checkBoxTable)
 
-						this.people.forEach((person, personIdx) => {
+						this.people.forEach(function(person, personIdx) {
 							var personCell = $('<td></td>').appendTo(checkBoxRow)
 							var thisField = this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]
 
@@ -1203,19 +1193,19 @@
 							) { thisFieldInputNA[0].checked = true }
 
 							checkBoxRow.append(personCell)
-						})
+						}.bind(this))
 
 						objectRow.appendTo(itemRow)
-					})
+					}.bind(this))
 
 					itemRow.appendTo(sectionNode)
 
-				})
+				}.bind(this))
 
 
 				this.root.append(sectionNode)
 
-			})
+			}.bind(this))
 		} // END this.populateHtml
 
 
@@ -1263,7 +1253,7 @@
 						currentObjectPlace[p] = this.value
 					}
 				}
-			})
+			}.bind(this))
 		})
 
 		return formData

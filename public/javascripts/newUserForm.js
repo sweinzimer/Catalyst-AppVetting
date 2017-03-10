@@ -19,7 +19,7 @@ function init() {
 		event.preventDefault();
 
 		// Validation
-		let validationRules = [
+		var validationRules = [
 			{
 				fields: [
 					'contact_info.user_email', 'contact_info.user_name.user_first',
@@ -38,29 +38,18 @@ function init() {
 			}
 		]
 
-		let validationResult = validateFormData($(this), validationRules)
+		var validationResult = validateFormData($(this), validationRules)
 		if (validationResult === false) return
 
-		let jsonToSend = getFormData($(this));
+		var jsonToSend = getFormData($(this));
 
 		jsonToSend.user_created = new Date().getTime()
 
-		let selectedRole = $('.btn-primary', '#role-selector')
+		var selectedRole = $('.btn-primary', '#role-selector')
 		if (selectedRole.length > 0) { jsonToSend.user_role = selectedRole[0].value }
 
-
-		// jsonToSend = JSON.parse(jsonToSend);
-		//TEST CODE!!!!
-		//jsonToSend.user_role = "VET";
-		//jsonToSend.user_role = "SITE";
-		// jsonToSend.user_role = "ADMIN";
-		// jsonToSend.local = {
-			// email: 'passport@passport',
-			// password: 'password123'
-		// };
-		//end TEST CODE
 		jsonToSend = JSON.stringify(jsonToSend);
-		console.log(jsonToSend);
+
 		//post to database
 		var posting = $.ajax({
 			type : 'POST',
@@ -73,8 +62,8 @@ function init() {
 		//check for error
 		posting.done(function (xhr) {
 			if(xhr.status == 200) {
-				// TODO: Clear form data
-				// Display notif that user has been created
+				alert('User created!')
+				clearFormData($('#userRegistration'))
 			}
 			else {
 				console.log("Error Occured");
@@ -87,14 +76,14 @@ function init() {
 	});
 
   function getFormData(form) {
-    let formData = {}
-    let inputFields = $('input, select', form)
+    var formData = {}
+    var inputFields = $('input, select', form)
     inputFields.each(function(idx) {
-			let objectType = this.type
-      let objectPath = this.name
-      let objectPieces = objectPath.split('.')
-      let currentObjectPlace = formData
-      objectPieces.forEach((p, i) => {
+			var objectType = this.type
+      var objectPath = this.name
+      var objectPieces = objectPath.split('.')
+      var currentObjectPlace = formData
+      objectPieces.forEach(function(p, i) {
         if (i < (objectPieces.length-1)) {
           if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
           currentObjectPlace = currentObjectPlace[p]
@@ -107,7 +96,7 @@ function init() {
 						currentObjectPlace[p] = this.value
 					}
         }
-      })
+      }.bind(this))
     })
 
     return formData
@@ -118,8 +107,8 @@ function init() {
 	}
 
 	function validateFormData(form, rules) {
-		let formValid = true
-		let formErrors = []
+		var formValid = true
+		var formErrors = []
 
 		// Clear previous form errors
 		$('.form_errors', form).empty()
@@ -127,16 +116,16 @@ function init() {
 			$(this).removeClass('has-danger')
 		})
 
-		rules.forEach((rule) => {
-			let ruleFailed = false
-			rule.fields.forEach((f) => {
-				let field = $('[name="'+f+'"]', form)
+		rules.forEach(function(rule) {
+			var ruleFailed = false
+			rule.fields.forEach(function(f) {
+				var field = $('[name="'+f+'"]', form)
 				if (field.length < 1) {
 					console.error('Unable to find and validate field "' + f + '"')
 					return
 				}
 
-				let fieldValue = field.val()
+				var fieldValue = field.val()
 
 				// If rule fails...
 				if (rule.rule(fieldValue) === false) {
@@ -144,7 +133,7 @@ function init() {
 					formValid = false
 
 					// Set the style of the form groups
-					let container = field
+					var container = field
 					while (!container.hasClass('form-group')) {
 						if (!container[0]) debugger
 						container = $(container[0].parentNode)
@@ -162,21 +151,21 @@ function init() {
 
 		// If form errors, add them
 		if (formErrors.length > 0) {
-			let errorList = $('.form_errors', form)
+			var errorList = $('.form_errors', form)
 			errorList.append(
 				'<div class="alert alert-danger" role="alert"><h5>There were problems '
 				+ 'submitting this form:</h5><ul></ul></div>'
 			)
 
 			errorList = $('ul', errorList)
-			formErrors.forEach((err) => {	errorList.append('<li>' + err + '</li>') })
+			formErrors.forEach(function(err) {	errorList.append('<li>' + err + '</li>') })
 		}
 
 		return formValid
 	}
 
 	function clearFormData(form) {
-		let inputFields = $('input', form)
+		var inputFields = $('input', form)
     inputFields.each(function(idx) {
 			if (this.type === 'checkbox') { this.checked = false }
 			else { this.value = '' }

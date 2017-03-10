@@ -221,7 +221,7 @@
   // X-Editable
   $.fn.editable.defaults.mode = 'inline'
 
-  let fields = [
+  var fields = [
     'contact_info.user_name.user_first',
     'contact_info.user_name.user_middle',
     'contact_info.user_name.user_last',
@@ -238,8 +238,8 @@
   ]
 
   function changePassword(e) {
-    let inputs = $('input', '#changePasswordForm')
-    let passwordChange = {
+    var inputs = $('input', '#changePasswordForm')
+    var passwordChange = {
       oldPassword: inputs[0].value,
       newPassword: inputs[1].value,
       newPasswordConfirm: inputs[2].value
@@ -267,7 +267,7 @@
   }
 
   $(document).ready(function() {
-    fields.forEach((f) => { $('[id="' + f + '"]').editable() })
+    fields.forEach(function(f) { $('[id="' + f + '"]').editable() })
 
     $('#changePasswordButton').on('click', function(e) {
       $('#changePasswordButtonDiv').css('display', 'none')

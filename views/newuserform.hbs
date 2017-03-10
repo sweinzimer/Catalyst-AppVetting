@@ -190,7 +190,9 @@
       <p>Roles selected will appear in blue.</p>
       <div class="btn-group-vertical btn-block" id="role-selector" name="user_role">
         {{#each roles}}
-          <button class="btn btn-secondary" value="{{ role_name }}">{{ role_display }}</button>
+          {{#if_not_eq role_name 'ADMIN'}}
+            <button class="btn btn-secondary" value="{{ role_name }}">{{ role_display }}</button>
+          {{/if_not_eq}}
         {{/each}}
       </div>
     </div>
