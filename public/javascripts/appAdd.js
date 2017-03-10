@@ -365,6 +365,7 @@ function init() {
 		var result = true
 
 		$('.hasError').removeClass('hasError')
+		$('#applicationErrors').css('display', 'none')
 
 		validations.forEach(function(rule) {
 			rule.fields.forEach(function(fieldName) {
@@ -377,6 +378,10 @@ function init() {
 				}
 			})
 		})
+
+		if (result === false) {
+			$('#applicationErrors').css('display', 'inherit')
+		}
 
 		return result
 	}
