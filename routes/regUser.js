@@ -16,10 +16,12 @@ router.route('/register')
 	.get(isAdmin, api.getUserRoles, function(req, res) {
 		console.log(res.locals.results);
 		var payload = {};
-		payload.roles = res.locals.results.roles;
-		payload.rolesString = JSON.stringify(res.locals.results.roles)
+		payload.user = req.user._id;
 		payload.user_email = res.locals.email;
 		payload.user_role = res.locals.role;
+		payload.roles = res.locals.results.roles;
+		payload.rolesString = JSON.stringify(res.locals.results.roles);
+		
 		console.log(payload);
 		res.render('newuserform', payload);
 	})
@@ -36,6 +38,7 @@ router.route('/userList')
 	.get(isAdmin, api.getUsers, function(req, res) {
 		var payload = {};
 		payload.users = res.locals.results.users;
+		payload.user = req.user._id;
 		payload.user_email = res.locals.email;
 		payload.user_role = res.locals.role;
 		console.log("payload");
@@ -51,11 +54,11 @@ router.route('/editUser')
 		//console.log(res.locals.results);
 		var payload = {};
 
-		payload = res.locals.user;
-		console.log("payload 1");
-		console.log(payload);
-		payload.user_email = res.locals.user.user.contact_info.user_email;
-		payload.user_role = payload.user.user_role;
+		payload = res.locals.results;
+		//console.log("payload 1");
+		//console.log(payload);
+		payload.user_email = res.locals.email;
+		payload.user_role = res.locals.role;
 		console.log("payload");
 		console.log(payload);
 		res.render('useredit', payload);
@@ -73,6 +76,7 @@ router.route('/editUser/:id')
 	.get(isAdmin, api.findUser, function(req,res) {
 		var payload = {};
 		payload = res.locals.results;
+		//payload.user = req.user._id;
 		payload.user_email = res.locals.email;
 		payload.user_role = res.locals.role;
 		console.log("payload");
@@ -155,7 +159,9 @@ function isLoggedIn(req, res, next) {
 								var dobDay = ( "00" + results.user.contact_info.user_dob.dob_date.getDate()).slice(-2);
 								var dobMon = ("00" + (results.user.contact_info.user_dob.dob_date.getMonth()+1)).slice(-2);
 								results.user.contact_info.user_dob.dob_date = dobYear + "-" + dobMon + "-" + dobDay;
-								res.locals.user = results;
+								res.locals.results = results;
+								res.locals.email = results.user.contact_info.user_email;
+								res.locals.role = results.user.user_role;
 
 								return next();
 
@@ -256,6 +262,8 @@ function isLoggedInPost(req, res, next) {
 					else {
 
 						if(results.user.user_status == "ACTIVE") {
+							res.locals.email = results.user.contact_info.user_email;
+							res.locals.role = results.user.user_role;
 							return next();
 
 						}
