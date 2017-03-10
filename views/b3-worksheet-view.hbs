@@ -747,6 +747,8 @@
 
 </div>
 
+<pre>{{stringify this}}</pre>
+
 <script src="/javascript/serviceArea.js" type="text/javascript"></script>
 
 	<script src="/javascript/addItem.js" type="text/javascript"></script>
@@ -1120,7 +1122,7 @@
 					var itemQuestionRow = $('<div></div>').addClass('row').appendTo(itemRow)
 
 
-					$('<div></div>').addClass('col-xs-4').text('test').appendTo(itemQuestionRow)
+					$('<div></div>').addClass('col-xs-4').appendTo(itemQuestionRow)
 
 					var headerRow = $('<div></div>').addClass('col-xs-8').appendTo(itemQuestionRow)
 					var headerRowTable = $('<table></table>').addClass('table').appendTo(headerRow)
@@ -1139,6 +1141,12 @@
 						var objectLabelCell = $('<div></div>').addClass('col-xs-4').text(obj).appendTo(objectRow)
 						objectLabelCell.append('<br/>')
 						let rowNote = $('<textarea></textarea>').addClass('form-control')
+						.text(
+							this.people[0] &&
+							this.people[0][ this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] ] ? (
+								this.people[0][ this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] ].note
+							) : ''
+						)
 						.attr('rows', '4')
 						.attr('name', this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] + '.note')
 						.appendTo(objectLabelCell)
@@ -1227,10 +1235,10 @@
 
 				xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function(err) {
 					// TODO: If error, flip the value back and show an error message to the user
-					
+
 				})
 
-			}.bind({ noteValue: e.target.value, field: e.target.name, primaryUser: this.people[0] }), 2000)
+			}.bind({ noteValue: e.target.value, field: e.target.name, primaryUser: this.people[0] }), 500)
 		}.bind(this)
 
 
