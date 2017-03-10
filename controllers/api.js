@@ -1344,8 +1344,15 @@ module.exports = {
 		console.log("data built: ");
 		console.log(userID);
 		//console.log(name).toString();
+		if (name2 != "note") {
 		var name = name1.toString() + "." + name2.toString();
+		}
+		else {
+			name = name1;
+		}
 		console.log(name);
+		
+		
 		console.log(value);
 
 

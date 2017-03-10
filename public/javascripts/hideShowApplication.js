@@ -1,7 +1,7 @@
 'use strict'
 
 $(document).ready(function() {
-  let formState = {
+  var formState = {
     owns_home: null,
     mortgage_up_to_date: null,
     restOfFormVisible: false,
@@ -39,7 +39,7 @@ $(document).ready(function() {
       // Skip the first, since that's the initial question being asked
       // Those should always stay visible
       if (i > 0) {
-        let currentState = $(this).css('display')
+        var currentState = $(this).css('display')
         $(this).css('display', (formState.restOfFormVisible ? 'inherit' : 'none'))
       }
     })

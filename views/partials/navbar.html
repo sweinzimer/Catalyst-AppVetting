@@ -98,9 +98,9 @@
 
 <script>
 {{#if user}}
-  let user = "{{{ user_email }}}"
+  var user = "{{{ user_email }}}"
 {{else}}
-  let user = false
+  var user = false
 {{/if}}
 
   if (user !== false) {
