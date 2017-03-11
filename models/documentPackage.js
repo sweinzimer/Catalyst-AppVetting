@@ -46,11 +46,12 @@ ObjectId = Schema.ObjectId;
 var DocumentPackageSchema = new Schema({
     status:         String,
 	level : {type: Number, default: 1},
-    created:        Date,
+    created:        { type: Date, default: Date.now},
     updated:        { type: Date, default: Date.now},
     highlightPackage: { type: ObjectId },
     service_area : Boolean,
 	app_name : String,
+	app_year : Number,
 	
 	
     advocate:       {
@@ -175,7 +176,7 @@ var DocumentPackageSchema = new Schema({
 	signature:    {
 		client_terms: Boolean,
 		client_sig: String,
-		client_date: { type: Date, default: Date.now}
+		client_date: Date
 	},
 	
 	notes: {

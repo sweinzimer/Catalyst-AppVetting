@@ -213,6 +213,21 @@ function init() {
 				note: jQuery("textarea#otherCircumstances").val()
 			}
 		};
+
+		console.log("residents");
+		console.log(data.application.other_residents);
+		//count how many financial packages will need added
+		var count = 0;
+		for(var x=0; x<=data.application.other_residents.name.length-1; x++) {
+
+			if(data.application.other_residents.name[x] != "") {
+				count++
+
+			}
+		}
+		data.count = count;
+
+
 		return data;
 	}
 
@@ -304,7 +319,8 @@ function init() {
 
 		data.signature = {
 			client_terms: getVal('input[name="tac-yes"]:checked'),
-			client_sig: getVal('input[name="signature"]')
+			client_sig: getVal('input[name="signature"]'),
+			client_date: getVal('input[name="client_date"]')
 		};
 		return data;
 	}
@@ -316,24 +332,24 @@ function init() {
 	}
 
 	// validations -- object containing validation tests
-	let validations = [
+	var validations = [
 		{
 			fields: [
 				'firstName', 'lastName', 'dob', 'driversLicense', 'mStatus', 'pPhone',
 				'add1', 'city', 'state', 'zip', 'eContactName', 'ecRelationship',
 				'ecPhone', 'monthlyMortgage', 'annualIncome', 'timePropertyOwned',
-				'yearPropertyBuilt', 'repairsNeeded', 'signature'
+				'yearPropertyBuilt', 'repairsNeeded', 'signature', 'client_date'
 			],
-			isValid: (node) => { return node.val().length > 0 }
+			isValid: function(node) { return node.val().length > 0 }
 		},
 		{
 			fields: [
 				'mStatus', 'military', 'language', 'contribute', 'relativeContribute',
 				'otherHelp', 'propertyType', 'laborHelp', 'othersLaborHelp', 'fbo_help',
 			],
-			isValid: (node) => {
+			isValid: function(node) {
 				// At least one is selected...
-				let oneSelected = false
+				var oneSelected = false
 				node.each(function(idx) {
 					if (this.checked === true) { oneSelected = true }
 				})
@@ -346,14 +362,15 @@ function init() {
 	// validateForm -- Runs through validations and returns true if the form
 	// is valid, false otherwise.
 	function validateForm() {
-		let result = true
+		var result = true
 
 		$('.hasError').removeClass('hasError')
+		$('#applicationErrors').css('display', 'none')
 
-		validations.forEach((rule) => {
-			rule.fields.forEach((fieldName) => {
-				let inputField = $('[name=' + fieldName + ']')
-				let fieldResult = rule.isValid(inputField)
+		validations.forEach(function(rule) {
+			rule.fields.forEach(function(fieldName) {
+				var inputField = $('[name=' + fieldName + ']')
+				var fieldResult = rule.isValid(inputField)
 
 				if (fieldResult === false) {
 					result = false
@@ -361,6 +378,10 @@ function init() {
 				}
 			})
 		})
+
+		if (result === false) {
+			$('#applicationErrors').css('display', 'inherit')
+		}
 
 		return result
 	}

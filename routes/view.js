@@ -44,7 +44,7 @@ router.post('/csvExport', function(req, res){
 	var firstname = req.body.firstname;
 	var lastname = req.body.lastname;
 	var query =  "{'_id' : ObjectId("+"'"+applicationID+"'"+")}";
-	var filename = lastname + ', ' + firstname + ' - ' + applicationID;
+	var filename = lastname + '-' + firstname + '-' + applicationID;
 	const execFile = require('child_process').execFile;
 	const exec = require('child_process').exec;
 	const mongoexport_child = execFile('mongoexport', ['-d', 'catalyst',
@@ -90,8 +90,31 @@ router.post('/csvExport', function(req, res){
 
 })
 
+router.get('/file/:name', function(req, res, next){
+var fileName = req.params.name;
+	var options = {
+		root: './public/exports',
+		dotfiles: 'deny',
+		headers: {
+			'x-sent': true,
+			'Content-Disposition':'attachment;filename=' + fileName
+		}
+	};
 
-router.get('/', api.getDocumentByStatus, function(req, res, next) {
+	
+	res.sendFile(fileName, options, function(err){
+		if(err){
+			next(err);		
+		}
+		else{
+			console.log('Sent:', fileName);		
+		}
+	});
+
+
+});
+
+router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
 
     var payload = {};
 
@@ -103,6 +126,16 @@ router.get('/', api.getDocumentByStatus, function(req, res, next) {
         });
     }
     payload.new = res.locals.results.new;
+	
+	//separate bucket for approved applications
+	if (res.locals.results.project[0] == null) {
+        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'project\'');
+    } else {
+        res.locals.results.project.forEach(function (element) {
+            element = formatElement(element);
+		});
+    }
+    payload.project = res.locals.results.project;
 
     //put declined and withdrawn in the same bucket
     payload.unapproved = [];
@@ -191,20 +224,35 @@ router.get('/', api.getDocumentByStatus, function(req, res, next) {
             payload.processing.push(element);
         });
     }
+	
+	
 
 
-    if (res.locals.results.project[0] == null) {
+    /*if (res.locals.results.project[0] == null) {
         console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'project\'');
     } else {
         res.locals.results.project.forEach(function (element) {
             element = formatElement(element);
             payload.processing.push(element);
         });
-    }
 
+    }*/
+	var currentYear = new Date().getFullYear();
+	console.log("current year" + currentYear);
+	payload.year = [];
+	var singleYear = {};
+	//var year = {};
+	for(var x=currentYear; x>=2007; x--) {
+		singleYear = {"yearValue" : x};
+		payload.year.push(singleYear);
+		
+	}
+	console.log("years passed: " + payload.year);
 	payload.user = req.user._id;
 
+
 	payload.user_email = res.locals.email;
+	payload.user_role = res.locals.role;
 
 
 	res.render('vetting', payload);
@@ -318,17 +366,21 @@ function formatElement(element) {
  */
 function formatDate(element)
 {
+
 	var Year = element.updated.getFullYear();
     //get month and day with padding since they are 0 indexed
     var Day = ( "00" + element.updated.getDate()).slice(-2);
     var Mon = ("00" + (element.updated.getMonth()+1)).slice(-2);
     element.updated = Mon + "/" + Day + "/" + Year;
 
+	//signature date (application date)
 	if(element.signature && element.signature.client_date != "") {
-	var appYear = element.signature.client_date.getFullYear();
-	var appDay = ("00" + element.signature.client_date.getDate()).slice(-2);
-	var appMon = ("00" + (element.signature.client_date.getMonth()+1)).slice(-2);
-	element.signature.client_date = appMon + "/" + appDay + "/" + Year;
+	var appDate = new Date(element.signature.client_date);
+	var appYear = appDate.getFullYear();
+	var appDay = ("00" + appDate.getDate()).slice(-2);
+	var appMon = ("00" + (appDate.getMonth()+1)).slice(-2);
+	element.signature.client_date = appMon + "/" + appDay + "/" + appYear;
+	
 	}
     return element;
 }
@@ -410,6 +462,7 @@ function isLoggedIn(req, res, next) {
 						if(results.user.user_status == "ACTIVE") {
 							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
 								res.locals.email = results.user.contact_info.user_email;
+								res.locals.role = results.user.user_role;
 
 								return next();
 

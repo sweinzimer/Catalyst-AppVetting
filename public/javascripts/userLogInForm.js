@@ -5,7 +5,7 @@ function init() {
 		event.preventDefault();
 
 		// Validation
-		let validationRules = [
+		var validationRules = [
 			{
 				fields: [
 					'user_email', 'user_password',
@@ -15,12 +15,12 @@ function init() {
 			},
 		]
 
-		let validationResult = validateFormData($(this), validationRules)
+		var validationResult = validateFormData($(this), validationRules)
 		if (validationResult === false) return
 
-		let jsonToSend = getFormJsonString($(this));
+		var jsonToSend = getFormJsonString($(this));
 
-    attemptLogIn(jsonToSend, (err, data) => {
+    attemptLogIn(jsonToSend, function(err, data) {
       if (true) {
         $('.form-errors', this).append('<div class="alert alert-danger" role="alert">'+
         '<h5>' + err.message + '</h5></div>')
@@ -59,14 +59,14 @@ function init() {
   }
 
   function getFormData(form) {
-    let formData = {}
-    let inputFields = $('input', form)
+    var formData = {}
+    var inputFields = $('input', form)
     inputFields.each(function(idx) {
-			let objectType = this.type
-      let objectPath = this.name
-      let objectPieces = objectPath.split('.')
-      let currentObjectPlace = formData
-      objectPieces.forEach((p, i) => {
+			var objectType = this.type
+      var objectPath = this.name
+      var objectPieces = objectPath.split('.')
+      var currentObjectPlace = formData
+      objectPieces.forEach(function(p, i) {
         if (i < (objectPieces.length-1)) {
           if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
           currentObjectPlace = currentObjectPlace[p]
@@ -79,7 +79,7 @@ function init() {
 						currentObjectPlace[p] = this.value
 					}
         }
-      })
+      }.bind(this))
     })
 
     return formData
@@ -90,8 +90,8 @@ function init() {
 	}
 
 	function validateFormData(form, rules) {
-		let formValid = true
-		let formErrors = []
+		var formValid = true
+		var formErrors = []
 
 		// Clear previous form errors
 		$('.form_errors', form).empty()
@@ -99,16 +99,16 @@ function init() {
 			$(this).removeClass('has-danger')
 		})
 
-		rules.forEach((rule) => {
-			let ruleFailed = false
-			rule.fields.forEach((f) => {
-				let field = $('[name="'+f+'"]', form)
+		rules.forEach(function(rule) {
+			var ruleFailed = false
+			rule.fields.forEach(function(f) {
+				var field = $('[name="'+f+'"]', form)
 				if (field.length < 1) {
 					console.error('Unable to find and validate field "' + f + '"')
 					return
 				}
 
-				let fieldValue = field.val()
+				var fieldValue = field.val()
 
 				// If rule fails...
 				if (rule.rule(fieldValue) === false) {
@@ -116,7 +116,7 @@ function init() {
 					formValid = false
 
 					// Set the style of the form groups
-					let container = field
+					var container = field
 					while (!container.hasClass('form-group')) {
 						if (!container[0]) debugger
 						container = $(container[0].parentNode)
@@ -134,14 +134,14 @@ function init() {
 
 		// If form errors, add them
 		if (formErrors.length > 0) {
-			let errorList = $('.form_errors', form)
+			var errorList = $('.form_errors', form)
 			errorList.append(
 				'<div class="alert alert-danger" role="alert"><h5>There were problems '
 				+ 'submitting this form:</h5><ul></ul></div>'
 			)
 
 			errorList = $('ul', errorList)
-			formErrors.forEach((err) => {	errorList.append('<li>' + err + '</li>') })
+			formErrors.forEach(function(err) {	errorList.append('<li>' + err + '</li>') })
 		}
 
 		return formValid

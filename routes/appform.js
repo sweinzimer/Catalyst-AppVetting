@@ -4,10 +4,29 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var api = require('../controllers/api');
+var DocumentPackage = require('../models/documentPackage');
+var HighlightPackage = require('../models/highlightPackage');
+var VettingNotePackage = require('../models/vettingNotePackage');
+var api = require('../controllers/api');
+var User = require('../models/userPackage');
+var config = require('../config');
 
+var Promise = require('bluebird'); // Import promise engine
+mongoose.Promise = require('bluebird'); // Tell mongoose we are using the Bluebird promise library
+Promise.promisifyAll(mongoose); // Convert mongoose API to always return promises using Bluebird's promisifyAll
+
+// Helper query functions
+
+//Need ObjectID to search by ObjectID
+var ObjectId = require('mongodb').ObjectID;
+module.exports = function(passport) {
 router.route('/add') 
-    .get(function(req, res) {
-        res.render('applicationform');
+    .get(isLoggedIn, function(req, res) {
+		var payload = {};
+		
+		payload.user_email = res.locals.email;
+		payload.user_role = res.locals.role;
+        res.render('applicationform', payload);
     })
     .post(api.postDocument, function(req, res) {
         res.json(res.locals);
@@ -76,5 +95,54 @@ router.post('/insert_user', function(req, res) {
 
     res.send("Insert a new rest (C)");
 });
+return router;
+//module.exports = router;
+}
 
-module.exports = router;
+
+//check to see if user is logged in
+function isLoggedIn(req, res, next) {
+		if(req.isAuthenticated()) {
+			console.log("In isloggedin");
+			console.log(req.body);
+			console.log(req.user._id);
+			var userID = req.user._id.toString();
+
+			console.log("userID");
+			console.log(userID);
+			var ObjectId = require('mongodb').ObjectID;
+			Promise.props({
+				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+			})
+			.then(function (results) {
+				console.log(results);
+
+					if (!results) {
+						//res.redirect('/user/logout');
+						next();
+					}
+					else {
+							
+							//format user data to send to front end
+							res.locals.email = results.user.contact_info.user_email;
+							res.locals.role = results.user.user_role;
+							res.locals.user = results.user._id;
+
+							return next();
+						
+					}
+
+
+
+			})
+
+		.catch(function(err) {
+                console.error(err);
+        })
+         .catch(next);
+		}
+		else {
+			console.log("no user id");
+			next();
+		}
+}

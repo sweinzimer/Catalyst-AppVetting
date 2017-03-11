@@ -28,11 +28,11 @@ initPassport(passport);
 // Route Naming and Importing
 // Define routes that will be used
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-var routes = require('./routes/index');
+var routes = require('./routes/index')(passport);
 var test = require('./routes/test');
 var view = require('./routes/view')(passport);
 var edit = require('./routes/edit')(passport);
-var appform = require('./routes/appform');
+var appform = require('./routes/appform')(passport);
 var vettingworksheet = require('./routes/vettingworksheet')(passport);
 var regUser = require('./routes/regUser')(passport);
 var site = require('./routes/site')(passport);
@@ -64,6 +64,31 @@ hbs.registerHelper("debug", function(optionalValue) {
         console.log("Value");
         console.log("====================");
         console.log(optionalValue);
+    }
+});
+
+hbs.registerHelper('stringify', function(val) {
+  if (!val) { return '' }
+  return JSON.stringify(val, null, '  ')
+})
+
+hbs.registerHelper('returnObject', function(val) {
+  return val
+})
+
+hbs.registerHelper('if_eq', function(a, b, opts) {
+    if (a == b) {
+        return opts.fn(this);
+    } else {
+        return opts.inverse(this);
+    }
+});
+
+hbs.registerHelper('if_not_eq', function(a, b, opts) {
+    if (a !== b) {
+        return opts.fn(this);
+    } else {
+        return opts.inverse(this);
     }
 });
 
@@ -118,7 +143,7 @@ app.use('/js', express.static(__dirname + '/node_modules/jquery/dist'));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/javascript', express.static(__dirname + '/public/javascripts'));
 app.use('/fonts/', express.static(__dirname + '/node_modules/bootstrap/dist/fonts'));
-app.use('/exports', express.static(__dirname + '/public/exports'));
+
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

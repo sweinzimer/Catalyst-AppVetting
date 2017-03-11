@@ -406,14 +406,26 @@
 
 	<div class="formSection" style="display:none"><h4>Digital Signature</h4>
 
+		<div id="applicationErrors" style="display:none;">
+			<div class="alert alert-danger">
+				<strong>It appears there are form entry errors. </strong>Please examine the
+				fields highlighted in red above. If you think this error is wrong, please
+				inform a member of the Catalyst team.
+			</div>
+		</div>
+
 		<div class="formLine">I have read and agree to the above terms and conditions:
 			<input type="checkbox" name="tac-yes" value="true" required>Yes
 		</div>
 
 		<div class="formLine">
 			Please type your full name in the box below.  This will be considered your digital signature.<br>
-			<input class="largeField" type="text" name="signature" placeholder="Type Name Here" required>
+			<input class="largeField" type="text" name="signature" placeholder="Type Name Here" required><br>
+			Signature Date:<br>
+			<input type="date" name="client_date"><br>
+
 		</div>
+
 
 
 		<input type="submit" value="Submit Form">

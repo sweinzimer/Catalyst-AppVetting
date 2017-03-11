@@ -17,6 +17,7 @@
 
 <a href="/view" class="btn btn-primary">Back to Vetting Home</a>
 <a href="/view/{{doc._id}}" class="btn btn-primary">Back to Application View</a>
+<a id="csvExportButton" class="btn btn-primary">Export to CSV</a>
 
 <div class="container col-xs-12">
 		<h1>{{doc.application.name.first}} {{doc.application.name.last}} - Vetting Worksheet</h1>
@@ -194,7 +195,7 @@
 
 	<p id="targettwo"><br></p>
 	<b>[2]</b>
-	<p class="scriptText">Before I ask my questions let me take a minute to describe our process.  Today my focus will be on confirming that you meet our financial guidelines. If you do, next we would arrange to visit your home to determine whether the requested repairs are things that Catalyst has the expertise and resources to do. Then, If we can do the work, we would find a mutually agreeable date and get you on our project schedule. Finally we would show up at your home on the agreed date and do the work. Does all that make sense to you?</p>
+	<p class="scriptText">Before I ask my questions var me take a minute to describe our process.  Today my focus will be on confirming that you meet our financial guidelines. If you do, next we would arrange to visit your home to determine whether the requested repairs are things that Catalyst has the expertise and resources to do. Then, If we can do the work, we would find a mutually agreeable date and get you on our project schedule. Finally we would show up at your home on the agreed date and do the work. Does all that make sense to you?</p>
 
 	<p class="scriptText">Now, the first thing we need is your proof of home ownership. Can you provide us with, for example, either a copy of your latest mortgage statement, or possibly a copy of deed or title, or maybe your most recent home insurance statement?</p>
 
@@ -226,7 +227,7 @@
 	&nbsp;&nbsp;&nbsp;&nbsp; {{doc.property.requested_repairs}}
 	</td></tr></table>
 
-	<p class="scriptText">Okay. Let’s talk about the repairs you requested:</p>
+	<p class="scriptText">Okay. var’s talk about the repairs you requested:</p>
 
 	<p><i><b>Conversation starters/helpers:</b><br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your application says…<br>
@@ -722,448 +723,7 @@
 
 <div class="container col-xs-12">
 	<h3>Financial Questions</h3>
-
 	<div id="finacialForm"></div>
-
-	<!-- <h4>Income Documentation</h4>
-	<table class="table table-striped">
-		<tr>
-			<td></td>
-			<td>{{doc.application.name.first}} {{doc.application.name.last}}</td>
-			<td>[Other Resident 1]</td>
-			<td>[Other Resident 2]</td>
-			<td>[etc...]</td>
-		</tr>
-		<tr>
-		  <td colspan="5">
-		    <p class="scriptText">Q: Do you receive food stamp benefits?</p>
-		    &nbsp;&nbsp;&nbsp;&nbsp; <i>If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a></i>
-		  </td>
-		</tr>
-		<tr>
-		  <td>Food Stamps documentation</td>
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-		</tr>
-		<tr>
-		  <td colspan="5">
-		    <p class="scriptText">Q: Did you or anyone else in your home file a federal income tax form last year?</p>
-		    &nbsp;&nbsp;&nbsp;&nbsp;<i>If yes, request copies of their main tax form(s) (1040 or 1040EZ), and proceed to X. If no proceed to next question.</i>
-		  </td>
-		</tr>
-		<tr>
-		  <td>Federal Tax Records</td>
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-		</tr>
-		<tr>
-		  <td colspan="5">
-		    <p class="scriptText">Q: Are you or anyone else in your home currently employed?</p>
-		    <i>If yes, request Income Documentation for all employed residents and proceed. If no, proceed to next question.</i>
-		  </td>
-		</tr>
-		<tr>
-		  <td>
-		    Income Documentation [e.g. Pay Stubs]
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-		</tr>
-		<tr>
-		  <td colspan="5">
-		    <p class="scriptText">Q: Do you or anyone else in your home receive Social Security benefits? (retirement; disability; SSI)</p>
-		    <i>If yes, request copies of their benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</i>
-		  </td>
-		</tr>
-		<tr>
-		  <td>
-		    Social Security-Documentation
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-		</tr>
-		<tr>
-		  <td colspan="5">
-		    <p class="scriptText">Q: Do you or anyone else in your home receive pension payments?</p>
-		    <i>If yes, request copies of check stubs or deposit notices showing total benefit received. If no, proceed to next question.</i>
-		  </td>
-		</tr>
-		<tr>
-		  <td>
-		    Pension Benefit-Documentation
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-		</tr>
-		<tr>
-		  <td colspan="5">
-		    <p class="scriptText">Q: Do you or anyone else in your home receive housing assistance?</p>
-		    <i>If yes, request copies of benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</i>
-		  </td>
-		</tr>
-		<tr>
-		  <td>
-		    Housing assistance documentation
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-		  <td>
-		    <input type="checkbox"> Requested</input><br/>
-		    <input type="checkbox"> Received</input>
-		  </td>
-		</tr>
-	</table>
-
-	<h4>Asset Documentation</h4>
-
-	<table>
-	  <tbody>
-	    <tr>
-	      <td colspan="5">
-	        <p class="scriptText">Q: Do you anyone else in your home have a checking or a savings account with more than $5,000 on deposit?</p>
-	        &nbsp;&nbsp;&nbsp;&nbsp;<i>If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.</i>
-	      </td>
-	    </tr>
-	    <tr>
-	      <td>Checking Account documentation</td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-	    </tr>
-
-	    <tr>
-	      <td>Savings Account documentation</td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-	    </tr>
-
-	    <tr>
-	      <td colspan="5">
-	          <p class="scriptText">Q: Do you or anyone else in your home have money in a retirement account? (e.g. IRA, 401k, etc.)</p>
-	          &nbsp;&nbsp;&nbsp;&nbsp;<i>If yes, request copies of most recent account statements. If no, proceed to the next question.</i>
-	      </td>
-	    </tr>
-
-	    <tr>
-	      <td>Retirement Fund documentation</td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-	    </tr>
-
-	    <tr>
-	      <td colspan="5">
-	          <p class="scriptText">Q: Do you or anyone else in your home have any other investment or trust accounts?</p>
-	          &nbsp;&nbsp;&nbsp;&nbsp;<i>If yes, request copies of most recent account statements. If no, proceed to the next question.</i>
-
-	    <tr>
-	      <td>Other Investments/Trusts documentation</td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-	    </tr>
-
-	    <tr>
-	      <td colspan="5">
-	        <p class="scriptText">Q: Do you or anyone else in your home have one or more physical assets (collections, works of art, antique vehicles) worth more than a total of $5,000?</p>
-	        &nbsp;&nbsp;&nbsp;&nbsp;<i>If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.</i>
-	      </td>
-			</tr>
-			<tr>
-
-	      <td>Physical Assets-Documentation</td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-	    </tr>
-
-	    <tr>
-	      <td colspan="5">
-	          <p class="scriptText">Q: Do you or anyone else in your home have other financial resources that my questions haven’t given you an opportunity to tell me about?</p>
-	          &nbsp;&nbsp;&nbsp;&nbsp;<i>If yes, record below and proceed to closing. If no, proceed to closing.</i>
-
-	      </tr>
-	      <tr>
-
-	      <td>Other: [EMPTY INPUT FIELD other_1]</td>
-
-	      <td>
-	        Value: ________
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-
-
-	      <td>
-	        Value: ________
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-
-
-	      <td>
-	        Value: ________
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-
-
-	      <td>
-	        Value: ________
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	    </tr>
-	    <tr>
-
-	      <td>Other: [EMPTY INPUT FIELD other_2]</td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	    </tr>
-	    <tr>
-
-	      <td>Other: [EMPTY INPUT FIELD other_3]</td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	    </tr>
-	    <tr>
-
-	      <td>Proof of Ownership (could be latest mortgage statement or insurance record)</td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-
-	      <td>
-	        <input type="checkbox">Requested</input><br/>
-	        <input type="checkbox">Received</input>
-	      </td>
-	    </tr>
-	  </tbody>
-	</table> -->
 </div>
 
 
@@ -1177,16 +737,6 @@
 
 	<p class="scriptText">Thanks again. I have enjoyed talking to you.</p>
 </div>
-
-<div class="container col-xs-12">
-	<h3>Still to come...</h3>
-	<ul>
-		<li>Another area where the Vetting Notes will be displayed...</li>
-		<li>An input area much like the Vetting notes input - but this will be for Vetting Agents to input Notes to pass along to Site Assessment Team OR Handle-It Team</li>
-	</ul>
-
-</div>
-
 
 <script src="/javascript/serviceArea.js" type="text/javascript"></script>
 
@@ -1205,14 +755,20 @@
 	*
 	*/
 	$(document).ready(function() {
-		if({{doc.service_area}}) {
-		console.log("service area true");
-		document.getElementById('sa_yes').checked = true;
-		}
-		else if(!{{doc.service_area}}) {
-		console.log("service area false");
-		document.getElementById('sa_no').checked = true;
-		}
+
+		{{#if service}}
+			{{#if doc.service_area}}
+			console.log("service area true");
+			document.getElementById('sa_yes').checked = true;
+			{{else}}
+			console.log("service area false");
+			document.getElementById('sa_no').checked = true;
+
+		    {{/if}}
+		{{/if}}
+
+
+
 
 	});
     /**
@@ -1405,9 +961,9 @@
             })
         });
 
-			let fpb = new FinacialPackageBuilder()
-			fpb.populateHtml()
-			fpb.getData()
+			var fpb = new FinacialPackageBuilder();
+			fpb.populateHtml();
+			fpb.getData();
 		});
 
 	/* Finacial Package Builder - Dave Martinez, Feb. 7, 2017
@@ -1423,18 +979,9 @@
 		this.appID = 123
 		this.docStatus = '{{doc.status}}'
 
-		this.people = [
-			{
-				first: 'test', last: 'test',
 
-			},
-			{
-				first: 'test2', last: 'test',
-			},
-			{
-				first: 'test3', last: 'test',
-			},
-		]
+		this.people = {{{stringify finances}}}
+
 
 		this.schema = [
 		  {
@@ -1442,38 +989,38 @@
 		    items: [
 		      {
 		        question: 'Do you receive food stamp benefits?',
-		        subtext: 'If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a>',
-		        fieldPath: 'food_stamps',
+		        subtext: '<p>If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a></p>',
+		        fieldPath: ['food_stamps'],
 		        objects: ['Food Stamps documentation']
 		      },
 		      {
 		        question: 'Did you or anyone else in your home file a federal income tax form last year?',
-		        subtext: 'If yes, request copies of their main tax form(s) (1040 or 1040EZ), and proceed to X. If no proceed to next question.',
-		        fieldPath: 'income_tax',
+		        subtext: '<p>If yes, request copies of their main tax form(s) (1040 or 1040EZ), and proceed to X. If no proceed to next question.</p>',
+		        fieldPath: ['income_tax'],
 		        objects: ['Federal Tax Records']
 		      },
 		      {
 		        question: 'Are you or anyone else in your home currently employed?',
-		        subtext: 'If yes, request Income Documentation for all employed residents and proceed. If no, proceed to next question.',
-		        fieldPath: 'employment',
+		        subtext: '<p>If yes, request Income Documentation for all employed residents and proceed. If no, proceed to next question.</p>',
+		        fieldPath: ['employment'],
 		        objects: ['Income Documentation [e.g. Pay Stubs]']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home receive Social Security benefits? (retirement; disability; SSI)',
-		        subtext: 'If yes, request copies of their benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.',
-		        fieldPath: 'ss_ben',
+		        subtext: '<p>If yes, request copies of their benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
+		        fieldPath: ['ss_ben'],
 		        objects: ['Social Security-Documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home receive pension payments?',
-		        subtext: 'If yes, request copies of check stubs or deposit notices showing total benefit received. If no, proceed to next question.',
-		        fieldPath: 'pension',
+		        subtext: '<p>If yes, request copies of check stubs or deposit notices showing total benefit received. If no, proceed to next question.</p>',
+		        fieldPath: ['pension'],
 		        objects: ['Pension Benefit-Documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home receive housing assistance?',
-		        subtext: 'If yes, request copies of benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.',
-		        fieldPath: 'house_assist',
+		        subtext: '<p>If yes, request copies of benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
+		        fieldPath: ['house_assist'],
 		        objects: ['Housing assistance documentation']
 		      }
 		    ]
@@ -1483,32 +1030,32 @@
 		    items: [
 		      {
 		        question: 'Do you anyone else in your home have a checking or a savings account with more than $5,000 on deposit?',
-		        subtext: 'If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.',
-		        fieldPath: 'check_account',
+		        subtext: '<p>If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.</p>',
+		        fieldPath: ['check_account', 'saving_account'],
 		        objects: ['Checking Account documentation', 'Savings Account documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have money in a retirement account? (e.g. IRA, 401k, etc.)',
-		        subtext: 'If yes, request copies of most recent account statements. If no, proceed to the next question.',
-		        fieldPath: 'saving_account',
+		        subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
+		        fieldPath: ['ret_fund'],
 		        objects: ['Retirement Fund documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have any other investment or trust accounts?',
-		        subtext: 'If yes, request copies of most recent account statements. If no, proceed to the next question.',
-		        fieldPath: 'ret_fund',
+		        subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
+		        fieldPath: ['invest'],
 		        objects: ['Other Investments/Trusts documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have one or more physical assets (collections, works of art, antique vehicles) worth more than a total of $5,000?',
-		        subtext: 'If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.',
-		        fieldPath: 'invest',
+		        subtext: '<p>If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.</p>',
+		        fieldPath: ['physical'],
 		        objects: ['Physical Assets-Documentation']
 		      },
 		      {
 		        question: 'Do you or anyone else in your home have other financial resources that my questions haven’t given you an opportunity to tell me about?',
-		        subtext: 'If yes, record below and proceed to closing. If no, proceed to closing.',
-		        fieldPath: 'physical',
+		        subtext: '<p>If yes, record below and proceed to closing. If no, proceed to closing.</p>',
+		        fieldPath: ['other_resources', 'proof_own'],
 		        hasDescription: true,
 		        objects: ['Other', 'Proof of Ownership (could be latest mortgage statement or insurance record)']
 		      }
@@ -1523,90 +1070,180 @@
 					{ name: 'status', value: 'documents' },
 					'POST',
 					'/edit/' + this.applicationId,
-					(err) => {
+					function(err) {
 						if (!err) { $('#status').editable('setValue', 'documents') }
 					}
 				)
 			}
 
-			console.log(e.target.name);
-			console.log(e.target.value);
-			let changedValue = changeObjectValueByPath({}, e.target.name, e.target.checked)
-			//console.log('changed value');
-			//console.log(changedValue);
-			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', (err) => {
+
+			var idx = e.target.name.split('.')[0]
+			var objectVal = changeObjectValueByPath({}, e.target.name, e.target.checked)
 
 
+			var changedValue = {}
+			changedValue[ this.people[ idx ]._id ] = objectVal[idx]
+
+			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function(err) {
+				// TODO: If error, flip the value back and show an error message to the user
+				alert('Value did not save, please reload the page')
 			})
 
 		}.bind(this)
 
 
-
 		this.populateHtml = function() {
 			this.root = $(this.htmlTargetSelector)
 
-			this.schema.forEach((section) => {
-				let sectionNode = $('<div></div>')
+
+			this.schema.forEach(function(section, sectionIdx) {
+				var sectionNode = $('<div></div>').addClass('finacialPackageSection')
 				sectionNode.append('<h4>' + section.sectionName + '</h4>')
 
-				let sectionTableNode = $('<table></table>').append('<tbody></tbody>')
+				section.items.forEach(function(item, itemIdx) {
+					var itemRow = $('<div></div>').addClass('finacialPackageRow')
 
-				section.items.forEach((item) => {
-					let itemRowNode = $('<tr></tr>')
-					let itemQuestionNode = $('<td></td>').appendTo(itemRowNode).attr('colspan', '5')
+					// Question text
+					var itemText = $('<div></div>').addClass('finacialPackageText').appendTo(itemRow)
+					$('<p></p>').addClass('scriptText').text('Q: ' + item.question).appendTo(itemText)
+					$('<i></i>').append(item.subtext).appendTo(itemText)
 
-					itemQuestionNode.append($('<p></p>').addClass('scriptText').text('Q: ' + item.question))
-					itemQuestionNode.append($('<i></i>').text(item.subtext))
-					sectionTableNode.append(itemRowNode)
 
-					item.objects.forEach((obj, objIdx) => {
-						let checkboxRowNode = $('<tr></tr>')
-						$('<td>' + obj + '</td>').appendTo(checkboxRowNode).attr('colspan', '2')
+					// Header row for questions
+					var itemQuestionRow = $('<div></div>').addClass('row').appendTo(itemRow)
 
-						this.people.forEach((person, personIdx) => {
-							let checkboxCellNode = $('<td></td>').appendTo(checkboxRowNode)
 
-							$('<input type="checkbox"> Requested</input>').appendTo(checkboxCellNode)
-							.attr('name', objIdx.toString() + '.' + personIdx + '.' + item.fieldPath + '.' + 'req')
-							.on('change', this.handleChange)
+					$('<div></div>').addClass('col-xs-4').appendTo(itemQuestionRow)
 
-							$('<br/>').appendTo(checkboxCellNode)
+					var headerRow = $('<div></div>').addClass('col-xs-8').appendTo(itemQuestionRow)
+					var headerRowTable = $('<table></table>').addClass('table').appendTo(headerRow)
+					var headerRowTableHeader = $('<thead></thead>').addClass('thead-default')
+					headerRowTableHeader = $('<tr></tr>').appendTo(headerRowTableHeader)
+					headerRowTableHeader.appendTo(headerRowTable)
 
-							$('<input type="checkbox"> Received</input>').appendTo(checkboxCellNode)
-							.attr('name', objIdx.toString() + '.' + personIdx + '.' + item.fieldPath + '.' + 'rec')
-							.on('change', this.handleChange)
-
-							checkboxRowNode.append(checkboxCellNode)
-						})
-
-						sectionTableNode.append(checkboxRowNode)
+					this.people.forEach(function(person, personIdx) {
+						$('<th></th>').text(person.name).appendTo(headerRowTableHeader)
 					})
-				})
 
-				sectionNode.append(sectionTableNode)
+					// Each document object in the item
+					item.objects.forEach(function(obj, objIdx) {
+						var objectRow = $('<div></div>').addClass('row')
+
+						var objectLabelCell = $('<div></div>').addClass('col-xs-4').text(obj).appendTo(objectRow)
+						objectLabelCell.append('<br/>')
+						var rowNote = $('<textarea></textarea>').addClass('form-control')
+						.text(
+							this.people[0] &&
+							this.people[0][ this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] ] ? (
+								this.people[0][ this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] ].note
+							) : ''
+						)
+						.attr('rows', '4')
+						.attr('name', this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] + '.note')
+						.appendTo(objectLabelCell)
+						rowNote.keyup(this.handleNoteChange)
+
+
+
+						var objectCheckBoxColumn = $('<div></div>').addClass('col-xs-8').appendTo(objectRow)
+						var checkBoxTable = $('<table></table>').addClass('table').appendTo(objectCheckBoxColumn)
+						checkBoxTable = $('<tbody></tbody>').appendTo(checkBoxTable)
+
+						var checkBoxRow = $('<tr></tr>').appendTo(checkBoxTable)
+
+						this.people.forEach(function(person, personIdx) {
+							var personCell = $('<td></td>').appendTo(checkBoxRow)
+							var thisField = this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]
+
+
+							var thisFieldInputReq = $('<input type="checkbox"> Requested</input>')
+							.appendTo(personCell)
+							.attr('name', personIdx + '.' + thisField + '.' + 'req')
+							.on('change', this.handleChange)
+
+							if (
+								this.people[personIdx][thisField] &&
+								this.people[personIdx][thisField].req === true
+							) { thisFieldInputReq[0].checked = true }
+
+							$('<br/>').appendTo(personCell)
+
+							var thisFieldInputRec = $('<input type="checkbox"> Received</input>')
+							.appendTo(personCell)
+							.attr('name', personIdx + '.' + thisField + '.' + 'rec')
+							.on('change', this.handleChange)
+
+
+							if (
+								this.people[personIdx][thisField] &&
+								this.people[personIdx][thisField].rec === true
+							) { thisFieldInputRec[0].checked = true }
+
+							// checkBoxRow.append(personCell)
+
+							$('<br/>').appendTo(personCell)
+
+							var thisFieldInputNA = $('<input type="checkbox"> N/A</input>')
+							.appendTo(personCell)
+							.attr('name', personIdx + '.' + thisField + '.' + 'na')
+							.on('change', this.handleChange)
+
+							if (
+								this.people[personIdx][thisField] &&
+								this.people[personIdx][thisField].na === true
+							) { thisFieldInputNA[0].checked = true }
+
+							checkBoxRow.append(personCell)
+						}.bind(this))
+
+						objectRow.appendTo(itemRow)
+					}.bind(this))
+
+					itemRow.appendTo(sectionNode)
+
+				}.bind(this))
+
+
 				this.root.append(sectionNode)
-			})
-		}
-		// end this.populateHtml
+
+			}.bind(this))
+		} // END this.populateHtml
+
 
 		this.getData = function() {
 			return getFormData(this.root)
 		}
 
+		this._TIMEOUT = false
+
+		this.handleNoteChange = function(e) {
+			if (this._TIMEOUT) { window.clearTimeout(this._TIMEOUT) }
+
+			this._TIMEOUT = window.setTimeout(function() {
+				var changedValue = {}
+				changedValue[ this.primaryUser._id ] = {}
+				changedValue[ this.primaryUser._id ][ this.field ] = { note: this.noteValue }
+
+				xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function(err) {
+					// TODO: If error, flip the value back and show an error message to the user
+
+				})
+
+			}.bind({ noteValue: e.target.value, field: e.target.name, primaryUser: this.people[0] }), 500)
+		}.bind(this)
 
 
 
-	}
+	} // END FinacialPackageBuilder
 
 	function getFormData(form) {
-		let formData = {}
-		let inputFields = $('input', form)
+		var formData = {}
+		var inputFields = $('input', form)
 		inputFields.each(function(idx) {
-			let objectPath = this.name
-			let objectPieces = objectPath.split('.')
-			let currentObjectPlace = formData
-			objectPieces.forEach((p, i) => {
+			var objectPath = this.name
+			var objectPieces = objectPath.split('.')
+			var currentObjectPlace = formData
+			objectPieces.forEach(function(p, i) {
 				if (i < (objectPieces.length-1)) {
 					if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
 					currentObjectPlace = currentObjectPlace[p]
@@ -1617,16 +1254,16 @@
 						currentObjectPlace[p] = this.value
 					}
 				}
-			})
+			}.bind(this))
 		})
 
 		return formData
 	}
 
 	function changeObjectValueByPath(obj, path, value) {
-		let objectPieces = path.split('.')
-		let currentObjectPlace = obj
-		objectPieces.forEach((p, i) => {
+		var objectPieces = path.split('.')
+		var currentObjectPlace = obj
+		objectPieces.forEach(function(p, i) {
 			if (i < (objectPieces.length-1)) {
 				if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
 				currentObjectPlace = currentObjectPlace[p]
@@ -1663,5 +1300,42 @@
 			next(new Error('Could not complete xhr'))
 		});
 	}
+
+
+
+$('#csvExportButton').on('click', function(e) {
+	var urlParts = window.location.pathname.split('/')
+  var applicationID = urlParts[urlParts.length-1]
+	var firstname = '{{{doc.application.name.first}}}';
+	var lastname = '{{{doc.application.name.last}}}';
+  var payload = {
+		application: applicationID,
+		firstname: firstname,
+		lastname: lastname
+    }
+    var csvRequest = $.ajax({
+      	type: 'POST',
+        url: '/vettingworksheet/csvExport',
+        dataType: 'json',
+        contentType: 'application/json; chartset=UTF-8',
+        data: JSON.stringify(payload)
+      })
+      csvRequest.done(function(xhr) {
+        if (xhr.status === 'success') {
+          // TODO: Set window.location.href equal to the download file
+
+		window.location.href = '/vettingworksheet/file/' + '{{{doc.application.name.last}}}' + '-' + '{{{doc.application.name.first}}}' + '-' + applicationID + '-' + 'VettingWorksheet' + '.csv'
+
+        } else {
+			console.log(xhr.status);
+        }
+      })
+      csvRequest.fail(function(data) {
+		console.log(data.status)
+        debugger
+      })
+    })
+
+
 
 </script>
