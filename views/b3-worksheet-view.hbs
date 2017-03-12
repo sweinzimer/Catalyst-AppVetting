@@ -1088,8 +1088,6 @@
 				na: siblingInputs[2].checked,
 			}
 
-
-			// START HERE: Finish and test
 			if (currentState.rec && !currentState.req && !currentState.na) {
 				// User input received but requested is not checked; tick requested
 				e.preventDefault()
@@ -1098,6 +1096,10 @@
 				var targetName = e.target.name.replace(boxTicked, 'req')
 
 				$('[name="' + targetName + '"]').prop('checked', true)
+
+				if (boxTicked === 'req') {
+					alert('You must untick received before requested')
+				}
 
 				var autoUpdateVal = changeObjectValueByPath({}, targetName, true)
 				var autoUpdateChange = {}
@@ -1115,7 +1117,6 @@
 
 			} else if (currentState.na && (currentState.rec || currentState.req) && boxTicked === 'na') {
 				// User input na, but received or requested is ticked; untick rec and rec
-				// debugger
 				e.preventDefault()
 				e.stopPropagation()
 
@@ -1153,7 +1154,6 @@
 
 			} else if ((boxTicked === 'req' || boxTicked === 'rec') && currentState.na) {
 				// User input req or rec, but na is clicked; untick na
-				debugger
 				var targetName = e.target.name.replace(boxTicked, 'na')
 
 
