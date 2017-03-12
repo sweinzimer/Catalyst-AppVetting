@@ -1075,17 +1075,139 @@
 				)
 			}
 
-
-			var idx = e.target.name.split('.')[0]
+			var nameParts = e.target.name.split('.')
+			var idx = nameParts[0]
+			var boxTicked = nameParts[2]
 			var objectVal = changeObjectValueByPath({}, e.target.name, e.target.checked)
 
+			// Auto ticks...
+			var siblingInputs = $('input', e.target.parentNode)
+			var currentState = {
+				req: siblingInputs[0].checked,
+				rec: siblingInputs[1].checked,
+				na: siblingInputs[2].checked,
+			}
+
+
+			// START HERE: Finish and test
+			if (currentState.rec && !currentState.req && !currentState.na) {
+				// User input received but requested is not checked; tick requested
+				e.preventDefault()
+				e.stopPropagation()
+
+				var targetName = e.target.name.replace(boxTicked, 'req')
+
+				$('[name="' + targetName + '"]').prop('checked', true)
+
+				var autoUpdateVal = changeObjectValueByPath({}, targetName, true)
+				var autoUpdateChange = {}
+				autoUpdateChange[ this.people[ idx ]._id ] = autoUpdateVal[idx]
+
+				window.setTimeout(function() {
+					xhr(autoUpdateChange, 'POST', '/vettingworksheet/finacialForm', function(err) {
+						if (err) {
+							// TODO: If error, flip the value back and show an error message to the user
+							// alert('Value did not save, please reload the page')
+						}
+					})
+				}, 250)
+
+
+			} else if (currentState.na && (currentState.rec || currentState.req) && boxTicked === 'na') {
+				// User input na, but received or requested is ticked; untick rec and rec
+				// debugger
+				e.preventDefault()
+				e.stopPropagation()
+
+				var targetNameReq = e.target.name.replace(boxTicked, 'req')
+				var targetNameRec = e.target.name.replace(boxTicked, 'rec')
+
+				$('[name="' + targetNameReq + '"]').prop('checked', false)
+				$('[name="' + targetNameRec + '"]').prop('checked', false)
+
+				var autoUpdateValReq = changeObjectValueByPath({}, targetNameReq, false)
+				var autoUpdateValRec = changeObjectValueByPath({}, targetNameRec, false)
+
+				var autoUpdateChangeReq = {}
+				autoUpdateChangeReq[ this.people[ idx ]._id ] = autoUpdateValReq[idx]
+
+				var autoUpdateChangeRec = {}
+				autoUpdateChangeRec[ this.people[ idx ]._id ] = autoUpdateValRec[idx]
+
+				window.setTimeout(function() {
+					xhr(autoUpdateChangeReq, 'POST', '/vettingworksheet/finacialForm', function(err) {
+						if (err) {
+							// TODO: If error, flip the value back and show an error message to the user
+							// alert('Value did not save, please reload the page')
+						}
+					})
+
+					xhr(autoUpdateChangeRec, 'POST', '/vettingworksheet/finacialForm', function(err) {
+						if (err) {
+							// TODO: If error, flip the value back and show an error message to the user
+							// alert('Value did not save, please reload the page')
+						}
+					})
+				}, 250)
+
+
+			} else if ((boxTicked === 'req' || boxTicked === 'rec') && currentState.na) {
+				// User input req or rec, but na is clicked; untick na
+				debugger
+				var targetName = e.target.name.replace(boxTicked, 'na')
+
+
+				$('[name="' + targetName + '"]').prop('checked', false)
+
+
+				var autoUpdateVal = changeObjectValueByPath({}, targetName, false)
+
+
+				var autoUpdateChange = {}
+				autoUpdateChange[ this.people[ idx ]._id ] = autoUpdateVal[idx]
+
+
+
+				window.setTimeout(function() {
+					xhr(autoUpdateChange, 'POST', '/vettingworksheet/finacialForm', function(err) {
+						if (err) {
+							// TODO: If error, flip the value back and show an error message to the user
+							// alert('Value did not save, please reload the page')
+						}
+					})
+				}, 250)
+
+				// Also tick requested if current action is rec. and rec is true and req is false
+				if (boxTicked == 'rec' && currentState.rec === true && currentState.req === false) {
+					var targetNameReq = e.target.name.replace(boxTicked, 'req')
+					$('[name="' + targetNameReq + '"]').prop('checked', true)
+
+					var autoUpdateValReq = changeObjectValueByPath({}, targetNameReq, true)
+					var autoUpdateChangeReq = {}
+
+					autoUpdateChangeReq[ this.people[ idx ]._id ] = autoUpdateValReq[idx]
+
+					window.setTimeout(function() {
+						xhr(autoUpdateChangeReq, 'POST', '/vettingworksheet/finacialForm', function(err) {
+							if (err) {
+								// TODO: If error, flip the value back and show an error message to the user
+								// alert('Value did not save, please reload the page')
+							}
+						})
+					}, 250)
+
+				}
+
+			}
 
 			var changedValue = {}
 			changedValue[ this.people[ idx ]._id ] = objectVal[idx]
 
 			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function(err) {
-				// TODO: If error, flip the value back and show an error message to the user
-				alert('Value did not save, please reload the page')
+				if (err) {
+					// TODO: If error, flip the value back and show an error message to the user
+					// alert('Value did not save, please reload the page')
+				}
 			})
 
 		}.bind(this)
