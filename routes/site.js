@@ -66,6 +66,7 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
 
 	var payload = {}
 	payload.results = res.locals.results;
+	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
 	// console.log("results");
@@ -91,7 +92,7 @@ router.route('/servicearea')
     }
 	});
 
-
+//same as vetting route.  Shouldn't be issues with logic as is
 router.route('/additem')
 	.post(api.addWorkItem, function(req, res) {
 	if(res.locals.status != '200'){
@@ -102,8 +103,10 @@ router.route('/additem')
     }
 	});
 
+//added logic to api.updateWorkItem to handle site agent. 
+//needs role from 'isLoggedInPost' route	
 router.route('/updateitem')
-	.post(api.updateWorkItem, function(req, res) {
+	.post(isLoggedInPost, api.updateWorkItem, function(req, res) {
 	if(res.locals.status != '200'){
         res.status(500).send("Could not update work item");
     }
@@ -246,13 +249,17 @@ function isLoggedInPost(req, res, next) {
 						return next('route');
 					}
 					else {
+						if(results.user.user_status == "ACTIVE") {
+							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN" || results.user.user_role == "SITE") {
+								res.locals.email = results.user.contact_info.user_email;
+								res.locals.role = results.user.user_role;
+								return next();
 
-						if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
-							return next();
+							}
 
 						}
 						else {
-							//user is not a vetting agent or admin, route to error handler
+							//user is not active
 							res.locals.status = 406;
 							return next('route');
 						}
