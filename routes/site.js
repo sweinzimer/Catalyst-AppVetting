@@ -30,9 +30,9 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
             element = formatElement(element);
         });
 	}
-	
+
 	payload.site = res.locals.results.site;
-	
+
 	if(res.locals.results.complete[0] == null) {
 		console.log('[ ROUTER ] /site :: Unable to find Document Packages with status: \'assess\'');
 	}
@@ -41,7 +41,7 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
             element = formatElement(element);
         });
 	}
-	
+
 	payload.complete = res.locals.results.complete;
 	payload.user = req.user_id;
 	payload.user_email = res.locals.email;
@@ -53,9 +53,9 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 
 	//payload.user_email = res.locals.email;
 
-	res.json(res.locals.results);
-	//res.render('siteview', payload);
-});	
+	// res.json(res.locals.results);
+	res.render('siteassessment', payload);
+});
 
 router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
     //Checking what's in params
@@ -65,20 +65,19 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
 
 
 	var payload = {}
-	payload = res.locals.results;
+	payload.results = res.locals.results;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
-	console.log("results");
-	console.log(results);
-    res.json(payload);
+	// console.log("results");
+	// console.log(payload);
+  // res.json(payload);
 
     //    res.locals.layout = 'b3-layout';        // Change default from layout.hbs to b3-layout.hbs
     //    results.title = "Application View";     //Page <title> in header
-		
-	//	results.user = req.user._id;
 
-    //    res.render('b3-view', results);
-    
+	//	results.user = req.user._id;
+	res.render('siteassessmenttool', payload);
+
 
 });
 
@@ -112,7 +111,7 @@ router.route('/updateitem')
         res.json(res.locals);
     }
 	});
-	
+
 function formatElement(element) {
     formatStatus(element);
     formatDate(element);
@@ -164,17 +163,17 @@ function formatStatus(element) {
     return element;
 }
 
-	
-	
-	
-	
-	
+
+
+
+
+
 return router;
 }
 
 //check to see if user is logged in and a vetting agent or an admin
 function isLoggedIn(req, res, next) {
-		
+
 		if(req.isAuthenticated()) {
 			console.log(req.user._id);
 			var userID = req.user._id.toString();

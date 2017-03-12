@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h5>Site Assessment</h5>
+
+    {{#each results.doc}}
+      <h1>{{application.name.first}} {{application.name.middle}} {{application.name.last}}</h1>
+      <div class="row">
+        <div class="col-xs-12">
+
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <h3>Address</h3>
+          {{application.address.line_1}}<br/>
+          {{#if_not_eq application.address.line_2 ''}}
+            {{application.address.line_2}}<br/>
+          {{/if_not_eq}}
+          {{application.address.city}}, {{application.address.state}} {{application.address.state}}<br/>
+          <iframe width="100%" height="350" frameborder="0" style="border:0"
+          src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD2CmgnSECdg_g-aFgp95NUBv2QUEidDvs&q={{googleMapAddr application.address}}"></iframe>
+          <pre>{{stringify this}}</pre>
+        </div>
+
+        <div class="col-xs-12 col-sm-6">
+          <h3>Property Information</h3>
+          <dl class="row">
+            <dt class="col-sm-4">Ownership Length</dt>
+            <dd class="col-sm-8">{{property.ownership_length}}</dd>
+
+            <dt class="col-sm-4">Year Constructed</dt>
+            <dd class="col-sm-8">{{property.year_constructed}}</dd>
+
+            <dt class="col-sm-4">Requested Repairs</dt>
+            <dd class="col-sm-8">{{property.requested_repairs}}</dd>
+
+            <dt class="col-sm-4">Client Can Contrib.</dt>
+            <dd class="col-sm-8">{{#if property.client_can_contribute.value}} Yes {{else}} No {{/if}}</dd>
+
+            <dt class="col-sm-4">Associates Can Contrib.</dt>
+            <dd class="col-sm-8">{{#if property.associates_can_contribute.value}} Yes {{else}} No{{/if}}</dd>
+
+
+          </dl>
+        </div>
+      </div>
+
+
+    {{/each}}
+
+  </div>
+</div>
+
+<pre>{{stringify results}}</pre>
