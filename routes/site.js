@@ -43,6 +43,7 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 	}
 	
 	payload.complete = res.locals.results.complete;
+	payload.user = req.user_id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
 
@@ -105,7 +106,7 @@ router.route('/additem')
 router.route('/updateitem')
 	.post(api.updateWorkItem, function(req, res) {
 	if(res.locals.status != '200'){
-        res.status(500).send("Could not update field");
+        res.status(500).send("Could not update work item");
     }
     else{
         res.json(res.locals);
