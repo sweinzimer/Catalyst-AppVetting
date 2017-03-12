@@ -92,6 +92,17 @@ hbs.registerHelper('if_not_eq', function(a, b, opts) {
     }
 });
 
+hbs.registerHelper('googleMapAddr', function(addr) {
+  let addrText = ''
+  addrText += addr.line_1 + ','
+  if (addrText.line_2) { addrText += addr.line_2 + ','}
+  addrText += addr.city + ','
+  addrText += addr.state + ' '
+  addrText += addr.zip
+
+  return addrText.replace(' ', '+')
+})
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Middleware
 // Use any middleware for the application that is needed. bodyParse allows parsing to
