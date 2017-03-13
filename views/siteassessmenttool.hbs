@@ -4,43 +4,237 @@
 
     {{#each results.doc}}
       <h1>{{application.name.first}} {{application.name.middle}} {{application.name.last}}</h1>
+      <h5 class="text-muted">Application {{app_name}}</h5>
       <div class="row">
-        <div class="col-xs-12">
-
-        </div>
         <div class="col-xs-12 col-sm-6">
-          <h3>Address</h3>
-          {{application.address.line_1}}<br/>
-          {{#if_not_eq application.address.line_2 ''}}
-            {{application.address.line_2}}<br/>
-          {{/if_not_eq}}
-          {{application.address.city}}, {{application.address.state}} {{application.address.state}}<br/>
+          <h5>Applicant Contact Info</h5>
+          <table class="table">
+            <tr>
+              <th class="col-xs-3">Address</th>
+              <td class="col-xs-9">
+                {{application.address.line_1}}<br/>
+                {{#if_not_eq application.address.line_2 ''}}
+                  {{application.address.line_2}}<br/>
+                {{/if_not_eq}}
+                {{application.address.city}}, {{application.address.state}} {{application.address.state}}<br/>
+              </td>
+            </tr>
+
+            <tr>
+              <th class="col-xs-3">Phone</th>
+              <td class="col-xs-9">{{application.phone.preferred}}</td>
+            </tr>
+
+            <tr>
+              <th class="col-xs-3">Email</th>
+              <td class="col-xs-9">
+                {{#if_not_eq application.email ''}}
+                  <a href="mailto:{{application.email}}">{{application.email}}</a>
+                {{else}}
+                  None
+                {{/if_not_eq}}
+              </td>
+            </tr>
+
+            <tr>
+              <th class="col-xs-3">Advocate Info</th>
+              <td class="col-xs-9">
+                {{#if advocate.is_advocate}}
+                  {{advocate.name}}<br/>
+                  {{advocate.phone}}<br/>
+                  {{advocate.relationship}}, {{advocate.organization_name}}<br/>
+                  {{#if advocate.npo}}Non-profit<br/>{{/if}}
+                  {{#if advocate.gov}}Government<br/>{{/if}}
+                {{else}}
+                  None
+                {{/if}}
+
+
+
+              </td>
+            </tr>
+
+            <tr>
+              <th class="col-xs-3">Emergency Contact</th>
+              <td class="col-xs-9">
+                {{application.emergency_contact.name}}<br/>
+                {{application.emergency_contact.relationship}}<br/>
+                {{application.emergency_contact.phone}}
+              </td>
+            </tr>
+
+          </table>
+
+          <h5>Map</h5>
           <iframe width="100%" height="350" frameborder="0" style="border:0"
           src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD2CmgnSECdg_g-aFgp95NUBv2QUEidDvs&q={{googleMapAddr application.address}}"></iframe>
-          <pre>{{stringify this}}</pre>
         </div>
+
+
+        <div class="col-xs-12 col-sm-6">
+
+
+          <h5>Applicant information</h5>
+          <table class="table">
+            <tr>
+              <th class="col-xs-3">Age</th>
+              <td class="col-xs-9">{{ageAndBirthday application.dob.date}}</td>
+            </tr>
+
+
+            <tr>
+              <th class="col-xs-3">Owns home</th>
+              <td class="col-xs-9">{{#if application.owns_home}}Yes{{else}}No{{/if}}</td>
+            </tr>
+
+            <tr>
+              <th class="col-xs-3">Spouse</th>
+              <td class="col-xs-9">
+                {{#if_not_eq application.marital.spouse ''}}
+                  {{application.marital.spouse}}, {{application.marital.status}}
+                {{else}}
+                  None
+                {{/if_not_eq}}
+              </td>
+            </tr>
+
+            <tr>
+              <th class="col-xs-3">Other residents</th>
+              <td class="col-xs-9">{{otherResidents application.other_residents}}</td>
+            </tr>
+
+            <tr>
+              <th class="col-xs-3">Veteran Status</th>
+              <td class="col-xs-9">{{#if application.veteran}}Veteran{{else}}None{{/if}}</td>
+            </tr>
+
+            <tr>
+              <th class="col-xs-3">Language</th>
+              <td class="col-xs-9">{{application.language}}</td>
+            </tr>
+
+            <tr>
+              <th class="col-xs-3">Special Circumstances</th>
+              <td class="col-xs-9">
+                {{#if_not_eq application.special_circumstances.note ''}}
+                  {{application.special_circumstances.note}}
+                {{else}}
+                  None
+                {{/if_not_eq}}
+              </td>
+            </tr>
+
+            <tr>
+              <th class="col-xs-3">Heard About</th>
+              <td class="col-xs-9">
+                {{#if_not_eq application.heard_about ''}}
+                  {{application.heard_about}}
+                {{else}}
+                  No answer
+                {{/if_not_eq}}
+              </td>
+            </tr>
+          </table>
+
+        </div>
+
+
 
         <div class="col-xs-12 col-sm-6">
           <h3>Property Information</h3>
-          <dl class="row">
-            <dt class="col-sm-4">Ownership Length</dt>
-            <dd class="col-sm-8">{{property.ownership_length}}</dd>
+          <table class="table">
 
-            <dt class="col-sm-4">Year Constructed</dt>
-            <dd class="col-sm-8">{{property.year_constructed}}</dd>
-
-            <dt class="col-sm-4">Requested Repairs</dt>
-            <dd class="col-sm-8">{{property.requested_repairs}}</dd>
-
-            <dt class="col-sm-4">Client Can Contrib.</dt>
-            <dd class="col-sm-8">{{#if property.client_can_contribute.value}} Yes {{else}} No {{/if}}</dd>
-
-            <dt class="col-sm-4">Associates Can Contrib.</dt>
-            <dd class="col-sm-8">{{#if property.associates_can_contribute.value}} Yes {{else}} No{{/if}}</dd>
-
-
-          </dl>
+            <tr>
+              <th class="col-sm-3">Home Type</th>
+              <td class="col-sm-9">{{property.home_type}}</td>
+            </tr>
+            <tr>
+              <!-- TODO: Clairify "length" unit -->
+              <th class="col-sm-3">Ownership Length</th>
+              <td class="col-sm-9">{{property.ownership_length}}</td>
+            </tr>
+            <tr>
+              <th class="col-sm-3">Year Constructed</th>
+              <td class="col-sm-9">{{property.year_constructed}}</td>
+            </tr>
+            <tr>
+              <th class="col-sm-3">Requested Repairs</th>
+              <td class="col-sm-9">{{property.requested_repairs}}</td>
+            </tr>
+            <tr>
+              <th class="col-sm-3">Client Can Contrib.</th>
+              <td class="col-sm-9">
+                {{#if property.client_can_contribute.value}}
+                  Yes - {{property.client_can_contribute.description}}
+                {{else}} No {{/if}}
+              </td>
+            </tr>
+            <tr>
+              <th class="col-sm-3">Associates Can Contrib.</th>
+              <td class="col-sm-9">
+                {{#if property.associates_can_contribute.value}}
+                  Yes - {{property.associates_can_contribute.description}}
+                {{else}} No{{/if}}
+              </td>
+            </tr>
+          </table>
         </div>
+
+        <div class="col-xs-12 col-sm-6">
+          <h3>Financial</h3>
+          <table class="table">
+            <tr>
+              <th class="col-xs-3">Income</th>
+              <td class="col-xs-9">
+                {{finance.income.amount}}<br/>
+                {{#each finance.income.tags}}
+                  {{this}}<br/>
+                {{/each}}
+              </td>
+            </tr>
+            <tr>
+              <th class="col-xs-3">Mortgage</th>
+              <td class="col-xs-9">
+                {{ finance.mortgage.payment }} payment<br/>
+                {{#if finance.mortgage.up_to_date }} Up to date {{else}} Not up to date {{/if}}
+              </td>
+            </tr>
+            <tr>
+              <th class="col-xs-3">Assets</th>
+              <td class="col-xs-9">
+                {{assetsValueAndName finance.assets}}
+              </td>
+            </tr>
+            <tr>
+              <th class="col-xs-3">Requested other help</th>
+              <td class="col-xs-9">
+                {{#if finance.requested_other_help.value}}
+                  Yes - {{finance.requested_other_help.amount}}
+                {{else}} No {{/if}}
+              </td>
+            </tr>
+            <tr>
+              <th class="col-xs-3">Client can contribute</th>
+              <td class="col-xs-9">
+                {{#if finance.client_can_contribute.value}}
+                  Yes - {{finance.client_can_contribute.amount}}
+                {{else}} No {{/if}}
+              </td>
+            </tr>
+            <tr>
+              <th class="col-xs-3">Associates can contribute</th>
+              <td class="col-xs-9">
+                {{#if finance.associates_can_contribute.value}}
+                  Yes - {{finance.associates_can_contribute.amount}}
+                {{else}} No {{/if}}
+              </td>
+            </tr>
+          </table>
+
+        </div>
+
+
+
       </div>
 
 
@@ -48,5 +242,3 @@
 
   </div>
 </div>
-
-<pre>{{stringify results}}</pre>

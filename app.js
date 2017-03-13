@@ -93,7 +93,7 @@ hbs.registerHelper('if_not_eq', function(a, b, opts) {
 });
 
 hbs.registerHelper('googleMapAddr', function(addr) {
-  let addrText = ''
+  var addrText = ''
   addrText += addr.line_1 + ','
   if (addrText.line_2) { addrText += addr.line_2 + ','}
   addrText += addr.city + ','
@@ -101,6 +101,50 @@ hbs.registerHelper('googleMapAddr', function(addr) {
   addrText += addr.zip
 
   return addrText.replace(' ', '+')
+})
+
+hbs.registerHelper('assetsValueAndName', function(assets) {
+  var returnText = ''
+  assets.value.forEach(function(v, i) {
+    if (assets.name[i]) {
+      if (i !== 0) returnText += ', '
+      returnText += assets.name[i] + ' ($' + v + ')'
+    }
+  })
+
+  return returnText
+})
+
+hbs.registerHelper('ageAndBirthday', function(birthday) {
+  var returnText = ''
+
+  var d = birthday.getTime()
+  var today = new Date().getTime()
+
+  if (isNaN(d) || isNaN(today)) { debugger; return 'n/a' }
+  else {
+    var diff = today - d
+    var age = Math.floor(diff / (1000*60*60*24*365.25))
+    return age.toString() + ' years old'
+  }
+})
+
+hbs.registerHelper('otherResidents', function(residentsObject) {
+
+  if (residentsObject.name[0] == '') { return 'None' }
+  else {
+    var returnText = ''
+    residentsObject.name.forEach(function(r, idx) {
+      if (r !== '') {
+        returnText += (
+          r + ' (' + residentsObject.age[idx] + '), '
+          + residentsObject.relationship[idx] + ';'
+        )
+      }
+    })
+
+    return returnText
+  }
 })
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
