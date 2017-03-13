@@ -35,6 +35,7 @@ var edit = require('./routes/edit')(passport);
 var appform = require('./routes/appform')(passport);
 var vettingworksheet = require('./routes/vettingworksheet')(passport);
 var regUser = require('./routes/regUser')(passport);
+var site = require('./routes/site')(passport);
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,6 +92,61 @@ hbs.registerHelper('if_not_eq', function(a, b, opts) {
     }
 });
 
+hbs.registerHelper('googleMapAddr', function(addr) {
+  var addrText = ''
+  addrText += addr.line_1 + ','
+  if (addrText.line_2) { addrText += addr.line_2 + ','}
+  addrText += addr.city + ','
+  addrText += addr.state + ' '
+  addrText += addr.zip
+
+  return addrText.replace(' ', '+')
+})
+
+hbs.registerHelper('assetsValueAndName', function(assets) {
+  var returnText = ''
+  assets.value.forEach(function(v, i) {
+    if (assets.name[i]) {
+      if (i !== 0) returnText += ', '
+      returnText += assets.name[i] + ' ($' + v + ')'
+    }
+  })
+
+  return returnText
+})
+
+hbs.registerHelper('ageAndBirthday', function(birthday) {
+  var returnText = ''
+
+  var d = birthday.getTime()
+  var today = new Date().getTime()
+
+  if (isNaN(d) || isNaN(today)) { debugger; return 'n/a' }
+  else {
+    var diff = today - d
+    var age = Math.floor(diff / (1000*60*60*24*365.25))
+    return age.toString() + ' years old'
+  }
+})
+
+hbs.registerHelper('otherResidents', function(residentsObject) {
+
+  if (residentsObject.name[0] == '') { return 'None' }
+  else {
+    var returnText = ''
+    residentsObject.name.forEach(function(r, idx) {
+      if (r !== '') {
+        returnText += (
+          r + ' (' + residentsObject.age[idx] + '), '
+          + residentsObject.relationship[idx] + ';'
+        )
+      }
+    })
+
+    return returnText
+  }
+})
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Middleware
 // Use any middleware for the application that is needed. bodyParse allows parsing to
@@ -130,8 +186,8 @@ app.use('/edit', edit);
 app.use('/application', appform);
 app.use('/vettingworksheet', vettingworksheet);
 app.use('/user', regUser);
-//new
-app.use('/user', regUser);
+
+app.use('/site', site);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries

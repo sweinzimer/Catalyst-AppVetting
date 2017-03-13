@@ -206,6 +206,15 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
             payload.processing.push(element);
         });
     }
+	
+	if (res.locals.results.assessComp[0] == null) {
+        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'assessComp\'');
+    } else {
+        res.locals.results.assessComp.forEach(function (element) {
+            element = formatElement(element);
+            payload.processing.push(element);
+        });
+    }
 
     if (res.locals.results.approval[0] == null) {
         console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'approval\'');
@@ -358,9 +367,7 @@ function formatElement(element) {
 function formatDate(element)
 {
 
-	//updated date
-
-    var Year = element.updated.getFullYear();
+	var Year = element.updated.getFullYear();
     //get month and day with padding since they are 0 indexed
     var Day = ( "00" + element.updated.getDate()).slice(-2);
     var Mon = ("00" + (element.updated.getMonth()+1)).slice(-2);
@@ -368,16 +375,12 @@ function formatDate(element)
 
 	//signature date (application date)
 	if(element.signature && element.signature.client_date != "") {
-
 	var appDate = new Date(element.signature.client_date);
 	var appYear = appDate.getFullYear();
 	var appDay = ("00" + appDate.getDate()).slice(-2);
 	var appMon = ("00" + (appDate.getMonth()+1)).slice(-2);
 	element.signature.client_date = appMon + "/" + appDay + "/" + appYear;
 	
-	
-	
-
 	}
     return element;
 }
@@ -407,8 +410,11 @@ function formatStatus(element) {
             status = 'On Hold - Pending Discussion';
             break;
         case 'assess':
-            status = 'Site Assessment';
+            status = 'Site Assessment - Pending';
             break;
+		case 'assessComp':
+			status = 'Site Assessment - Complete';
+			break;
         case 'approval':
             status = 'Approval Process';
             break;
@@ -435,6 +441,7 @@ return router;
 
 //check to see if user is logged in and a vetting agent or an admin
 function isLoggedIn(req, res, next) {
+		
 		if(req.isAuthenticated()) {
 			console.log(req.user._id);
 			var userID = req.user._id.toString();

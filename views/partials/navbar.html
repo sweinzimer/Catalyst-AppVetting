@@ -52,6 +52,24 @@
             </li>
             {{#if_eq role "ADMIN"}}
             <li class="nav-item">
+				      <a class="nav-link" href="/site">Site Assessment</a>
+			      </li>
+            {{/if_eq}}
+
+            {{#if_eq role "VET"}}
+            <li class="nav-item">
+              <a class="nav-link" href="/site">Site Assessment</a>
+            </li>
+            {{/if_eq}}
+
+            {{#if_eq role "SITE"}}
+            <li class="nav-item">
+              <a class="nav-link" href="/site">Site Assessment</a>
+            </li>
+            {{/if_eq}}
+
+            {{#if_eq role "ADMIN"}}
+            <li class="nav-item">
               <a class="nav-link" href="/view">Vetting</a>
             </li>
             {{/if_eq}}

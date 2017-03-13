@@ -96,12 +96,30 @@ module.exports = {
     getDocumentById: function (req, res, next) {
         // Log the api call we make along with the _id used by it
         console.log('[ API ] getDocumentById :: Call invoked with id: ' + req.params.id);
-
+		
         // Use results.DocumentPackage.<whatever you need> to access the information
         Promise.props({
             document: DocumentPackage.findById(req.params.id).lean().execAsync()
+			/*document: DocumentPackage.aggregate(
+				[
+				{$match: { _id : mongoose.Types.ObjectId(req.params.id)}},
+					{ $redact: {
+						$cond: {
+							if: { $eq: [ "$level", 5 ] },
+							then: "$$PRUNE",
+							else: "$$DESCEND"
+						}
+					}}
+					
+				]
+			).execAsync()*/
+			
         })
             .then(function(results) {
+				console.log("results");
+				
+				
+				console.log(results);
                 if (!results) {
                     console.log('[ API ] getDocumentById :: Documents package found: FALSE');
                 }
@@ -120,21 +138,53 @@ module.exports = {
             })
             .catch(next);
     },
-	getUsers: function(req, res, next) {
-		console.log("getting users");
-		 Promise.props({
-            users: UserPackage.find().lean().execAsync()
+
+	//site assessment get docs for view
+	getDocumentStatusSite: function (req, res, next) {
+        // Log the api call we make along with the _id used by it
+        console.log('[ API ] getDocumentStatusSite :: ');
+		
+        // Use results.DocumentPackage.<whatever you need> to access the information
+        Promise.props({
+            //document: DocumentPackage.findById(req.params.id).lean().execAsync()
+			site: DocumentPackage.aggregate(
+				[
+				{$match: { status: "assess"}},
+					{ $redact: {
+						$cond: {
+							if: { $eq: [ "$level", 5 ] },
+							then: "$$PRUNE",
+							else: "$$DESCEND"
+						}
+					}}
+					
+				]
+			).execAsync(),
+			
+			complete: DocumentPackage.aggregate(
+				[
+				{$match: { status: "assessComp" }},
+					{ $redact: {
+						$cond: {
+							if: { $eq: [ "$level", 5 ] },
+							then: "$$PRUNE",
+							else: "$$DESCEND"
+						}
+					}}
+					
+				]
+			).execAsync()
         })
             .then(function(results) {
+				console.log("results");
+				
+				
+				console.log(results);
                 if (!results) {
-                    console.log('No users found');
+                    console.log('[ API ] getDocumentStatusSite :: Documents package found: FALSE');
                 }
                 else {
-                    console.log('users found');
-					for(var x=0; x<results.users.length; x++) {
-						results.users[x].salt = "";
-						results.users[x].hash = "";
-					}
+                    console.log('[ API ] getDocumentStatusSite :: Documents package found: TRUE');
 
                 }
 
@@ -150,7 +200,83 @@ module.exports = {
             .catch(next);
     },
 
+	
+	
+	//site assessment get docs for view
+	getDocumentSite: function (req, res, next) {
+        // Log the api call we make along with the _id used by it
+        console.log('[ API ] getDocumentSite :: Call invoked with id: ' + req.params.id);
+		// Use results.DocumentPackage.<whatever you need> to access the information
+        Promise.props({
+            //document: DocumentPackage.findById(req.params.id).lean().execAsync()
+			doc: DocumentPackage.aggregate(
+				[
+				{$match: { _id : mongoose.Types.ObjectId(req.params.id)}},
+					{ $redact: {
+						$cond: {
+							if: { $eq: [ "$level", 5 ] },
+							then: "$$PRUNE",
+							else: "$$DESCEND"
+						}
+					}}
+					
+				]
+			).execAsync(),
+			work: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync()
+			
+        })
+            .then(function(results) {
+				console.log("results");
+				
+				
+				console.log(results);
+                if (!results) {
+                    console.log('[ API ] getDocumentStatusSite :: Documents package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] getDocumentStatusSite :: Documents package found: TRUE');
+                }
+				res.locals.results = results;
 
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+
+	getUsers: function(req, res, next) {
+		console.log("getting users");
+		 Promise.props({
+            users: UserPackage.find().lean().execAsync()
+        })
+            .then(function(results) {
+                if (!results) {
+                    console.log('No users found');
+                }
+                else {
+                    console.log('users found');
+					for(var x=0; x<results.users.length; x++) {
+						results.users[x].salt = "";
+						results.users[x].hash = "";
+					}
+				}
+
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+	
 	getUserRoles: function(req, res, next) {
 		console.log("getting user roles");
 		 Promise.props({
@@ -236,7 +362,8 @@ module.exports = {
             documents: DocumentPackage.find({status: "documents"}).lean().execAsync(),
             discuss: DocumentPackage.find({status: "discuss"}).lean().execAsync(),
             assess: DocumentPackage.find({status: "assess"}).lean().execAsync(),
-            withdrawn: DocumentPackage.find({status: "withdrawn", app_year : year}).lean().execAsync(),
+			assessComp: DocumentPackage.find({status: "assessComp"}).lean().execAsync(),
+            withdrawn: DocumentPackage.find({status: "withdrawn"}).lean().execAsync(),
             approval: DocumentPackage.find({status: "approval"}).lean().execAsync(),
             handle: DocumentPackage.find({status: "handle"}).lean().execAsync(),
             declined: DocumentPackage.find({status: "declined", app_year : year}).lean().execAsync(),
@@ -670,116 +797,64 @@ module.exports = {
 				})
 				.catch(next);
 		}
-			/*Promise.props({
-			User: findOne({ '_id' : req.body.pk}, function(err, user) {
-				if (err)
-					{return done(err);}
-				if(!user) {
-					console.log("user does not exist");
-					res.locals.status = 500;
-					next();
-				}
-
-				//credentials correct
-				user.setPassword(req.body.value);
-				res.locals.status = 200;
-			})
-			})
-			.then (function (results) {
-				next();
-			})
-			 .catch(function (err) {
-                console.error(err);
-            })
-            .catch(next);
-			*/
-			/*
-			Promise.props({
-				user: UserPackage.findById(req.body.pk).lean().execAsync()
-			})
-            .then(function(user) {
-                if (!user) {
-                    console.log('[ API ] findUser :: user package found: FALSE');
-                }
-                else {
-                    console.log('[ API ] findUser :: user package found: TRUE');
-					console.log("results");
-					console.log(user);
-					console.log("get user");
-					//console.log(getUser.user);
-					user.setPassword(req.body.value);
-                }
-
-                res.locals.results = results;
-				res.locals.status = 200;
-                // If we are at this line all promises have executed and returned
-                // Call next() to pass all of this glorious data to the next express router
-                next();
-            })
-            .catch(function(err) {
-                console.error(err);
-            })
-            .catch(next);
-		*/
-
-
+			
 		else {
 
-        var updates = {};
-        updates[req.body.name] = req.body.value;
+				var updates = {};
+				updates[req.body.name] = req.body.value;
 
 
-		// Record Update time
-        //filters
-        var conditions = {};
-        conditions['_id'] = req.body.pk;
-        console.log("Search Filter:");
-        console.log(conditions);
-        console.log("Update:");
-        updates['updated'] = Date.now();
-        console.log(updates);
+				// Record Update time
+				//filters
+				var conditions = {};
+				conditions['_id'] = req.body.pk;
+				console.log("Search Filter:");
+				console.log(conditions);
+				console.log("Update:");
+				updates['updated'] = Date.now();
+				console.log(updates);
 
-        Promise.props({
-            user: UserPackage.findOneAndUpdate(
-                // Condition
-                conditions,
-                // Updates
-                {
-                    // $set: {name: value}
-                    $set: updates
-                },
-                // Options
-                {
-                    // new - defaults to false, returns the modified document when true, or the original when false
-                    new: true,
-                    // runValidators - defaults to false, make sure the data fits the model before applying the update
-                    runValidators: true
-                }
-                // Callback if needed
-                // { }
-            ).execAsync()
-        })
-            .then(function (results) {
-				console.log(results);
-                // TODO: Confirm true/false is correct
-                if (results) {
-                    console.log('[ API ] updateUser :: Documents package found: TRUE');
-                }
-                else {
-                    console.log('[ API ] updateUser :: Documents package found: FALSE');
-                }
-                res.locals.results = results;
-                //sending a status of 200 for now
-                res.locals.status = '200';
+				Promise.props({
+					user: UserPackage.findOneAndUpdate(
+						// Condition
+						conditions,
+						// Updates
+						{
+							// $set: {name: value}
+							$set: updates
+						},
+						// Options
+						{
+							// new - defaults to false, returns the modified document when true, or the original when false
+							new: true,
+							// runValidators - defaults to false, make sure the data fits the model before applying the update
+							runValidators: true
+						}
+						// Callback if needed
+						// { }
+					).execAsync()
+				})
+					.then(function (results) {
+						console.log(results);
+						// TODO: Confirm true/false is correct
+						if (results) {
+							console.log('[ API ] updateUser :: Documents package found: TRUE');
+						}
+						else {
+							console.log('[ API ] updateUser :: Documents package found: FALSE');
+						}
+						res.locals.results = results;
+						//sending a status of 200 for now
+						res.locals.status = '200';
 
-                // If we are at this line all promises have executed and returned
-                // Call next() to pass all of this glorious data to the next express router
-                next();
-            })
-            .catch(function (err) {
-                console.error(err);
-            })
-            .catch(next);
+						// If we are at this line all promises have executed and returned
+						// Call next() to pass all of this glorious data to the next express router
+						next();
+					})
+					.catch(function (err) {
+						console.error(err);
+					})
+					.catch(next);
 		}
     },
 
@@ -1241,14 +1316,24 @@ module.exports = {
 
 	updateWorkItem: function(req, res, next) {
         // Log the _id, name, and value that are passed to the function
-        console.log('[ API ] WorkItem :: Call invoked with item _id: ' + req.body.id
-            + ' | description: ' + req.body.description);
-
+        //console.log('[ API ] WorkItem :: Call invoked with item _id: ' + req.body.id
+       //     + ' | description: ' + req.body.description);
+		console.log("role in function");
+		console.log(res.locals.role);
+		//res.locals.status = 200;
+		//next();
         var updates = {};
-        updates.description = req.body.description;
+		//TODO: add name??
+		updates.description = req.body.description;
 		updates.cost = req.body.cost;
-		updates.vettingComments = req.body.vettingComments;
-
+		updates.updated = Date.now();
+		
+		if(res.locals.role == "SITE") {
+			updates.siteComments = req.body.siteComments;
+		}
+        else {
+			updates.vettingComments = req.body.vettingComments;
+		}
         //filters
         var conditions = {};
         conditions['_id'] = req.body.id;

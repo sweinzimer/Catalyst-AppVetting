@@ -32,6 +32,7 @@
  handle       - the document package is forwarded to the handle-it team to be completed
  documents    - additional documents are needed from the client before document package can proceed
  assess       - a member of catalyst must visit the property to determine the extent of repairs needed
+ assessComp   - site assessment has been completed
  approval     - client's application is in the approval process that must be blessed by the board of directors
  declined     - the document package was declined for various reasons
  withdrawn    - client has freely withdrawn their application
@@ -44,12 +45,14 @@ ObjectId = Schema.ObjectId;
 
 var DocumentPackageSchema = new Schema({
     status:         String,
+	level : {type: Number, default: 1},
     created:        { type: Date, default: Date.now},
     updated:        { type: Date, default: Date.now},
     highlightPackage: { type: ObjectId },
     service_area : Boolean,
 	app_name : String,
 	app_year : Number,
+	
 	
     advocate:       {
         is_advocate:        Boolean,
@@ -71,11 +74,11 @@ var DocumentPackageSchema = new Schema({
             preferred: String
 		},
         dob:            {
-            tags:       ["VA", "EX"],
+            level : {type: Number, default: 5},
             date:       Date
         },
         driver_license: {
-            tags:       ["VA", "EX"],
+			level : {type: Number, default: 5},
             number:     String
         },
         // status can return 3 values:
@@ -114,23 +117,24 @@ var DocumentPackageSchema = new Schema({
         language:       String,
         heard_about:    String,
         special_circumstances:  {
-            tags:       ["VA", "EX"],
+            level : {type: Number, default: 5},
             note:       String
         }
     },
 
     finance:    {
+		
         mortgage:               {
-            tags:               ["VA", "EX"],
+            level : {type: Number, default: 5},
             payment:            Number,
             up_to_date:         Boolean
         },
         income:                 {
-            tags:               ["VA", "EX"],
+            level : {type: Number, default: 5},
             amount:             Number
         },
         assets:                 {
-            tags:               ["VA", "EX"],
+            level : {type: Number, default: 5},
             count:              Number,
             name:               [String],
             value:              [Number]
@@ -173,6 +177,11 @@ var DocumentPackageSchema = new Schema({
 		client_terms: Boolean,
 		client_sig: String,
 		client_date: Date
+	},
+	
+	notes: {
+		vet_to_site: String,
+		site_summary: String
 	},
 	
 	// Note: upon application submission, the Yes checkbox (name="tac-yes") and the digital signature (name="signature") at the bottom of the form are not captured anywhere.
