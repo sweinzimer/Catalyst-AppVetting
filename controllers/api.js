@@ -1325,10 +1325,22 @@ module.exports = {
         var updates = {};
 		//TODO: add name??
 		updates.description = req.body.description;
+		if(req.body.name != null) {
+			updates.name = req.body.name;
+		}
 		updates.cost = req.body.cost;
 		updates.updated = Date.now();
 		
-		if(res.locals.role == "SITE") {
+		if(res.locals.role == "ADMIN") {
+			if(req.body.siteComments != null) {
+				updates.siteComments = req.body.siteComments;
+			}
+			if(req.body.vettingComments != null) {
+				updates.vettingComments = req.body.vettingComments;
+			}
+		}
+		
+		else if(res.locals.role == "SITE") {
 			updates.siteComments = req.body.siteComments;
 		}
         else {

@@ -49,10 +49,7 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 
 	console.log("payload");
 	console.log(payload);
-	//payload.user = req.user._id;
-
-	//payload.user_email = res.locals.email;
-
+	
 	// res.json(res.locals.results);
 	res.render('siteassessment', payload);
 });
@@ -82,21 +79,13 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
 
 });
 
-router.route('/servicearea')
-    .post(api.updateService, function(req, res) {
-	if(res.locals.status != '200'){
-        res.status(500).send("Could not update field");
-    }
-    else{
-        res.json(res.locals);
-    }
-	});
+
 
 //same as vetting route.  Shouldn't be issues with logic as is
-router.route('/additem')
+router.route('/additemsite')
 	.post(api.addWorkItem, function(req, res) {
 	if(res.locals.status != '200'){
-        res.status(500).send("Could not add field");
+        res.status(500).send("Could not add work item");
     }
     else{
         res.json(res.locals);
@@ -105,7 +94,7 @@ router.route('/additem')
 
 //added logic to api.updateWorkItem to handle site agent. 
 //needs role from 'isLoggedInPost' route	
-router.route('/updateitem')
+router.route('/updateitemsite')
 	.post(isLoggedInPost, api.updateWorkItem, function(req, res) {
 	if(res.locals.status != '200'){
         res.status(500).send("Could not update work item");
@@ -203,7 +192,7 @@ function isLoggedIn(req, res, next) {
 							}
 
 							else {
-								console.log("user is not site agent");
+								console.log("user is not required role");
 								res.redirect('/user/logout');
 							}
 						}
