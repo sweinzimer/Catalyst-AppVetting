@@ -5,274 +5,269 @@
     {{#each results.doc}}
       <h1>{{application.name.first}} {{application.name.middle}} {{application.name.last}}</h1>
       <h5 class="text-muted">Application {{app_name}}</h5>
-      <div class="row">
-        <div class="col-xs-12 col-sm-6">
-          <h5>Applicant Contact Info</h5>
-          <table class="table">
-            <tr>
-              <th class="col-xs-3">Address</th>
-              <td class="col-xs-9">
-                {{application.address.line_1}}<br/>
-                {{#if_not_eq application.address.line_2 ''}}
-                  {{application.address.line_2}}<br/>
-                {{/if_not_eq}}
-                {{application.address.city}}, {{application.address.state}} {{application.address.state}}<br/>
-              </td>
-            </tr>
-
-            <tr>
-              <th class="col-xs-3">Phone</th>
-              <td class="col-xs-9">{{application.phone.preferred}}</td>
-            </tr>
-
-            <tr>
-              <th class="col-xs-3">Email</th>
-              <td class="col-xs-9">
-                {{#if_not_eq application.email ''}}
-                  <a href="mailto:{{application.email}}">{{application.email}}</a>
-                {{else}}
-                  None
-                {{/if_not_eq}}
-              </td>
-            </tr>
-
-            <tr>
-              <th class="col-xs-3">Advocate Info</th>
-              <td class="col-xs-9">
-                {{#if advocate.is_advocate}}
-                  {{advocate.name}}<br/>
-                  {{advocate.phone}}<br/>
-                  {{advocate.relationship}}, {{advocate.organization_name}}<br/>
-                  {{#if advocate.npo}}Non-profit<br/>{{/if}}
-                  {{#if advocate.gov}}Government<br/>{{/if}}
-                {{else}}
-                  None
-                {{/if}}
-
-
-
-              </td>
-            </tr>
-
-            <tr>
-              <th class="col-xs-3">Emergency Contact</th>
-              <td class="col-xs-9">
-                {{application.emergency_contact.name}}<br/>
-                {{application.emergency_contact.relationship}}<br/>
-                {{application.emergency_contact.phone}}
-              </td>
-            </tr>
-
-          </table>
-
-          <h5>Map</h5>
-          <iframe width="100%" height="350" frameborder="0" style="border:0"
-          src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD2CmgnSECdg_g-aFgp95NUBv2QUEidDvs&q={{googleMapAddr application.address}}"></iframe>
-        </div>
-
-
-        <div class="col-xs-12 col-sm-6">
-
-
-          <h5>Applicant information</h5>
-          <table class="table">
-            <tr>
-              <th class="col-xs-3">Age</th>
-              <td class="col-xs-9">{{ageAndBirthday application.dob.date}}</td>
-            </tr>
-
-
-            <tr>
-              <th class="col-xs-3">Owns home</th>
-              <td class="col-xs-9">{{#if application.owns_home}}Yes{{else}}No{{/if}}</td>
-            </tr>
-
-            <tr>
-              <th class="col-xs-3">Spouse</th>
-              <td class="col-xs-9">
-                {{#if_not_eq application.marital.spouse ''}}
-                  {{application.marital.spouse}}, {{application.marital.status}}
-                {{else}}
-                  None
-                {{/if_not_eq}}
-              </td>
-            </tr>
-
-            <tr>
-              <th class="col-xs-3">Other residents</th>
-              <td class="col-xs-9">{{otherResidents application.other_residents}}</td>
-            </tr>
-
-            <tr>
-              <th class="col-xs-3">Veteran Status</th>
-              <td class="col-xs-9">{{#if application.veteran}}Veteran{{else}}None{{/if}}</td>
-            </tr>
-
-            <tr>
-              <th class="col-xs-3">Language</th>
-              <td class="col-xs-9">{{application.language}}</td>
-            </tr>
-
-            <tr>
-              <th class="col-xs-3">Special Circumstances</th>
-              <td class="col-xs-9">
-                {{#if_not_eq application.special_circumstances.note ''}}
-                  {{application.special_circumstances.note}}
-                {{else}}
-                  None
-                {{/if_not_eq}}
-              </td>
-            </tr>
-
-            <tr>
-              <th class="col-xs-3">Heard About</th>
-              <td class="col-xs-9">
-                {{#if_not_eq application.heard_about ''}}
-                  {{application.heard_about}}
-                {{else}}
-                  No answer
-                {{/if_not_eq}}
-              </td>
-            </tr>
-          </table>
-
-        </div>
-
-
-
-        <div class="col-xs-12 col-sm-6">
-          <h3>Property Information</h3>
-          <table class="table">
-
-            <tr>
-              <th class="col-sm-3">Home Type</th>
-              <td class="col-sm-9">{{property.home_type}}</td>
-            </tr>
-            <tr>
-              <!-- TODO: Clairify "length" unit -->
-              <th class="col-sm-3">Ownership Length</th>
-              <td class="col-sm-9">{{property.ownership_length}}</td>
-            </tr>
-            <tr>
-              <th class="col-sm-3">Year Constructed</th>
-              <td class="col-sm-9">{{property.year_constructed}}</td>
-            </tr>
-            <tr>
-              <th class="col-sm-3">Requested Repairs</th>
-              <td class="col-sm-9">{{property.requested_repairs}}</td>
-            </tr>
-            <tr>
-              <th class="col-sm-3">Client Can Contrib.</th>
-              <td class="col-sm-9">
-                {{#if property.client_can_contribute.value}}
-                  Yes - {{property.client_can_contribute.description}}
-                {{else}} No {{/if}}
-              </td>
-            </tr>
-            <tr>
-              <th class="col-sm-3">Associates Can Contrib.</th>
-              <td class="col-sm-9">
-                {{#if property.associates_can_contribute.value}}
-                  Yes - {{property.associates_can_contribute.description}}
-                {{else}} No{{/if}}
-              </td>
-            </tr>
-          </table>
-        </div>
-
-        <div class="col-xs-12 col-sm-6">
-          <h3>Financial</h3>
-          <table class="table">
-            <tr>
-              <th class="col-xs-3">Income</th>
-              <td class="col-xs-9">
-                {{finance.income.amount}}<br/>
-                {{#each finance.income.tags}}
-                  {{this}}<br/>
-                {{/each}}
-              </td>
-            </tr>
-            <tr>
-              <th class="col-xs-3">Mortgage</th>
-              <td class="col-xs-9">
-                {{ finance.mortgage.payment }} payment<br/>
-                {{#if finance.mortgage.up_to_date }} Up to date {{else}} Not up to date {{/if}}
-              </td>
-            </tr>
-            <tr>
-              <th class="col-xs-3">Assets</th>
-              <td class="col-xs-9">
-                {{assetsValueAndName finance.assets}}
-              </td>
-            </tr>
-            <tr>
-              <th class="col-xs-3">Requested other help</th>
-              <td class="col-xs-9">
-                {{#if finance.requested_other_help.value}}
-                  Yes - {{finance.requested_other_help.amount}}
-                {{else}} No {{/if}}
-              </td>
-            </tr>
-            <tr>
-              <th class="col-xs-3">Client can contribute</th>
-              <td class="col-xs-9">
-                {{#if finance.client_can_contribute.value}}
-                  Yes - {{finance.client_can_contribute.amount}}
-                {{else}} No {{/if}}
-              </td>
-            </tr>
-            <tr>
-              <th class="col-xs-3">Associates can contribute</th>
-              <td class="col-xs-9">
-                {{#if finance.associates_can_contribute.value}}
-                  Yes - {{finance.associates_can_contribute.amount}}
-                {{else}} No {{/if}}
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
     {{/each}}
 
-    <h1>Work items</h1>
-    <div class="row">
-      <div class="col-xs-12 col-sm-6">
-        <h5>Current Work Items</h5>
-        {{#each results.work}}
-          <div class="card work-item" name={{_id}}>
-            <div class="card-block">
-              <h4 class="card-title" name="{{_id}}.name">{{name}}</h4>
-              <h5 class="text-muted">{{date}}</h5>
-              <p class="card-text">
-                <strong>Description:</strong><br/>
-                <span name="{{_id}}.description">{{description}}</span><br/>
-                <br/>
-                <strong>Vetting comments:</strong><br/>
-                {{vettingComments}}<br/>
-                <br/>
-                <strong>Cost:</strong><br/>
-                <span name="{{_id}}.cost">{{cost}}</span>
-              </p>
-              <a href="#" class="btn btn-primary card-link work-item-edit">Edit</a>
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#contact" role="tab">Contact Info</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#property" role="tab">Property Info</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#work" role="tab">Work Items</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="contact" role="tabpanel">
+        <br />
+        {{#each results.doc}}
+          <div class="row">
+            <div class="col-xs-12 col-sm-6" style="float:left;">
+              <h4>Applicant Contact Info</h4>
+              <table class="table">
+                <tr>
+                  <th class="col-xs-3">Address</th>
+                  <td class="col-xs-9">
+                    {{application.address.line_1}}<br/>
+                    {{#if_not_eq application.address.line_2 ''}}
+                      {{application.address.line_2}}<br/>
+                    {{/if_not_eq}}
+                    {{application.address.city}}, {{application.address.state}} {{application.address.state}}<br/>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Phone</th>
+                  <td class="col-xs-9">{{application.phone.preferred}}</td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Email</th>
+                  <td class="col-xs-9">
+                    {{#if_not_eq application.email ''}}
+                      <a href="mailto:{{application.email}}">{{application.email}}</a>
+                    {{else}}
+                      None
+                    {{/if_not_eq}}
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Advocate Info</th>
+                  <td class="col-xs-9">
+                    {{#if advocate.is_advocate}}
+                      {{advocate.name}}<br/>
+                      {{advocate.phone}}<br/>
+                      {{advocate.relationship}}, {{advocate.organization_name}}<br/>
+                      {{#if advocate.npo}}Non-profit<br/>{{/if}}
+                      {{#if advocate.gov}}Government<br/>{{/if}}
+                    {{else}}
+                      None
+                    {{/if}}
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Emergency Contact</th>
+                  <td class="col-xs-9">
+                    {{application.emergency_contact.name}}<br/>
+                    {{application.emergency_contact.relationship}}<br/>
+                    {{application.emergency_contact.phone}}
+                  </td>
+                </tr>
+
+              </table>
+
+              <h5>Applicant information</h5>
+              <table class="table">
+                <tr>
+                  <th class="col-xs-3">Age</th>
+                  <td class="col-xs-9">{{ageAndBirthday application.dob.date}}</td>
+                </tr>
+
+
+                <tr>
+                  <th class="col-xs-3">Owns home</th>
+                  <td class="col-xs-9">{{#if application.owns_home}}Yes{{else}}No{{/if}}</td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Spouse</th>
+                  <td class="col-xs-9">
+                    {{#if_not_eq application.marital.spouse ''}}
+                      {{application.marital.spouse}}, {{application.marital.status}}
+                    {{else}}
+                      None
+                    {{/if_not_eq}}
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Other residents</th>
+                  <td class="col-xs-9">{{otherResidents application.other_residents}}</td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Veteran Status</th>
+                  <td class="col-xs-9">{{#if application.veteran}}Veteran{{else}}None{{/if}}</td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Language</th>
+                  <td class="col-xs-9">{{application.language}}</td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Heard About</th>
+                  <td class="col-xs-9">
+                    {{#if_not_eq application.heard_about ''}}
+                      {{application.heard_about}}
+                    {{else}}
+                      No answer
+                    {{/if_not_eq}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="col-xs-12 col-sm-6" style="float:left;">
+              <h4>Map</h4>
+              <iframe width="100%" height="350" frameborder="0" style="border:0"
+              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD2CmgnSECdg_g-aFgp95NUBv2QUEidDvs&q={{googleMapAddr application.address}}"></iframe>
+            </div>
+
+            <div class="col-xs-12 col-sm-6" style="float:left;">
+
+
+
+
+            </div>
+
+          </div>
+        {{/each}}
+      </div><!-- end #contact -->
+
+      <div class="tab-pane" id="property" role="tabpanel">
+        <br />
+        {{#each results.doc}}
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <h3>Property Information</h3>
+              <table class="table">
+
+                <tr>
+                  <th class="col-sm-3">Home Type</th>
+                  <td class="col-sm-9">{{property.home_type}}</td>
+                </tr>
+                <tr>
+                  <!-- TODO: Clairify "length" unit -->
+                  <th class="col-sm-3">Ownership Length</th>
+                  <td class="col-sm-9">{{property.ownership_length}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Year Constructed</th>
+                  <td class="col-sm-9">{{property.year_constructed}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Requested Repairs</th>
+                  <td class="col-sm-9">{{property.requested_repairs}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Client Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.client_can_contribute.value}}
+                      Yes - {{property.client_can_contribute.description}}
+                    {{else}} No {{/if}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Associates Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.associates_can_contribute.value}}
+                      Yes - {{property.associates_can_contribute.description}}
+                    {{else}} No{{/if}}
+                  </td>
+                </tr>
+              </table>
             </div>
           </div>
         {{/each}}
-      </div>
-      <div class="col-xs-12 col-sm-6">
+      </div><!-- end #property -->
 
-      </div>
+      <div class="tab-pane" id="work" role="tabpanel">
+        <br />
+        <div class="row" id="workItemCards">
+          <div class="col-xs-12 col-sm-6">
+            <div class="card work-item" name="new">
+              <div class="card-block">
+                <h4 class="card-title">New Work Item</h4>
+                <p class="card-text">
+                  <div class="form-group">
+                    <label class="form-control-label">Name</label>
+                    <input type="text" class="form-control" name="name"></input>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Description</label>
+                    <textarea class="form-control" name="description" rows="5"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Site Comments</label>
+                    <textarea class="form-control" name="siteComments" rows="5"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Cost</label>
+                    <input type="cost" class="form-control" name="cost"></input>
+                  </div>
+                </p>
+                <a href="#" class="btn btn-primary card-link work-item-new">Save</a>
+                <a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
+              </div>
+            </div>
+          </div>
+
+          {{#each results.work}}
+            <div class="col-xs-12 col-sm-6">
+              <div class="card work-item" name={{_id}}>
+                <div class="card-block">
+                  <h4 class="card-title" name="{{_id}}.name">{{name}}</h4>
+                  <p class="text-muted">{{date}}</p>
+                  <p class="card-text">
+                    <strong>Description:</strong><br/>
+                    <span name="{{_id}}.description">{{description}}</span><br/>
+                    <br/>
+                    <strong>Vetting comments:</strong><br/>
+                    {{vettingComments}}<br/>
+                    <br/>
+                    <strong>Site comments:</strong><br/>
+                    {{siteComments}}<br/>
+                    <br/>
+                    <strong>Cost:</strong><br/>
+                    <span name="{{_id}}.cost">{{cost}}</span>
+                  </p>
+                  <a href="#" class="btn btn-primary card-link work-item-edit">Edit</a>
+                </div>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+      </div><!-- end #work -->
+
     </div>
 
   </div>
 </div>
-<pre>{{stringify results.work}}</pre>
+<pre>{{stringify results}}</pre>
 
 <script>
   var workItems = {{{stringify results.work}}}
+  var docs = {{{stringify results.doc}}}
   $(document).ready(function() {
     $('.work-item-edit').each(watchEditButton)
-
-
+    $('.work-item-new').on('click', handleNewWorkItemSubmission)
+    $('.work-item-clear').on('click', handleNewWorkItemClear)
   })
 
   // Used with $(*).each
@@ -282,9 +277,9 @@
 
   function showWorkItemEditForm(e) {
     e.preventDefault()
-    var workItemParent = this.parentElement.parentElement
+    var workItemParent = this.parentElement
     var workItemContainer = $(workItemParent)
-    var workItemId = $(workItemParent).attr('name')
+    var workItemId = $(workItemParent.parentElement).attr('name')
 
     var currentData = {}
     $('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
@@ -297,6 +292,7 @@
     var fields = [
       {field: 'name', text:'Name'},
       {field: 'description', text: 'Description', type: 'textarea'},
+      {field: 'siteComments', text: 'Site Comments', type: 'textarea'},
       {field: 'cost', text: 'Cost'},
     ]
 
@@ -324,7 +320,7 @@
     $('<button></button>')
     .text('Save')
     .addClass('btn').addClass('btn-primary')
-    .addClass('col-xs-6')
+    .addClass('card-link')
     .on('click', function(e) {
       saveWorkItem(workItemContainer)
     })
@@ -333,7 +329,7 @@
     $('<button></button>')
     .text('Cancel')
     .addClass('btn').addClass('btn-danger')
-    .addClass('col-xs-6')
+    .addClass('card-link')
     .on('click', function(e) {
       for (let i=0; i<workItems.length; i++) {
         if (workItems[i]._id === workItemId) {
@@ -342,20 +338,19 @@
       }
     })
     .appendTo(workItemContainer)
-
   }
 
   function showWorkItem(data, node) {
     node.empty()
 
-    var cardBlock = $('<div></div>').addClass('card-block').appendTo(node)
+    var cardBlock = node
 
     $('<h4></h4>').addClass('card-title')
     .attr('name', data._id + '.name')
     .text(data.name)
     .appendTo(cardBlock)
 
-    $('<h5></h5>').addClass('text-muted')
+    $('<p></p>').addClass('text-muted')
     .text(new Date(data.date).toString())
     .appendTo(cardBlock)
 
@@ -374,11 +369,15 @@
     $('<br></br>').appendTo(cardText)
 
     $('<strong>Vetting Comments:</strong>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
+    // $('<br></br>').appendTo(cardText)
 
     $('<p></p>').text(data.vettingComments).appendTo(cardText)
     $('<br></br>').appendTo(cardText)
 
+    $('<strong>Site Comments:</strong>').appendTo(cardText)
+    // $('<br></br>').appendTo(cardText)
+
+    $('<p></p>').text(data.siteComments).appendTo(cardText)
     $('<br></br>').appendTo(cardText)
 
     $('<strong>Cost:</strong>').appendTo(cardText)
@@ -447,7 +446,7 @@
     //check for error
     posting.done(function (xhr) {
       if(xhr.status === 'success' || xhr.status === 200) {
-        next(null)
+        next(null, xhr)
       }
       else {
         next(new Error('Could not complete xhr'))
@@ -459,6 +458,119 @@
     });
   }
 
+  function handleNewWorkItemSubmission(e) {
+    var newWorkItem = {}, error = false
+
+    $('input, textarea', e.target.parentNode).each(function(idx) {
+      if (this.value.length === 0) {
+        $(this.parentNode).addClass('has-danger')
+        error = true
+      } else {
+        newWorkItem[this.name] = this.value
+        $(this.parentNode).removeClass('has-danger')
+      }
+    })
+
+    if (error === false) {
+      createNewWorkItem(newWorkItem, function(err) {
+        handleNewWorkItemClear()
+      })
+    }
+  }
+
+  function handleNewWorkItemClear(e, node) {
+    $('input, textarea', (e ? e.target.parentNode : node)).each(function(idx) {
+      $(this).val('')
+      $(this.parentNode).removeClass('has-danger')
+    })
+  }
+
+  function createNewWorkItem(w, next) {
+    var id = docs[0]._id
+    var rightNow = new Date()
+
+    w.date = rightNow
+    w.updated = rightNow
+    w.applicationId = id
+
+    xhr(w, 'POST', '/site/additem', function(err, data) {
+      // TODO: Handle error
+      if (err) { alert('There was an error saving your work item') }
+
+      w._id = data.itemId
+      workItems.push(w)
+      var newNode = addWorkItem(w)
+      handleNewWorkItemClear(null, $('[name="new"]'))
+
+    })
+  }
+
+  function addWorkItem(w) {
+    var cardContainer = $('#workItemCards')
+
+    var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6')
+    .appendTo(cardContainer)
+
+    var card = $('<div></div>').addClass('card').addClass('work-item')
+    .attr('name', w._id)
+    .appendTo(cardDiv)
+
+    var cardBlock = $('<div></div>').addClass('card-block')
+    .appendTo(card)
+
+
+    $('<h4></h4>').addClass('card-title')
+    .attr('name', w._id + '.name')
+    .text(w.name)
+    .appendTo(cardBlock)
+
+    $('<p></p>').addClass('text-muted')
+    .text(w.date.toString())
+    .appendTo(cardBlock)
+
+    var cardText = $('<p></p>').addClass('card-text')
+    .appendTo(cardBlock)
+
+    $('<strong>Description:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<span></span>')
+    .attr('name', w._id + '.description')
+    .text(w.description)
+    .appendTo(cardText)
+
+    $('<br></br>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Vetting Comments:</strong>').appendTo(cardText)
+    // $('<br></br>').appendTo(cardText)
+
+    $('<p></p>').text(w.vettingComments).appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Site Comments:</strong>').appendTo(cardText)
+    // $('<br></br>').appendTo(cardText)
+
+    $('<p></p>').text(w.siteComments).appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Cost:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<span></span>')
+    .attr('name', w._id + '.cost')
+    .text(w.cost)
+    .appendTo(cardText)
+
+    $('<a></a>').addClass('btn').addClass('btn-primary')
+    .addClass('card-link').addClass('work-item-edit')
+    .text('Edit')
+    .attr('href', '#')
+    .on('click', showWorkItemEditForm)
+    .appendTo(cardBlock)
+
+    return cardBlock
+  }
 
 
 </script>

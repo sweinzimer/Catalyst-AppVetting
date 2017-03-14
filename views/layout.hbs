@@ -11,7 +11,7 @@
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-		
+
         <!-- Add any head items here that may be needed for IE7/8/9 support -->
 
     </head>
@@ -19,7 +19,9 @@
         {{>header}}
         {{>navbar}}
 
-        {{{body}}}
+        <div class="container-fluid">
+          {{{body}}}
+        </div>
         {{>footer}}
 
 
