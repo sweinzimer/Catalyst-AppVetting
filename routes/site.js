@@ -82,7 +82,7 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
 
 
 //same as vetting route.  Shouldn't be issues with logic as is
-router.route('/additemsite')
+router.route('/additem')
 	.post(api.addWorkItem, function(req, res) {
 	if(res.locals.status != '200'){
         res.status(500).send("Could not add work item");
@@ -94,7 +94,7 @@ router.route('/additemsite')
 
 //added logic to api.updateWorkItem to handle site agent. 
 //needs role from 'isLoggedInPost' route	
-router.route('/updateitemsite')
+router.route('/updateitem')
 	.post(isLoggedInPost, api.updateWorkItem, function(req, res) {
 	if(res.locals.status != '200'){
         res.status(500).send("Could not update work item");
