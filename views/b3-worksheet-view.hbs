@@ -26,50 +26,67 @@
 
 
 <div class="container col-xs-12">
-		<!--VETTING NOTES-->
-		<h3>Vetting Notes</h3>
-    <div class="form-group">
-        <form method="post">
-            <input type="hidden" value="{{doc._id}}" id="appId"/>
-			<input type="hidden" value="{{user}}" id="userId"/>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th class="col-sm-2">Date</th>
-                    <th class="col-sm-6">Note</th>
-					<th class="col-sm-3">Submitted By</th>
-                    <th class="col-sm-3"></th>
-                </tr>
-                </thead>
-                <tbody id="notes-body">
-                {{#if vettingNotes}}
-                    {{#each vettingNotes}}
-                        <tr>
-                            <td>{{this.date}}</td>
-                            <td class="note-descrip">{{this.description}}</td>
-							<td class="note-vetAgent">{{this.vetAgent}}</td>
-                            <td>
-                                <form>
-                                    <input type="hidden" value="{{this._id}}" name="noteId" />
-                                    <input type="submit" class="update-note btn btn-info" value="Update Note"/>
-                                    <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
-                                </form>
-                            </td>
-                        </tr>
-                    {{/each}}
-                {{else}}
-                    <tr>
-                        <td id="empty-notes" class="alert-danger danger" colspan="3">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
-                        </td>
-                    </tr>
-                {{/if}}
+	<div class="row">
+		<div class="col-xs-12">
+			<!--VETTING NOTES-->
+			<h3>Vetting Notes</h3>
+	    <div class="form-group">
+	        <form method="post">
+	            <input type="hidden" value="{{doc._id}}" id="appId"/>
+				<input type="hidden" value="{{user}}" id="userId"/>
+	            <table class="table table-striped">
+	                <thead>
+	                <tr>
+	                    <th class="col-sm-2">Date</th>
+	                    <th class="col-sm-6">Note</th>
+						<th class="col-sm-3">Submitted By</th>
+	                    <th class="col-sm-3"></th>
+	                </tr>
+	                </thead>
+	                <tbody id="notes-body">
+	                {{#if vettingNotes}}
+	                    {{#each vettingNotes}}
+	                        <tr>
+	                            <td>{{this.date}}</td>
+	                            <td class="note-descrip">{{this.description}}</td>
+								<td class="note-vetAgent">{{this.vetAgent}}</td>
+	                            <td>
+	                                <form>
+	                                    <input type="hidden" value="{{this._id}}" name="noteId" />
+	                                    <input type="submit" class="update-note btn btn-info" value="Update Note"/>
+	                                    <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
+	                                </form>
+	                            </td>
+	                        </tr>
+	                    {{/each}}
+	                {{else}}
+	                    <tr>
+	                        <td id="empty-notes" class="alert-danger danger" colspan="3">
+	                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
+	                        </td>
+	                    </tr>
+	                {{/if}}
 
-				<tr><!--THIS EMPTY ROW IS NECESSARY FOR addNote.js TO WORK ON MULTIPLE PAGES--></tr>
-                </tbody>
-            </table>
-        </form>
-    </div>
+					<tr><!--THIS EMPTY ROW IS NECESSARY FOR addNote.js TO WORK ON MULTIPLE PAGES--></tr>
+	                </tbody>
+	            </table>
+	        </form>
+	    </div>
+	</div>
+
+	<div class="container col-xs-12 col-sm-6">
+		<h3>Vetting Summary</h3>
+		<p>Use the space below to summarize this application.</p>
+		<!-- TODO: Set this url -->
+		<p><a href="#" id="notes.vet_summary" data-type="textarea" data-url="/edit/{{doc._id}}" data-pk="{{doc._id}}">{{doc.notes.vet_summary}}</a></p>
+	</div>
+
+	<div class="col-xs-12 col-sm-6">
+		<h3>Site Assessment Summary</h3>
+		{{#if_not_eq doc.notes.site_summary ''}}
+			<p>{{doc.notes.site_summary}}</p>
+		{{/if_not_eq}}
+	</div>
 </div>
 
 <hr>
@@ -744,12 +761,7 @@
 	<p class="scriptText">Thanks again. I have enjoyed talking to you.</p>
 </div>
 
-<div class="container col-xs-12">
-	<h3>Vetting Summary</h3>
-	<p>Use the space below to summarize this application.</p>
-	<!-- TODO: Set this url -->
-	<p><a href="#" id="notes.vet_summary" data-type="textarea" data-url="/edit/{{doc._id}}" data-pk="{{doc._id}}">{{doc.notes.vet_summary}}</a></p>
-</div>
+
 
 <script src="/javascript/serviceArea.js" type="text/javascript"></script>
 

@@ -1,10 +1,41 @@
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="/javascript/xedit.js" type="text/javascript"></script>
+
+<style>
+  button.btn.btn-primary.btn-sm.editable-submit {
+    width: 35px;
+    height: 35px;
+  }
+
+  button.btn.btn-primary.btn-sm.editable-submit:after {
+    content:  "\2713 ";
+    font-size: 24px;
+  }
+
+  button.btn.btn-default.btn-sm.editable-cancel {
+    width: 35px;
+    height: 35px;
+  }
+  button.btn.btn-default.btn-sm.editable-cancel:after {
+    content:  "\2190 ";
+    font-size: 24px;
+  }
+</style>
+
+
 <div class="row">
   <div class="col-sm-12">
     <h5>Site Assessment</h5>
 
     {{#each results.doc}}
-      <h1>{{application.name.first}} {{application.name.middle}} {{application.name.last}}</h1>
-      <h5 class="text-muted">Application {{app_name}}</h5>
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 style="display:inline-block;">{{application.name.first}} {{application.name.middle}} {{application.name.last}}</h1>
+          <h3 style="float:right;display:inline-block;" class="text-muted">#{{app_name}}</h3>
+        </div>
+      </div>
+      <h5>Status: <a href="#" id="status" data-type="select" data-pk="{{_id}}" data-url="/edit/{{_id}}" data-name="status" data-title="Select status"></a></h5>
     {{/each}}
 
     <ul class="nav nav-tabs" role="tablist">
@@ -195,7 +226,7 @@
             </div>
             <div class="col-xs-12 col-sm-6">
               <h3>Summary</h3>
-              <p>Use this space for any free text notes or summaries. The text saves a second after you stop tying.</p>
+              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
               <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
             </div>
           </div>
@@ -211,15 +242,15 @@
                 <h4 class="card-title">New Work Item</h4>
                 <p class="card-text">
                   <div class="form-group">
-                    <label class="form-control-label">Name</label>
+                    <label class="form-control-label">Name*</label>
                     <input type="text" class="form-control" name="name"></input>
                   </div>
                   <div class="form-group">
-                    <label class="form-control-label">Description</label>
+                    <label class="form-control-label">Description*</label>
                     <textarea class="form-control" name="description" rows="5"></textarea>
                   </div>
                   <div class="form-group">
-                    <label class="form-control-label">Site Comments</label>
+                    <label class="form-control-label">Site Comments*</label>
                     <textarea class="form-control" name="siteComments" rows="5"></textarea>
                   </div>
                   <div class="form-group">
@@ -264,7 +295,6 @@
 
   </div>
 </div>
-<pre>{{stringify this}}</pre>
 
 <script>
   var workItems = {{{stringify results.work}}}
@@ -273,7 +303,26 @@
     $('.work-item-edit').each(watchEditButton)
     $('.work-item-new').on('click', handleNewWorkItemSubmission)
     $('.work-item-clear').on('click', handleNewWorkItemClear)
-    $('#site_summary').on('change', handleSiteSummaryInput)
+    $('#site_summary').on('keydown', handleSiteSummaryInput)
+
+    $('#status').editable({
+        value: docs[0].status,
+        source: [
+          {value: 'discuss', text: 'On Hold - Pending Discussion'},
+          {value: 'new', text: 'NEW'},
+          {value: 'phone', text: 'Phone Call Needed'},
+          {value: 'handle', text: 'Handle-It'},
+          {value: 'documents', text: 'Awaiting Documents'},
+          {value: 'assess', text: 'Site Assessment - Pending'},
+          {value: 'assessComp', text: 'Site Assessment - Complete'},
+          {value: 'approval', text: 'Approval Process'},
+          {value: 'declined', text: 'Declined'},
+          {value: 'withdrawn', text: 'Withdrawn'},
+          {value: 'project', text: 'Approved Project'}
+        ]
+    });
+
+
   })
 
   function handleSiteSummaryInput(e) {
@@ -287,7 +336,7 @@
         'POST',
         '/site/updatesummary',
         function(err, data) {
-          debugger
+          console.info('site summary saved')
         }
       )
     }.bind({val: e.target.value}), 500)
@@ -468,10 +517,9 @@
 
     //check for error
     posting.done(function (xhr) {
-      if(xhr.status === 'success' || xhr.status === 200) {
+      if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
         next(null, xhr)
-      }
-      else {
+      } else {
         next(new Error('Could not complete xhr'))
       }
     });
@@ -485,7 +533,7 @@
     var newWorkItem = {}, error = false
 
     $('input, textarea', e.target.parentNode).each(function(idx) {
-      if (this.value.length === 0) {
+      if (this.value.length === 0 && this.name !== 'cost') {
         $(this.parentNode).addClass('has-danger')
         error = true
       } else {
@@ -594,6 +642,7 @@
 
     return cardBlock
   }
+
 
 
 </script>

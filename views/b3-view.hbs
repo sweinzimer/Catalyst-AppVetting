@@ -630,7 +630,7 @@
       csvRequest.done(function(xhr) {
         if (xhr.status === 'success') {
           // TODO: Set window.location.href equal to the download file
-			
+
 		window.location.href = '/view/file/' + '{{{doc.application.name.last}}}' + '-' + '{{{doc.application.name.first}}}' + '-' + applicationID + '.csv'
 
         } else {
