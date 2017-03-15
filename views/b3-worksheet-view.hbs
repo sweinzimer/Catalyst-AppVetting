@@ -724,8 +724,14 @@
 <div class="container col-xs-12">
 	<h3>Financial Questions</h3>
 	<div id="finacialForm"></div>
+	<br />
+	<h3>Total Vetted Income</h3>
+	<!-- TODO: Figure out where to route this -->
+	<h4><a id="total_income.value" href="#" data-type="number" data-pk="{{doc._id}}" data-url="/edit/{{doc._id}}" data-title="Enter income">{{doc.total_income.value}}</a></h4>
 </div>
 
+<div class="container col-xs-12">
+</div>
 
 
 
@@ -736,6 +742,13 @@
 		I believe that completes my questions. Thank you for your time and patience. Please mail/email the documents we have discussed at your earliest convenience. We will be in touch within one week after receiving your documents to inform you about whether or not we can proceed to the next step. As you will recall, that would involve a visit to your home to confirm that the requested repairs are things that Catalyst has the expertise and resources to do.</p>
 
 	<p class="scriptText">Thanks again. I have enjoyed talking to you.</p>
+</div>
+
+<div class="container col-xs-12">
+	<h3>Vetting Summary</h3>
+	<p>Use the space below to summarize this application.</p>
+	<!-- TODO: Set this url -->
+	<p><a href="#" id="notes.vet_summary" data-type="textarea" data-url="/edit/{{doc._id}}" data-pk="{{doc._id}}">{{notes.vet_summary}}</a></p>
 </div>
 
 <script src="/javascript/serviceArea.js" type="text/javascript"></script>
@@ -960,6 +973,9 @@
                 $(id).editable("option", "pk", pk);
             })
         });
+
+			$('[id="notes.vet_summary"]').editable()
+			$('[id="total_income.value"]').editable()
 
 			var fpb = new FinacialPackageBuilder();
 			fpb.populateHtml();

@@ -193,6 +193,11 @@
                 </tr>
               </table>
             </div>
+            <div class="col-xs-12 col-sm-6">
+              <h3>Summary</h3>
+              <p>Use this space for any free text notes or summaries. The text saves a second after you stop tying.</p>
+              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
+            </div>
           </div>
         {{/each}}
       </div><!-- end #property -->
@@ -259,7 +264,7 @@
 
   </div>
 </div>
-<pre>{{stringify results}}</pre>
+<pre>{{stringify this}}</pre>
 
 <script>
   var workItems = {{{stringify results.work}}}
@@ -268,7 +273,25 @@
     $('.work-item-edit').each(watchEditButton)
     $('.work-item-new').on('click', handleNewWorkItemSubmission)
     $('.work-item-clear').on('click', handleNewWorkItemClear)
+    $('#site_summary').on('change', handleSiteSummaryInput)
   })
+
+  function handleSiteSummaryInput(e) {
+    if (window.siteSummaryTimeout) {
+      window.clearTimeout(window.siteSummaryTimeout)
+    }
+    // TODO: set this URL
+    window.siteSummaryTimeout = window.setTimeout(function() {
+      xhr(
+        { id: docs[0]._id, key: 'notes.site_summary', value: this.val },
+        'POST',
+        '/site/updatesummary',
+        function(err, data) {
+          debugger
+        }
+      )
+    }.bind({val: e.target.value}), 500)
+  }
 
   // Used with $(*).each
   function watchEditButton(idx) {

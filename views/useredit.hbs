@@ -17,6 +17,14 @@
   <div class="col-xs-12 col-sm-6 col-md-4">
     <h4>Biographical information</h4>
     <dl class="row">
+      <dt class="col-xs-4">Email</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="contact_info.user_email" data-type="email"
+        data-pk="{{ user._id }}"
+        data-url="/user/editUser" data-title="Email">
+          {{ user.contact_info.user_email }}
+        </a>
+
       <dt class="col-xs-4">First name</dt>
       <dd class="col-xs-8">
         <a href="#" id="contact_info.user_name.user_first" data-type="text"
@@ -235,6 +243,7 @@
     'contact_info.user_emergency.uec_name',
     'contact_info.user_emergency.uec_relationship',
     'contact_info.user_emergency.uec_phone',
+    'contact_info.user_email',
   ]
 
   function changePassword(e) {
