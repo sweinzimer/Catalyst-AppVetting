@@ -35,7 +35,7 @@
 									<td>
                                         <form>
                                             <!--Hidden field contains the ID for the note in this row-->
-											
+
                                             <input type="hidden" value="{{this._id}}" name="noteId" />
                                             <input type="submit" class="update-note btn btn-info" value="Update Note"/>
                                             <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
@@ -54,7 +54,7 @@
                         <!--The last row is the mini-form for submitting a new note-->
                         <tr>
                             <td>
-								
+
                                 <button id="addNote" type="submit" class="btn btn-primary">Add Note</button>
                             </td>
                             <td colspan="2">
@@ -629,7 +629,7 @@
       csvRequest.done(function(xhr) {
         if (xhr.status === 'success') {
           // TODO: Set window.location.href equal to the download file
-			
+
 		window.location.href = '/view/file/' + '{{{doc.application.name.last}}}' + '-' + '{{{doc.application.name.first}}}' + '-' + applicationID + '.csv'
 
         } else {
