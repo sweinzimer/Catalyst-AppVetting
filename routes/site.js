@@ -99,6 +99,17 @@ router.route('/updateitem')
         res.json(res.locals);
     }
 	});
+
+router.route('/updatesummary')
+	.post(isLoggedInPost, api.putUpdateDocument, function(req, res) {
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not update work item");
+    }
+    else{
+        res.json(res.locals);
+    }
+	});	
+		
 	
 //route catches invalid post requests.
 router.use('*', function route2(req, res, next) {

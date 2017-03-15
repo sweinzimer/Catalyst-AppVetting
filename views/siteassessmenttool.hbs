@@ -283,7 +283,7 @@
     // TODO: set this URL
     window.siteSummaryTimeout = window.setTimeout(function() {
       xhr(
-        { id: docs[0]._id, key: 'notes.site_summary', value: this.val },
+        { id: docs[0]._id, name: 'notes.site_summary', value: this.val },
         'POST',
         '/site/updatesummary',
         function(err, data) {

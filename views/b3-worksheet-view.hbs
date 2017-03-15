@@ -727,7 +727,7 @@
 	<br />
 	<h3>Total Vetted Income</h3>
 	<!-- TODO: Figure out where to route this -->
-	<h4><a id="total_income.value" href="#" data-type="number" data-pk="{{doc._id}}" data-url="/edit/{{doc._id}}" data-title="Enter income">{{doc.total_income.value}}</a></h4>
+	<h4><a id="finance.total_income.value" href="#" data-type="number" data-pk="{{doc._id}}" data-url="/edit/{{doc._id}}" data-title="Enter income">{{doc.finance.total_income.value}}</a></h4>
 </div>
 
 <div class="container col-xs-12">
@@ -748,7 +748,7 @@
 	<h3>Vetting Summary</h3>
 	<p>Use the space below to summarize this application.</p>
 	<!-- TODO: Set this url -->
-	<p><a href="#" id="notes.vet_summary" data-type="textarea" data-url="/edit/{{doc._id}}" data-pk="{{doc._id}}">{{notes.vet_summary}}</a></p>
+	<p><a href="#" id="notes.vet_summary" data-type="textarea" data-url="/edit/{{doc._id}}" data-pk="{{doc._id}}">{{doc.notes.vet_summary}}</a></p>
 </div>
 
 <script src="/javascript/serviceArea.js" type="text/javascript"></script>
@@ -975,7 +975,7 @@
         });
 
 			$('[id="notes.vet_summary"]').editable()
-			$('[id="total_income.value"]').editable()
+			$('[id="finance.total_income.value"]').editable()
 
 			var fpb = new FinacialPackageBuilder();
 			fpb.populateHtml();

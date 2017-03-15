@@ -634,7 +634,13 @@ module.exports = {
         console.log('[ API ] putUpdateDocument :: Call invoked with _id: ' + req.params.id
             + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
         console.log(req.body.name + ' + ' + req.body.value);
-
+		var id;
+		if(req.params.id != null) {
+			id = req.params.id;
+		}
+		else {
+			id = req.body.id;
+		}
         // Build the name:value pairs to be updated
         // Since there is only one name and one value, we can use the method below
         var updates = {};
@@ -642,7 +648,7 @@ module.exports = {
         // Record Update time
         //filters
         var conditions = {};
-        conditions['_id'] = mongoose.Types.ObjectId(req.params.id);
+        conditions['_id'] = mongoose.Types.ObjectId(id);
         console.log("Search Filter:");
         console.log(conditions);
         console.log("Update:");
