@@ -634,19 +634,32 @@ module.exports = {
         console.log('[ API ] putUpdateDocument :: Call invoked with _id: ' + req.params.id
             + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
         console.log(req.body.name + ' + ' + req.body.value);
+		var updates = {};
 		var id;
-		if(req.params.id != null) {
-			id = req.params.id;
-		}
-		else {
+		if(res.locals.role == "SITE") {
+			if(req.body.name == "notes.site_summary") {
+			updates['notes.site_summary'] = req.body.value;
+			}
+			else if(req.body.name == "status") {
+				updates['status'] = req.body.value;
+			}
 			id = req.body.id;
 		}
-        // Build the name:value pairs to be updated
-        // Since there is only one name and one value, we can use the method below
-        var updates = {};
-        updates[req.body.name] = req.body.value;
-        // Record Update time
-        //filters
+		else {
+		
+			if(req.params.id != null) {
+				id = req.params.id;
+			}
+			else {
+				id = req.body.id;
+			}
+			// Build the name:value pairs to be updated
+			// Since there is only one name and one value, we can use the method below
+			
+			updates[req.body.name] = req.body.value;
+			// Record Update time
+			//filters
+		}
         var conditions = {};
         conditions['_id'] = mongoose.Types.ObjectId(id);
         console.log("Search Filter:");
