@@ -12,7 +12,7 @@ var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose we are using the Bluebird promise library
 Promise.promisifyAll(mongoose); // Convert mongoose API to always return promises using Bluebird's promisifyAll
 
-// Helper query functions
+
 
 //Need ObjectID to search by ObjectID
 var ObjectId = require('mongodb').ObjectID;
@@ -20,6 +20,8 @@ var ObjectId = require('mongodb').ObjectID;
 module.exports = function(passport) {
 router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) {
 
+	//separate applications in res.locals.results based on status of
+	//assessemnt pending or assessment complete
 	var payload = {};
     console.log(res.locals.results);
 	if(res.locals.results.site[0] == null) {
@@ -43,14 +45,14 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 	}
 
 	payload.complete = res.locals.results.complete;
-	payload.user = req.user_id;
+	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
 
 	console.log("payload");
 	console.log(payload);
 	
-	// res.json(res.locals.results);
+	
 	res.render('siteassessment', payload);
 });
 
@@ -59,21 +61,15 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
     //console.log("Rendering application " + ObjectId(req.params.id));
 	//TEST
 	console.log("rendering test application");
-
-
-	var payload = {}
-	payload.results = res.locals.results;
+    var payload = {}
+	payload.doc = res.locals.results.doc[0];
+	payload.work = res.locals.results.work;
 	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
-	// console.log("results");
-	// console.log(payload);
-  // res.json(payload);
-
-    //    res.locals.layout = 'b3-layout';        // Change default from layout.hbs to b3-layout.hbs
-    //    results.title = "Application View";     //Page <title> in header
-
-	//	results.user = req.user._id;
+	console.log("results");
+    console.log(payload);
+ 
 	res.render('siteassessmenttool', payload);
 
 
@@ -83,7 +79,7 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
 
 //same as vetting route.  Shouldn't be issues with logic as is
 router.route('/additem')
-	.post(api.addWorkItem, function(req, res) {
+	.post(isLoggedInPost, api.addWorkItem, function(req, res) {
 	if(res.locals.status != '200'){
         res.status(500).send("Could not add work item");
     }
@@ -103,6 +99,15 @@ router.route('/updateitem')
         res.json(res.locals);
     }
 	});
+	
+//route catches invalid post requests.
+router.use('*', function route2(req, res, next) {
+	if(res.locals.status == '406'){
+		console.log("in error function");
+        res.status(406).send("Could not update note");
+		res.render('/user/login');
+    }
+});
 
 function formatElement(element) {
     formatStatus(element);

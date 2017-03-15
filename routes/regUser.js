@@ -50,17 +50,12 @@ router.route('/userList')
 
 router.route('/editUser')
 	.get(isLoggedIn, function(req, res) {
-		//do stuff
-		//console.log(res.locals.results);
+		
 		var payload = {};
 
 		payload = res.locals.results;
-		//console.log("payload 1");
-		//console.log(payload);
 		payload.user_email = res.locals.email;
 		payload.user_role = res.locals.role;
-		console.log("payload");
-		console.log(payload);
 		res.render('useredit', payload);
 
 
@@ -91,7 +86,7 @@ router.route('/editUser/:id')
 
 
 router.route('/changePassword')
-	.post(api.updatePassword, function(req,res) {
+	.post(isLoggedIn, api.updatePassword, function(req,res) {
 		console.log("in change pass route");
 		if(res.locals.status != '200'){
 			res.status(500).send("Could not update password");
@@ -291,51 +286,4 @@ function isLoggedInPost(req, res, next) {
 		}
 }
 
-/*function verifyUser(req, res, next) {
-		if(req.isAuthenticated()) {
-			console.log(req.user._id);
-			var userID = req.user._id.toString();
 
-			var ObjectId = require('mongodb').ObjectID;
-
-			Promise.props({
-				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
-			})
-			.then(function (results) {
-				console.log(results);
-
-					if (!results) {
-						//user not found in db.  Route to error handler
-						res.locals.status = 406;
-						return next('route');
-					}
-					else {
-						//VERIFY USER PASSWORD....UPDATE VARIABLE
-						if(results.user.validPassword(req.body.current_password)) {
-							//current password is valid, continue to api
-							return next();
-
-						}
-						else {
-							//password is incorrect, route to error handler
-							res.locals.status = 406;
-							return next('route');
-						}
-					}
-
-
-
-			})
-
-		.catch(function(err) {
-                console.error(err);
-        })
-         .catch(next);
-		}
-		else {
-			//user is not logged in
-			console.log("no user id");
-			res.locals.status = 406;
-			return next('route');
-		}
-}*/

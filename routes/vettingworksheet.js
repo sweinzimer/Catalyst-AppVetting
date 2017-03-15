@@ -104,7 +104,7 @@ router.get('/:id', isLoggedIn, function(req, res) {
 
 
 //Insert CSV export route here
-router.post('/csvExport', function(req, res){
+router.post('/csvExport', isLoggedInPost, function(req, res){
 
 
   var applicationID = req.body.application;

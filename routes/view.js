@@ -39,7 +39,7 @@ module.exports = function(passport) {
  **/
 
 
-router.post('/csvExport', function(req, res){
+router.post('/csvExport', isLoggedInPost, function(req, res){
 	var applicationID = req.body.application;
 	var firstname = req.body.firstname;
 	var lastname = req.body.lastname;
@@ -225,32 +225,18 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
         });
     }
 	
-	
-
-
-    /*if (res.locals.results.project[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'project\'');
-    } else {
-        res.locals.results.project.forEach(function (element) {
-            element = formatElement(element);
-            payload.processing.push(element);
-        });
-
-    }*/
 	var currentYear = new Date().getFullYear();
 	console.log("current year" + currentYear);
 	payload.year = [];
 	var singleYear = {};
-	//var year = {};
+	
 	for(var x=currentYear; x>=2007; x--) {
 		singleYear = {"yearValue" : x};
 		payload.year.push(singleYear);
 		
 	}
-	console.log("years passed: " + payload.year);
+	
 	payload.user = req.user._id;
-
-
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
 
@@ -299,11 +285,7 @@ router.post('/updateNote', isLoggedInPost, api.updateVettingNote, function(req, 
 router.get('/:id', isLoggedIn, function(req, res, next) {
     //Checking what's in params
     console.log("Rendering application " + ObjectId(req.params.id));
-	console.log("user requested: ");
-	console.log(req.user._id);
-
-
-
+	
     /* search by _id. */
     Promise.props({
         highlight: HighlightPackage.findOne({ 'documentPackage' : ObjectId(req.params.id)}).lean().execAsync(),
@@ -333,7 +315,6 @@ router.get('/:id', isLoggedIn, function(req, res, next) {
 
         res.locals.layout = 'b3-layout';        // Change default from layout.hbs to b3-layout.hbs
         results.title = "Application View";     //Page <title> in header
-		//results.user = JSON.stringify(req.user._id);
 		results.user = req.user._id;
 
         res.render('b3-view', results);

@@ -1344,7 +1344,9 @@ module.exports = {
 			updates.siteComments = req.body.siteComments;
 		}
         else {
-			updates.vettingComments = req.body.vettingComments;
+			if(req.body.vettingComments != null) {
+				updates.vettingComments = req.body.vettingComments;
+			}
 		}
         //filters
         var conditions = {};
