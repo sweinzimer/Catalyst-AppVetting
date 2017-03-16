@@ -156,7 +156,8 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
 	  ["advocate.organization_name", "Advocate Organization Name"],
 	  ["updated.$date", "Updated on"],
 	  ["__v", "__v"],
-	  ["service_area", "In Service Area"]
+	  ["service_area", "In Service Area"],
+		["notes.vet_summary", "Vetting Summary"]
 	]
 
 
@@ -172,6 +173,8 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
 
       }
 
+			//This function "unwraps" the JSON.
+
 			ObjectValues = function(v, k){
 
 					if(typeof v == 'object'){
@@ -182,13 +185,15 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
 						}
 					}
 					else{
+						//Iterate through JSON, find match with "columns" array. Rename.
 						for(iter = 0; iter < columns.length; iter++){
 							if(columns[iter][0] == k){
 								k = columns[iter][1];
 							}
 						}
 						var data = k + "," + '"' + v + '"' + "\n";
-						console.log(data);
+						//console.log(data);
+						//Write the data to file.
 						fs.appendFileSync('public/exports/'+filename+'.csv', data, 'utf8', function(err){
 							if(err){
 								return console.error(err);
@@ -198,6 +203,8 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
 			}
 
 			ObjectValues(doc);
+
+			//Delete JSON once you're done with it.
 
       if(fs.existsSync('public/exports/'+filename+'.json')){
 

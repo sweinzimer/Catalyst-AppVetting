@@ -7,6 +7,7 @@ var highlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var config = require('../config')
 var WorkItemPackage = require('../models/workItemPackage');
+var fs = require('fs');
 
 var FinPackage = require('../models/finPackage');
 
@@ -51,7 +52,7 @@ router.get('/:id', isLoggedIn, function(req, res) {
 
                 result.doc.application.dob.date = dobYear + "-" + dobMon + "-" + dobDay;
             }
-			
+
 			if(result.doc.service_area == null) {
 				console.log("no service area value");
 				result.service = false;
@@ -126,7 +127,7 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
 
 	mongoexport_child.on('exit', function(code,signal){
 
-		const rename_child = exec('cd public/exports; var="Name,Description,Cost,Vetting Comments"; sed -i "1s/.*/$var/" ' + "'" + filename + '-' + 'VettingView' + '.csv' + "'",
+		const rename_child = exec('cd public/exports; var="Work Item,Description,Cost,Vetting Comments"; sed -i "1s/.*/$var/" ' + "'" + filename + '-' + 'VettingView' + '.csv' + "'",
 			function(error, stdout, stderr){
 					if(error){
 						console.error('stderr', stderr);
@@ -160,12 +161,24 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
           }
         });
         edit_notes_header.on('exit', function(code,signal){
+
+          if(fs.existsSync('public/exports/'+filename+'-VettingView'+'.csv') && fs.existsSync('public/exports/'+filename+'-notes'+'.csv')){
+
+            fs.unlinkSync('public/exports/'+filename+'-VettingView'+'.csv');
+            fs.unlinkSync('public/exports/'+filename+'-notes'+'.csv');
+
+          }
+
+
       		if(code !== 0){
       			res.status(500).send("Export failed: Code 500");
       			debugger
       		}
       		else{
       			res.status(200).send({status: 'success'});
+
+
+
       		}
       	});
       });
@@ -259,7 +272,7 @@ router.route('/displayYear')
 			res.json(res.locals);
 		}
 	});
-		
+
 //route catches invalid post requests.
 router.use('*', function route2(req, res, next) {
 	if(res.locals.status == '406'){
@@ -267,7 +280,7 @@ router.use('*', function route2(req, res, next) {
         res.status(406).send("Could not update note");
 		res.render('/user/login');
     }
-});	
+});
 
 return router;
 }
@@ -359,5 +372,3 @@ function isLoggedInPost(req, res, next) {
 			return next('route');
 		}
 }
-
-
