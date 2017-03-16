@@ -266,7 +266,7 @@
 
           {{#each results.work}}
             <div class="col-xs-12 col-sm-6">
-              <div class="card work-item" name={{_id}}>
+              <div class="card work-item" name="{{_id}}">
                 <div class="card-block">
                   <h4 class="card-title" name="{{_id}}.name">{{name}}</h4>
                   <p class="text-muted">{{date}}</p>
@@ -308,17 +308,8 @@
     $('#status').editable({
         value: docs[0].status,
         source: [
-          {value: 'discuss', text: 'On Hold - Pending Discussion'},
-          {value: 'new', text: 'NEW'},
-          {value: 'phone', text: 'Phone Call Needed'},
-          {value: 'handle', text: 'Handle-It'},
-          {value: 'documents', text: 'Awaiting Documents'},
           {value: 'assess', text: 'Site Assessment - Pending'},
           {value: 'assessComp', text: 'Site Assessment - Complete'},
-          {value: 'approval', text: 'Approval Process'},
-          {value: 'declined', text: 'Declined'},
-          {value: 'withdrawn', text: 'Withdrawn'},
-          {value: 'project', text: 'Approved Project'}
         ]
     });
 
@@ -367,7 +358,7 @@
       {field: 'siteComments', text: 'Site Comments', type: 'textarea'},
       {field: 'cost', text: 'Cost'},
     ]
-debugger
+
     fields.forEach(function(f) {
       var formGroup = $('<div class="form-group"></div>')
       $('<label>' + f.text + '</label>').appendTo(formGroup)
