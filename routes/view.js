@@ -77,8 +77,8 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
 	  ["property.requested_repairs", "Requested Repairs"],
 	  ["property.associates_can_contribute.value", "Associates can contribute?"],
     ["property.associates_can_contribute.description", "Associate Labor Contribution"],
-	  ["property.client_can_contribute.value", "Amount Client can contribute"],
-	  ["property.client_can_contribute.description", "Client can contribute?"],
+	  ["property.client_can_contribute.value", "Client can contribute?"],
+	  ["property.client_can_contribute.description", "Amount Client can contribute"],
 	  ["finance.requested_other_help.value", "Requested other help?"],
 	  ["finance.associates_can_contribute.value", "Associates can contribute?"],
 	  ["finance.associates_can_contribute.description", "Associate Financial Contribution"],
@@ -257,7 +257,7 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
         });
     }
     payload.new = res.locals.results.new;
-	
+
 	//separate bucket for approved applications
 	if (res.locals.results.project[0] == null) {
         console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'project\'');
@@ -337,7 +337,7 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
             payload.processing.push(element);
         });
     }
-	
+
 	if (res.locals.results.assessComp[0] == null) {
         console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'assessComp\'');
     } else {
@@ -355,17 +355,17 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
             payload.processing.push(element);
         });
     }
-	
+
 	var currentYear = new Date().getFullYear();
 	payload.year = [];
 	var singleYear = {};
-	
+
 	for(var x=currentYear; x>=2007; x--) {
 		singleYear = {"yearValue" : x};
 		payload.year.push(singleYear);
-		
+
 	}
-	
+
 	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
@@ -415,7 +415,7 @@ router.post('/updateNote', isLoggedInPost, api.updateVettingNote, function(req, 
 router.get('/:id', isLoggedIn, function(req, res, next) {
     //Checking what's in params
     console.log("Rendering application " + ObjectId(req.params.id));
-	
+
     /* search by _id. */
     Promise.props({
         highlight: HighlightPackage.findOne({ 'documentPackage' : ObjectId(req.params.id)}).lean().execAsync(),
@@ -491,7 +491,7 @@ function formatDate(element)
 	var appDay = ("00" + appDate.getDate()).slice(-2);
 	var appMon = ("00" + (appDate.getMonth()+1)).slice(-2);
 	element.signature.client_date = appMon + "/" + appDay + "/" + appYear;
-	
+
 	}
     return element;
 }
@@ -552,7 +552,7 @@ return router;
 
 //check to see if user is logged in and a vetting agent or an admin
 function isLoggedIn(req, res, next) {
-		
+
 		if(req.isAuthenticated()) {
 			var userID = req.user._id.toString();
 			var ObjectId = require('mongodb').ObjectID;
