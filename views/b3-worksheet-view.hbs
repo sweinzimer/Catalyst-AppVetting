@@ -775,8 +775,8 @@
 							<textarea class="form-control" name="description" rows="3"></textarea>
 						</div>
 						<div class="form-group">
-							<label class="form-control-label">Site Comments*</label>
-							<textarea class="form-control" name="siteComments" rows="3"></textarea>
+							<label class="form-control-label">Vetting Comments*</label>
+							<textarea class="form-control" name="vettingComments" rows="3"></textarea>
 						</div>
 						<div class="form-group">
 							<label class="form-control-label">Cost</label>
@@ -800,10 +800,10 @@
 							<span name="{{_id}}.description">{{description}}</span><br/>
 							<br/>
 							<strong>Vetting comments:</strong><br/>
-							{{vettingComments}}<br/>
+							<span name="{{_id}}.vettingComments">{{vettingComments}}</span><br/>
 							<br/>
 							<strong>Site comments:</strong><br/>
-							<span name="{{_id}}.siteComments">{{siteComments}}</span><br/>
+							{{siteComments}}<br/>
 							<br/>
 							<strong>Cost:</strong><br/>
 							<span name="{{_id}}.cost">{{cost}}</span>
@@ -1533,7 +1533,7 @@
 		var fields = [
 			{field: 'name', text:'Name'},
 			{field: 'description', text: 'Description', type: 'textarea'},
-			{field: 'siteComments', text: 'Site Comments', type: 'textarea'},
+			{field: 'vettingComments', text: 'Vetting Comments', type: 'textarea'},
 			{field: 'cost', text: 'Cost'},
 		]
 
@@ -1612,13 +1612,15 @@
 		$('<strong>Vetting Comments:</strong>').appendTo(cardText)
 		// $('<br></br>').appendTo(cardText)
 
-		$('<p></p>').text(data.vettingComments).appendTo(cardText)
+		$('<p></p>').text(data.vettingComments)
+		.attr('name', data._id + '.vettingComments')
+		.appendTo(cardText)
 		$('<br></br>').appendTo(cardText)
 
 		$('<strong>Site Comments:</strong>').appendTo(cardText)
 		$('<br></br>').appendTo(cardText)
 
-		$('<p></p>').attr('name', data._id + '.siteComments')
+		$('<p></p>')
 		.text(data.siteComments).appendTo(cardText)
 		$('<br></br>').appendTo(cardText)
 
