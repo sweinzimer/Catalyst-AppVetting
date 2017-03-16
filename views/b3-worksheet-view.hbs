@@ -179,7 +179,7 @@
 	&nbsp;&nbsp;&nbsp;&nbsp; {{doc.property.requested_repairs}}
 	</td></tr></table>
 
-	<p class="scriptText">Okay. var’s talk about the repairs you requested:</p>
+	<p class="scriptText">Okay. Let’s talk about the repairs you requested:</p>
 
 	<p><i><b>Conversation starters/helpers:</b><br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your application says…<br>
@@ -196,63 +196,7 @@
 ---        </td></tr>
 ---	</table> -->
 
-<!--START OF NEW WORK ITEM IMPLEMENTATION -->
-	<div class="form-work">
-        <form method="post">
-            <input type="hidden" value="{{doc._id}}" id="appId"/>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th class="col-sm-2">Date</th>
-					<th class="col-sm-2">Name</th>
-                    <th class="col-sm-4">Description</th>
-					<th class="col-sm-2">Cost</th>
-					<th class="col-sm-4">Vetting Comments</th>
-                    <th class="col-sm-6"> </th>
-                </tr>
-                </thead>
-                <tbody id="work-body">
-                {{#if workItems}}
-                    {{#each workItems}}
-                        <tr>
-                            <td>{{this.date}}</td>
-							<td class="item-name">{{this.name}}</td>
-                            <td class="item-descrip">{{this.description}}</td>
-							<td class="item-cost">{{this.cost}}</td>
-							<td class="item-comments">{{this.vettingComments}}</td>
-                            <td>
-                                <form>
-                                    <input type="hidden" value="{{this._id}}" name="itemId" />
-                                    <input type="submit" class="update-button btn btn-info" value="Update Work Item"/>
-                                    <input type="submit" class="delete-button btn btn-danger" value="Delete Work Item"/>
-                                </form>
-                            </td>
-                        </tr>
-                    {{/each}}
-                {{else}}
-                    <tr>
-                        <td id="empty-work_items" class="alert-danger danger" colspan="3">
-                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Work Items Yet To Display
-						</td>
-                    </tr>
-                {{/if}}
 
-				<tr><!--THIS EMPTY ROW IS NECESSARY FOR addNote.js TO WORK ON MULTIPLE PAGES--></tr>
-                </tbody>
-            </table>
-        </form>
-    </div>
-	<h4><i>Enter Work Items Below</i></h4>
-	<div class="input-group">
-		<input type="text" id="work_item_title" class="form-control" placeholder="Enter brief Work Item Title Here..."><br>
-		<textarea rows="3" cols="60" id="work_item_description" class="form-control" placeholder="Enter detailed Work Item Description Here..."></textarea>
-		<input type="number" id="work_item_cost" class="form-control" placeholder="Enter estimated cost here..."><br>
-		<textarea rows="3" cols="60" id="work_item_vaComment" class="form-control" placeholder="Enter Comments Here..."></textarea>
-		<button id="add_work_item" class="btn btn-primary" type="submit">Add Work Item</button>
-	</div>
-
-	<hr>
-</div>
 
 <div class="container col-xs-12"> <!-- Begin HUGE Application Clarification Section -->
 
