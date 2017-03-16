@@ -26,8 +26,6 @@ function(username, password, done) {
 			console.log("user not active");
 			return done(null, false, {message: 'user not active'});
 		}
-		console.log("login successful!");
-		console.log(user);
 		return done(null, user);
 	});
 }

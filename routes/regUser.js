@@ -14,7 +14,6 @@ Promise.promisifyAll(mongoose); // Convert mongoose API to always return promise
 module.exports = function(passport) {
 router.route('/register')
 	.get(isAdmin, api.getUserRoles, function(req, res) {
-		console.log(res.locals.results);
 		var payload = {};
 		payload.user = req.user._id;
 		payload.user_email = res.locals.email;
@@ -22,7 +21,7 @@ router.route('/register')
 		payload.roles = res.locals.results.roles;
 		payload.rolesString = JSON.stringify(res.locals.results.roles);
 		
-		console.log(payload);
+		
 		res.render('newuserform', payload);
 	})
 	.post(isLoggedInPost, api.postUser, function(req, res) {
@@ -127,20 +126,13 @@ return router;
 //check to see if user is logged in
 function isLoggedIn(req, res, next) {
 		if(req.isAuthenticated()) {
-			console.log("In isloggedin");
-			console.log(req.body);
-			console.log(req.user._id);
 			var userID = req.user._id.toString();
 
-			console.log("userID");
-			console.log(userID);
 			var ObjectId = require('mongodb').ObjectID;
 			Promise.props({
 				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
 			})
 			.then(function (results) {
-				console.log(results);
-
 					if (!results) {
 						res.redirect('/user/logout');
 					}
@@ -185,18 +177,13 @@ function isLoggedIn(req, res, next) {
 
 function isAdmin(req, res, next) {
 		if(req.isAuthenticated()) {
-			console.log(req.user._id);
+			
 			var userID = req.user._id.toString();
-
-			console.log("userID");
-			console.log(userID);
 			var ObjectId = require('mongodb').ObjectID;
 			Promise.props({
 				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
 			})
 			.then(function (results) {
-				console.log(results);
-
 					if (!results) {
 						res.redirect('/user/logout');
 					}
@@ -238,7 +225,6 @@ function isAdmin(req, res, next) {
 //post request authenticator.  Checks if user is an admin
 function isLoggedInPost(req, res, next) {
 		if(req.isAuthenticated()) {
-			console.log(req.user._id);
 			var userID = req.user._id.toString();
 
 			var ObjectId = require('mongodb').ObjectID;
@@ -247,8 +233,6 @@ function isLoggedInPost(req, res, next) {
 				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
 			})
 			.then(function (results) {
-				console.log(results);
-
 					if (!results) {
 						//user not found in db.  Route to error handler
 						res.locals.status = 406;

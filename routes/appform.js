@@ -103,20 +103,12 @@ return router;
 //check to see if user is logged in
 function isLoggedIn(req, res, next) {
 		if(req.isAuthenticated()) {
-			console.log("In isloggedin");
-			console.log(req.body);
-			console.log(req.user._id);
 			var userID = req.user._id.toString();
-
-			console.log("userID");
-			console.log(userID);
 			var ObjectId = require('mongodb').ObjectID;
 			Promise.props({
 				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
 			})
 			.then(function (results) {
-				console.log(results);
-
 					if (!results) {
 						//res.redirect('/user/logout');
 						next();
