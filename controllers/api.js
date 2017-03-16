@@ -319,13 +319,15 @@ module.exports = {
                     console.log('[ API ] findUser :: user package found: TRUE');
 					results.user.hash = "";
 					results.user.salt = "";
-					var dobYear = results.user.contact_info.user_dob.dob_date.getFullYear();
-					//get month and day with padding since they are 0 indexed
-					var dobDay = ( "00" + results.user.contact_info.user_dob.dob_date.getDate()).slice(-2);
-					var dobMon = ("00" + (results.user.contact_info.user_dob.dob_date.getMonth()+1)).slice(-2);
-					results.user.contact_info.user_dob.dob_date = dobYear + "-" + dobMon + "-" + dobDay;
-					console.log("after change");
-					console.log(results.user);
+					if(results.user.contact_info.user_dob.dob_date != null) {
+						var dobYear = results.user.contact_info.user_dob.dob_date.getFullYear();
+						//get month and day with padding since they are 0 indexed
+						var dobDay = ( "00" + results.user.contact_info.user_dob.dob_date.getDate()).slice(-2);
+						var dobMon = ("00" + (results.user.contact_info.user_dob.dob_date.getMonth()+1)).slice(-2);
+						results.user.contact_info.user_dob.dob_date = dobYear + "-" + dobMon + "-" + dobDay;
+						console.log("after change");
+						console.log(results.user);
+					}
                 }
 
                 res.locals.results = results;
