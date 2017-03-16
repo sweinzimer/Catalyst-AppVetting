@@ -1,11 +1,10 @@
 //handles service area radio buttons
 //$(document).ready(init);
 $('#inline_content input[name="service_area"]').click(function() {
-	console.log("In service area js");
+	
 	var payload = {};
 	payload.name = "service_area";
 	payload.appId = $('#appId').val();
-	console.log(payload.appId);
 	if($('input:radio[name=service_area]:checked').val() == "true") {
 		console.log("true");
 		payload.value = true;

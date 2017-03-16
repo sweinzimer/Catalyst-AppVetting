@@ -403,7 +403,6 @@ module.exports = {
                 }
                 else {
                     console.log('[ API ] getDocumentByStatus :: Documents package found: TRUE');
-					console.log(results);
 					for(var x=0; x<results.project.length; x++) {
 						var updateYear = results.project[x].updated.getFullYear();
 						//get month and day with padding since they are 0 indexed
@@ -434,7 +433,7 @@ module.exports = {
             .catch(next);
 		}
 		else if(req.body.doc_status == "unapproved") {
-			console.log("getting unapproved docs");
+			
 			var year = req.body.year;
 			Promise.props({
             
@@ -452,7 +451,7 @@ module.exports = {
                 }
                 else {
                     console.log('[ API ] getDocumentByStatus :: Documents package found: TRUE');
-					console.log(results);
+					
 					for(var x=0; x<results.unapproved.length; x++) {
 						var updateYear = results.unapproved[x].updated.getFullYear();
 						//get month and day with padding since they are 0 indexed

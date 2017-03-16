@@ -357,7 +357,6 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
     }
 	
 	var currentYear = new Date().getFullYear();
-	console.log("current year" + currentYear);
 	payload.year = [];
 	var singleYear = {};
 	
@@ -555,18 +554,12 @@ return router;
 function isLoggedIn(req, res, next) {
 		
 		if(req.isAuthenticated()) {
-			console.log(req.user._id);
 			var userID = req.user._id.toString();
-
-			console.log("userID");
-			console.log(userID);
 			var ObjectId = require('mongodb').ObjectID;
 			Promise.props({
 				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
 			})
 			.then(function (results) {
-				console.log(results);
-
 					if (!results) {
 						res.redirect('/user/logout');
 					}
@@ -610,17 +603,13 @@ function isLoggedIn(req, res, next) {
 //post request authenticator.  Checks if user is an admin or vetting agent
 function isLoggedInPost(req, res, next) {
 		if(req.isAuthenticated()) {
-			console.log(req.user._id);
 			var userID = req.user._id.toString();
-
 			var ObjectId = require('mongodb').ObjectID;
 
 			Promise.props({
 				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
 			})
 			.then(function (results) {
-				console.log(results);
-
 					if (!results) {
 						//user not found in db.  Route to error handler
 						res.locals.status = 406;
