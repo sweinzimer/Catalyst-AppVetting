@@ -767,11 +767,8 @@ module.exports = {
 			console.log(conditions);
 			console.log("Update:");
 			var salt = crypto.randomBytes(16).toString('hex');
-			var hash = crypto.pbkdf2Sync(req.body.value, salt, 1000, 64).toString('hex');
-			console.log(hash);
-			console.log(salt);
-			//updates['updated'] = Date.now();
-			//console.log(updates);
+			var hash = crypto.pbkdf2Sync(req.body.value, salt, 1000, 64, 'sha512').toString('hex');
+			
 			updates.salt = salt;
 			updates.hash = hash;
 			console.log(updates);
@@ -908,7 +905,7 @@ module.exports = {
                 }
                 else {
                     console.log('[ API ] findUser :: user package found: TRUE');
-					hash = crypto.pbkdf2Sync(req.body.oldPass, results.user.salt, 1000, 64).toString('hex');
+					hash = crypto.pbkdf2Sync(req.body.oldPass, results.user.salt, 1000, 64, 'sha512').toString('hex');
 					if(hash != req.user.hash) {
 						console.log("pass not correct");
 						res.locals.status = 500;
@@ -939,11 +936,8 @@ module.exports = {
 						console.log(conditions);
 						console.log("Update:");
 						var newsalt = crypto.randomBytes(16).toString('hex');
-						var newhash = crypto.pbkdf2Sync(req.body.newPass, newsalt, 1000, 64).toString('hex');
-						console.log(newhash);
-						console.log(newsalt);
-						//updates['updated'] = Date.now();
-						//console.log(updates);
+						var newhash = crypto.pbkdf2Sync(req.body.newPass, newsalt, 1000, 64, 'sha512').toString('hex');
+						
 						updates.salt = newsalt;
 						updates.hash = newhash;
 						console.log(updates);
