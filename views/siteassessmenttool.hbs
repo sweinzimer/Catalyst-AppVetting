@@ -278,7 +278,7 @@
                     {{vettingComments}}<br/>
                     <br/>
                     <strong>Site comments:</strong><br/>
-                    {{siteComments}}<br/>
+                    <span name="{{_id}}.siteComments">{{siteComments}}</span><br/>
                     <br/>
                     <strong>Cost:</strong><br/>
                     <span name="{{_id}}.cost">{{cost}}</span>
@@ -367,7 +367,7 @@
       {field: 'siteComments', text: 'Site Comments', type: 'textarea'},
       {field: 'cost', text: 'Cost'},
     ]
-
+debugger
     fields.forEach(function(f) {
       var formGroup = $('<div class="form-group"></div>')
       $('<label>' + f.text + '</label>').appendTo(formGroup)
@@ -447,9 +447,10 @@
     $('<br></br>').appendTo(cardText)
 
     $('<strong>Site Comments:</strong>').appendTo(cardText)
-    // $('<br></br>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
 
-    $('<p></p>').text(data.siteComments).appendTo(cardText)
+    $('<p></p>').attr('name', data._id + '.siteComments')
+    .text(data.siteComments).appendTo(cardText)
     $('<br></br>').appendTo(cardText)
 
     $('<strong>Cost:</strong>').appendTo(cardText)
