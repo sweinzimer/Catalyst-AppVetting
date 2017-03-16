@@ -157,7 +157,8 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
 	  ["updated.$date", "Updated on"],
 	  ["__v", "__v"],
 	  ["service_area", "In Service Area"],
-		["notes.vet_summary", "Vetting Summary"]
+		["notes.vet_summary", "Vetting Summary"],
+		["finance.total_income.value", "Total Income Value"]
 	]
 
 
