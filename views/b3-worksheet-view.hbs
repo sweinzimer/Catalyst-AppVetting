@@ -809,6 +809,7 @@
 							<span name="{{_id}}.cost">{{cost}}</span>
 						</p>
 						<a href="#" class="btn btn-primary card-link work-item-edit">Edit</a>
+						<a href="#" class="btn btn-danger card-link work-item-delete">Delete</a>
 					</div>
 				</div>
 			</div>
@@ -851,6 +852,7 @@
 		{{/if}}
 
 		$('.work-item-edit').each(watchEditButton)
+		$('.work-item-delete').on('click', showWorkItemDeleteConfirm)
 		$('.work-item-new').on('click', handleNewWorkItemSubmission)
 		$('.work-item-clear').on('click', handleNewWorkItemClear)
 
@@ -1638,6 +1640,13 @@
 		.attr('href', '#')
 		.on('click', showWorkItemEditForm)
 		.appendTo(cardBlock)
+
+		$('<a></a>').addClass('btn').addClass('btn-danger')
+		.addClass('card-link').addClass('work-item-delete')
+		.text('Delete')
+		.attr('href', '#')
+		.on('click', showWorkItemDeleteConfirm)
+		.appendTo(cardBlock)
 	}
 
 	function saveWorkItem(node) {
@@ -1716,7 +1725,6 @@
     xhr(w, 'POST', '/site/additem', function(err, data) {
       // TODO: Handle error
       if (err) { alert('There was an error saving your work item') }
-			debugger
       w._id = data.itemId
       workItems.push(w)
       var newNode = addWorkItem(w)
@@ -1728,7 +1736,7 @@
   function addWorkItem(w) {
     var cardContainer = $('#workItemCards')
 
-    var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6')
+    var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-4').addClass('col-md-3')
     .appendTo(cardContainer)
 
     var card = $('<div></div>').addClass('panel panel-default').addClass('work-item')
@@ -1789,8 +1797,64 @@
     .on('click', showWorkItemEditForm)
     .appendTo(cardBlock)
 
+		$('<a></a>').addClass('btn').addClass('btn-danger')
+		.addClass('card-link').addClass('work-item-delete')
+		.text('Delete')
+		.attr('href', '#')
+		.on('click', showWorkItemDeleteConfirm)
+		.appendTo(cardBlock)
+
     return cardBlock
   }
+
+	function showWorkItemDeleteConfirm(e) {
+		e.preventDefault()
+		var workItemParent = this.parentElement
+		var workItemContainer = $(workItemParent)
+		var workItemId = $(workItemParent.parentElement).attr('name')
+
+		var currentData = {}
+		$('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+			var path = $(this).attr('name').replace(workItemId + '.', '')
+			currentData[path] = this.innerText
+		})
+
+		workItemContainer.empty()
+
+		$('<h4>Are you sure?</h4>').appendTo(workItemParent)
+		$('<p>You are about to delete this work item. After selecting confirm, you '
+			+ 'will be unable to recover the item.</p>').appendTo(workItemParent)
+
+		$('<a>Continue</a>').addClass('btn').addClass('btn-primary')
+		.appendTo(workItemParent)
+		.on('click', function(e) {
+			deleteWorkItem(workItemId, workItemParent)
+		})
+
+		$('<a>Cancel</a>').addClass('btn').addClass('btn-danger')
+		.appendTo(workItemParent)
+		.on('click', function(e) {
+			e.preventDefault()
+			for (let i=0; i<workItems.length; i++) {
+				if (workItems[i]._id === workItemId) {
+					showWorkItem(workItems[i], workItemContainer)
+				}
+			}
+		})
+	}
+
+	function deleteWorkItem(id, node) {
+		xhr({itemId: id}, 'POST', '/vettingworksheet/deleteitem', function(err, data) {
+			if (err) { alert('Unable to delete item') }
+			else {
+				var workItemRoot = $('[name="' + id + '"]')
+				workItemRoot.remove()
+				for (var i=0; i<workItems.length; i++) {
+					if (workItems[i]._id == id) { workItems.splice(i, 1) }
+				}
+			}
+		})
+	}
 
 $('#csvExportButton').on('click', function(e) {
 	var urlParts = window.location.pathname.split('/')
