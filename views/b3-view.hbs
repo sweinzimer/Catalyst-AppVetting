@@ -2,7 +2,6 @@
 <a href="/vettingworksheet/{{doc._id}}" class="btn btn-primary">Vetting Worksheet</a>
 <a id="csvExportButton" class="btn btn-primary">Export to CSV</a>
 
-
 <div class="container">
     <div class="row">
         <div class="col-xs-12">
@@ -11,60 +10,76 @@
             <h3>Status: <a href="#" id="status" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="status" data-title="Select status"></a></h3>
 
             <!--VETTING NOTES-->
-            <h3>Vetting Notes</h3>
-            <div class="form-group">
-                <form method="post">
-                    <input type="hidden" value="{{doc._id}}" id="appId"/>
-					<input type="hidden" value="{{user}}" id="userId" />
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th class="col-sm-2">Date</th>
-                            <th class="col-sm-6">Note</th>
-                            <th class="col-sm-3">Submitted By</th>
-							<th class="col-sm-3"></th>
-                        </tr>
-                        </thead>
-                        <tbody id="notes-body">
-                        {{#if vettingNotes}}
-                            {{#each vettingNotes}}
-                                <tr>
-                                    <td>{{this.date}}</td>
-                                    <td class="note-descrip">{{this.description}}</td>
-									<td class="note-vetAgent">{{this.vetAgent}}</td>
-									<td>
-                                        <form>
-                                            <!--Hidden field contains the ID for the note in this row-->
+            <div class="row">
+              <div class="col-xs-12 col-sm-6">
+                <h3>Vetting Summary</h3>
+                <a href="#" id="notes.vet_summary" data-type="textarea" data-pk="{doc._id}" data-url="/edit/{{doc._id}}" data-name="notes.vet_summary" data-title="Vetting Summary">{{doc.notes.vet_summary}}</a>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                <h3>Site Assessment Summary</h3>
+                <p>{{#if_not_eq doc.notes.site_summary ''}}{{doc.notes.site_summary}}{{else}}[no summary]{{/if_not_eq}}
+              </div>
+            </div>
 
-                                            <input type="hidden" value="{{this._id}}" name="noteId" />
-                                            <input type="submit" class="update-note btn btn-info" value="Update Note"/>
-                                            <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
-                                        </form>
+            <div class="row">
+              <div class="col-xs-12"><h3>Vetting Notes</h3>
+                <div class="form-group">
+                    <form method="post">
+                        <input type="hidden" value="{{doc._id}}" id="appId"/>
+              <input type="hidden" value="{{user}}" id="userId" />
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th class="col-sm-2">Date</th>
+                                <th class="col-sm-6">Note</th>
+                                <th class="col-sm-3">Submitted By</th>
+                  <th class="col-sm-3"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="notes-body">
+                            {{#if vettingNotes}}
+                                {{#each vettingNotes}}
+                                    <tr>
+                                        <td>{{this.date}}</td>
+                                        <td class="note-descrip">{{this.description}}</td>
+                      <td class="note-vetAgent">{{this.vetAgent}}</td>
+                      <td>
+                                            <form>
+                                                <!--Hidden field contains the ID for the note in this row-->
+
+                                                <input type="hidden" value="{{this._id}}" name="noteId" />
+                                                <input type="submit" class="update-note btn btn-info" value="Update Note"/>
+                                                <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                            {{else}}
+                                <!--if no notes for this application, display a row stating so-->
+                                <tr>
+                                    <td id="empty-notes" class="alert-danger danger" colspan="3">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
                                     </td>
                                 </tr>
-                            {{/each}}
-                        {{else}}
-                            <!--if no notes for this application, display a row stating so-->
+                            {{/if}}
+                            <!--The last row is the mini-form for submitting a new note-->
                             <tr>
-                                <td id="empty-notes" class="alert-danger danger" colspan="3">
-                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
+                                <td>
+
+                                    <button id="addNote" type="submit" class="btn btn-primary">Add Note</button>
+                                </td>
+                                <td colspan="2">
+                                    <textarea id="note" class="form-control" placeholder="Enter Note Here..."></textarea>
                                 </td>
                             </tr>
-                        {{/if}}
-                        <!--The last row is the mini-form for submitting a new note-->
-                        <tr>
-                            <td>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
 
-                                <button id="addNote" type="submit" class="btn btn-primary">Add Note</button>
-                            </td>
-                            <td colspan="2">
-                                <textarea id="note" class="form-control" placeholder="Enter Note Here..."></textarea>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </form>
+              </div>
             </div>
+
 
             <!--lone, hidden input for the HighlightPackage Id-->
             <input type="hidden" value="{{highlight._id}}" id="hl_Id"/>
@@ -608,6 +623,8 @@
                 $(id).editable("option", "pk", pk);
             })
         });
+
+        $('[id="notes.vet_summary"]').editable()
     });
 
     $('#csvExportButton').on('click', function(e) {

@@ -141,11 +141,13 @@ function isLoggedIn(req, res, next) {
 								//format user data to send to front end
 								results.user.salt = "";
 								results.user.hash = "";
-								var dobYear = results.user.contact_info.user_dob.dob_date.getFullYear();
-								//get month and day with padding since they are 0 indexed
-								var dobDay = ( "00" + results.user.contact_info.user_dob.dob_date.getDate()).slice(-2);
-								var dobMon = ("00" + (results.user.contact_info.user_dob.dob_date.getMonth()+1)).slice(-2);
-								results.user.contact_info.user_dob.dob_date = dobYear + "-" + dobMon + "-" + dobDay;
+								if(results.user.contact_info.user_dob.dob_date != null) {
+									var dobYear = results.user.contact_info.user_dob.dob_date.getFullYear();
+									//get month and day with padding since they are 0 indexed
+									var dobDay = ( "00" + results.user.contact_info.user_dob.dob_date.getDate()).slice(-2);
+									var dobMon = ("00" + (results.user.contact_info.user_dob.dob_date.getMonth()+1)).slice(-2);
+									results.user.contact_info.user_dob.dob_date = dobYear + "-" + dobMon + "-" + dobDay;
+								}
 								res.locals.results = results;
 								res.locals.email = results.user.contact_info.user_email;
 								res.locals.role = results.user.user_role;

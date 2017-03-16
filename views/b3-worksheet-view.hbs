@@ -19,77 +19,12 @@
 <a href="/view/{{doc._id}}" class="btn btn-primary">Back to Application View</a>
 <a id="csvExportButton" class="btn btn-primary">Export to CSV</a>
 
+
 <div class="container col-xs-12">
 		<h1>{{doc.application.name.first}} {{doc.application.name.last}} - Vetting Worksheet</h1>
 		<h3>Status: <a href="#" id="status" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="status" data-title="Select status"></a></h3>
 		</div>
 
-
-<div class="container col-xs-12">
-	<div class="row">
-		<div class="col-xs-12">
-			<!--VETTING NOTES-->
-			<h3>Vetting Notes</h3>
-	    <div class="form-group">
-	        <form method="post">
-	            <input type="hidden" value="{{doc._id}}" id="appId"/>
-				<input type="hidden" value="{{user}}" id="userId"/>
-	            <table class="table table-striped">
-	                <thead>
-	                <tr>
-	                    <th class="col-sm-2">Date</th>
-	                    <th class="col-sm-6">Note</th>
-						<th class="col-sm-3">Submitted By</th>
-	                    <th class="col-sm-3"></th>
-	                </tr>
-	                </thead>
-	                <tbody id="notes-body">
-	                {{#if vettingNotes}}
-	                    {{#each vettingNotes}}
-	                        <tr>
-	                            <td>{{this.date}}</td>
-	                            <td class="note-descrip">{{this.description}}</td>
-								<td class="note-vetAgent">{{this.vetAgent}}</td>
-	                            <td>
-	                                <form>
-	                                    <input type="hidden" value="{{this._id}}" name="noteId" />
-	                                    <input type="submit" class="update-note btn btn-info" value="Update Note"/>
-	                                    <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
-	                                </form>
-	                            </td>
-	                        </tr>
-	                    {{/each}}
-	                {{else}}
-	                    <tr>
-	                        <td id="empty-notes" class="alert-danger danger" colspan="3">
-	                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
-	                        </td>
-	                    </tr>
-	                {{/if}}
-
-					<tr><!--THIS EMPTY ROW IS NECESSARY FOR addNote.js TO WORK ON MULTIPLE PAGES--></tr>
-	                </tbody>
-	            </table>
-	        </form>
-	    </div>
-	</div>
-
-	<div class="container col-xs-12 col-sm-6">
-		<h3>Vetting Summary</h3>
-		<p>Use the space below to summarize this application.</p>
-		<!-- TODO: Set this url -->
-		<p><a href="#" id="notes.vet_summary" data-type="textarea" data-url="/edit/{{doc._id}}" data-pk="{{doc._id}}">{{doc.notes.vet_summary}}</a></p>
-	</div>
-
-	<div class="col-xs-12 col-sm-6">
-		<h3>Site Assessment Summary</h3>
-		{{#if_not_eq doc.notes.site_summary ''}}
-			<p>{{doc.notes.site_summary}}</p>
-		{{/if_not_eq}}
-	</div>
-</div>
-
-<hr>
 
 		<!-- ADDRESS AREA AND MAP IT LINK -->
 <div class="container col-xs-12">
@@ -762,6 +697,127 @@
 </div>
 
 
+	<hr/>
+<div class="container col-xs-12">
+	<div class="row">
+		<div class="col-xs-12 col-sm-4">
+			<h3>Vetting Summary</h3>
+			<!-- TODO: Set this url -->
+			<p><a href="#" id="notes.vet_summary" data-type="textarea" data-url="/edit/{{doc._id}}" data-pk="{{doc._id}}">{{doc.notes.vet_summary}}</a></p>
+		</div>
+		<div class="col-xs-12 col-sm-8">
+			<!--VETTING NOTES-->
+			<h3>Vetting Notes</h3>
+	    <div class="form-group">
+	        <form method="post">
+	            <input type="hidden" value="{{doc._id}}" id="appId"/>
+				<input type="hidden" value="{{user}}" id="userId"/>
+	            <table class="table table-striped">
+	                <thead>
+	                <tr>
+	                    <th class="col-sm-2">Date</th>
+	                    <th class="col-sm-6">Note</th>
+						<th class="col-sm-3">Submitted By</th>
+	                    <th class="col-sm-3"></th>
+	                </tr>
+	                </thead>
+	                <tbody id="notes-body">
+	                {{#if vettingNotes}}
+	                    {{#each vettingNotes}}
+	                        <tr>
+	                            <td>{{this.date}}</td>
+	                            <td class="note-descrip">{{this.description}}</td>
+								<td class="note-vetAgent">{{this.vetAgent}}</td>
+	                            <td>
+	                                <form>
+	                                    <input type="hidden" value="{{this._id}}" name="noteId" />
+	                                    <input type="submit" class="update-note btn btn-info" value="Update Note"/>
+	                                    <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
+	                                </form>
+	                            </td>
+	                        </tr>
+	                    {{/each}}
+	                {{else}}
+	                    <tr>
+	                        <td id="empty-notes" class="alert-danger danger" colspan="3">
+	                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
+	                        </td>
+	                    </tr>
+	                {{/if}}
+
+					<tr><!--THIS EMPTY ROW IS NECESSARY FOR addNote.js TO WORK ON MULTIPLE PAGES--></tr>
+	                </tbody>
+	            </table>
+	        </form>
+	    </div>
+	</div>
+
+	<div class="row" id="workItemCards">
+
+		<div class="col-xs-12 col-sm-4 col-md-3">
+			<h3>Site Assessment Summary</h3>
+			{{#if_not_eq doc.notes.site_summary ''}}
+				<p>{{doc.notes.site_summary}}</p>
+			{{else}}
+				<p>[no summary]</p>
+			{{/if_not_eq}}
+			<h3>Work Items</h3>
+			<div class="panel panel-primary work-item" name="new">
+				<div class="panel-body">
+					<h4 class="card-title">New Work Item</h4>
+					<p class="card-text">
+						<div class="form-group">
+							<label class="form-control-label">Name*</label>
+							<input type="text" class="form-control" name="name"></input>
+						</div>
+						<div class="form-group">
+							<label class="form-control-label">Description*</label>
+							<textarea class="form-control" name="description" rows="3"></textarea>
+						</div>
+						<div class="form-group">
+							<label class="form-control-label">Vetting Comments*</label>
+							<textarea class="form-control" name="vettingComments" rows="3"></textarea>
+						</div>
+						<div class="form-group">
+							<label class="form-control-label">Cost</label>
+							<input type="cost" class="form-control" name="cost"></input>
+						</div>
+					</p>
+					<a href="#" class="btn btn-primary card-link work-item-new">Save</a>
+					<a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
+				</div>
+			</div>
+		</div>
+
+		{{#each workItems}}
+			<div class="col-xs-12 col-sm-4 col-md-3">
+				<div class="panel panel-default work-item" name="{{_id}}">
+					<div class="panel-body">
+						<h4 class="card-title" name="{{_id}}.name">{{name}}</h4>
+						<p class="text-muted">{{date}}</p>
+						<p class="card-text">
+							<strong>Description:</strong><br/>
+							<span name="{{_id}}.description">{{description}}</span><br/>
+							<br/>
+							<strong>Vetting comments:</strong><br/>
+							<span name="{{_id}}.vettingComments">{{vettingComments}}</span><br/>
+							<br/>
+							<strong>Site comments:</strong><br/>
+							{{siteComments}}<br/>
+							<br/>
+							<strong>Cost:</strong><br/>
+							<span name="{{_id}}.cost">{{cost}}</span>
+						</p>
+						<a href="#" class="btn btn-primary card-link work-item-edit">Edit</a>
+						<a href="#" class="btn btn-danger card-link work-item-delete">Delete</a>
+					</div>
+				</div>
+			</div>
+		{{/each}}
+	</div>
+</div>
+
+
 
 <script src="/javascript/serviceArea.js" type="text/javascript"></script>
 
@@ -776,6 +832,9 @@
         window.history.back();
     }
 
+
+	var workItems = {{{stringify workItems}}}
+	var docs = {{{stringify doc}}}
 	/*service Area buttons
 	*
 	*/
@@ -792,6 +851,10 @@
 		    {{/if}}
 		{{/if}}
 
+		$('.work-item-edit').each(watchEditButton)
+		$('.work-item-delete').on('click', showWorkItemDeleteConfirm)
+		$('.work-item-new').on('click', handleNewWorkItemSubmission)
+		$('.work-item-clear').on('click', handleNewWorkItemClear)
 
 
 
@@ -1438,8 +1501,8 @@
 
 		//check for error
 		posting.done(function (xhr) {
-			if(xhr.status === 'success' || xhr.status === 200) {
-				next(null)
+		  if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
+				next(null, xhr)
 			}
 			else {
 				next(new Error('Could not complete xhr'))
@@ -1451,7 +1514,347 @@
 		});
 	}
 
+	function watchEditButton(idx) {
+		$(this).on('click', showWorkItemEditForm)
+	}
 
+	function showWorkItemEditForm(e) {
+		e.preventDefault()
+		var workItemParent = this.parentElement
+		var workItemContainer = $(workItemParent)
+		var workItemId = $(workItemParent.parentElement).attr('name')
+
+		var currentData = {}
+		$('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+			var path = $(this).attr('name').replace(workItemId + '.', '')
+			currentData[path] = this.innerText
+		})
+
+		workItemContainer.empty()
+
+		var fields = [
+			{field: 'name', text:'Name'},
+			{field: 'description', text: 'Description', type: 'textarea'},
+			{field: 'vettingComments', text: 'Vetting Comments', type: 'textarea'},
+			{field: 'cost', text: 'Cost'},
+		]
+
+		fields.forEach(function(f) {
+			var formGroup = $('<div class="form-group"></div>')
+			$('<label>' + f.text + '</label>').appendTo(formGroup)
+			if (f.type && f.type === 'textarea') {
+				$('<textarea></textarea>')
+				.addClass('form-control')
+				.attr('name', workItemId + '.' + f.field)
+				.attr('rows', 5)
+				.val(currentData[f.field])
+				.appendTo(formGroup)
+			} else {
+				$('<input></input>')
+				.addClass('form-control')
+				.attr('name', workItemId + '.' + f.field)
+				.val(currentData[f.field])
+				.appendTo(formGroup)
+			}
+
+			workItemContainer.append(formGroup)
+		})
+
+		$('<button></button>')
+		.text('Save')
+		.addClass('btn').addClass('btn-primary')
+		.addClass('card-link')
+		.on('click', function(e) {
+			saveWorkItem(workItemContainer)
+		})
+		.appendTo(workItemContainer)
+
+		$('<button></button>')
+		.text('Cancel')
+		.addClass('btn').addClass('btn-danger')
+		.addClass('card-link')
+		.on('click', function(e) {
+			for (let i=0; i<workItems.length; i++) {
+				if (workItems[i]._id === workItemId) {
+					showWorkItem(workItems[i], workItemContainer)
+				}
+			}
+		})
+		.appendTo(workItemContainer)
+	}
+
+	function showWorkItem(data, node) {
+		node.empty()
+
+		var cardBlock = node
+
+		$('<h4></h4>').addClass('card-title')
+		.attr('name', data._id + '.name')
+		.text(data.name)
+		.appendTo(cardBlock)
+
+		$('<p></p>').addClass('text-muted')
+		.text(new Date(data.date).toString())
+		.appendTo(cardBlock)
+
+		var cardText = $('<p></p>').addClass('card-text')
+		.appendTo(cardBlock)
+
+		$('<strong>Description:</strong>').appendTo(cardText)
+		$('<br></br>').appendTo(cardText)
+
+		$('<span></span>')
+		.attr('name', data._id + '.description')
+		.text(data.description)
+		.appendTo(cardText)
+
+		$('<br></br>').appendTo(cardText)
+		$('<br></br>').appendTo(cardText)
+
+		$('<strong>Vetting Comments:</strong>').appendTo(cardText)
+		// $('<br></br>').appendTo(cardText)
+
+		$('<p></p>').text(data.vettingComments)
+		.attr('name', data._id + '.vettingComments')
+		.appendTo(cardText)
+		$('<br></br>').appendTo(cardText)
+
+		$('<strong>Site Comments:</strong>').appendTo(cardText)
+		$('<br></br>').appendTo(cardText)
+
+		$('<p></p>')
+		.text(data.siteComments).appendTo(cardText)
+		$('<br></br>').appendTo(cardText)
+
+		$('<strong>Cost:</strong>').appendTo(cardText)
+		$('<br></br>').appendTo(cardText)
+
+		$('<span></span>')
+		.attr('name', data._id + '.cost')
+		.text(data.cost)
+		.appendTo(cardText)
+
+		$('<a></a>').addClass('btn').addClass('btn-primary')
+		.addClass('card-link').addClass('work-item-edit')
+		.text('Edit')
+		.attr('href', '#')
+		.on('click', showWorkItemEditForm)
+		.appendTo(cardBlock)
+
+		$('<a></a>').addClass('btn').addClass('btn-danger')
+		.addClass('card-link').addClass('work-item-delete')
+		.text('Delete')
+		.attr('href', '#')
+		.on('click', showWorkItemDeleteConfirm)
+		.appendTo(cardBlock)
+	}
+
+	function saveWorkItem(node) {
+		var data = {}, id = false
+		$('input, textarea', node).each(function(idx) {
+			var path = this.name.split('.')[1]
+			data[path] = this.value
+			if (!id) id = this.name.split('.')[0]
+		})
+
+		// XHR here
+		var xhrData = JSON.parse(JSON.stringify(data))
+		xhrData.id = id
+
+		xhr(xhrData, 'POST', '/site/updateitem', function(err) {
+			if (err) {
+				// TODO: If error, flip the value back and show an error message to the user
+				// alert('Value did not save, please reload the page')
+			}
+
+			for (var i=0; i<workItems.length; i++) {
+				if (workItems[i]._id === id) {
+					Object.keys(data).forEach(function(k) {
+						workItems[i][k] = data[k]
+					})
+
+					showWorkItem(workItems[i], node)
+				}
+			}
+		})
+
+
+
+
+
+
+	}
+
+	function handleNewWorkItemSubmission(e) {
+		if (e) e.preventDefault()
+    var newWorkItem = {}, error = false
+
+    $('input, textarea', e.target.parentNode).each(function(idx) {
+      if (this.value.length === 0 && this.name !== 'cost') {
+        $(this.parentNode).addClass('has-error')
+        error = true
+      } else {
+        newWorkItem[this.name] = this.value
+        $(this.parentNode).removeClass('has-error')
+      }
+    })
+
+    if (error === false) {
+      createNewWorkItem(newWorkItem, function(err) {
+        handleNewWorkItemClear()
+      })
+    }
+  }
+
+  function handleNewWorkItemClear(e, node) {
+		if (e) e.preventDefault()
+    $('input, textarea', (e ? e.target.parentNode : node)).each(function(idx) {
+      $(this).val('')
+      $(this.parentNode).removeClass('has-error')
+    })
+  }
+
+  function createNewWorkItem(w, next) {
+    var id = docs._id
+    var rightNow = new Date()
+
+    w.date = rightNow
+    w.updated = rightNow
+    w.applicationId = id
+
+    xhr(w, 'POST', '/site/additem', function(err, data) {
+      // TODO: Handle error
+      if (err) { alert('There was an error saving your work item') }
+      w._id = data.itemId
+      workItems.push(w)
+      var newNode = addWorkItem(w)
+      handleNewWorkItemClear(null, $('[name="new"]'))
+
+    })
+  }
+
+  function addWorkItem(w) {
+    var cardContainer = $('#workItemCards')
+
+    var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-4').addClass('col-md-3')
+    .appendTo(cardContainer)
+
+    var card = $('<div></div>').addClass('panel panel-default').addClass('work-item')
+    .attr('name', w._id)
+    .appendTo(cardDiv)
+
+    var cardBlock = $('<div></div>').addClass('panel-body')
+    .appendTo(card)
+
+
+    $('<h4></h4>').addClass('card-title')
+    .attr('name', w._id + '.name')
+    .text(w.name)
+    .appendTo(cardBlock)
+
+    $('<p></p>').addClass('text-muted')
+    .text(w.date.toString())
+    .appendTo(cardBlock)
+
+    var cardText = $('<p></p>').addClass('card-text')
+    .appendTo(cardBlock)
+
+    $('<strong>Description:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<span></span>')
+    .attr('name', w._id + '.description')
+    .text(w.description)
+    .appendTo(cardText)
+
+    $('<br></br>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Vetting Comments:</strong>').appendTo(cardText)
+    // $('<br></br>').appendTo(cardText)
+
+    $('<p></p>').text(w.vettingComments).appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Site Comments:</strong>').appendTo(cardText)
+    // $('<br></br>').appendTo(cardText)
+
+    $('<p></p>').text(w.siteComments).appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Cost:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<span></span>')
+    .attr('name', w._id + '.cost')
+    .text(w.cost)
+    .appendTo(cardText)
+
+    $('<a></a>').addClass('btn').addClass('btn-primary')
+    .addClass('card-link').addClass('work-item-edit')
+    .text('Edit')
+    .attr('href', '#')
+    .on('click', showWorkItemEditForm)
+    .appendTo(cardBlock)
+
+		$('<a></a>').addClass('btn').addClass('btn-danger')
+		.addClass('card-link').addClass('work-item-delete')
+		.text('Delete')
+		.attr('href', '#')
+		.on('click', showWorkItemDeleteConfirm)
+		.appendTo(cardBlock)
+
+    return cardBlock
+  }
+
+	function showWorkItemDeleteConfirm(e) {
+		e.preventDefault()
+		var workItemParent = this.parentElement
+		var workItemContainer = $(workItemParent)
+		var workItemId = $(workItemParent.parentElement).attr('name')
+
+		var currentData = {}
+		$('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+			var path = $(this).attr('name').replace(workItemId + '.', '')
+			currentData[path] = this.innerText
+		})
+
+		workItemContainer.empty()
+
+		$('<h4>Are you sure?</h4>').appendTo(workItemParent)
+		$('<p>You are about to delete this work item. After selecting confirm, you '
+			+ 'will be unable to recover the item.</p>').appendTo(workItemParent)
+
+		$('<a>Continue</a>').addClass('btn').addClass('btn-primary')
+		.appendTo(workItemParent)
+		.on('click', function(e) {
+			deleteWorkItem(workItemId, workItemParent)
+		})
+
+		$('<a>Cancel</a>').addClass('btn').addClass('btn-danger')
+		.appendTo(workItemParent)
+		.on('click', function(e) {
+			e.preventDefault()
+			for (let i=0; i<workItems.length; i++) {
+				if (workItems[i]._id === workItemId) {
+					showWorkItem(workItems[i], workItemContainer)
+				}
+			}
+		})
+	}
+
+	function deleteWorkItem(id, node) {
+		xhr({itemId: id}, 'POST', '/vettingworksheet/deleteitem', function(err, data) {
+			if (err) { alert('Unable to delete item') }
+			else {
+				var workItemRoot = $('[name="' + id + '"]')
+				workItemRoot.remove()
+				for (var i=0; i<workItems.length; i++) {
+					if (workItems[i]._id == id) { workItems.splice(i, 1) }
+				}
+			}
+		})
+	}
 
 $('#csvExportButton').on('click', function(e) {
 	var urlParts = window.location.pathname.split('/')
@@ -1487,5 +1890,7 @@ $('#csvExportButton').on('click', function(e) {
     })
 
 
+
+// Work items
 
 </script>
