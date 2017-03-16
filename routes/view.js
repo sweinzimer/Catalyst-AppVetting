@@ -63,6 +63,7 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
 
 	var columns = [
 	  ["_id.$oid", "Object ID"],
+		["app_year", "Application Year"],
 	  ["app_name", "Application ID"],
 	  ["highlightPackage.$oid", "Highlight Package OID"],
 	  ["status", "Status"],
@@ -155,10 +156,10 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
 	  ["advocate.relationship", "Advocate Relationship"],
 	  ["advocate.organization_name", "Advocate Organization Name"],
 	  ["updated.$date", "Updated on"],
-	  ["__v", "__v"],
 	  ["service_area", "In Service Area"],
 		["notes.vet_summary", "Vetting Summary"],
-		["finance.total_income.value", "Total Income Value"]
+		["finance.total_income.value", "Total Income Value"],
+		["notes.site_summary", "Site Summary"]
 	]
 
 
@@ -195,11 +196,13 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
 						var data = k + "," + '"' + v + '"' + "\n";
 						//console.log(data);
 						//Write the data to file.
-						fs.appendFileSync('public/exports/'+filename+'.csv', data, 'utf8', function(err){
-							if(err){
-								return console.error(err);
-							}
-						});
+						if(!k.includes(".level") && !k.includes("__v")){
+							fs.appendFileSync('public/exports/'+filename+'.csv', data, 'utf8', function(err){
+								if(err){
+									return console.error(err);
+								}
+							});
+						}	
 					}
 			}
 
