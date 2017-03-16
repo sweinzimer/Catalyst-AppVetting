@@ -196,13 +196,13 @@ router.post('/csvExport', isLoggedInPost, function(req, res){
 						var data = k + "," + '"' + v + '"' + "\n";
 						//console.log(data);
 						//Write the data to file.
-						if(!k.includes(".level") && !k.includes("__v")){
+						if(!k.includes("level") && !k.includes("__v")){
 							fs.appendFileSync('public/exports/'+filename+'.csv', data, 'utf8', function(err){
 								if(err){
 									return console.error(err);
 								}
 							});
-						}	
+						}
 					}
 			}
 
