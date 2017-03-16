@@ -48,15 +48,51 @@
                 <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/view">Vetting</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="/application/add">Apply</a>
             </li>
+
+            {{#if_eq role "ADMIN"}}
+            <li class="nav-item">
+              <a class="nav-link" href="/view">Vetting</a>
+            </li>
+            {{/if_eq}}
+            {{#if_eq role "VET"}}
+            <li class="nav-item">
+              <a class="nav-link" href="/view">Vetting</a>
+            </li>
+            {{/if_eq}}
+            {{#if_eq role "ADMIN"}}
+              <li class="nav-item">
+                  <a class="nav-link" href="/user/userList">Users</a>
+              </li>
+            {{/if_eq}}
+
+            {{#if_eq role "ADMIN"}}
+            <li class="nav-item">
+              <a class="nav-link" href="/site">Site Assessment</a>
+            </li>
+            {{/if_eq}}
+
+            {{#if_eq role "VET"}}
+            <li class="nav-item">
+              <a class="nav-link" href="/site">Site Assessment</a>
+            </li>
+            {{/if_eq}}
+
+            {{#if_eq role "SITE"}}
+            <li class="nav-item">
+              <a class="nav-link" href="/site">Site Assessment</a>
+            </li>
+            {{/if_eq}}
         </ul>
         <div class="navbar-right">
-          Logged in as: {{user_email}}
-          <a href="/user/logout" class="btn btn-sm btn-info">Log out</a>
+          <div id="noUserNav" style="display:none;">
+            <a href="/user/login" class="btn btn-sm btn-info">Log in</a>
+          </div>
+          <div id="userNav" style="display:none;">
+            Logged in as: <a class="navbar-right-link" href="/user/editUser">{{user_email}}</a>
+            <a href="/user/logout" class="btn btn-sm btn-info">Log out</a>
+          </div>
         </div>
     </div> <!-- navbar-toggleable-s -->
 
@@ -64,7 +100,7 @@
 
 <!-- Being CatalystPartnerships logo and toolbox -->
 <div class="container-fluid" id="imageBar">
-    <div class="row">
+    <div class="row" style="max-width:100%;">
         <div class="col-sm-12 hidden-sm-down">
             <img src="/images/cPart.png" id="cPart">
         </div>
@@ -73,3 +109,25 @@
         </div>
     </div>
 </div>
+
+<br/>
+
+<style>
+  .navbar-right-link { color: #88adce; text-decoration: none; }
+  .navbar-right-link:hover { color: #88adce; text-decoration: underline; }
+</style>
+
+<script>
+{{#if user}}
+  var user = "{{{ user_email }}}"
+{{else}}
+  var user = false
+{{/if}}
+
+  if (user !== false) {
+    $('#userNav').css('display', 'inline-block')
+  } else {
+    $('#noUserNav').css('display', 'inline-block')
+  }
+
+</script>

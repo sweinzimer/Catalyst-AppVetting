@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h1>Users</h1>
+    <p>Select a user to view and edit their profile</p>
+    <p>
+      <a href="/user/register" class="btn btn-primary btn-large">
+        Add new user
+      </a>
+    </p>
+  </div>
+  <div class="col-sm-9">
+    {{#each results.users}}
+      <a href="/user/editUser/{{this._id}}">
+        <div class="card">
+          <div class="card-block">
+            <h4 class="card-title">
+              {{this.contact_info.user_name.user_first}}
+              {{this.contact_info.user_name.user_middle}}
+              {{this.contact_info.user_name.user_last}}
+              {{#if this.contact_info.user_name.user_preferred}}
+                ({{this.contact_info.user_name.user_preferred}})
+              {{/if}}
+            </h4>
+            <h6 class="card-subtitle mb-2 text-muted">
+              Role: {{this.user_role}}<br/>
+              Email: {{this.contact_info.user_email}}<br/>
+            </h6>
+          </div>
+        </div>
+      </a>
+    {{/each}}
+  </div>
+</div>

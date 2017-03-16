@@ -31,7 +31,7 @@ router.get('/:id', isLoggedIn, function(req, res) {
         doc: DocumentPackage.findOne({_id: ObjectId(req.params.id)}).lean().execAsync(),
         vettingNotes: VettingNotePackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
 
-        finances: FinPackage.find({appID: ObjectId(req.params.id)}).lean().execAsync(),
+        finances: FinPackage.find({appID: ObjectId(req.params.id)}).sort([['_id', 1]]).lean().execAsync(),
     		workItems: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
     		highlight: highlightPackage.findOne({"documentPackage": ObjectId(req.params.id)}).lean().execAsync(),
 
@@ -51,6 +51,15 @@ router.get('/:id', isLoggedIn, function(req, res) {
 
                 result.doc.application.dob.date = dobYear + "-" + dobMon + "-" + dobDay;
             }
+			
+			if(result.doc.service_area == null) {
+				console.log("no service area value");
+				result.service = false;
+			}
+			else {
+				console.log("there is a service area value");
+				result.service = true;
+			}
 
             // format vetting notes dates
             if(result.vettingNotes.length != 0)
@@ -95,7 +104,7 @@ router.get('/:id', isLoggedIn, function(req, res) {
 
 
 //Insert CSV export route here
-router.post('/csvExport', function(req, res){
+router.post('/csvExport', isLoggedInPost, function(req, res){
 
 
   var applicationID = req.body.application;
@@ -193,7 +202,7 @@ var fileName = req.params.name;
 
 
 router.route('/servicearea')
-    .post(api.updateService, function(req, res) {
+    .post(isLoggedInPost, api.updateService, function(req, res) {
 	if(res.locals.status != '200'){
         res.status(500).send("Could not update field");
     }
@@ -204,7 +213,7 @@ router.route('/servicearea')
 
 
 router.route('/additem')
-	.post(api.addWorkItem, function(req, res) {
+	.post(isLoggedInPost, api.addWorkItem, function(req, res) {
 	if(res.locals.status != '200'){
         res.status(500).send("Could not add field");
     }
@@ -214,7 +223,7 @@ router.route('/additem')
 	});
 
 router.route('/deleteitem')
-	.post(api.deleteWorkItem, function(req, res) {
+	.post(isLoggedInPost, api.deleteWorkItem, function(req, res) {
 	if(res.locals.status != '200'){
         res.status(500).send("Could not delete field");
     }
@@ -224,7 +233,7 @@ router.route('/deleteitem')
 	});
 
 router.route('/updateitem')
-	.post(api.updateWorkItem, function(req, res) {
+	.post(isLoggedInPost, api.updateWorkItem, function(req, res) {
 	if(res.locals.status != '200'){
         res.status(500).send("Could not update field");
     }
@@ -234,7 +243,7 @@ router.route('/updateitem')
 	});
 
 router.route('/finacialForm')
-	.post(api.updateFinance, function(req, res) {
+	.post(isLoggedInPost, api.updateFinance, function(req, res) {
 		if(res.locals.status != 200) {
 			res.status(500).send("could not update field");
 		}
@@ -243,6 +252,24 @@ router.route('/finacialForm')
 		}
 	});
 
+router.route('/displayYear')
+	.post(isLoggedInPost, api.getDocsByYear, function(req, res) {
+		if(res.locals.status != 200) {
+			res.status(500).send("could not update field");
+		}
+		else {
+			res.json(res.locals);
+		}
+	});
+		
+//route catches invalid post requests.
+router.use('*', function route2(req, res, next) {
+	if(res.locals.status == '406'){
+		console.log("in error function");
+        res.status(406).send("Could not update note");
+		res.render('/user/login');
+    }
+});	
 
 return router;
 }
@@ -294,3 +321,58 @@ function isLoggedIn(req, res, next) {
 			res.redirect('/user/login');
 		}
 }
+
+
+
+
+//post request authenticator.  Checks if user is an admin or vetting agent
+function isLoggedInPost(req, res, next) {
+		if(req.isAuthenticated()) {
+			console.log(req.user._id);
+			var userID = req.user._id.toString();
+
+			var ObjectId = require('mongodb').ObjectID;
+
+			Promise.props({
+				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+			})
+			.then(function (results) {
+				console.log(results);
+
+					if (!results) {
+						//user not found in db.  Route to error handler
+						res.locals.status = 406;
+						return next('route');
+					}
+					else {
+
+						if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
+							res.locals.role = results.user.user_role;
+							return next();
+
+						}
+						else {
+							//user is not a vetting agent or admin, route to error handler
+							res.locals.status = 406;
+							return next('route');
+						}
+					}
+
+
+
+			})
+
+		.catch(function(err) {
+                console.error(err);
+        })
+         .catch(next);
+		}
+		else {
+			//user is not logged in
+			console.log("no user id");
+			res.locals.status = 406;
+			return next('route');
+		}
+}
+
+

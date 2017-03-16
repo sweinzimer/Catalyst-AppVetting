@@ -24,9 +24,11 @@ ObjectId = Schema.ObjectId;
 
 var WorkItemSchema = new Schema({
     date:   { type: Date, default: Date.now},
+	updated: Date,
 	name:  String,
     description: String,
 	vettingComments: String,
+	siteComments: String,
 	cost: String,
 	applicationId: { type: ObjectId }
 });

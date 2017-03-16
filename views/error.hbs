@@ -1,3 +1,16 @@
-<h1>{{message}}</h1>
-<h2>{{error.status}}</h2>
-<pre>{{error.stack}}</pre>
+<div class='row'>
+  <div class='col-xs-12 col-sm-8'>
+    <h1>Uh oh!</h1>
+    <h4>It looks like you got to this page in error. If possible, use your browser's
+      back button to navigate to where you were. If this causes any problems,
+      please let a member of the catalyst team know at
+      <a href="mailto:admin@catalystnw.org">admin@catalystnw.org</a>
+    </h4>
+  </div>
+
+  <div class='col-xs-12 col-sm-8'>
+    <hr />
+    <h4>Development error: {{error.status}} {{message}}</h4>
+    <pre>{{error.stack}}</pre>
+  </div>
+</div>
