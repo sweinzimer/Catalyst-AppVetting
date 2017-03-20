@@ -1,9 +1,12 @@
 #!/bin/bash
-
+PATH='/home/ubuntu/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
 #Delete local directory that is 30 days old
-arr=($(ls))
-rm -r ${arr[29]}
+cd /home/ubuntu/Capricornus---Catalyst/db_backups
+arrLocal=($(ls))
+
 
 #Delete S3 backup that is 30 days old
-arr=($(aws s3 ls s3://catalystbackuptest/db_backups/))
-aws s3 rm s3://catalystbackuptest/db_backups/${arr[29]:0:19} --recursive
+arrRemote=($(aws s3 ls s3://catalystnwbackup/db_backups/))
+aws s3 rm s3://catalystnwbackup/db_backups/${arrRemote[1]:0:22} --recursive
+
+sudo rm -r ${arrLocal[0]}

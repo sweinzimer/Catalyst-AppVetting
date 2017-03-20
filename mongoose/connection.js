@@ -15,21 +15,21 @@ var remote_url = config.ec2.public_ip;              // Connects to the public IP
 var uri = 'mongodb://'
     + config.mongo.username
     + ':'
-    + config.mongo.password
+    + encodeURIComponent(config.mongo.password)
     + '@'
-    + config.ec2.public_ip
+    + config.mongo.host
     + ':'
     + config.mongo.port
     + '/'
     + config.mongo.db
-
-    + '?authSource=';
+    + '?authSource='
+    + config.mongo.authSource;
 
 
 
 // Connect to the URL
 // mongoose.connect(uri, options);
-mongoose.connect(uri);
+mongoose.connect(uri, {uri_decode_auth: true});
 mongoose.connection.on('error', console.error.bind(console, '[ DATABASE ] Connection :: Connection response: '));
 mongoose.connection.once('open', function () {
     console.log('[ DATABASE ] Connection :: Successfully connected to the database: ' + config.mongo.db);
