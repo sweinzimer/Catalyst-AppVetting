@@ -17,7 +17,7 @@ var uri = 'mongodb://'
     + ':'
     + encodeURIComponent(config.mongo.password)
     + '@'
-    + config.ec2.public_ip
+    + config.mongo.host
     + ':'
     + config.mongo.port
     + '/'
