@@ -171,9 +171,10 @@ app.use(function(req, res, next) {
         req.socket.remoteAddress ||
         req.connection.socket.remoteAddress;
     console.log('[ ' + req.method + ' ] request made from ' + 'IP: ' + ip);
-    if(req.get('X-Forwaded-Proto') == 'http'){
+    if(req.get('X-Forwarded-Proto') == 'http'){
       res.redirect('https://' + req.get('Host') + req.url);
     }
+	else
     next();
 });
 
