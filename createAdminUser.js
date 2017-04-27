@@ -18,7 +18,7 @@ var config = require('./config').createAdminUser
 
 var adminUser = {
   "contact_info": {
-    "user_email": email,
+    "user_email": config.email,
     "user_name": {
       "user_first": "Dave",
       "user_middle": "",
@@ -41,8 +41,8 @@ var adminUser = {
       "uec_phone": "adsf"
     }
   },
-  "password": password,
-  "password-confirm": password,
+  "password": config.password,
+  "password-confirm": config.password,
   "user_status": "ACTIVE",
   "user_documents": {
     "ID_Date": "9999-03-04T00:00:00.000Z",
