@@ -344,6 +344,16 @@
 				</td>
 			</tr>
 		{{/if}}
+		
+		{{#if highlight.application.heard_about}}
+			<tr>
+				<td><a id="application.heard_about" class="highlight">{{highlight.application.heard_about}}</a></td>
+				<td>How Heard about Catalyst</td>
+				<td>
+					<a href="#" id="heard_about" data-type="textarea" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.heard_about" data-title="Enter how you heard about Catalyst">{{doc.application.heard_about}}</a>
+				</td>
+			</tr>
+		{{/if}}
 
 		<tr><td colspan="3"><b>Property Clarification:</b></td></tr>
 
@@ -490,14 +500,14 @@
 		{{#if highlight.property.client_can_contribute}}
 			<tr>
 				<td><a id="property.client_can_contribute" class="highlight">{{highlight.property.client_can_contribute}}</a></td>
-				<td>Client Can Contribute Labor</td>
+				<td>Client Can Contribute Labor/Materials</td>
 				<td>
 					<a href="#" id="l_client_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.client_can_contribute.value" data-title="Can Client Contribute Labor?"></a>
 				</td>
 			</tr>
 			<tr>
 				<td></td>
-				<td>Client Labor Contribution</td>
+				<td>Client Labor/Materials Contribution</td>
 				<td><a href="#" id="l_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.client_can_contribute.description" data-title="Enter Contribution Description">{{doc.property.client_can_contribute.description}}</a></td>
 			</tr>
 		{{/if}}
@@ -505,14 +515,14 @@
 		{{#if highlight.property.associates_can_contribute}}
 			<tr>
 				<td><a id="property.associates_can_contribute" class="highlight">{{highlight.property.associates_can_contribute}}</a></td>
-				<td>Associates Can Contribute Labor</td>
+				<td>Associates Can Contribute Labor/Materials</td>
 				<td>
 					<a href="#" id="l_associate_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.associates_can_contribute.value" data-title="Can Associates Contribute Labor?"></a>
 				</td>
 			</tr>
 			<tr>
 				<td></td>
-				<td>Associate Labor Contribution</td>
+				<td>Associate Labor/Materials Contribution</td>
 				<td><a href="#" id="l_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.associates_can_contribute.description" data-title="Enter Contribution Description">{{doc.property.associates_can_contribute.description}}</a></td>
 			</tr>
 		{{/if}}
