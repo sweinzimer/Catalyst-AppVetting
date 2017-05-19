@@ -20,9 +20,9 @@ var adminUser = {
   "contact_info": {
     "user_email": config.email,
     "user_name": {
-      "user_first": "Dave",
+      "user_first": config.first,
       "user_middle": "",
-      "user_last": "Martinez",
+      "user_last": config.last,
       "user_preferred": ""
     },
     "user_dob": {
