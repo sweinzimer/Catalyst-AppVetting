@@ -99,7 +99,7 @@ var DocumentPackageSchema = new Schema({
             line_2:     String,
             city:       String,
             state:      String,
-            zip:        Number
+            zip:        String    //CHANGED FROM Number
         },
         emergency_contact:  {
             name:           String,

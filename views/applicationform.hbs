@@ -2,9 +2,7 @@
   -- It uses appAdd.js as its back-end form handler, as well as ifyes.js and
   -- noalert.js for some front end goodies, all stored in public/javascripts -->
 
-  <!-- NOTE: REQUIRED FIELDS have been deleted from this form,
-    -- other than the final checkbox and digital signature.
-	-- The required fields include (by name or textarea id):
+  <!-- NOTE: REQUIRED FIELDS include (by name or textarea id):
 	-- owns_home
 	-- mortgage_up_to_date
 	-- firstName
@@ -24,8 +22,8 @@
 	-- propertyType
 	-- timePropertyOwned
 	-- yearPropertyBuilt
-	-- tac-yes (already required)
-	-- signature (already required)
+	-- tac-yes 
+	-- signature 
 	-->
 <link rel="stylesheet" type="text/css" href="/stylesheets/formStyle.css">
 <center><h2>Catalyst Partnerships Recipient Application</h2></center>
@@ -186,7 +184,7 @@
 		</div>
 
 		<div class="formLine">
-			Zip: <input type="number" name="zip" placeholder="Zip" maxlength="5" >
+			Zip: <input type="text" name="zip" placeholder="Zip">
 		</div>
 
 		<div class="formLine">
