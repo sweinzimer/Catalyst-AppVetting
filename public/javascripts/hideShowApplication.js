@@ -14,8 +14,8 @@ $(document).ready(function() {
     // Handle the event and update the state
     formState[e.target.name] = e.target.value
 
-    if (formState.owns_home === "true" &&
-        formState.mortgage_up_to_date === "true" &&
+    if (formState.owns_home !== null &&
+        formState.mortgage_up_to_date !== null &&
         formState.restOfFormVisible === false
     ) {
       // Make the form visible
@@ -23,7 +23,9 @@ $(document).ready(function() {
       toggleFormSectionVisibility()
 
 
-    } else if ((formState.owns_home === "false" ||
+    } 
+	
+	/*else if ((formState.owns_home === "false" ||
                formState.mortgage_up_to_date === "false") &&
                formState.restOfFormVisible === true
     ) {
@@ -31,7 +33,7 @@ $(document).ready(function() {
       formState.restOfFormVisible = false
       toggleFormSectionVisibility()
 
-    }
+    }*/
   }
 
   function toggleFormSectionVisibility() {
