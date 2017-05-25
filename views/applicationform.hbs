@@ -94,30 +94,33 @@
 
 <!-- BEGIN ADVOCATE INFORMATION PORTION -->
 	<div class="formSection" style="display:none"><h4>Are you Advocating for Someone Else?</h4>
-		<div class="formLine">
-			If so, please select the type of advocate you are, and fill in the appropriate information below.<br>
-			If not, feel free to skip this section and begin at <b>Personal Information</b>.
-		</div>
-		<div class="formLine">
-			<input type="radio" name="advocate" value="adv_individual">I am a private individual advocating for this applicant.
-		</div>
-		<div class="formLine">
-			<input type="radio" name="advocate" value="adv_npo">I represent a non-profit organization advocating for this applicant.
-		</div>
-		<div class="formLine">
-			<input type="radio" name="advocate" value="adv_gov">I represent a governmental agency advocating for this applicant.
-		</div>
-		<div class="formLine">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Name: <input type="text" name="advocate_name" placeholder="Name">
-		</div>
-		<div class="formLine">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Phone Number: <input type="text" name="advocate_phone" placeholder="Phone">
-		</div>
-		<div class="formLine">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Relationship to client (if individual): <input type="text" name="advocate_individual_relationship" placeholder="Relationship">
-		</div>
-		<div class="formLine">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name of Organization/Agency (if applicable): <input class="largeField" type="text" name="advocate_npo_organization" placeholder="Organization Name">
+		<input type="radio" name="advo_bool" value="true">Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="advo_bool" value="false">No
+		<div class="advoSection" style="display:none">
+			<div class="formLine">
+				Please select the type of advocate you are, and fill in the appropriate information below.<br>
+			</div>
+			<div class="formLine">
+				<input type="radio" name="advocate" value="adv_individual">I am a private individual advocating for this applicant.
+			</div>
+			<div class="formLine">
+				<input type="radio" name="advocate" value="adv_npo">I represent a non-profit organization advocating for this applicant.
+			</div>
+			<div class="formLine">
+				<input type="radio" name="advocate" value="adv_gov">I represent a governmental agency advocating for this applicant.
+			</div>
+			<div class="formLine">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Name: <input type="text" name="advocate_name" placeholder="Name">
+			</div>
+			<div class="formLine">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Phone Number: <input type="text" name="advocate_phone" placeholder="Phone">
+			</div>
+			<div class="formLine">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Relationship to client (if individual): <input type="text" name="advocate_individual_relationship" placeholder="Relationship">
+			</div>
+			<div class="formLine">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name of Organization/Agency (if applicable): <input class="largeField" type="text" name="advocate_npo_organization" placeholder="Organization Name">
+			</div>
 		</div>
 	</div>
 
