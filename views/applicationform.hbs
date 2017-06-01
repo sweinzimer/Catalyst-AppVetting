@@ -2,9 +2,7 @@
   -- It uses appAdd.js as its back-end form handler, as well as ifyes.js and
   -- noalert.js for some front end goodies, all stored in public/javascripts -->
 
-  <!-- NOTE: REQUIRED FIELDS have been deleted from this form,
-    -- other than the final checkbox and digital signature.
-	-- The required fields include (by name or textarea id):
+  <!-- NOTE: REQUIRED FIELDS include (by name or textarea id):
 	-- owns_home
 	-- mortgage_up_to_date
 	-- firstName
@@ -24,8 +22,8 @@
 	-- propertyType
 	-- timePropertyOwned
 	-- yearPropertyBuilt
-	-- tac-yes (already required)
-	-- signature (already required)
+	-- tac-yes 
+	-- signature 
 	-->
 <link rel="stylesheet" type="text/css" href="/stylesheets/formStyle.css">
 <center><h2>Catalyst Partnerships Recipient Application</h2></center>
@@ -58,10 +56,10 @@
                             <h4 class="modal-title">Home Ownership</h4>
                         </div>
                         <div class="modal-body">
-                            <p>We are so sorry, but Catalyst does not provide services for properties that applicants do not own.</p>
+                            <p>We are so sorry, but Catalyst does not provide services for properties that applicants do not own.  Proof of ownership will be required.  If you feel you have extenuating circumstances, you may continue the application process.</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">I Understand</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
@@ -81,10 +79,10 @@
                             <h4 class="modal-title">Mortgage Payments</h4>
                         </div>
                         <div class="modal-body">
-                            <p>We are so sorry, but if you are not up to date on your mortgage payments, Catalyst cannot provide services for your property.</p>
+                            <p>We are so sorry, but if you are not up to date on your mortgage payments, Catalyst cannot provide services for your property.  Current mortgage records will be requested. If you feel you have extenuating circumstances, you may continue the application process.</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">I Understand</button>
                         </div>
                     </div><!-- /.modal-content -->
                 </div><!-- /.modal-dialog -->
@@ -94,30 +92,33 @@
 
 <!-- BEGIN ADVOCATE INFORMATION PORTION -->
 	<div class="formSection" style="display:none"><h4>Are you Advocating for Someone Else?</h4>
-		<div class="formLine">
-			If so, please select the type of advocate you are, and fill in the appropriate information below.<br>
-			If not, feel free to skip this section and begin at <b>Personal Information</b>.
-		</div>
-		<div class="formLine">
-			<input type="radio" name="advocate" value="adv_individual">I am a private individual advocating for this applicant.
-		</div>
-		<div class="formLine">
-			<input type="radio" name="advocate" value="adv_npo">I represent a non-profit organization advocating for this applicant.
-		</div>
-		<div class="formLine">
-			<input type="radio" name="advocate" value="adv_gov">I represent a governmental agency advocating for this applicant.
-		</div>
-		<div class="formLine">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Name: <input type="text" name="advocate_name" placeholder="Name">
-		</div>
-		<div class="formLine">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Phone Number: <input type="text" name="advocate_phone" placeholder="Phone">
-		</div>
-		<div class="formLine">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Relationship to client (if individual): <input type="text" name="advocate_individual_relationship" placeholder="Relationship">
-		</div>
-		<div class="formLine">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name of Organization/Agency (if applicable): <input class="largeField" type="text" name="advocate_npo_organization" placeholder="Organization Name">
+		<input type="radio" name="advo_bool" value="true">Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="advo_bool" value="false">No
+		<div class="advoSection" style="display:none">
+			<div class="formLine">
+				Please select the type of advocate you are, and fill in the appropriate information below.<br>
+			</div>
+			<div class="formLine">
+				<input type="radio" name="advocate" value="adv_individual">I am a private individual advocating for this applicant.
+			</div>
+			<div class="formLine">
+				<input type="radio" name="advocate" value="adv_npo">I represent a non-profit organization advocating for this applicant.
+			</div>
+			<div class="formLine">
+				<input type="radio" name="advocate" value="adv_gov">I represent a governmental agency advocating for this applicant.
+			</div>
+			<div class="formLine">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Name: <input type="text" name="advocate_name" placeholder="Name">
+			</div>
+			<div class="formLine">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Phone Number: <input type="text" name="advocate_phone" placeholder="Phone">
+			</div>
+			<div class="formLine">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Your Relationship to client (if individual): <input type="text" name="advocate_individual_relationship" placeholder="Relationship">
+			</div>
+			<div class="formLine">
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name of Organization/Agency (if applicable): <input class="largeField" type="text" name="advocate_npo_organization" placeholder="Organization Name">
+			</div>
 		</div>
 	</div>
 
@@ -183,7 +184,7 @@
 		</div>
 
 		<div class="formLine">
-			Zip: <input type="number" name="zip" placeholder="Zip" maxlength="5" >
+			Zip: <input type="text" name="zip" placeholder="Zip">
 		</div>
 
 		<div class="formLine">
