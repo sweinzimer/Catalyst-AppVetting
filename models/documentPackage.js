@@ -125,12 +125,12 @@ var DocumentPackageSchema = new Schema({
 		
         mortgage:               {
             level : {type: Number, default: 5},
-            payment:            Number,
+            payment:            String,
             up_to_date:         Boolean
         },
         income:                 {
             level : {type: Number, default: 5},
-            amount:             Number
+            amount:             String
         },
         assets:                 {
             level : {type: Number, default: 5},

@@ -32,7 +32,7 @@
 			<div class="col-xs-12">
 				<div class="row">
 					<div class="col-sm-5">
-						<a id="VWaddress" href="#" data-type="address" data-pk="1" data-url="/edit/address/{{doc._id}}" data-title="Enter Address"></a>
+						<a id="address" href="#" data-type="address" data-pk="1" data-url="/edit/address/{{doc._id}}" data-title="Enter Address"></a>
 					</div>
 					<div class="col-sm-7">
 						<a href="http://maps.google.com/?q={{doc.application.address.line_1}} {{doc.application.address.city}} {{doc.application.address.state}} {{doc.application.address.zip}}" target="_blank"><b>Map it!</b></a>
@@ -422,7 +422,7 @@
 		<tr>
 			<td><a id="finance.mortgage" class="highlight">{{highlight.finance.mortgage}}</a></td>
 			<td>Mortgage Payment</td>
-			<td><a href="#" id="mortgage_payment" data-type="number" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.payment" data-title="Enter Mortgage Payment">{{doc.finance.mortgage.payment}}</a></td>
+			<td><a href="#" id="mortgage_payment" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.payment" data-title="Enter Mortgage Payment">{{doc.finance.mortgage.payment}}</a></td>
 		</tr>
 		{{/if}}
 
@@ -438,7 +438,7 @@
 		<tr>
 			<td><a id="finance.income" class="highlight">{{highlight.finance.income}}</a></td>
 			<td>Income Amount</td>
-			<td><a href="#" id="income" data-type="number" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.income.amount" data-title="Enter Income">{{doc.finance.income.amount}}</a></td>
+			<td><a href="#" id="income" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.income.amount" data-title="Enter Income">{{doc.finance.income.amount}}</a></td>
 		</tr>
 		{{/if}}
 
@@ -819,6 +819,16 @@
      *  to the handlebars template system
      */
     $(document).ready(function() {
+	    $('#address').editable({
+            value: {
+                line_1: '{{doc.application.address.line_1}}',
+                line_2: '{{doc.application.address.line_2}}',
+                city: '{{doc.application.address.city}}',
+                state: '{{doc.application.address.state}}',
+                zip: '{{doc.application.address.zip}}'
+            }
+        });
+		/* This allows for editable address in second location */
         $('#VWaddress').editable({
             value: {
                 line_1: '{{doc.application.address.line_1}}',
@@ -828,6 +838,7 @@
                 zip: '{{doc.application.address.zip}}'
             }
         });
+
         $('#VWname').editable({
             value: {
                 first: '{{doc.application.name.first}}',
