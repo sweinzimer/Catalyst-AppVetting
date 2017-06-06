@@ -56,7 +56,7 @@ function init() {
 			//set the attribute values
 			theId.value = textAreaName;  //this is pulled in from above
 			//CHANGE THIS
-			thePlaceholder.value = "If yes, please describe what financial help you can provide...";  
+			thePlaceholder.value = "Please describe what financial help you can provide...";  
 			theCols.value = "60";
 			theRows.value = "3";
 			
@@ -133,7 +133,7 @@ function init() {
 			//set the attribute values
 			theId.value = textAreaName;  //this is pulled in from above
 			//CHANGE THIS
-			thePlaceholder.value = "If yes, please describe what financial help they might provide...";  
+			thePlaceholder.value = "Please describe what financial help they might provide...";  
 			theCols.value = "60";
 			theRows.value = "3";
 			
@@ -209,7 +209,7 @@ function init() {
 			//set the attribute values
 			theId.value = textAreaName;  //this is pulled in from above
 			//CHANGE THIS
-			thePlaceholder.value = "If yes, please describe what help you have requested or received...";  
+			thePlaceholder.value = "Please describe what help you have requested or received...";  
 			theCols.value = "60";
 			theRows.value = "3";
 			
@@ -283,7 +283,7 @@ function init() {
 			//set the attribute values
 			theId.value = textAreaName;  //this is pulled in from above
 			//CHANGE THIS
-			thePlaceholder.value = "If yes, please share what help or materials you can personally provide...";  
+			thePlaceholder.value = "Please share what help or materials you can personally provide...";  
 			theCols.value = "60";
 			theRows.value = "3";
 			
@@ -355,7 +355,7 @@ function init() {
 			//set the attribute values
 			theId.value = textAreaName;  //this is pulled in from above
 			//CHANGE THIS
-			thePlaceholder.value = "If yes, please share what help or materials people you know might be able to provide...";  
+			thePlaceholder.value = "Please share what help or materials people you know might be able to provide...";  
 			theCols.value = "60";
 			theRows.value = "3";
 			
