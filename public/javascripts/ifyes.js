@@ -44,30 +44,27 @@ function init() {
 			/// now to go through the rigorous process of creating a 
 			/// text area show a text area with the var textAreaName string
 			
-			// create the number input
-			var x = document.createElement("INPUT");
+			// create the text area 
+			var x = document.createElement("TEXTAREA");
 			
 			// create the attributes
-			var theId = document.createAttribute("id");
-			var theClass = document.createAttribute("class");
-			var theType = document.createAttribute("type");
-			var theName = document.createAttribute("name");
+			var theId = document.createAttribute("id");  
 			var thePlaceholder = document.createAttribute("placeholder");  
-			
+			var theCols = document.createAttribute("cols");
+			var theRows = document.createAttribute("rows");
 			
 			//set the attribute values
 			theId.value = textAreaName;  //this is pulled in from above
-			theClass.value = "largeField";
-			theType.value = "number";
-			theName.value = textAreaName;  //even though it's a number, just to be consistent
-			thePlaceholder.value = "Dollar amount you can contribute...";
+			//CHANGE THIS
+			thePlaceholder.value = "If yes, please describe what financial help you can provide...";  
+			theCols.value = "60";
+			theRows.value = "3";
 			
 			//put attributes into x (the new text area)
 			x.setAttributeNode(theId); 
-			x.setAttributeNode(theClass); 
-			x.setAttributeNode(theType); 
-			x.setAttributeNode(theName); 
 			x.setAttributeNode(thePlaceholder); 
+			x.setAttributeNode(theCols); 
+			
 			
 			console.log("x = " + x);  //just to see it is a HTMLtextAreaElement
 			

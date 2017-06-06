@@ -273,7 +273,7 @@
                 <tr>
                     <td><a id="finance.mortgage" class="highlight">{{highlight.finance.mortgage}}</a></td>
                     <td>Mortgage Payment</td>
-                    <td><a href="#" id="mortgage_payment" data-type="number" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.payment" data-title="Enter Mortgage Payment">{{doc.finance.mortgage.payment}}</a></td>
+                    <td><a href="#" id="mortgage_payment" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.payment" data-title="Enter Mortgage Payment">{{doc.finance.mortgage.payment}}</a></td>
                 </tr>
                 <tr>
                     <td><a id="finance.mort_up_to_date" class="highlight">{{highlight.finance.mort_up_to_date}}</a></td>
@@ -283,7 +283,7 @@
                 <tr>
                     <td><a id="finance.income" class="highlight">{{highlight.finance.income}}</a></td>
                     <td>Income Amount</td>
-                    <td><a href="#" id="income" data-type="number" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.income.amount" data-title="Enter Income">{{doc.finance.income.amount}}</a></td>
+                    <td><a href="#" id="income" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.income.amount" data-title="Enter Income">{{doc.finance.income.amount}}</a></td>
                 </tr>
                 <tr>
                     <td><a id="finance.client_can_contribute" class="highlight">{{highlight.finance.client_can_contribute}}</a></td>
@@ -458,9 +458,9 @@
         });
         $('#name').editable({
             value: {
-                first: '{{doc.application.name.first}}',
-                middle: '{{doc.application.name.middle}}',
-                last: '{{doc.application.name.last}}'
+                first: "{{doc.application.name.first}}",
+                middle: "{{doc.application.name.middle}}",
+                last: "{{doc.application.name.last}}"
             }
         });
         $('#veteran').editable({
