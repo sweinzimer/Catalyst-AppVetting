@@ -262,7 +262,7 @@ function init() {
 			},
 			client_can_contribute: {
 				value: getVal('input[name="contribute"]:checked'),
-				amount: getVal('input[name="contribute_amount"]')
+				amount: jQuery("textarea#contribute_amount").val()
 			},
 			associates_can_contribute: {
 				value: getVal('input[name="relativeContribute"]:checked'),

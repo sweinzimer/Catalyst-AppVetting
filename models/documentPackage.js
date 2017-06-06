@@ -109,7 +109,7 @@ var DocumentPackageSchema = new Schema({
         other_residents:{
             count:      Number,
             name:      [String],        // This is an array of strings
-            age:       [Number],        // This is an array of numbers
+            age:       [String],        // This is an array of numbers
 			relationship: [String]      // This is an array of strings
         },
         veteran:        Boolean,
@@ -136,7 +136,7 @@ var DocumentPackageSchema = new Schema({
             level : {type: Number, default: 5},
             count:              Number,
             name:               [String],
-            value:              [Number]
+            value:              [String]
         },
 		total_income:			{
 			level : {type: Number, default: 5},
@@ -144,7 +144,7 @@ var DocumentPackageSchema = new Schema({
 		},
         client_can_contribute:  {
             value:              Boolean,
-            amount:             Number
+            amount:             String
         },
         associates_can_contribute:  {
             value:              Boolean,
@@ -158,8 +158,8 @@ var DocumentPackageSchema = new Schema({
 
     property:   {
         home_type:              String,
-        ownership_length:       Number,
-        year_constructed:       Number,
+        ownership_length:       String,
+        year_constructed:       String,
         requested_repairs:      String,
         client_can_contribute:  {
             value:              Boolean,
