@@ -169,7 +169,8 @@ function init() {
 			emergency_contact: {
 				name: getVal('input[name="eContactName"]'),
 				relationship: getVal('input[name="ecRelationship"]'),
-				phone: getVal('input[name="ecPhone"]')
+				phone: getVal('input[name="ecPhone"]'),
+				email: getVal('input[name="ecEmail"]')
 			},
 			dob: {
 				date: getVal('input[name="dob"]')

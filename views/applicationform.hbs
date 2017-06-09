@@ -186,9 +186,27 @@
 		<div class="formLine">
 			Zip: <input type="text" name="zip" placeholder="Zip">
 		</div>
+		
+		<div class="formLine">Are you currently in, or a veteran of, the U.S. Military?
+			<div class="formLine">
+				<input type="radio" name="military" value="true">Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="radio" name="military" value="false">No
+			</div>
+		</div>
 
+		<div class="formLine">What language do you speak?
+			<div class="formLine">
+				<input type="radio" name="language" value="English" >I speak English<br>
+				<input type="radio" name="language" value="Other">I only speak another language<br>
+				&nbsp;&nbsp;&nbsp;&nbsp; Please enter language here: <input type="text" name="language_other" placeholder="Language you speak"><br>
+			</div>
+		</div>
+	</div>	
+	
+	<div class="formSection" style="display:none"><h4>Emergency Contact Information</h4>
+		
 		<div class="formLine">
-			Emergency Contact: <input type="text" name="eContactName" placeholder="Emergency Contact Name" >
+			Emergency Contact Name: <input type="text" name="eContactName" placeholder="Contact Name" >
 		</div>
 
 		<div class="formLine">
@@ -196,9 +214,15 @@
 		</div>
 
 		<div class="formLine">
-			Emergency Contact Phone: <input type="text" name="ecPhone" placeholder="Emergency Phone" >
+			Emergency Contact Phone: <input type="text" name="ecPhone" placeholder="Phone" >
 		</div>
-
+		<div class="formLine">
+			Emergency Contact Email: <input type="email" name="ecEmail" placeholder="Email" >
+		</div>
+	</div>
+	
+	<div class="formSection" style="display:none"><h4>Other Resident Information</h4>
+	
 		<div class="formLine">If you have others residing in your home, please list them below:
 			<div class="formLine">
 				<input class="mediumField" type="text" name="additional_1" placeholder="Name">&nbsp;&nbsp;<input class="tinyField" type="text" name="a1age" placeholder="Age" size="3">&nbsp;&nbsp;<input class="mediumField" type="text" name="a1relationship" placeholder="Relationship">
@@ -229,25 +253,11 @@
 				<input class="mediumField" type="text" name="additional_8" placeholder="Name">&nbsp;&nbsp;<input class="tinyField" type="text" name="a8age" placeholder="Age">&nbsp;&nbsp;<input class="mediumField" type="text" name="a8relationship" placeholder="Relationship">
 			</div>
 		</div>
-
-		<div class="formLine">Are you currently in, or a veteran of, the U.S. Military?
+	</div>
+	<div class="formSection" style="display:none"><h4>How did you hear about Catalyst?</h4>
+		
 			<div class="formLine">
-				<input type="radio" name="military" value="true">Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<input type="radio" name="military" value="false">No
-			</div>
-		</div>
-
-		<div class="formLine">What language do you speak?
-			<div class="formLine">
-				<input type="radio" name="language" value="English" >I speak English<br>
-				<input type="radio" name="language" value="Other">I only speak another language<br>
-				&nbsp;&nbsp;&nbsp;&nbsp; Please enter language here: <input type="text" name="language_other" placeholder="Language you speak"><br>
-			</div>
-		</div>
-
-		<div class="formLine">How did you hear about Catalyst?
-			<div class="formLine">
-				<textarea rows="4" cols="60" id="hearAboutCatalyst" placeholder="How you heard about Catalyst" ></textarea>
+				<textarea rows="4" cols="60" id="hearAboutCatalyst" placeholder="Please share how you heard about Catalyst" ></textarea>
 			</div>
 		</div>
 	</div>
