@@ -147,7 +147,7 @@
                 <tr>
                     <td><a id="application.email" class="highlight">{{highlight.application.email}}</a></td>
                     <td>Email</td>
-                    <td><a href="#" id="email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.email" data-title="Enter Email">{{doc.application.email}}</a> &nbsp;&nbsp;&nbsp; <a href="mailto:{{doc.application.email}}"><b>Email {{doc.application.name.preferred}}</b></a> (Refresh page if email edited)</td>
+                    <td><a href="#" id="email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.email" data-title="Enter Email">{{doc.application.email}}</a> {{#if doc.application.email}}&nbsp;&nbsp;&nbsp; <a href="mailto:{{doc.application.email}}"><b>Email {{doc.application.name.preferred}}</b></a> (Refresh page if email edited){{/if}}</td>
                 </tr>
                 <tr>
                     <td><a id="application.driver_license" class="highlight">{{highlight.application.driver_license}}</a></td>
@@ -163,7 +163,7 @@
                         <br>
                         Phone: <a href="#" id="emergency_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.phone" data-title="Enter Emergency Contact Phone Number">{{doc.application.emergency_contact.phone}}</a>
 						<br>
-                        Email: <a href="#" id="emergency_email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.email" data-title="Enter Emergency Contact Email Address">{{doc.application.emergency_contact.email}}</a> &nbsp;&nbsp;&nbsp; <a href="mailto:{{doc.application.emergency_contact.email}}"><b>Email {{doc.application.emergency_contact.name}}</b></a> (Refresh page if email edited)
+                        Email: <a href="#" id="emergency_email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.email" data-title="Enter Emergency Contact Email Address">{{doc.application.emergency_contact.email}}</a>{{#if doc.application.emergency_contact.email}} &nbsp;&nbsp;&nbsp; <a href="mailto:{{doc.application.emergency_contact.email}}"><b>Email {{doc.application.emergency_contact.name}}</b></a> (Refresh page if email edited){{/if}}
                     </td>
                 </tr>
                 <tr>
@@ -405,10 +405,10 @@
                     <td><a id="advocate.is_advocate" class="highlight">{{highlight.advocate.is_advocate}}</a></td>
                     <td>Does the Client have an Advocate?</td>
                     <td>
-                        Is Advocate: <a href="#" id="is_advocate" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.is_advocate" data-title="Is Client an Advocate?"></a></br>
-                        Is Individual: <a href="#" id="individual" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.individual" data-title="Is Client an Individual?"></a></br>
-                        Is Non-profit Org: <a href="#" id="npo" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.npo" data-title="Is Client from a Non-Profit?"></a></br>
-                        Is Government Agency: <a href="#" id="gov" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.gov" data-title="Is Client from a Government Agency?"></a>
+                        Is Advocate: <a href="#" id="is_advocate" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.is_advocate" data-title="Is Applicant an Advocate?"></a></br>
+                        Is Individual: <a href="#" id="individual" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.individual" data-title="Is Advocate an Individual?"></a></br>
+                        Is Non-profit Org: <a href="#" id="npo" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.npo" data-title="Is Advocate from a Non-Profit?"></a></br>
+                        Is Government Agency: <a href="#" id="gov" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.gov" data-title="Is Advocate from a Government Agency?"></a>
                     </td>
                 </tr>
                 <tr>
@@ -430,9 +430,11 @@
                 </tr>
                 <tr>
                     <td><a id="advocate.phone" class="highlight">{{highlight.advocate.phone}}</a></td>
-                    <td>Advocate Phone Number</td>
+                    <td>Advocate Contact Info:</td>
                     <td>
-                        <a href="#" id="advocate_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.phone" data-title="Enter Advocate Phone Number">{{doc.advocate.phone}}</a>
+                        Phone: <a href="#" id="advocate_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.phone" data-title="Enter Advocate Phone Number">{{doc.advocate.phone}}</a>
+						<br>
+                        Email: <a href="#" id="advocate_email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.email" data-title="Enter Advocate Email">{{doc.advocate.email}}</a>{{#if doc.advocate.email}}&nbsp;&nbsp;&nbsp; <a href="mailto:{{doc.advocate.email}}"><b>Email {{doc.advocate.name}}</b></a> (Refresh page if email edited){{/if}}
                     </td>
                 </tr>
                 </tbody>
