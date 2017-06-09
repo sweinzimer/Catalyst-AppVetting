@@ -318,6 +318,7 @@ $(document).ready(function() {
     $('#advocate_org_name').editable();
     $('#advocate_relationship').editable();
     $('#advocate_phone').editable();
+	$('#advocate_email').editable();
 
     /**
      * The following fields require some extra options to make them more user friendly

@@ -61,6 +61,7 @@ var DocumentPackageSchema = new Schema({
         gov:                Boolean,
         name:               String,
         phone:              String,
+		email:				String,
         relationship:       String,
         organization_name:  String
     },

@@ -121,6 +121,7 @@ function init() {
 			gov: gov_bool,
 			name: getVal('input[name="advocate_name"]'),
 			phone: getVal('input[name="advocate_phone"]'),
+			email: getVal('input[name="advocate_email"]'),
 			relationship: getVal('input[name="advocate_individual_relationship"]'),
 			organization_name: getVal('input[name="advocate_npo_organization"]')
 		};

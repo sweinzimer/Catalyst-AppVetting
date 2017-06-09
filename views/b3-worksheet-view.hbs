@@ -75,14 +75,17 @@
 			<tr>
 				<th class="col-sm-2">Advocate Name</th>
 				<th class="col-sm-2">Advocate Phone</th>
+				<th class="col-md-2">Advocate Email</th>
 				<th class="col-sm-2">Relationship to Client</th>
 				<th class="col-md-2">Organization</th>
+				
 			</tr>
             </thead>
             <tbody>
 			<tr>
 				<td>{{doc.advocate.name}}</td>
 				<td>{{doc.advocate.phone}}</td>
+				<td>{{#if doc.advocate.email}}{{doc.advocate.email}}<br><a href="mailto:{{doc.advocate.email}}"><b>Email {{doc.advocate.name}}</b></a>{{else}}<i>None provided.</i>{{/if}}</td>
 				<td>{{doc.advocate.relationship}}</td>
 				<td>{{doc.advocate.organization_name}}</td>
 			</tr>
@@ -103,7 +106,7 @@
 				<th class="col-md-2">Email</th>
 			</tr>
 			<tr>
-				<td>{{doc.application.name.first}} {{doc.application.name.last}} </td>
+				<td>{{doc.application.name.first}} {{#if doc.application.name.middle}}{{doc.application.name.middle}}{{/if}} {{doc.application.name.last}} {{#if doc.application.name.preferred}}({{doc.application.name.preferred}}){{/if}}</td>
 				<td>{{doc.application.phone.preferred}}</td>
 				<td>{{doc.application.phone.other}}</td>
 				<td>{{doc.application.email}}</td>
@@ -124,9 +127,9 @@
 	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF NO:</b> (reschedule for call back - make vetting note)
 	</i></p>
 
-	<p class="scriptText">Is there any information you would like to share with us regarding {{doc.application.name.first}} or their situation that hasn't been captured by the application that might help us better serve them?</p>
+	<p class="scriptText">Is there any information you would like to share with us regarding {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}} or their situation that hasn't been captured by the application that might help us better serve them?</p>
 
-	<p class="scriptText">We have some questions regarding {{doc.application.name.first}}'s application. Can we contact {{doc.application.name.first}} directly or should we work through you?
+	<p class="scriptText">We have some questions regarding {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}'s application. Can we contact {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}} directly or should we work through you?
 
 	<p><i>
 	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF CONTACT APPLICANT</b> (Thank Advocate, call Applicant)<br>
@@ -147,7 +150,7 @@
 
 	<p id="targettwo"><br></p>
 	<b>[2]</b>
-	<p class="scriptText">Before I ask my questions var me take a minute to describe our process.  Today my focus will be on confirming that you meet our financial guidelines. If you do, next we would arrange to visit your home to determine whether the requested repairs are things that Catalyst has the expertise and resources to do. Then, If we can do the work, we would find a mutually agreeable date and get you on our project schedule. Finally we would show up at your home on the agreed date and do the work. Does all that make sense to you?</p>
+	<p class="scriptText">Before I ask my questions, {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}, let me take a minute to describe our process.  Today my focus will be on confirming that you meet our financial guidelines. If you do, next we would arrange to visit your home to determine whether the requested repairs are things that Catalyst has the expertise and resources to do. Then, If we can do the work, we would find a mutually agreeable date and get you on our project schedule. Finally we would show up at your home on the agreed date and do the work. Does all that make sense to you?</p>
 
 	<p class="scriptText">Now, the first thing we need is your proof of home ownership. Can you provide us with, for example, either a copy of your latest mortgage statement, or possibly a copy of deed or title, or maybe your most recent home insurance statement?</p>
 
@@ -186,15 +189,6 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tell me more about…<br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; How long has this condition existed?</i></p>
 
-<!-- THIS AREA IS NOT IMPLEMENTED JUST YET, although it SHOULD work something like
---- the way the Vetting Notes are added on the App View page.  They should populate
---- above (or below) the input fields.  The ids are not set in stone, but are here
---- just to give someone an idea for how it could get set up -->
-<!--	<table class="table">
----		<tr><td id="empty-work_items" class="alert-danger danger" colspan="3">
----                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Work Items Yet To Display
----        </td></tr>
----	</table> -->
 
 
 
@@ -600,9 +594,11 @@
 		{{#if highlight.advocate.phone}}
 			<tr>
 				<td><a id="advocate.phone" class="highlight">{{highlight.advocate.phone}}</a></td>
-				<td>Advocate Phone Number</td>
+				<td>Advocate Contact Info</td>
 				<td>
-					<a href="#" id="advocate_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.phone" data-title="Enter Advocate Phone Number">{{doc.advocate.phone}}</a>
+					Phone: <a href="#" id="advocate_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.phone" data-title="Enter Advocate Phone Number">{{doc.advocate.phone}}</a>
+					<br>
+					Email: <a href="#" id="advocate_email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.email" data-title="Enter Advocate Email">{{doc.advocate.email}}</a>{{#if doc.advocate.email}}&nbsp;&nbsp;&nbsp; <a href="mailto:{{doc.advocate.email}}"><b>Email {{doc.advocate.name}}</b></a> (Refresh page if email edited){{/if}}
 				</td>
 			</tr>
 		{{/if}}
@@ -649,7 +645,7 @@
 	<p class="scriptText">
 		I believe that completes my questions. Thank you for your time and patience. Please mail/email the documents we have discussed at your earliest convenience. We will be in touch within one week after receiving your documents to inform you about whether or not we can proceed to the next step. As you will recall, that would involve a visit to your home to confirm that the requested repairs are things that Catalyst has the expertise and resources to do.</p>
 
-	<p class="scriptText">Thanks again. I have enjoyed talking to you.</p>
+	<p class="scriptText">Thanks again, {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}. I have enjoyed talking to you.</p>
 </div>
 
 
