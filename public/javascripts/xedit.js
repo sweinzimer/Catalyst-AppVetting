@@ -301,6 +301,7 @@ $(document).ready(function() {
     $('#emergency_relation').editable({});
 
     $('#emergency_phone').editable({});
+	$('#emergency_email').editable({});
     $('#home_type').editable();
     $('#ownership_length').editable();
     $('#year_constructed').editable();

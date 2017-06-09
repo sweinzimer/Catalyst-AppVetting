@@ -104,12 +104,13 @@ var DocumentPackageSchema = new Schema({
         emergency_contact:  {
             name:           String,
             relationship:   String,
-            phone:          String
+            phone:          String,
+			email:			String	//added 06-08-2017
         },
         other_residents:{
             count:      Number,
             name:      [String],        // This is an array of strings
-            age:       [String],        // This is an array of numbers
+            age:       [String],        // This is an array of strings
 			relationship: [String]      // This is an array of strings
         },
         veteran:        Boolean,

@@ -147,7 +147,7 @@
                 <tr>
                     <td><a id="application.email" class="highlight">{{highlight.application.email}}</a></td>
                     <td>Email</td>
-                    <td><a href="#" id="email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.email" data-title="Enter Email">{{doc.application.email}}</a></td>
+                    <td><a href="#" id="email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.email" data-title="Enter Email">{{doc.application.email}}</a> &nbsp;&nbsp;&nbsp; <a href="mailto:{{doc.application.email}}"><b>Email {{doc.application.name.preferred}}</b></a> (Refresh page if email edited)</td>
                 </tr>
                 <tr>
                     <td><a id="application.driver_license" class="highlight">{{highlight.application.driver_license}}</a></td>
@@ -162,6 +162,8 @@
                         Relationship: <a href="#" id="emergency_relation" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.relationship" data-title="Enter Emergency Contact Relationship">{{doc.application.emergency_contact.relationship}}</a>
                         <br>
                         Phone: <a href="#" id="emergency_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.phone" data-title="Enter Emergency Contact Phone Number">{{doc.application.emergency_contact.phone}}</a>
+						<br>
+                        Email: <a href="#" id="emergency_email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.email" data-title="Enter Emergency Contact Email Address">{{doc.application.emergency_contact.email}}</a> &nbsp;&nbsp;&nbsp; <a href="mailto:{{doc.application.emergency_contact.email}}"><b>Email {{doc.application.emergency_contact.name}}</b></a> (Refresh page if email edited)
                     </td>
                 </tr>
                 <tr>
