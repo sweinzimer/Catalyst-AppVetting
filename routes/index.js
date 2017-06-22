@@ -30,7 +30,7 @@ module.exports = function(passport) {
 router.get('/', isLoggedIn, function(req, res, next) {
 	
 	var payload = {};
-	payload.title = 'Quick link usage examples';
+	payload.title = '';
 	payload.body = '';
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
