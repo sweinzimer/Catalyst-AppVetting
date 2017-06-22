@@ -179,7 +179,7 @@ function formatStatus(element) {
 return router;
 }
 
-//check to see if user is logged in and a vetting agent or an admin
+//check to see if user is logged in and a vetting agent or site or an admin
 function isLoggedIn(req, res, next) {
 
 		if(req.isAuthenticated()) {
@@ -234,7 +234,7 @@ function isLoggedIn(req, res, next) {
 		}
 }
 
-//post request authenticator.  Checks if user is an admin or vetting agent
+//post request authenticator.  Checks if user is an admin or vetting or site agent
 function isLoggedInPost(req, res, next) {
 		if(req.isAuthenticated()) {
 			console.log(req.user._id);
