@@ -2,6 +2,7 @@
 rest-data/*
 rest-logs/*
 config.js
+db_backup_LOCAL.sh
 /data/*
 
 # Created by .ignore support plugin (hsz.mobi)
