@@ -142,7 +142,7 @@ var DocumentPackageSchema = new Schema({
         },
 		total_income:			{
 			level : {type: Number, default: 5},
-			value:				Number
+			value:				String
 		},
         client_can_contribute:  {
             value:              Boolean,
