@@ -28,7 +28,7 @@ router.route('/add')
 		
 		payload.user_email = res.locals.email;
 		payload.user_role = res.locals.role;
-		res.locals.layout = 'applicationlayout';        // Change default from layout.hbs to b3-layout.hbs
+		res.locals.layout = 'applicationlayout';        // Changes default from layout.hbs to b3-layout.hbs
         res.render('applicationform', payload);
     })
     .post(api.postDocument, function(req, res) {
