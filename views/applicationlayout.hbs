@@ -9,9 +9,32 @@
     <title>Catalyst Application Form</title>
 
     <!-- Bootstrap -->
-    <!-- Latest compiled and minified CSS -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Latest CSS from netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css -->
+    <link rel="stylesheet" type="text/css" href="/stylesheets/bs.3.0.0.style.css">
 	<link rel="stylesheet" type="text/css" href="/stylesheets/b3style.css">
+	
+	<!-- last parts needed for bootstrap datepicker -->
+	<!--  jQuery -->
+	<!-- REPLACED WITH LOCAL BELOW -- script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script-->
+	<script type="text/javascript" src="/javascripts/jquery1.11.3.js"></script>
+	
+	<!-- Bootstrap Date-Picker Plugin from https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js -->
+	and https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css 
+	<script type="text/javascript" src="/javascript/bs.1.4.1.datepicker.js"></script>
+	<link rel="stylesheet" href="/stylesheets/bs.1.4.1.datepicker.css" /> -->
+	
+	<!-- jQuery Date picker plugin 
+	<link rel="stylesheet" type="text/css" href="javascripts/jquery_datepicker/css/jquery.datepick.css"> 
+	<script type="text/javascript" src="javascripts/jquery_datepicker/js/jquery.plugin.js"></script>
+	<script type="text/javascript" src="javascripts/jquery_datepicker/js/jquery.datepick.js"></script>
+	
+	<script>
+		$(function(init) {
+			$('#date').datepick();
+			//$('#inlineDatepicker').datepick({onSelect: showDate});
+		});
+	</script> 
+	-->
     <!-- Add any head items here that may be needed for IE7/8/9 support -->
 
 	<style>
@@ -46,16 +69,19 @@
 <body>
     
 
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
-
+	<!-- jQuery (from code.jquery.com/jquery-2.0.3.js - necessary for Bootstrap's JavaScript plugins) -->
+	<script src="javascripts/jquery2.0.3.js"></script>
+	
+	
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
 
+	
 	<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+	<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script> -->
+	<script src="/javascript/bs-editable.js" type="text/javascript"></script>
 	<script src="/javascript/xedit.js" type="text/javascript"></script>
 	<script src="/javascript/addNote.js" type="text/javascript"></script>
 	<script src="/javascript/setFlags.js" type="text/javascript"></script>
@@ -83,6 +109,7 @@
     {{>footer}}
 	
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
-    </body>
+    <!--replaced with one below  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>  -->
+    <script src="/javascript/bs.js"></script>
+	</body>
 </html>

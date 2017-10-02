@@ -3,13 +3,53 @@
 //which is a function that appends (extends) a JSON object by calling
 //the get*****Data() functions below...
 
+
+
+	
 $(document).ready(init)
 
 function init() {
+	
+	
+	var date_input=$('input[name="dob"]'); //our date input has the name "dob"
+    //var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+    var options={
+        //container: container,
+		defaultViewDate: { year: 1977, month: 01, day: 01 },
+        todayHighlight: false,
+    };
+	date_input.datepicker(options);
+	
+	var date_input=$('input[name="client_date"]'); //our date input has the name "client_date"
+    //var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+    var options2={
+		//container: container,
+		format: 'mm/dd/yyyy',
+		todayBtn: "linked",
+		orientation: "top auto",
+    };
+    date_input.datepicker(options2);
 	$('#appForm').submit(function (event) {
 		event.preventDefault();
 
+		
+		
 		if (validateForm() === false) { return }
+		
+	  
+/*		var checkBirthDate = getVal('input[name="dob"]');
+		if (isValidDate(checkBirthDate) === false {
+			alert("Please check the Date of Birth format (mm/dd/yyyy).");
+			return
+		}
+		
+		var checkSigDate = getVal('input[name="client_date"]')
+		if (isValidDate(checkSigDate) === false {
+			alert("Please check the Signature Date format (mm/dd/yyyy).");
+			return
+		}
+*/
+
 
 		var jsonToSend = getApplicationFormJSON();  //stringified in that function
 		console.log(jsonToSend);
@@ -387,6 +427,34 @@ function init() {
 
 		return result
 	}
+	
+/*	// Validates that the input string is a valid date formatted as "mm/dd/yyyy"
+	function isValidDate(dateString)
+	{
+		// First check for the pattern
+		if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+			return false;
+
+		// Parse the date parts to integers
+		var parts = dateString.split("/");
+		var day = parseInt(parts[1], 10);
+		var month = parseInt(parts[0], 10);
+		var year = parseInt(parts[2], 10);
+
+		// Check the ranges of month and year
+		if(year < 1000 || year > 3000 || month == 0 || month > 12)
+			return false;
+
+		var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+		// Adjust for leap years
+		if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+			monthLength[1] = 29;
+
+		// Check the range of the day
+		return day > 0 && day <= monthLength[month - 1];
+	};
+	*/
 }
 
 

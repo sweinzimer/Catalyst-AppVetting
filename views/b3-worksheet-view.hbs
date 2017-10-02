@@ -249,7 +249,7 @@
 			<tr>
 				<td><a id="application.dob" class="highlight">{{highlight.application.dob}}</a></td>
 				<td>Date Of Birth</td>
-				<td><a href="#" id="dob" data-type="date" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.dob.date" data-title="Select date">{{doc.application.dob.date}}</a></td>
+				<td><a href="#" id="dob" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.dob.date" data-title="Select date">{{doc.application.dob.date}}</a></td>
 			</tr>
 		{{/if}}
 
@@ -632,7 +632,7 @@
 	<br />
 	<h3>Total Vetted Income (and notes regarding the total)</h3>
 	<!-- TODO: Figure out where to route this -->
-	<h4><a id="finance.total_income.value" href="#" data-type="text" data-pk="{{doc._id}}" data-url="/edit/{{doc._id}}" data-title="Enter income">{{doc.finance.total_income.value}}</a></h4>
+	<h4><a id="finance.total_income.value" href="#" data-type="textarea" data-pk="{{doc._id}}" data-url="/edit/{{doc._id}}" data-title="Enter income">{{doc.finance.total_income.value}}</a></h4>
 </div>
 
 <div class="container col-xs-12">
