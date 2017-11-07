@@ -11,6 +11,7 @@ $(document).ready(init)
 function init() {
 	
 	
+	/****** Bootstrap datepicker************/
 	var date_input=$('input[name="dob"]'); //our date input has the name "dob"
     //var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
     var options={
@@ -29,6 +30,7 @@ function init() {
 		orientation: "top auto",
     };
     date_input.datepicker(options2);
+	  
 	$('#appForm').submit(function (event) {
 		event.preventDefault();
 
