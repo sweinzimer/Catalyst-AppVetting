@@ -14,17 +14,17 @@ As you work through this process, suggestions are always welcome.  [Email Mike](
  [Email Mike](mailto:mikehainespdx@gmail.com) to request a config.js file for the software.  You'll need it later.  If you have his cell number, call or text him.  That would be even better.
 
 #### Install Necessary Tools:
-**IDE/Text Editor:** This web application is written entirely in javascript and runs in an internet browser. **[Notepad++](https://notepad-plus-plus.org/)** works nicely, but if you own IntelliJ, go for it.
+**IDE/Text Editor:** This web application is written entirely in javascript and runs in an internet browser. **[Notepad++](https://notepad-plus-plus.org/)** works nicely, but if you own IntelliJ, ATOM, etc...go for it.
 
-**Command Line Interface/Console:** There are many tools one may use - git Bash, Windows PowerShell, cygwin, etc...use whatever you are comfortable using.
+**Command Line Interface/Console:** There are many tools one may use - git Bash, Windows PowerShell, Mac Terminal, cygwin, etc...use whatever you are comfortable using.  For the purposes of this readMe, we will use the word **console** for this type of application.
 
-**Install Git: [git-scm.com](https://git-scm.com/)** - If you don't already have it loaded, download the latest release from that page.  All default options are fine, although you may wish to choose your text editor.  Git Bash comes with this download.
+**Install Git: [git-scm.com](https://git-scm.com/)** - If you don't already have it loaded, download the latest release from that page.  All default options are fine, although you may wish to choose your text editor.  Git Bash comes with this download (at least it does for Windows), and Mike highly recommends it.
 
 **Install Node.js** 
 * Check to see if you have node installed by typing `node -v` into a console.
 * If no node, [download it here](https://nodejs.org/en/download/).
 * Installing it with default settings is fine.
-* If you have any bash shells running, you'll have to restart them for node to be recognized.
+* If you have any consoles running, you'll have to restart them for node to be recognized.
 
 **MongoDB Community version 3.4 Download and Installation:**
 * [Version 3.4 Download](https://www.mongodb.com/download-center#previous)
@@ -34,11 +34,12 @@ As you work through this process, suggestions are always welcome.  [Email Mike](
 * Open the .msi file (or whatever it is on a Mac), and do a Complete Install
 
 **Clone the Catalyst Repo**
-* Create a folder where you want to store the repo
-* Open Git Bash or any git-enabled console, making sure the current working directory is that folder.
-* Type `git clone https://github.com/dandahle/Catalyst-AppVetting.git` to clone the repo.
-* Type `cd Catalyst-AppVetting/` where the files are located. You will be on the master branch.
-* Type `git checkout develop` to get to the working development branch 
+* Create or select a folder where you want to store the repo
+* Open a git-enabled console and make sure the current working directory is that folder.
+* Type `git clone https://github.com/dandahle/Catalyst-AppVetting.git` to clone the repo to that folder.
+* Type `cd Catalyst-AppVetting/` to change to the folder where the files are located. You will be on the master branch.
+* *If you have a console that does NOT tell you what folder you are in and what branch you are on, it is recommended you find one that does.*
+* Type `git checkout develop` to get to the working development branch.
 
 We'll come back to how to name branches and merge changes later.
 
@@ -49,19 +50,21 @@ For future reference (but do it now):
 **Setting up Mongo for use with the Catalyst Appvetting App**
 * On your root C:\ drive, Create a folder `data`
 * Inside that, create a folder `db` so `C:\data\db` exists.
-* (This is where the Catalyst app stores the data)
-* Go to the mongodb.exe folder: `C:\Program Files\MongoDB\Server\3.4\bin`
-* Open git bash from that folder
-* Type `./mongod` (that should start the server locally - if firewall comes up, choose the local option)
+* (This is where the Catalyst app stores the data for the MongoDB)
+* Go to the mongodb.exe folder: `C:\Program Files\MongoDB\Server\3.4\bin` (we'll call this the *mongo bin* as we refer to that folder from here on.)
+* Open a console pointed to the mongo bin
+* Type `./mongod` (that should start the server locally - if firewall comes up, you can choose the local option)
 
 To be sure it is working, and further configuration:
-* Open a new git bash from that folder
-* Type `./mongo` (prompt disappears after Mongo Shell info appears)
+* Open a new console from the mongo bin folder
+* Type `./mongo` (prompt disappears after Mongo Shell info appears - you are now in the *Mongo Shell*.)
 * Type `show dbs` (should be admin and local)
-* Type `use admin` (should reply switched to db admin)
-* *Copy this line into a text editor:*
+* Type `use admin` (should reply *switched to db admin*)
+* Because the Mongo Shell doesn't like to insert text, we recommend, for the next step, that you
+* *Copy the next line into a text editor:*
 	* `db.createUser({user:'', pwd: '', roles: [ { role: 'userAdmin', db:'admin'} ] })`
-* Create a user name and password and insert them in between the ''s, then paste that into the console.
+* Create a user name and password and insert them in between the ''s, then paste that into the console. It should look like this:
+* `db.createUser({user:'myUserName', pwd: 'myPassword123!%', roles:<...etc...>`
 * You should receive a message back that looks like 
 ``` 
 Successfully added user: {
@@ -74,67 +77,73 @@ Successfully added user: {
    	]
 }
 ```        
-* If it doesn't work within a few seconds, close the git bash window, open another one and repeat all steps from *Type `./mongo`*
+* If it doesn't give you the above success message within a few seconds, close the console window, open another one and repeat all steps from *Type `./mongo`*
 * KEEP TRACK of this userName and Password, you'll need it in a minute (then you can forget it).
 
-So far, the database is set up and running properly with all the folder configurations necessary.  We can now close the mongo setup shell (keep the mongod server running in the other bash windwo). Time to configure the Catalyst Appvetting software.
+So far, the database is set up and running properly with all the folder configurations necessary.  We can now close the Mongo Shell console (keep the mongod server running in the other bash window). Time to configure the Catalyst Appvetting software.
 
 **Configure the Appvetting Software**
 * Head back to the catalyst repo folder.
-* Insert `RENAME_THIS_TO config.js` you received from Mike into the Catalyst-Appvetting root (in the same folder as app.js)
-* Ummm...rename it to `config.js`.
+* Rename the `RENAME_THIS_config` file you received from Mike to `config.js`. (Yes, change the extension)
+* Insert `config.js` into the Catalyst-Appvetting root (in the same folder as app.js)
 * Open `config.js` in text editor or IDE of choice.
-* In the mongo: section, replace the userName and Password to the same ones you used in the `db.createUser` section above.
-* In the createAdminUser: section, change the username and password to something you'll remember.  You'll need these to log in to the software once it is up and running.  First and last name are nice as well.
-* Open bash here, and 
-* Type `./config.js`
+* In the `mongo:` section, replace the userName and Password to the same ones you used in the `db.createUser` section above.
+* In the `createAdminUser:` section, change the username and password to something you'll remember.  You'll need these to log in to the software once it is up and running.  First and last name are nice as well.
+* Open a console in the AppVetting root, and 
 * Type `node createAdminUser`  (Be sure config file is set up properly)
+* At this point, you have used the config.js file to connect the MongoDB to the mongo username and password, and you have created a user you'll need once we open the app in a browser window.  So, we're all set!
 
-All set?  That's the last of the setup!
 
 #### Starting the Software 
 
 If your mongod instance is still running, skip to step 3. Otherwise, these are the steps you'll need to take every time you restart your computer or shut down the mongod server.
-1. Double Click mongod (found at `C:\Program Files\MongoDB\Server\3.4\bin` on Windows, ??? on mac.
-	* You may also open bash from the bin folder and type `./mongod` if you prefer
-2. Open Bash in the Catalyst repo folder
+1. Double Click mongod (found at `C:\Program Files\MongoDB\Server\3.4\bin` on Windows, not sure on mac.  It's the Mongo Bin from earlier...you should be familiar with where it is installed.
+	* You may also open a console from the mongo bin folder and type `./mongod` if you prefer
+	* A console window should be open saying *waiting for connection on port 27017*
+2. Open another console window in the Catalyst repo folder
 3. Type `npm install` (definitely the first time for each branch, or if you've made serious changes, otherwise, it's optional)
 4. Type `npm start`
-5. Open a browser (like Chrome, Safari, (anything but IE)
+5. Open a browser (like Chrome, Safari, (anything but IE))
 6. At the url, type `localhost:8000` - - you're in!
 
 #### Using the Software
 
-Now that you're in, you can mess around with the software.  You'll want a completed application in order to observe the features of the software.  From `localhost:8000`...
+Now that you're in, you can mess around with the software.  You'll want a completed application form in order to observe the features of the software.  From `localhost:8000`...
 * Upper right corner - click Blue `Log In` button.
 * Enter the credentials you used in the createUserAdmin section of config.js - Save them to your browser (it's only a local instance) for convenience.
 * Click `Apply` tab to fill out an application (fill in, like ALL the fields, and be sure to click "Yes" radio buttons to fill in more information) and click Submit.  This will save the application information in your local database, so you only have to do this once.
-* Navigate back to `localhost:8000` and click the `Vetting` tab.  Click around, change data, enter data, etc.
+* From the success page, click on the `Vetting` tab (if it is there.  If not, navigate back to `localhost:8000`).  Click around, change data, enter data, etc.
 * **Users and Roles:** Click on the `Users` button - you should see yourself as an ADMIN.  Click `Add New User` to add a user with different roles to see what permissions they have to see what they see.  For instance, Site Assessor roles cannot see the `Vetting` tab.  There are certain places Vetting agents can't enter information in the Site Assessment views, and so on. 
+
+#### Where to find changes that need to be made
+
+**Contact Mike** and he'll share the Open Issues Spreadsheet Google Document with you.
 
 #### Submitting changes to the codebase
 
-We begin by branching off develop.  When you are finished, we ask that developers submit Merge Requests to the develop branch.  We are currently working out the details of this, and will update this file accordingly.  Pretty sure you'll go something like this:
+Summary: We begin by branching off develop.  We recommend you commit and push to your remote branch often.  When you are finished, we ask that developers submit Merge Requests to the develop branch.  We are currently working out the details of this, and will update this file accordingly.  
 
-**Begin Your Branch - from your local catalyst repo folder:**
+**Begin Your Branch - open a console from your local catalyst repo folder:**
 * `git checkout develop`
 * Use the "Issue Code" from the google doc spreadsheet to name your branch.  If you must test, please use TST-##.
-* For Example: `git branch TST-02` (01 has been used...)
+* For Example: `git branch TST-02` (01 has been used pushing this document...)
 * Then check out the branch: `git checkout TST-02`
-* Make your code changes, committing them early and often as you go as so:
 
-	`git commit -am "commit message here, saying what you did"`
-* We encourage you to commit your local branch to the remote repository often:
+**During Development**
+* Make your code changes, committing them to your local branch as so:
 
-	`git push -u origin TST-02` (where TST-01 is the branch name)
+	`git commit -am "insert commit message here, saying what you did"`
+* We also encourage you to commit your local branch to the remote repository often using the following command:
+
+	`git push -u origin <localBranchName>` 
     
-	(Don't worry - this doesn't merge it into the master branch or anything - it just saves your work as you go on a branch of the same name, so you have a backup in case something goes wrong...)
+	(Don't worry - this doesn't merge it into the master branch or anything - it just saves your work remotely on a branch of the same name, so you have a backup in case something goes wrong...)
 
 **Before the final pull request.  Go to your branch and...**
 * `git status` - - if there is anything to commit, be sure to
 	`git commit -am "commit message here"   THEN:
 * `git checkout develop` 
-* `git pull` - - pulls any changes from other developers
+* `git pull` -- pulls any changes from other developers
 * `git checkout <yourBranch>`
 * `git merge develop` -- merges those changes into your branch
 * `git push -u origin <yourBranch>` - - should push your local branch to the remote branch of the same name along with any changes made in develop to the remote repository.  NOW...
@@ -161,6 +170,10 @@ And that should create a Pull Request.  If there are any issues with this proces
 * Type `db.shutdownServer()`
 
 	Failure to do this will result in some sort of error upon next open.  It usually still works, though.
+
+###Thanks Again
+for helping out.  Contact Mike with any questions you may have.
+
 
 # kohn-catalyst
 hello :)
