@@ -5,30 +5,23 @@ for your willingness to use your skills and talents developing software for **Ca
 * Install necessary tools
 * Clone the repository
 * Install the MongoDB database locally
-* Configure MongoDB and Catalyst code to work together
-* Start up the software
-* Briefly describe how to use the software
+* Interact with the codebase/make changes
 * Explain the Git workflow we use
 
 As you work through this process, suggestions are always welcome.  [Email Mike](mailto:mikehainespdx@gmail.com) with any ideas, tools, or suggestions that could make things better.
 
 #### Before we begin:
- [Email Mike](mailto:mikehainespdx@gmail.com) to request a config.js file for the software.  We NEVER share this file publicly, for security purposes, but you'll need it later.  If you have his cell number, call or text him.  That would be even better.
+ [Email Mike](mailto:mikehainespdx@gmail.com) to request a config.js file for the software.  You'll need it later.  If you have his cell number, call or text him.  That would be even better.
 
 #### Install Necessary Tools:
 **IDE/Text Editor:** This web application is written entirely in javascript and runs in an internet browser. **[Notepad++](https://notepad-plus-plus.org/)** works nicely, but if you own IntelliJ, go for it.
 
-**Command Line Interface/Console/Bash Shell:** There are many tools one may use - git Bash, Windows PowerShell, cygwin, etc...use whatever you are comfortable using.
+**Command Line Interface/Console:** There are many tools one may use - git Bash, Windows PowerShell, cygwin, etc...use whatever you are comfortable using.
 
 **Install Git: [git-scm.com](https://git-scm.com/)** - If you don't already have it loaded, download the latest release from that page.  All default options are fine, although you may wish to choose your text editor.  Git Bash comes with this download.
 
-After Git installation, to set your account's default identity, open git Bash and enter  
-* `git config --global user.email "you@example.com"`
-* `git config --global user.name "Your Name"`
-* (Omit `--global` to set the identity only in this repository.)
-
-**Install Node** 
-* Check to see if you have node installed by typing `node -v` into a bash shell.
+**Install Node.js** 
+* Check to see if you have node installed by typing `node -v` into a console.
 * If no node, [download it here](https://nodejs.org/en/download/).
 * Installing it with default settings is fine.
 * If you have any bash shells running, you'll have to restart them for node to be recognized.
@@ -85,21 +78,18 @@ Successfully added user: {
 * If it doesn't work within a few seconds, close the git bash window, open another one and repeat all steps from *Type `./mongo`*
 * KEEP TRACK of this userName and Password, you'll need it in a minute (then you can forget it).
 
-So far, the database is set up and running properly with all the folder configurations necessary.  We can now close the mongo setup shell (keep the mongod server running in the other bash window). Time to configure the Catalyst Appvetting software.
+So far, the database is set up and running properly with all the folder configurations necessary.  We can now close the mongo setup shell (keep the mongod server running in the other bash windwo). Time to configure the Catalyst Appvetting software.
 
 **Configure the Appvetting Software**
 * Head back to the catalyst repo folder.
-* Rename the `RENAME_THIS_TO config.js` you received from Mike to `config.js`, and insert it into the Catalyst-Appvetting root (in the same folder as `app.js`)
+* Insert `RENAME_THIS_TO config.js` you received from Mike into the Catalyst-Appvetting root (in the same folder as app.js)
+* Ummm...rename it to `config.js`.
 * Open `config.js` in text editor or IDE of choice.
-* In the `mongo:` section, replace the userName and Password to the same ones you used in the `db.createUser` section above.  This is the last time you'll need these creds, as they always work in the background.
-* In the `createAdminUser:` section, change the username and password to something you'll remember.  You'll need these to log in to the software once it is up and running.  First and last name are nice as well.
-* Once your config file is saved, open bash here, and 
-* Type `node createAdminUser`.  (Should display stuff, ending with...
-```
-[ DATABASE ] Connection :: Successfully connected to the database: catalyst
-[ API ] postUser :: User Created with ID: s0meHa5hnumb3r
-```
-* Note: there will be a deprecation Warning regarding changing the method of connection.  This is why we still use Mongo 3.4.  We can ignore it (for now)
+* In the mongo: section, replace the userName and Password to the same ones you used in the `db.createUser` section above.
+* In the createAdminUser: section, change the username and password to something you'll remember.  You'll need these to log in to the software once it is up and running.  First and last name are nice as well.
+* Open bash here, and 
+* Type `./config.js`
+* Type `node createAdminUser`  (Be sure config file is set up properly)
 
 All set?  That's the last of the setup!
 
@@ -108,7 +98,6 @@ All set?  That's the last of the setup!
 If your mongod instance is still running, skip to step 3. Otherwise, these are the steps you'll need to take every time you restart your computer or shut down the mongod server.
 1. Double Click mongod (found at `C:\Program Files\MongoDB\Server\3.4\bin` on Windows, ??? on mac.
 	* You may also open bash from the bin folder and type `./mongod` if you prefer
-	* Either way, you'll get an authentication success message if all goes well.
 2. Open Bash in the Catalyst repo folder
 3. Type `npm install` (definitely the first time for each branch, or if you've made serious changes, otherwise, it's optional)
 4. Type `npm start`
@@ -124,7 +113,7 @@ Now that you're in, you can mess around with the software.  You'll want a comple
 * Navigate back to `localhost:8000` and click the `Vetting` tab.  Click around, change data, enter data, etc.
 * **Users and Roles:** Click on the `Users` button - you should see yourself as an ADMIN.  Click `Add New User` to add a user with different roles to see what permissions they have to see what they see.  For instance, Site Assessor roles cannot see the `Vetting` tab.  There are certain places Vetting agents can't enter information in the Site Assessment views, and so on. 
 
-#### Submitting changes to the codebase (still in alpha)
+#### Submitting changes to the codebase
 
 We began by branching off develop.  We ask that developers merge to the develop branch.  We are currently working out the details of this, and will update this file accordingly.  Pretty sure you'll go something like this:
 
@@ -134,8 +123,17 @@ From Your Branch -
 * `git pull` - - pulls any changes from other developers
 * `git checkout <yourBranch>`
 * `git merge develop` -- merges those changes into your branch
-* `git checkout develop`
-* `git merge <yourBranch>` -- to merge your changes into develop
+* `git push -u develop <yourBranch>` - - should push your branch with changes into develop
+
+**Create a Pull Request**
+After pushing your local changes to your remote repository:
+* point your browser to your repository on Github.com.
+* Click the Pull Requests tab.
+* Click New pull request.
+* In the base: dropdown, select develop.
+* In the compare: dropdown, select the branch you recently pushed to the repository.
+* Click Create pull request.
+* Modify the Title and Description of the Pull Request to identify the changes this Pull Request is introducing to the develop branch and your repository.
 
 And that should create a merge request.  But we'll test that and see...not exactly sure how gitHub handles these things.
 
@@ -148,7 +146,23 @@ And that should create a merge request.  But we'll test that and see...not exact
 	Failure to do this will result in some sort of error upon next open.  It usually still works, though.
 
 # kohn-catalyst
-hello :)  Here are notes from the original developers of the appVetting software...
+hello :)
+
+**Website live pages:**
+* http://54.69.62.47:8000/
+* http://54.69.62.47:8000/test/show
+  * Log into EC2 to see the console output when you test this page
+* http://54.69.62.47:8000/test/show-all
+  * This returns a JSON formatted text wall
+* http://54.69.62.47:8000/test/new
+  * Sample form using rest-new.hbs, and partials footer.html, header.html
+  * Submitting should call route '/insert_user', but we don't do restaurants so it returns 404
+
+## Structure
+* **format** 
+* **me** 
+* **pretty** 
+  * **please** 
 
 ## Good reads
 * Anatomy of an HTTP Transaction - https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
@@ -176,4 +190,4 @@ mongoose | An object modeling tool used with mongoDB designed to work in an asyn
 morgan | HTTP request logger middleware for node.js | www.npmjs.com/package/morgan
 request | Wrapper to use basica HTTP request functions | www.npmjs.com/package/request#http-authentication
 serve-favicon | favicon serving middleware with caching | www.npmjs.com/package/serve-favicon
-X-editable | Library for inline editing | https://vitalets.github.io/x-editable/
+X-editable | Libray for inline editing | https://vitalets.github.io/x-editable/
