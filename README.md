@@ -123,8 +123,17 @@ From Your Branch -
 * `git pull` - - pulls any changes from other developers
 * `git checkout <yourBranch>`
 * `git merge develop` -- merges those changes into your branch
-* `git checkout develop`
-* `git merge <yourBranch>` -- to merge your changes into develop
+* `git push -u origin <yourBranch>` - - should push your local branch to the remote branch of the same name in the remote repository
+
+**Create a Pull Request**
+After pushing your local changes to the gitHub repo branch:
+* point your browser to your repository on Github.com.
+* Click the Pull Requests tab.
+* Click New pull request.
+* In the base: dropdown, select develop.
+* In the compare: dropdown, select the branch you recently pushed to the repository.
+* Click Create pull request.
+* Modify the Title and Description of the Pull Request to identify the changes this Pull Request is introducing to the develop branch and your repository.
 
 And that should create a merge request.  But we'll test that and see...not exactly sure how gitHub handles these things.
 
