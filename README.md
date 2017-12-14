@@ -39,9 +39,8 @@ As you work through this process, suggestions are always welcome.  [Email Mike](
 * Type `git clone https://github.com/dandahle/Catalyst-AppVetting.git` to clone the repo.
 * Type `cd Catalyst-AppVetting/` where the files are located. You will be on the master branch.
 * Type `git checkout develop` to get to the working development branch 
-* Type `git branch <whateverBranchNameYouWant>` to create your own branch.
 
-We'll come back to how to merge changes later.
+We'll come back to how to name branches and merge changes later.
 
 For future reference (but do it now):
 * Head over to [The Catalyst GitHub Repo](https://github.com/dandahle/Catalyst-AppVetting)
@@ -115,27 +114,45 @@ Now that you're in, you can mess around with the software.  You'll want a comple
 
 #### Submitting changes to the codebase
 
-We began by branching off develop.  We ask that developers merge to the develop branch.  We are currently working out the details of this, and will update this file accordingly.  Pretty sure you'll go something like this:
+We begin by branching off develop.  When you are finished, we ask that developers submit Merge Requests to the develop branch.  We are currently working out the details of this, and will update this file accordingly.  Pretty sure you'll go something like this:
 
-From Your Branch - 
-* `git commit -am "commit message here" 
+**Begin Your Branch - from your local catalyst repo folder:**
+* `git checkout develop`
+* Use the "Issue Code" from the google doc spreadsheet to name your branch.  If you must test, please use TST-##.
+* For Example: `git branch TST-02` (01 has been used...)
+* Then check out the branch: `git checkout TST-02`
+* Make your code changes, committing them early and often as you go as so:
+
+	`git commit -am "commit message here, saying what you did"`
+* We encourage you to commit your local branch to the remote repository often:
+
+	`git push -u origin TST-02` (where TST-01 is the branch name)
+    
+	(Don't worry - this doesn't merge it into the master branch or anything - it just saves your work as you go on a branch of the same name, so you have a backup in case something goes wrong...)
+
+**Before the final pull request.  Go to your branch and...**
+* `git status` - - if there is anything to commit, be sure to
+	`git commit -am "commit message here"   THEN:
 * `git checkout develop` 
 * `git pull` - - pulls any changes from other developers
 * `git checkout <yourBranch>`
 * `git merge develop` -- merges those changes into your branch
-* `git push -u origin <yourBranch>` - - should push your local branch to the remote branch of the same name in the remote repository
+* `git push -u origin <yourBranch>` - - should push your local branch to the remote branch of the same name along with any changes made in develop to the remote repository.  NOW...
 
 **Create a Pull Request**
 After pushing your local changes to the gitHub repo branch:
-* point your browser to your repository on Github.com.
-* Click the Pull Requests tab.
-* Click New pull request.
-* In the base: dropdown, select develop.
-* In the compare: dropdown, select the branch you recently pushed to the repository.
-* Click Create pull request.
-* Modify the Title and Description of the Pull Request to identify the changes this Pull Request is introducing to the develop branch and your repository.
+* point your browser to the repository on github.com.
+* Make sure you are signed in to GitHub
+* Click the `Pull Requests` tab.
+* Click `New Pull Request`.
+* In the **base:** dropdown, **select develop. <-- IMPORTANT**
+* In the **compare:** dropdown, select the branch you recently pushed to the repository.
+* Be sure the changes you have made are reflected in the commits and code comparison below.
+* Click `Create pull request`.
+* Modify the Title: use code and description title from the spreadsheet, like `TST-01: Fix the ReadMe file`
+* Modify the Description (be as brief as you want) - basically be sure to identify the changes this Pull Request is introducing to the develop branch.
 
-And that should create a merge request.  But we'll test that and see...not exactly sure how gitHub handles these things.
+And that should create a Pull Request.  If there are any issues with this process, please let Mike know.
 
 **Properly Shutting Down MongoDb** (when you're finished for the day)
 * Open bash from the Mongo bin folder
