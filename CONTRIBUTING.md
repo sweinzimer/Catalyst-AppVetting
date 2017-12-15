@@ -165,7 +165,7 @@ And that should create a Pull Request.  If there are any issues with this proces
 
 	Failure to do this will result in some sort of error upon next open.  It usually still works, though.
 
-###Thanks Again
+### Thanks Again
 for helping out.  Contact Mike with any questions you may have.
 
 ### Good reads
