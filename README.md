@@ -15,4 +15,4 @@ In order for people to request help, they need to fill out an application form. 
 
 ## Building the Software
 * If you wish to mess around with this software, AND/OR
-* If you wish to volunteer time to fix issues, please see the **CONTRIBUTING.md** document.
+* If you wish to volunteer time to fix issues, please see the [contributing docs](./CONTRIBUTING.md) document.
