@@ -189,9 +189,9 @@ for helping out.  Contact Mike with any questions you may have.
 ### Packages
 *Package* | *Description* | *Documentation*
 --- | --- | ---
-Bluebird | Full feature promise library with ES6 support | www.http://bluebirdjs.com/docs/
+Bluebird | Full feature promise library with ES6 support | http://bluebirdjs.com/docs/
 body-parser | Parse incoming request bodies in a middleware before your handlers, availabe under the `req.body` property | www.ewiggin.gitbooks.io/expressjs-middleware/content/body-parser.html
-bootstrap | HTML, CSS, and JS framework for developing responsive, mobile first projects on the web | www.http://getbootstrap.com/getting-started/
+bootstrap | HTML, CSS, and JS framework for developing responsive, mobile first projects on the web | http://getbootstrap.com/getting-started/
 cookie-parser | Parse Cookie header and populate `req.cookies` with an object keyed by the cookie names. Optionally you may enable signed cookie support by passing a `secret` string, which assigns `req.secret` so it may be used by other middleware | www.github.com/expressjs/cookie-parser
 debug | tiny node.js debugging utility modelled after node core's debugging technique | www.npmjs.com/package/debug
 express | Web framework for Node.js | www.expressjs.com
