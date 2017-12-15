@@ -177,16 +177,16 @@ for helping out.  Contact Mike with any questions you may have.
 * mongoDB Node.js driver quick reference - http://mongodb.github.io/node-mongodb-native/2.2/
 * mongoDB Node.js driver API - http://mongodb.github.io/node-mongodb-native/2.2/api/
 
-## Good reads
+### Good reads
 * Anatomy of an HTTP Transaction - https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
 * Using express, handlebars, and mongoDB - https://sites.google.com/site/redmahbub/development/hbs-mongo-with-express4
 
-## Documentation
+### Documentation
 * mongoDB - https://docs.mongodb.com/manual/introduction/
 * mongoDB Node.js driver quick reference - http://mongodb.github.io/node-mongodb-native/2.2/
 * mongoDB Node.js driver API - http://mongodb.github.io/node-mongodb-native/2.2/api/
 
-## Packages
+### Packages
 *Package* | *Description* | *Documentation*
 --- | --- | ---
 Bluebird | Full feature promise library with ES6 support | www.http://bluebirdjs.com/docs/
