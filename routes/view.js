@@ -299,7 +299,16 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
             element = formatElement(element);
             payload.unapproved.push(element);
         });
-    }
+	}
+
+	if (res.locals.results.withdrawnooa[0] == null) {
+		console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'withdrawnooa\'');
+	} else {
+		res.locals.results.withdrawnooa.forEach(function (element) {
+			element = formatElement(element);
+			payload.unapproved.push(element);
+		});
+	}
 
     //add all other existing statuses to processing array
     payload.processing = [];
@@ -543,7 +552,10 @@ function formatStatus(element) {
             break;
         case 'declined':
             status = 'Declined';
-            break;
+			break;
+		case 'withdrawnooa':
+			status = 'Withdrawn - Out of Service Area';
+			break;
         case 'withdrawn':
             status = 'Withdrawn';
             break;
