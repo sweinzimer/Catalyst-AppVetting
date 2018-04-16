@@ -109,29 +109,28 @@ Now that you're in, you can mess around with the software.  You'll want a comple
 * From the success page, click on the `Vetting` tab (if it is there.  If not, navigate back to `localhost:8000`).  Click around, change data, enter data, etc.
 * **Users and Roles:** Click on the `Users` button - you should see yourself as an ADMIN.  Click `Add New User` to add a user with different roles to see what permissions they have to see what they see.  For instance, Site Assessor roles cannot see the `Vetting` tab.  There are certain places Vetting agents can't enter information in the Site Assessment views, and so on. 
 
-#### If You're Interested in helping Catalyst...read on...
+### **If You're Interested in fixing issues and submitting them for review, read on...**
 
-**Contact Mike** and he'll share the Open Issues Spreadsheet Google Document with you.
+**Take a look** at the Open Issues using the Issues Tab at the top of the GitHub page.
 
 #### Submitting changes to the codebase
 
-Summary: We begin by branching off develop.  We recommend you commit and push to your remote branch often.  When you are finished, we ask that developers submit Merge Requests to the develop branch.  We are currently working out the details of this, and will update this file accordingly.  
+Summary: We begin by **branching off develop,** making changes to that branch, and submitting merge requests **compared with develop.**  We continually work out the details of this, and will update this file accordingly (especially if you find some method that works better).  But for now, please follow the instructions below to submit code changes.  
 
 **Begin Your Branch - open a console from your local catalyst repo folder:**
 * `git checkout develop`
-* Use the "Issue Code" from the google doc spreadsheet to name your branch.  If you must test, please use TST-##.
-* For Example: `git branch TST-02` (01 has been used pushing this document...)
-* Then check out the branch: `git checkout TST-02`
+* Use the "Issue Code" Number from the google doc spreadsheet to name your branch.  If you must test, please use TST-##.
+* For Example: `git branch VW-12`
+* Check out the branch: `git checkout VW-12`
+* Create the remote github branch: `git push -u origin VW-12`
 
 **During Development**
-* Make your code changes, committing them to your local branch as so:
-
+* Make your code changes, committing them to your local branch.  (for example):
 	`git commit -am "insert commit message here, saying what you did"`
-* We also encourage you to commit your local branch to the remote repository often using the following command:
+* We also encourage you to commit your local branch to the remote repository early and often using the following command:
+	`git push`
 
-	`git push -u origin <localBranchName>` 
-    
-	(Don't worry - this doesn't merge it into the master branch or anything - it just saves your work remotely on a branch of the same name, so you have a backup in case something goes wrong...)
+	*(Don't worry - this doesn't merge it into the master branch or anything - it just saves your work remotely on a branch of the same name, so you have a backup in case something goes wrong...)*
 
 **Before the final pull request.  Go to your branch and...**
 * `git status` - - if there is anything to commit, be sure to
@@ -139,8 +138,8 @@ Summary: We begin by branching off develop.  We recommend you commit and push to
 * `git checkout develop` 
 * `git pull` -- pulls any changes from other developers
 * `git checkout <yourBranch>`
-* `git merge develop` -- merges those changes into your branch
-* `git push -u origin <yourBranch>` - - should push your local branch to the remote branch of the same name along with any changes made in develop to the remote repository.  NOW...
+* `git merge develop` -- merges those changes into your branch. 
+* `git push` -- one final local branch push to remote branch.  NOW...
 
 **Create a Pull Request**
 After pushing your local changes to the gitHub repo branch:
@@ -152,8 +151,8 @@ After pushing your local changes to the gitHub repo branch:
 * In the **compare:** dropdown, select the branch you recently pushed to the repository.
 * Be sure the changes you have made are reflected in the commits and code comparison below.
 * Click `Create pull request`.
-* Modify the Title: use code and description title from the spreadsheet, like `TST-01: Fix the ReadMe file`
-* Modify the Description (be as brief as you want) - basically be sure to identify the changes this Pull Request is introducing to the develop branch.
+* Modify the Title: use code and description title from the spreadsheet, like `VW-12: Fixed Vetting Worksheet Buttons`
+* Modify the Description (be as brief as you want) - basically be sure to highlight the changes this Pull Request is introducing to the develop branch.
 
 And that should create a Pull Request.  If there are any issues with this process, please let Mike know.
 
