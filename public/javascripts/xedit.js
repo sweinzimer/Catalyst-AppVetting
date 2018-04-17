@@ -295,6 +295,7 @@ $(document).ready(function() {
     $('#language').editable();
 
     $('#special_circumstances').editable();
+    $('#heard_about').editable();
 
     $('#driver_license').editable();
     $('#emergency_name').editable({});

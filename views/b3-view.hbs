@@ -13,10 +13,12 @@
             <div class="row">
               <div class="col-xs-12 col-sm-6">
                 <h3>Vetting Summary</h3>
+                <p><i>Information provided here will be visible to Site Assessors, and should give useful context for when they visit the client's home.  (DO NOT provide private (e.g. specific health and/or financial) information. </i></p>
                 <a href="#" id="notes.vet_summary" data-type="textarea" data-pk="{doc._id}" data-url="/edit/{{doc._id}}" data-name="notes.vet_summary" data-title="Vetting Summary">{{doc.notes.vet_summary}}</a>
               </div>
               <div class="col-xs-12 col-sm-6">
                 <h3>Site Assessment Summary</h3>
+                <p><i>Look for messages, if any, from Site Assessors in the area below.  Site Assessors have provided this to the Vetting Agents for potential follow-up with the client.</i></p>
                 <p>{{#if_not_eq doc.notes.site_summary ''}}{{doc.notes.site_summary}}{{else}}[no summary]{{/if_not_eq}}
               </div>
             </div>
@@ -496,6 +498,7 @@
 						{value: 'assessComp', text: 'Site Assessment - Complete'},
                         {value: 'approval', text: 'Approval Process'},
                         {value: 'declined', text: 'Declined'},
+                        {value: 'withdrawnooa', text: 'Withdrawn - Outside Service Area'},
                         {value: 'withdrawn', text: 'Withdrawn'},
                         {value: 'project', text: 'Approved Project'}
                     ]

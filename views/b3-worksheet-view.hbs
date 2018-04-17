@@ -109,7 +109,12 @@
 				<td>{{doc.application.name.first}} {{#if doc.application.name.middle}}{{doc.application.name.middle}}{{/if}} {{doc.application.name.last}} {{#if doc.application.name.preferred}}({{doc.application.name.preferred}}){{/if}}</td>
 				<td>{{doc.application.phone.preferred}}</td>
 				<td>{{doc.application.phone.other}}</td>
-				<td>{{doc.application.email}}</td>
+				<td>{{#if doc.application.email}}{{doc.application.email}}
+					<br>
+					<a href="mailto:{{doc.application.email}}">
+						<b>Email {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}</b>
+					</a>{{else}}
+					<i>No email provided.</i>{{/if}}</td>
 			</tr>
 		</table>
 	</div>
@@ -189,6 +194,72 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your application says…<br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tell me more about…<br>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; How long has this condition existed?</i></p>
+
+	<div class="row" id="workItemCards">
+		<div class="col-xs-12 col-sm-6 col-md-3">
+			<h3>Add a Work Item</h3>
+			<div class="panel panel-primary work-item" name="new">
+				<div class="panel-body">
+					<h4 class="card-title">New Work Item</h4>
+					<p class="card-text">
+						<div class="form-group">
+							<label class="form-control-label">Name*</label>
+							<input type="text" class="form-control" name="name">
+						</div>
+						<div class="form-group">
+							<label class="form-control-label">Description*</label>
+							<textarea class="form-control" name="description" rows="3"></textarea>
+						</div>
+						<div class="form-group">
+							<label class="form-control-label">Vetting Comments*</label>
+							<textarea class="form-control" name="vettingComments" rows="3"></textarea>
+						</div>
+						<div class="form-group">
+							<label class="form-control-label">Cost</label>
+							<input type="cost" class="form-control" name="cost">
+						</div>
+					</p>
+					<a href="#" class="btn btn-primary card-link work-item-new">Save</a>
+					<a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
+				</div>
+			</div>
+		</div>
+		<div>
+			<h3>Current Work Items</h3>
+			{{#each workItems}}
+			<div style="float:right" class="col-xs-12 col-sm-6 col-md-9">
+				<div class="panel panel-default work-item" name="{{_id}}">
+					<div class="panel-body">
+						<h4 class="card-title" name="{{_id}}.name">{{name}}</h4>
+						<p class="text-muted">{{date}}</p>
+						<p class="card-text">
+							<strong>Description:</strong>
+							<br/>
+							<span name="{{_id}}.description">{{description}}</span>
+							<br/>
+							<br/>
+							<strong>Vetting comments:</strong>
+							<br/>
+							<span name="{{_id}}.vettingComments">{{vettingComments}}</span>
+							<br/>
+							<br/>
+							<strong>Site comments:</strong>
+							<br/> {{siteComments}}
+							<br/>
+							<br/>
+							<strong>Cost:</strong>
+							<br/>
+							<span name="{{_id}}.cost">{{cost}}</span>
+						</p>
+						<a href="#" class="btn btn-primary card-link work-item-edit">Edit</a>
+						<a href="#" class="btn btn-danger card-link work-item-delete">Delete</a>
+					</div>
+				</div>
+			</div>
+			 {{/each}}
+		</div>
+		
+	</div>
 
 
 
@@ -704,70 +775,15 @@
 	        </form>
 	    </div>
 	</div>
-
-	<div class="row" id="workItemCards">
-
-		<div class="col-xs-12 col-sm-4 col-md-3">
-			<h3>Site Assessment Summary</h3>
-			{{#if_not_eq doc.notes.site_summary ''}}
-				<p>{{doc.notes.site_summary}}</p>
-			{{else}}
-				<p>[no summary]</p>
-			{{/if_not_eq}}
-			<h3>Work Items</h3>
-			<div class="panel panel-primary work-item" name="new">
-				<div class="panel-body">
-					<h4 class="card-title">New Work Item</h4>
-					<p class="card-text">
-						<div class="form-group">
-							<label class="form-control-label">Name*</label>
-							<input type="text" class="form-control" name="name"></input>
-						</div>
-						<div class="form-group">
-							<label class="form-control-label">Description*</label>
-							<textarea class="form-control" name="description" rows="3"></textarea>
-						</div>
-						<div class="form-group">
-							<label class="form-control-label">Vetting Comments*</label>
-							<textarea class="form-control" name="vettingComments" rows="3"></textarea>
-						</div>
-						<div class="form-group">
-							<label class="form-control-label">Cost</label>
-							<input type="cost" class="form-control" name="cost"></input>
-						</div>
-					</p>
-					<a href="#" class="btn btn-primary card-link work-item-new">Save</a>
-					<a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
-				</div>
-			</div>
-		</div>
-
-		{{#each workItems}}
-			<div class="col-xs-12 col-sm-4 col-md-3">
-				<div class="panel panel-default work-item" name="{{_id}}">
-					<div class="panel-body">
-						<h4 class="card-title" name="{{_id}}.name">{{name}}</h4>
-						<p class="text-muted">{{date}}</p>
-						<p class="card-text">
-							<strong>Description:</strong><br/>
-							<span name="{{_id}}.description">{{description}}</span><br/>
-							<br/>
-							<strong>Vetting comments:</strong><br/>
-							<span name="{{_id}}.vettingComments">{{vettingComments}}</span><br/>
-							<br/>
-							<strong>Site comments:</strong><br/>
-							{{siteComments}}<br/>
-							<br/>
-							<strong>Cost:</strong><br/>
-							<span name="{{_id}}.cost">{{cost}}</span>
-						</p>
-						<a href="#" class="btn btn-primary card-link work-item-edit">Edit</a>
-						<a href="#" class="btn btn-danger card-link work-item-delete">Delete</a>
-					</div>
-				</div>
-			</div>
-		{{/each}}
+	<div class="col-xs-12 col-sm-4 col-md-3">
+		<h3>Site Assessment Summary</h3>
+		{{#if_not_eq doc.notes.site_summary ''}}
+		<p>{{doc.notes.site_summary}}</p>
+		{{else}}
+		<p>[no summary]</p>
+		{{/if_not_eq}}
 	</div>
+	
 </div>
 
 
@@ -865,17 +881,18 @@
             value: '{{doc.status}}',
             source:
                     [
-                        {value: 'discuss', text: 'On Hold - Pending Discussion'},
-                        {value: 'new', text: 'NEW'},
-                        {value: 'phone', text: 'Phone Call Needed'},
-                        {value: 'handle', text: 'Handle-It'},
-                        {value: 'documents', text: 'Awaiting Documents'},
-                        {value: 'assess', text: 'Site Assessment - Pending'},
-						{value: 'assessComp', text: 'Site Assessment - Complete'},
-                        {value: 'approval', text: 'Approval Process'},
-                        {value: 'declined', text: 'Declined'},
-                        {value: 'withdrawn', text: 'Withdrawn'},
-                        {value: 'project', text: 'Approved Project'}
+                        { value: 'discuss', text: 'On Hold - Pending Discussion' },
+						{ value: 'new', text: 'NEW' },
+						{ value: 'phone', text: 'Phone Call Needed' },
+						{ value: 'handle', text: 'Handle-It' },
+						{ value: 'documents', text: 'Awaiting Documents' },
+						{ value: 'assess', text: 'Site Assessment - Pending' },
+						{ value: 'assessComp', text: 'Site Assessment - Complete' },
+						{ value: 'approval', text: 'Approval Process' },
+						{ value: 'declined', text: 'Declined' },
+						{ value: 'withdrawnooa', text: 'Withdrawn - Outside Service Area' },
+						{ value: 'withdrawn', text: 'Withdrawn' },
+						{ value: 'project', text: 'Approved Project' }
                     ]
         });
         $('#owns_home').editable({
@@ -1651,24 +1668,24 @@
 
 	function handleNewWorkItemSubmission(e) {
 		if (e) e.preventDefault()
-    var newWorkItem = {}, error = false
+    	var newWorkItem = {}, error = false
 
-    $('input, textarea', e.target.parentNode).each(function(idx) {
-      if (this.value.length === 0 && this.name !== 'cost') {
-        $(this.parentNode).addClass('has-error')
-        error = true
-      } else {
-        newWorkItem[this.name] = this.value
-        $(this.parentNode).removeClass('has-error')
-      }
-    })
+		$('input, textarea', e.target.parentNode).each(function(idx) {
+			if (this.value.length === 0 && this.name !== 'cost') {
+				$(this.parentNode).addClass('has-error')
+				error = true
+			} else {
+				newWorkItem[this.name] = this.value
+				$(this.parentNode).removeClass('has-error')
+			}
+		})
 
-    if (error === false) {
-      createNewWorkItem(newWorkItem, function(err) {
-        handleNewWorkItemClear()
-      })
-    }
-  }
+		if (error === false) {
+			createNewWorkItem(newWorkItem, function(err) {
+				handleNewWorkItemClear()
+			})
+		}
+	}
 
   function handleNewWorkItemClear(e, node) {
 		if (e) e.preventDefault()
@@ -1700,7 +1717,7 @@
   function addWorkItem(w) {
     var cardContainer = $('#workItemCards')
 
-    var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-4').addClass('col-md-3')
+    var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6').addClass('col-md-9').addClass('float-to-right')
     .appendTo(cardContainer)
 
     var card = $('<div></div>').addClass('panel panel-default').addClass('work-item')

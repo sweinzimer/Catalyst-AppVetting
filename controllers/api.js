@@ -366,6 +366,7 @@ module.exports = {
             assess: DocumentPackage.find({status: "assess"}).lean().execAsync(),
 			assessComp: DocumentPackage.find({status: "assessComp"}).lean().execAsync(),
             withdrawn: DocumentPackage.find({status: "withdrawn"}).lean().execAsync(),
+            withdrawnooa: DocumentPackage.find({ status: "withdrawnooa" }).lean().execAsync(),
             approval: DocumentPackage.find({status: "approval"}).lean().execAsync(),
             handle: DocumentPackage.find({status: "handle"}).lean().execAsync(),
             declined: DocumentPackage.find({status: "declined", app_year : year}).lean().execAsync(),
@@ -442,7 +443,7 @@ module.exports = {
             unapproved: DocumentPackage.find( {
 				$and: [
 				{app_year : year},
-				{ $or : [{status : "withdrawn"}, {status : "declined"}]}
+                    { $or: [{ status: "withdrawn" }, { status: "withdrawnooa" }, {status : "declined"}]}
 				]
 				
 			}).lean().execAsync()
