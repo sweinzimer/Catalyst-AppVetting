@@ -109,7 +109,12 @@
 				<td>{{doc.application.name.first}} {{#if doc.application.name.middle}}{{doc.application.name.middle}}{{/if}} {{doc.application.name.last}} {{#if doc.application.name.preferred}}({{doc.application.name.preferred}}){{/if}}</td>
 				<td>{{doc.application.phone.preferred}}</td>
 				<td>{{doc.application.phone.other}}</td>
-				<td>{{doc.application.email}}</td>
+				<td>{{#if doc.application.email}}{{doc.application.email}}
+					<br>
+					<a href="mailto:{{doc.application.email}}">
+						<b>Email {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}</b>
+					</a>{{else}}
+					<i>No email provided.</i>{{/if}}</td>
 			</tr>
 		</table>
 	</div>
