@@ -10,8 +10,8 @@
 
     <!-- Bootstrap -->
     <!-- Latest compiled and minified CSS -->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="/stylesheets/b3style.css">
+    <link href="/stylesheets/bootstrap3.0.0.css" rel="stylesheet" type="text/css">
+	<link href="/stylesheets/b3style.css" rel="stylesheet" type="text/css">
     <!-- Add any head items here that may be needed for IE7/8/9 support -->
 	<style>
 		.float-to-right {
@@ -20,6 +20,7 @@
 	</style>
 </head>
 <body>
+	
     {{>header}}
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -27,22 +28,19 @@
 
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<!-- Latest compiled and minified JavaScript -->
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+	<script src="/javascripts/bootstrap3.0.0.min.js"></script>
+	<link href="/stylesheets/x-editable1.5.0.css" rel="stylesheet"/>
+	<script src="/javascripts/x-editable1.5.0.min.js"></script>
+	<script src="/javascripts/xedit.js" type="text/javascript"></script>
+	<script src="/javascripts/addNote.js" type="text/javascript"></script>
+	<script src="/javascripts/setFlags.js" type="text/javascript"></script>
 
-
-	<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-	<script src="/javascript/xedit.js" type="text/javascript"></script>
-	<script src="/javascript/addNote.js" type="text/javascript"></script>
-	<script src="/javascript/setFlags.js" type="text/javascript"></script>
-
-	<div class="container-fluid">
 	  {{{body}}}
-	</div>
+	
         
     {{>footer}}
 	
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script>
+    <!--script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/js/bootstrap.min.js" integrity="sha384-BLiI7JTZm+JWlgKa0M0kGRpJbF2J8q+qreVrKBC47e3K6BW78kGLrCkeRX6I9RoK" crossorigin="anonymous"></script-->
     </body>
 </html>

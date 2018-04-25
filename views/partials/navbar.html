@@ -118,11 +118,16 @@
 </style>
 
 <script>
-{{#if user}}
-  var user = "{{{ user_email }}}"
-{{else}}
-  var user = false
-{{/if}}
+// {{#if user}}
+//   var user = "{{{ user_email }}}"
+// {{else}}
+//   var user = false
+// {{/if}}
+if(user) {
+  user = user_email;
+} else {
+  user = false;
+}
 
   if (user !== false) {
     $('#userNav').css('display', 'inline-block')

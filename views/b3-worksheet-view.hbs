@@ -1,55 +1,75 @@
 <!-- This view handles the Vetting Worksheet. -->
+<nav class="navbar navbar-default fixed nav-buttons">
+	<div class="container-fluid">
+		<div class="input-group">
+			<input type="text" id="note" class="form-control" placeholder="Enter Vetting Note Here...">
+			<span class="input-group-btn">
+				<button id="addNote" class="btn btn-primary" type="submit">Add Note</button>
+			</span>
+		</div>
+		<div class="nav-buttons">
+			<ul class="da-buttons">
+				<li>
+					<a href="/view" class="btn btn-primary btn-height">Back to Vetting Home</a>
+				</li>
+				<li>
+					<a href="/view/{{doc._id}}" class="btn btn-primary btn-height">Application View</a>
+				</li>
+				<li class="active">
+					<button type="button" class="btn btn-secondary btn-height">Vetting Worksheet</button>
+				</li>
 
-<!-- This part is the fixed Vetting Notes INPUT area so Vetting Agents
-  -- can make notes whenever they need to without having to scroll around
-  -->
-
-<nav class="navbar navbar-fixed-top">
-	 <div class="input-group">
-		<input type="text" id="note" class="form-control" placeholder="Enter Vetting Note Here...">
-		<span class="input-group-btn">
-			<button id="addNote" class="btn btn-primary" type="submit">Add Note</button>
-		</span>
+				<li>
+					<a id="csvExportButton" class="btn btn-primary btn-height">Export to CSV</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 </nav>
 
-<br><br> <!-- spacer gets past the Vetting Notes Input -->
+<br>
+<br>
 
-<a href="/view" class="btn btn-primary">Back to Vetting Home</a>
-<a href="/view/{{doc._id}}" class="btn btn-primary">Back to Application View</a>
-<a id="csvExportButton" class="btn btn-primary">Export to CSV</a>
-
-
-<div class="container col-xs-12">
-		<h1>{{doc.application.name.first}} {{doc.application.name.last}} - Vetting Worksheet</h1>
-		<h3>Status: <a href="#" id="status" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="status" data-title="Select status"></a></h3>
+<!-- spacer gets past the Vetting Notes Input -->
+<div class="container-fluid body-view">
+	<div class="row">
+		<div class="col-xs-12">
+			<h1>{{doc.application.name.first}} {{doc.application.name.last}} - Vetting Worksheet</h1>
+			<h3>Status:
+				<a href="#" id="status" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="status" data-title="Select status"></a>
+			</h3>
 		</div>
 
 
 		<!-- ADDRESS AREA AND MAP IT LINK -->
-<div class="container col-xs-12">
-            <h3>Address</h3>
+		<div class="container col-xs-12">
+			<h3>Address</h3>
 			<div class="col-xs-12">
 				<div class="row">
 					<div class="col-sm-5">
 						<a id="address" href="#" data-type="address" data-pk="1" data-url="/edit/address/{{doc._id}}" data-title="Enter Address"></a>
 					</div>
 					<div class="col-sm-7">
-						<a href="http://maps.google.com/?q={{doc.application.address.line_1}} {{doc.application.address.city}} {{doc.application.address.state}} {{doc.application.address.zip}}" target="_blank"><b>Map it!</b></a>
+						<a href="http://maps.google.com/?q={{doc.application.address.line_1}} {{doc.application.address.city}} {{doc.application.address.state}} {{doc.application.address.zip}}"
+						 target="_blank">
+							<b>Map it!</b>
+						</a>
 					</div>
 				</div>
 			</div>
 
-			<br><h4>Is this Property within our Service Area?</h4>
+			<br>
+			<h4>Is this Property within our Service Area?</h4>
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-sm-2">
 						<div id="inline_content">
-						<form class="service_area">
-							<input type="hidden" value="{{doc._id}}" id="applicationID"/>
-							<input type="radio" id="sa_yes" name="service_area" value="true"> Yes<br>
-							<input type="radio" id="sa_no" name="service_area" value="false"> No
-						</form>
+							<form class="service_area">
+								<input type="hidden" value="{{doc._id}}" id="applicationID" />
+								<input type="radio" id="sa_yes" name="service_area" value="true"> Yes
+								<br>
+								<input type="radio" id="sa_no" name="service_area" value="false"> No
+							</form>
 						</div>
 					</div>
 					<div class="col-sm-9">
@@ -57,986 +77,1166 @@
 					</div>
 				</div>
 			</div>
-</div>
+		</div>
 
-<hr>
+		<hr> {{#if doc.advocate.is_advocate}}
+		<div class="container col-xs-12">
+			<table>
+				<tr>
+					<td valign="baseline">
+						<h3>Advocate Info</h3>
+					</td>
+					<td valign="baseline"> &nbsp; &nbsp; (if applicable...)</td>
+				</tr>
+			</table>
+			<div class="col-xs-12">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th class="col-sm-2">Advocate Name</th>
+							<th class="col-sm-2">Advocate Phone</th>
+							<th class="col-md-2">Advocate Email</th>
+							<th class="col-sm-2">Relationship to Client</th>
+							<th class="col-md-2">Organization</th>
 
-{{#if doc.advocate.is_advocate}}
-<div class="container col-xs-12">
-	<table>
-		<tr>
-			<td valign="baseline"><h3>Advocate Info</h3></td>
-			<td valign="baseline"> &nbsp; &nbsp; (if applicable...)</td>
-		</tr>
-	</table>
-	<div class="col-xs-12">
-		<table class="table table-striped">
-            <thead>
-			<tr>
-				<th class="col-sm-2">Advocate Name</th>
-				<th class="col-sm-2">Advocate Phone</th>
-				<th class="col-md-2">Advocate Email</th>
-				<th class="col-sm-2">Relationship to Client</th>
-				<th class="col-md-2">Organization</th>
-				
-			</tr>
-            </thead>
-            <tbody>
-			<tr>
-				<td>{{doc.advocate.name}}</td>
-				<td>{{doc.advocate.phone}}</td>
-				<td>{{#if doc.advocate.email}}{{doc.advocate.email}}<br><a href="mailto:{{doc.advocate.email}}"><b>Email {{doc.advocate.name}}</b></a>{{else}}<i>None provided.</i>{{/if}}</td>
-				<td>{{doc.advocate.relationship}}</td>
-				<td>{{doc.advocate.organization_name}}</td>
-			</tr>
-            </tbody>
-		</table>
-	</div>
-</div>
-{{/if}}
-
-<div class="container col-xs-12">
-	<h3>Applicant Contact Information</h3>
-	<div class="col-xs-12">
-		<table class="table table-striped">
-			<tr>
-				<th class="col-sm-2">Name</th>
-				<th class="col-sm-2">Phone</th>
-				<th class="col-sm-2">Other Phone</th>
-				<th class="col-md-2">Email</th>
-			</tr>
-			<tr>
-				<td>{{doc.application.name.first}} {{#if doc.application.name.middle}}{{doc.application.name.middle}}{{/if}} {{doc.application.name.last}} {{#if doc.application.name.preferred}}({{doc.application.name.preferred}}){{/if}}</td>
-				<td>{{doc.application.phone.preferred}}</td>
-				<td>{{doc.application.phone.other}}</td>
-				<td>{{#if doc.application.email}}{{doc.application.email}}
-					<br>
-					<a href="mailto:{{doc.application.email}}">
-						<b>Email {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}</b>
-					</a>{{else}}
-					<i>No email provided.</i>{{/if}}</td>
-			</tr>
-		</table>
-	</div>
-</div>
-
-<hr>
-
-<div class="container col-xs-12">
-{{#if doc.advocate.is_advocate}}
-	<h3>Advocate Conversation Script</h3>
-	<p class="scriptText">Hello. My name is ______________ and  I’m calling from Catalyst Partnerships. You are listed as an advocate on {{doc.application.name.first}} {{doc.application.name.last}}'s application for our help with repairs on their home. I have some questions for you. Is this a good time to talk?</p>
-
-	<p><i>
-	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF YES:</b> (proceed)<br>
-	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF NO:</b> (reschedule for call back - make vetting note)
-	</i></p>
-
-	<p class="scriptText">Is there any information you would like to share with us regarding {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}} or their situation that hasn't been captured by the application that might help us better serve them?</p>
-
-	<p class="scriptText">We have some questions regarding {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}'s application. Can we contact {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}} directly or should we work through you?
-
-	<p><i>
-	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF CONTACT APPLICANT</b> (Thank Advocate, call Applicant)<br>
-	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF WORK THROUGH ADVOCATE:</b> <a href="#targettwo">Skip to [2]</a>
-	</i></p>
-
-	<hr>
-{{/if}}
-
-	<b>[1]</b>
-	<h3>Applicant Conversation Script:</h3>
-	<p class="scriptText">Good Morning. My name is _________________ and I’m calling from Catalyst Partnerships.  You contacted us for some help with repairs to your home. To process your application I need a little more information. Is this a good time to talk?
-
-	<p><i>
-	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF YES:</b> (proceed)<br>
-	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF NO:</b> (reschedule for call back - make vetting note)
-	</i></p>
-
-	<p id="targettwo"><br></p>
-	<b>[2]</b>
-	<p class="scriptText">Before I ask my questions, {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}, let me take a minute to describe our process.  Today my focus will be on confirming that you meet our financial guidelines. If you do, next we would arrange to visit your home to determine whether the requested repairs are things that Catalyst has the expertise and resources to do. Then, If we can do the work, we would find a mutually agreeable date and get you on our project schedule. Finally we would show up at your home on the agreed date and do the work. Does all that make sense to you?</p>
-
-	<p class="scriptText">Now, the first thing we need is your proof of home ownership. Can you provide us with, for example, either a copy of your latest mortgage statement, or possibly a copy of deed or title, or maybe your most recent home insurance statement?</p>
-
-
-	<i><b>Give them the address to send it to:</b></i><br>
-	<table cellpadding=10>
-		<tr><td> &nbsp;&nbsp;&nbsp;&nbsp;
-			</td><td valign="middle">
-				<b>Catalyst Partnerships<br>
-				PO Box 1922<br>
-				Beaverton, OR 97075</b><br>
-			</td><td valign="middle">
-				<h4>OR</h4>
-			</td><td valign="middle">
-				<b>office@catalystnw.org<br>
-				(971) 245-6555</b>
-			</td>
-		</tr>
-	</table>
-
-	<hr>
-
-	<h3>Requested Repairs</h3>
-
-	<p><i>The Vetting Agent’s job is to create Work Items (a quick title) and their descriptions (as long as is necessary to be helpful...) These items will be sent to the Site Assessors/Handle-It team.</i></p>
-
-
-	<span><i>[From the application:]</i></span>
-	<table class=table table-striped><tr><td>
-	&nbsp;&nbsp;&nbsp;&nbsp; {{doc.property.requested_repairs}}
-	</td></tr></table>
-
-	<p class="scriptText">Okay. Let’s talk about the repairs you requested:</p>
-
-	<p><i><b>Conversation starters/helpers:</b><br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your application says…<br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tell me more about…<br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; How long has this condition existed?</i></p>
-
-	<div class="row" id="workItemCards">
-		<div class="col-xs-12 col-sm-6 col-md-3">
-			<h3>Add a Work Item</h3>
-			<div class="panel panel-primary work-item" name="new">
-				<div class="panel-body">
-					<h4 class="card-title">New Work Item</h4>
-					<p class="card-text">
-						<div class="form-group">
-							<label class="form-control-label">Name*</label>
-							<input type="text" class="form-control" name="name">
-						</div>
-						<div class="form-group">
-							<label class="form-control-label">Description*</label>
-							<textarea class="form-control" name="description" rows="3"></textarea>
-						</div>
-						<div class="form-group">
-							<label class="form-control-label">Vetting Comments*</label>
-							<textarea class="form-control" name="vettingComments" rows="3"></textarea>
-						</div>
-						<div class="form-group">
-							<label class="form-control-label">Cost</label>
-							<input type="cost" class="form-control" name="cost">
-						</div>
-					</p>
-					<a href="#" class="btn btn-primary card-link work-item-new">Save</a>
-					<a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
-				</div>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{doc.advocate.name}}</td>
+							<td>{{doc.advocate.phone}}</td>
+							<td>{{#if doc.advocate.email}}{{doc.advocate.email}}
+								<br>
+								<a href="mailto:{{doc.advocate.email}}">
+									<b>Email {{doc.advocate.name}}</b>
+								</a>{{else}}
+								<i>None provided.</i>{{/if}}</td>
+							<td>{{doc.advocate.relationship}}</td>
+							<td>{{doc.advocate.organization_name}}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
-		<div>
-			<h3>Current Work Items</h3>
-			{{#each workItems}}
-			<div style="float:right" class="col-xs-12 col-sm-6 col-md-9">
-				<div class="panel panel-default work-item" name="{{_id}}">
-					<div class="panel-body">
-						<h4 class="card-title" name="{{_id}}.name">{{name}}</h4>
-						<p class="text-muted">{{date}}</p>
-						<p class="card-text">
-							<strong>Description:</strong>
-							<br/>
-							<span name="{{_id}}.description">{{description}}</span>
-							<br/>
-							<br/>
-							<strong>Vetting comments:</strong>
-							<br/>
-							<span name="{{_id}}.vettingComments">{{vettingComments}}</span>
-							<br/>
-							<br/>
-							<strong>Site comments:</strong>
-							<br/> {{siteComments}}
-							<br/>
-							<br/>
-							<strong>Cost:</strong>
-							<br/>
-							<span name="{{_id}}.cost">{{cost}}</span>
+		{{/if}}
+
+		<div class="container col-xs-12">
+			<h3>Applicant Contact Information</h3>
+			<div class="col-xs-12">
+				<table class="table table-striped">
+					<tr>
+						<th class="col-sm-2">Name</th>
+						<th class="col-sm-2">Phone</th>
+						<th class="col-sm-2">Other Phone</th>
+						<th class="col-md-2">Email</th>
+					</tr>
+					<tr>
+						<td>{{doc.application.name.first}} {{#if doc.application.name.middle}}{{doc.application.name.middle}}{{/if}} {{doc.application.name.last}}
+							{{#if doc.application.name.preferred}}({{doc.application.name.preferred}}){{/if}}</td>
+						<td>{{doc.application.phone.preferred}}</td>
+						<td>{{doc.application.phone.other}}</td>
+						<td>{{#if doc.application.email}}{{doc.application.email}}
+							<br>
+							<a href="mailto:{{doc.application.email}}">
+								<b>Email {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}</b>
+							</a>{{else}}
+							<i>No email provided.</i>{{/if}}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+		<hr>
+
+		<div class="container col-xs-12">
+			{{#if doc.advocate.is_advocate}}
+			<h3>Advocate Conversation Script</h3>
+			<p class="scriptText">Hello. My name is ______________ and I’m calling from Catalyst Partnerships. You are listed as an advocate on {{doc.application.name.first}}
+				{{doc.application.name.last}}'s application for our help with repairs on their home. I have some questions for you. Is
+				this a good time to talk?</p>
+
+			<p>
+				<i>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<b>IF YES:</b> (proceed)
+					<br> &nbsp;&nbsp;&nbsp;&nbsp;
+					<b>IF NO:</b> (reschedule for call back - make vetting note)
+				</i>
+			</p>
+
+			<p class="scriptText">Is there any information you would like to share with us regarding {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}
+				or their situation that hasn't been captured by the application that might help us better serve them?</p>
+
+			<p class="scriptText">We have some questions regarding {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}'s
+				application. Can we contact {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}
+				directly or should we work through you?</p>
+
+			<p>
+				<i>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<b>IF CONTACT APPLICANT</b> (Thank Advocate, call Applicant)
+					<br> &nbsp;&nbsp;&nbsp;&nbsp;
+					<b>IF WORK THROUGH ADVOCATE:</b>
+					<a href="#targettwo">Skip to [2]</a>
+				</i>
+			</p>
+
+			<hr> {{/if}}
+
+			<b>[1]</b>
+			<h3>Applicant Conversation Script:</h3>
+			<p class="scriptText">Good Morning. My name is _________________ and I’m calling from Catalyst Partnerships. You contacted us for some help
+				with repairs to your home. To process your application I need a little more information. Is this a good time to talk?</p>
+
+			<p>
+				<i>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<b>IF YES:</b> (proceed)
+					<br> &nbsp;&nbsp;&nbsp;&nbsp;
+					<b>IF NO:</b> (reschedule for call back - make vetting note)
+				</i>
+			</p>
+
+			<p id="targettwo">
+				<br>
+			</p>
+			<b>[2]</b>
+			<p class="scriptText">Before I ask my questions, {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}},
+				let me take a minute to describe our process. Today my focus will be on confirming that you meet our financial guidelines.
+				If you do, next we would arrange to visit your home to determine whether the requested repairs are things that Catalyst
+				has the expertise and resources to do. Then, If we can do the work, we would find a mutually agreeable date and get you
+				on our project schedule. Finally we would show up at your home on the agreed date and do the work. Does all that make
+				sense to you?</p>
+
+			<p class="scriptText">Now, the first thing we need is your proof of home ownership. Can you provide us with, for example, either a copy of your
+				latest mortgage statement, or possibly a copy of deed or title, or maybe your most recent home insurance statement?</p>
+
+			<i>
+				<b>Give them the address to send it to:</b>
+			</i>
+			<br>
+			<table cellpadding=10>
+				<tr>
+					<td> &nbsp;&nbsp;&nbsp;&nbsp;
+					</td>
+					<td valign="middle">
+						<b>Catalyst Partnerships
+							<br> PO Box 1922
+							<br> Beaverton, OR 97075</b>
+						<br>
+					</td>
+					<td valign="middle">
+						<h4>OR</h4>
+					</td>
+					<td valign="middle">
+						<b>office@catalystnw.org
+							<br> (971) 245-6555</b>
+					</td>
+				</tr>
+			</table>
+
+			<hr>
+
+			<h3>Requested Repairs</h3>
+
+			<p>
+				<i>The Vetting Agent’s job is to create Work Items (a quick title) and their descriptions (as long as is necessary to be
+					helpful...) These items will be sent to the Site Assessors/Handle-It team.</i>
+			</p>
+
+			<span>
+				<i>[From the application:]</i>
+			</span>
+			<table class=table table-striped>
+				<tr>
+					<td>
+						&nbsp;&nbsp;&nbsp;&nbsp; {{doc.property.requested_repairs}}
+					</td>
+				</tr>
+			</table>
+
+			<p class="scriptText">Okay. Let’s talk about the repairs you requested:</p>
+
+			<p>
+				<i>
+					<b>Conversation starters/helpers:</b>
+					<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Your application says…
+					<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tell me more about…
+					<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; How long has this condition existed?</i>
+			</p>
+
+			<div class="row" id="workItemCards">
+				<div class="col-xs-12 col-sm-6 col-md-3">
+					<h3>Add a Work Item</h3>
+					<div class="panel panel-primary work-item" name="new">
+						<div class="panel-body">
+							<h4 class="card-title">New Work Item</h4>
+							<p class="card-text">
+								<div class="form-group">
+									<label class="form-control-label">Name*</label>
+									<input type="text" class="form-control" name="name">
+								</div>
+								<div class="form-group">
+									<label class="form-control-label">Description*</label>
+									<textarea class="form-control" name="description" rows="3"></textarea>
+								</div>
+								<div class="form-group">
+									<label class="form-control-label">Vetting Comments*</label>
+									<textarea class="form-control" name="vettingComments" rows="3"></textarea>
+								</div>
+								<div class="form-group">
+									<label class="form-control-label">Cost</label>
+									<input type="cost" class="form-control" name="cost">
+								</div>
+							</p>
+							<a href="#" class="btn btn-primary card-link work-item-new">Save</a>
+							<a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
+						</div>
+					</div>
+				</div>
+				<div>
+					<h3>Current Work Items</h3>
+					{{#each workItems}}
+					<div style="float:right" class="col-xs-12 col-sm-6 col-md-9">
+						<div class="panel panel-default work-item" name="{{_id}}">
+							<div class="panel-body">
+								<h4 class="card-title" name="{{_id}}.name">{{name}}</h4>
+								<p class="text-muted">{{date}}</p>
+								<p class="card-text">
+									<strong>Description:</strong>
+									<br/>
+									<span name="{{_id}}.description">{{description}}</span>
+									<br/>
+									<br/>
+									<strong>Vetting comments:</strong>
+									<br/>
+									<span name="{{_id}}.vettingComments">{{vettingComments}}</span>
+									<br/>
+									<br/>
+									<strong>Site comments:</strong>
+									<br/> {{siteComments}}
+									<br/>
+									<br/>
+									<strong>Cost:</strong>
+									<br/>
+									<span name="{{_id}}.cost">{{cost}}</span>
+								</p>
+								<a href="#" class="btn btn-primary card-link work-item-edit">Edit</a>
+								<a href="#" class="btn btn-danger card-link work-item-delete">Delete</a>
+							</div>
+						</div>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="container col-xs-12">
+				<!-- Begin HUGE Application Clarification Section -->
+
+				<!--lone, hidden input for the Highlight Package Id-->
+				<input type="hidden" value="{{highlight._id}}" id="hl_Id" />
+
+				<h3>Application Clarification</h3>
+				<table class="table table-striped">
+					<tbody>
+						<colgroup>
+							<col class="col-md-1 col-sm-1 col-xs-1">
+							<col class="col-md-3 col-sm-1 col-xs-2">
+							<col class="col-md-6 col-sm-4 col-xs-2">
+						</colgroup>
+						<tr>
+							<td colspan="3">
+								<b>Contact Clarification:</b>
+							</td>
+						</tr>
+
+						{{#if highlight.application.name}}
+						<tr>
+							<td>
+								<a id="application.name" class="highlight">{{highlight.application.name}}</a>
+							</td>
+							<td>Name</td>
+							<td>
+								<a id="VWname" href="#" data-type="name" data-pk="1" data-url="/edit/name/{{doc._id}}" data-title="Enter Name"></a>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>Preferred Name</td>
+							<td>
+								<a href="#" id="pref_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.name.preferred"
+								 data-title="Enter Preferred Name">{{doc.application.name.preferred}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.phone}}
+						<tr>
+							<td>
+								<a id="application.phone" class="highlight">{{highlight.application.phone}}</a>
+							</td>
+							<td>Preferred Phone</td>
+							<td>
+								<a href="#" id="phone_number" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.phone.preferred"
+								 data-title="Enter Preferred Phone Number">{{doc.application.phone.preferred}}</a>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>Other Phone</td>
+							<td>
+								<a href="#" id="cell_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.phone.other"
+								 data-title="Enter Other Phone Number">{{doc.application.phone.other}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.address}}
+						<tr>
+							<td>
+								<a id="application.address" class="highlight">{{highlight.application.address}}</a>
+							</td>
+							<td>Address</td>
+							<td>
+								<a id="VWaddress" href="#" data-type="address" data-pk="1" data-url="/edit/address/{{doc._id}}" data-title="Enter Address"></a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.dob}}
+						<tr>
+							<td>
+								<a id="application.dob" class="highlight">{{highlight.application.dob}}</a>
+							</td>
+							<td>Date Of Birth</td>
+							<td>
+								<a href="#" id="dob" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.dob.date" data-title="Select date">{{doc.application.dob.date}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.marital}}
+						<tr>
+							<td>
+								<a id="application.marital" class="highlight">{{highlight.application.marital}}</a>
+							</td>
+							<td>Marital Status</td>
+							<td>
+								<a href="#" id="marital_status" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.marital.status"
+								 data-title="Enter Marital Status">{{doc.application.marital.status}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.spouse}}
+						<tr>
+							<td>
+								<a id="application.spouse" class="highlight">{{highlight.application.spouse}}</a>
+							</td>
+							<td>Spouse</td>
+							<td>
+								<a href="#" id="spouse" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.marital.spouse"
+								 data-title="Enter Spouse Name">{{doc.application.marital.spouse}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.email}}
+						<tr>
+							<td>
+								<a id="application.email" class="highlight">{{highlight.application.email}}</a>
+							</td>
+							<td>Email</td>
+							<td>
+								<a href="#" id="email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.email" data-title="Enter Email">{{doc.application.email}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.driver_license}}
+						<tr>
+							<td>
+								<a id="application.driver_license" class="highlight">{{highlight.application.driver_license}}</a>
+							</td>
+							<td>Driver's License</td>
+							<td>
+								<a href="#" id="driver_license" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.driver_license.number"
+								 data-title="Enter Driver's License Number">{{doc.application.driver_license.number}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.emergency_contact}}
+						<tr>
+							<td>
+								<a id="application.emergency_contact" class="highlight">{{highlight.application.emergency_contact}}</a>
+							</td>
+							<td>Emergency Contact</td>
+							<td>Name:
+								<a href="#" id="emergency_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.name"
+								 data-title="Enter Emergency Contact Name">{{doc.application.emergency_contact.name}}</a>
+								<br> Relationship:
+								<a href="#" id="emergency_relation" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.relationship"
+								 data-title="Enter Emergency Contact Relationship">{{doc.application.emergency_contact.relationship}}</a>
+								<br> Phone:
+								<a href="#" id="emergency_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.phone"
+								 data-title="Enter Emergency Contact Phone Number">{{doc.application.emergency_contact.phone}}</a>
+								<br> Email:
+								<a href="#" id="emergency_email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.email"
+								 data-title="Enter Emergency Contact Email Address">{{doc.application.emergency_contact.email}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.language}}
+						<tr>
+							<td>
+								<a id="application.language" class="highlight">{{highlight.application.language}}</a>
+							</td>
+							<td>Language</td>
+							<td>{{doc.application.language}}</td>
+						</tr>
+						{{/if}} {{#if highlight.application.veteran}}
+						<tr>
+							<td>
+								<a id="application.veteran" class="highlight">{{highlight.application.veteran}}</a>
+							</td>
+							<td>Veteran</td>
+							<td>
+								<a href="#" id="veteran" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.veteran" data-title="Select Veteran Status"></a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.owns_home}}
+						<tr>
+							<td>
+								<a id="application.owns_home" class="highlight">{{highlight.application.owns_home}}</a>
+							</td>
+							<td>Owns Home</td>
+							<td>
+								<a href="#" id="owns_home" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.owns_home"
+								 data-title="Select Home Ownership Status"></a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.special_circumstances}}
+						<tr>
+							<td>
+								<a id="application.special_circumstances" class="highlight">{{highlight.application.special_circumstances}}</a>
+							</td>
+							<td>Special Circumstances</td>
+							<td>
+								<a href="#" id="special_circumstances" data-type="textarea" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.special_circumstances.note"
+								 data-title="Enter Special Circumstances">{{doc.application.special_circumstances.note}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.heard_about}}
+						<tr>
+							<td>
+								<a id="application.heard_about" class="highlight">{{highlight.application.heard_about}}</a>
+							</td>
+							<td>How Heard about Catalyst</td>
+							<td>
+								<a href="#" id="heard_about" data-type="textarea" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.heard_about"
+								 data-title="Enter how you heard about Catalyst">{{doc.application.heard_about}}</a>
+							</td>
+						</tr>
+						{{/if}}
+
+						<tr>
+							<td colspan="3">
+								<b>Property Clarification:</b>
+							</td>
+						</tr>
+
+						{{#if highlight.property.home_type}}
+						<tr>
+							<td>
+								<a id="property.home_type" class="highlight">{{highlight.property.home_type}}</a>
+							</td>
+							<td>Home Type</td>
+							<td>
+								<a href="#" id="home_type" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.home_type" data-title="Enter Home Type">{{doc.property.home_type}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.property.ownership_length}}
+						<tr>
+							<td>
+								<a id="property.ownership_length" class="highlight">{{highlight.property.ownership_length}}</a>
+							</td>
+							<td>Length of Ownership</td>
+							<td>
+								<a href="#" id="ownership_length" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.ownership_length"
+								 data-title="Enter Ownership Length">{{doc.property.ownership_length}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.property.year_constructed}}
+						<tr>
+							<td>
+								<a id="property.year_constructed" class="highlight">{{highlight.property.year_constructed}}</a>
+							</td>
+							<td>Year Constructed</td>
+							<td>
+								<a href="#" id="year_constructed" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.year_constructed"
+								 data-title="Enter Year Constructed">{{doc.property.year_constructed}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.property.requested_repairs}}
+						<tr>
+							<td>
+								<a id="property.requested_repairs" class="highlight">{{highlight.property.requested_repairs}}</a>
+							</td>
+							<td>Requested Repairs</td>
+							<td>
+								<a href="#" id="requested_repairs" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.requested_repairs"
+								 data-title="Enter Requested Repairs">{{doc.property.requested_repairs}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.application.other_residents}}
+						<tr>
+							<td>
+								<a id="application.other_residents" class="highlight">{{highlight.application.other_residents}}</a>
+							</td>
+							<td>Other Residents</td>
+							<td>
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>Name</th>
+											<th>Age</th>
+											<th>Relationship</th>
+										</tr>
+									</thead>
+									<tbody>
+										{{#each doc.application.other_residents.name}}
+										<tr>
+											<td>
+												<a href="#" class="residents_name" id="residents_name_{{@index}}" data-type="text" data-pk="{{this}}" data-url="/edit/array/{{../doc._id}}"
+												 data-name="application.other_residents.name">{{this}}</a>
+											</td>
+											<td>
+												<a href="#" class="residents_age" id="residents_age_{{@index}}" data-type="text" data-pk="{{lookup ../doc.application.other_residents.age @index}}"
+												 data-url="/edit/array/{{../doc._id}}" data-name="application.other_residents.age">{{lookup ../doc.application.other_residents.age @index}}</a>
+											</td>
+											<td>
+												<a href="#" class="residents_relationship" id="residents_relationship_{{@index}}" data-type="text" data-pk="{{lookup ../doc.application.other_residents.relationship @index}}"
+												 data-url="/edit/array/{{../doc._id}}" data-name="application.other_residents.relationship">{{lookup ../doc.application.other_residents.relationship @index}}</a>
+											</td>
+										</tr>
+										{{/each}}
+									</tbody>
+								</table>
+							</td>
+						</tr>
+						{{/if}}
+
+						<tr>
+							<td colspan="3">
+								<b>Financial Clarification:</b>
+							</td>
+						</tr>
+
+						{{#if highlight.finance.mortgage}}
+						<tr>
+							<td>
+								<a id="finance.mortgage" class="highlight">{{highlight.finance.mortgage}}</a>
+							</td>
+							<td>Mortgage Payment</td>
+							<td>
+								<a href="#" id="mortgage_payment" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.payment"
+								 data-title="Enter Mortgage Payment">{{doc.finance.mortgage.payment}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.finance.mort_up_to_date}}
+						<tr>
+							<td>
+								<a id="finance.mort_up_to_date" class="highlight">{{highlight.finance.mort_up_to_date}}</a>
+							</td>
+							<td>Mortgage Up-to-Date</td>
+							<td>
+								<a href="#" id="mortgage" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.up_to_date"
+								 data-title="Is Mortgage Up-to-Date?"></a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.finance.income}}
+						<tr>
+							<td>
+								<a id="finance.income" class="highlight">{{highlight.finance.income}}</a>
+							</td>
+							<td>Income Amount</td>
+							<td>
+								<a href="#" id="income" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.income.amount" data-title="Enter Income">{{doc.finance.income.amount}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.finance.client_can_contribute}}
+						<tr>
+							<td>
+								<a id="finance.client_can_contribute" class="highlight">{{highlight.finance.client_can_contribute}}</a>
+							</td>
+							<td>Client Can Contribute Financially</td>
+							<td>
+								<a href="#" id="f_client_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.client_can_contribute.value"
+								 data-title="Can Client Contribute Financially?"></a>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>Client Financial Contribution</td>
+							<td>
+								<a href="#" id="f_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.client_can_contribute.amount"
+								 data-title="Enter Contribution Description">{{doc.finance.client_can_contribute.amount}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.finance.associates_can_contribute}}
+						<tr>
+							<td>
+								<a id="finance.associates_can_contribute" class="highlight">{{highlight.finance.associates_can_contribute}}</a>
+							</td>
+							<td>Associates Can Contribute Financially</td>
+							<td>
+								<a href="#" id="f_associate_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.associates_can_contribute.value"
+								 data-title="Can Associates Contribute Financially?"></a>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>Associate Financial Contribution</td>
+							<td>
+								<a href="#" id="f_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.associates_can_contribute.description"
+								 data-title="Enter Contribution Description">{{doc.finance.associates_can_contribute.description}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.finance.assets}}
+						<tr>
+							<td>
+								<a id="finance.assets" class="highlight">{{highlight.finance.assets}}</a>
+							</td>
+							<td>Assets</td>
+							<td>
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th>Asset</th>
+											<th>Amount</th>
+										</tr>
+									</thead>
+									{{#each doc.finance.assets.name}}
+									<tr>
+										<td>
+											<a href="#" class="asset_name" id="f_asset_name_{{@index}}" data-type="text" data-pk="{{this}}" data-url="/edit/array/{{../doc._id}}"
+											 data-name="finance.assets.name">{{this}}</a>
+										</td>
+										<td>
+											<a href="#" class="asset_value" id="f_asset_value_{{@index}}" data-type="text" data-pk="{{lookup ../doc.finance.assets.value @index}}"
+											 data-url="/edit/array/{{../doc._id}}" data-name="finance.assets.value">{{lookup ../doc.finance.assets.value @index}}</a>
+										</td>
+									</tr>
+									{{/each}}
+								</table>
+							</td>
+						</tr>
+						{{/if}}
+
+						<tr>
+							<td colspan="3">
+								<b>Assistance Clarification:</b>
+							</td>
+						</tr>
+
+						{{#if highlight.property.client_can_contribute}}
+						<tr>
+							<td>
+								<a id="property.client_can_contribute" class="highlight">{{highlight.property.client_can_contribute}}</a>
+							</td>
+							<td>Client Can Contribute Labor/Materials</td>
+							<td>
+								<a href="#" id="l_client_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.client_can_contribute.value"
+								 data-title="Can Client Contribute Labor?"></a>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>Client Labor/Materials Contribution</td>
+							<td>
+								<a href="#" id="l_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.client_can_contribute.description"
+								 data-title="Enter Contribution Description">{{doc.property.client_can_contribute.description}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.property.associates_can_contribute}}
+						<tr>
+							<td>
+								<a id="property.associates_can_contribute" class="highlight">{{highlight.property.associates_can_contribute}}</a>
+							</td>
+							<td>Associates Can Contribute Labor/Materials</td>
+							<td>
+								<a href="#" id="l_associate_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.associates_can_contribute.value"
+								 data-title="Can Associates Contribute Labor?"></a>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>Associate Labor/Materials Contribution</td>
+							<td>
+								<a href="#" id="l_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.associates_can_contribute.description"
+								 data-title="Enter Contribution Description">{{doc.property.associates_can_contribute.description}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.recruitment.fbo_help}}
+						<tr>
+							<td>
+								<a id="recruitment.fbo_help" class="highlight">{{highlight.recruitment.fbo_help}}</a>
+							</td>
+							<td>Involved with a Faith-Based Organization</td>
+							<td>
+								<a href="#" id="fbo_help" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="recruitment.fbo_help" data-title="Does client belong to an FBO?"></a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.recruitment.fbo_name}}
+						<tr>
+							<td>
+								<a id="recruitment.fbo_name" class="highlight">{{highlight.recruitment.fbo_name}}</a>
+							</td>
+							<td>Faith-Based Organization Name</td>
+							<td>
+								<a href="#" id="fbo_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="recruitment.fbo_name" data-title="Enter Name of FBO">{{doc.recruitment.fbo_name}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.finance.requested_other_help}}
+						<tr>
+							<td>
+								<a id="finance.requested_other_help" class="highlight">{{highlight.finance.requested_other_help}}</a>
+							</td>
+							<td>Requested Other Help</td>
+							<td>
+								<a href="#" id="request_help" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.requested_other_help.value"
+								 data-title="Client Requested Other Help?"></a>
+							</td>
+						</tr>
+						{{/if}} {{#if doc.advocate.is_advocate}}
+						<tr>
+							<td colspan="3">
+								<b>Advocate Clarification:</b>
+							</td>
+						</tr>
+
+						{{#if highlight.advocate.is_advocate}}
+						<tr>
+							<td>
+								<a id="advocate.is_advocate" class="highlight">{{highlight.advocate.is_advocate}}</a>
+							</td>
+							<td>Does the Client have an Advocate?</td>
+							<td>
+								Is Advocate:
+								<a href="#" id="is_advocate" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.is_advocate"
+								 data-title="Is Client an Advocate?"></a>
+								<br> Is Individual:
+								<a href="#" id="individual" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.individual" data-title="Is Client an Individual?"></a>
+								<br> Is Non-profit Org:
+								<a href="#" id="npo" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.npo" data-title="Is Client from a Non-Profit?"></a>
+								<br> Is Government Agency:
+								<a href="#" id="gov" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.gov" data-title="Is Client from a Government Agency?"></a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.advocate.name}}
+						<tr>
+							<td>
+								<a id="advocate.name" class="highlight">{{highlight.advocate.name}}</a>
+							</td>
+							<td>Advocate Name</td>
+							<td>
+								<a href="#" id="advocate_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.name" data-title="Enter Advocate Name">{{doc.advocate.name}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.advocate.organization_name}}
+						<tr>
+							<td>
+								<a id="advocate.organization_name" class="highlight">{{highlight.advocate.organization_name}}</a>
+							</td>
+							<td>Advocate Organization Name</td>
+							<td>
+								<a href="#" id="advocate_org_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.organization_name"
+								 data-title="Enter Advocate Organization">{{doc.advocate.organization_name}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.advocate.relationship}}
+						<tr>
+							<td>
+								<a id="advocate.relationship" class="highlight">{{highlight.advocate.relationship}}</a>
+							</td>
+							<td>Advocate Relationship</td>
+							<td>
+								<a href="#" id="advocate_relationship" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.relationship"
+								 data-title="Enter Advocate Relationship">{{doc.advocate.relationship}}</a>
+							</td>
+						</tr>
+						{{/if}} {{#if highlight.advocate.phone}}
+						<tr>
+							<td>
+								<a id="advocate.phone" class="highlight">{{highlight.advocate.phone}}</a>
+							</td>
+							<td>Advocate Contact Info</td>
+							<td>
+								Phone:
+								<a href="#" id="advocate_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.phone" data-title="Enter Advocate Phone Number">{{doc.advocate.phone}}</a>
+								<br> Email:
+								<a href="#" id="advocate_email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.email" data-title="Enter Advocate Email">{{doc.advocate.email}}</a>{{#if doc.advocate.email}}&nbsp;&nbsp;&nbsp;
+								<a href="mailto:{{doc.advocate.email}}">
+									<b>Email {{doc.advocate.name}}</b>
+								</a> (Refresh page if email edited){{/if}}
+							</td>
+						</tr>
+						{{/if}}{{/if}}
+					</tbody>
+				</table>
+			</div>
+			<!-- End HUGE Application Clarification Section -->
+
+			<div class="container col-xs-12">
+				<h3>A Decision to Make</h3>
+				<p>
+					<i>Can this be referred to Handle-It? (less than $500, 2-3 volunteers, one day)</i>
+				</p>
+
+				<p>
+					<i>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<b>IF YES:</b>
+						<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Explain Handle-it process
+						<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Set Status to Handle-It, make appropriate Vetting Note.
+						<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="#targetClosing">
+							<b>Move to Closing Comments</b>
+						</a>
+						<br> &nbsp;&nbsp;&nbsp;&nbsp;
+						<b>IF NO:</b> (even if it’s close)
+						<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Set the status to Hold Pending Discussion
+						<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Proceed with Financial Questions
+					</i>
+				</p>
+			</div>
+
+
+
+
+			<div class="container col-xs-12">
+				<h3>Financial Questions</h3>
+				<div id="finacialForm"></div>
+				<br />
+				<h3>Total Vetted Income (and notes regarding the total)</h3>
+				<!-- TODO: Figure out where to route this -->
+				<h4>
+					<a id="finance.total_income.value" href="#" data-type="textarea" data-pk="{{doc._id}}" data-url="/edit/{{doc._id}}" data-title="Enter income">{{doc.finance.total_income.value}}</a>
+				</h4>
+			</div>
+
+			<p id="targetClosing">
+				<br>
+			</p>
+			<div class="container col-xs-12">
+				<h3>Closing Comments</h3>
+				<p class="scriptText">
+					I believe that completes my questions. Thank you for your time and patience. Please mail/email the documents we have discussed
+					at your earliest convenience. We will be in touch within one week after receiving your documents to inform you about
+					whether or not we can proceed to the next step. As you will recall, that would involve a visit to your home to confirm
+					that the requested repairs are things that Catalyst has the expertise and resources to do.</p>
+
+				<p class="scriptText">Thanks again, {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}.
+					I have enjoyed talking to you.</p>
+			</div>
+
+
+			<hr/>
+			<div class="container col-xs-12">
+				<div class="row">
+					<div class="col-xs-12 col-sm-4">
+						<h3>Vetting Summary</h3>
+						<!-- TODO: Set this url -->
+						<p>
+							<a href="#" id="notes.vet_summary" data-type="textarea" data-url="/edit/{{doc._id}}" data-pk="{{doc._id}}">{{doc.notes.vet_summary}}</a>
 						</p>
-						<a href="#" class="btn btn-primary card-link work-item-edit">Edit</a>
-						<a href="#" class="btn btn-danger card-link work-item-delete">Delete</a>
+					</div>
+					<div class="col-xs-12 col-sm-8">
+						<!--VETTING NOTES-->
+						<h3>Vetting Notes</h3>
+						<div class="form-group">
+							<form method="post">
+								<input type="hidden" value="{{doc._id}}" id="appId" />
+								<input type="hidden" value="{{user}}" id="userId" />
+								<table class="table table-striped">
+									<thead>
+										<tr>
+											<th class="col-sm-2">Date</th>
+											<th class="col-sm-6">Note</th>
+											<th class="col-sm-3">Submitted By</th>
+											<th class="col-sm-3"></th>
+										</tr>
+									</thead>
+									<tbody id="notes-body">
+										{{#if vettingNotes}} {{#each vettingNotes}}
+										<tr>
+											<td>{{this.date}}</td>
+											<td class="note-descrip">{{this.description}}</td>
+											<td class="note-vetAgent">{{this.vetAgent}}</td>
+											<td>
+												<form>
+													<input type="hidden" value="{{this._id}}" name="noteId" />
+													<input type="submit" class="update-note btn btn-info" value="Update Note" />
+													<input type="submit" class="delete-button2 btn btn-danger" value="Delete Note" />
+												</form>
+											</td>
+										</tr>
+										{{/each}} {{else}}
+										<tr>
+											<td id="empty-notes" class="alert-danger danger" colspan="3">
+												<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
+											</td>
+										</tr>
+										{{/if}}
+
+										<tr>
+											<!--THIS EMPTY ROW IS NECESSARY FOR addNote.js TO WORK ON MULTIPLE PAGES-->
+										</tr>
+									</tbody>
+								</table>
+							</form>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-4 col-md-3">
+						<h3>Site Assessment Summary</h3>
+						{{#if_not_eq doc.notes.site_summary ''}}
+						<p>{{doc.notes.site_summary}}</p>
+						{{else}}
+						<p>[no summary]</p>
+						{{/if_not_eq}}
 					</div>
 				</div>
 			</div>
-			 {{/each}}
 		</div>
-		
 	</div>
-
-
-
-
-<div class="container col-xs-12"> <!-- Begin HUGE Application Clarification Section -->
-
-	<!--lone, hidden input for the Highlight Package Id-->
-	<input type="hidden" value="{{highlight._id}}" id="hl_Id"/>
-
-	<h3>Application Clarification</h3>
-	<table class="table table-striped">
-	<tbody>
-		<colgroup>
-			<col class="col-md-1 col-sm-1 col-xs-1">
-			<col class="col-md-3 col-sm-1 col-xs-2">
-			<col class="col-md-6 col-sm-4 col-xs-2">
-		</colgroup>
-		<tr><td colspan="3"><b>Contact Clarification:</b></td></tr>
-
-		{{#if highlight.application.name}}
-			<tr>
-				<td><a id="application.name" class="highlight">{{highlight.application.name}}</a></td>
-				<td>Name</td>
-				<td>
-					<a id="VWname" href="#" data-type="name" data-pk="1" data-url="/edit/name/{{doc._id}}" data-title="Enter Name"></a>
-				</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>Preferred Name</td>
-				<td><a href="#" id="pref_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.name.preferred" data-title="Enter Preferred Name">{{doc.application.name.preferred}}</a></td>
-			</tr>
-		{{/if}}
-		{{#if highlight.application.phone}}
-			<tr>
-				<td><a id="application.phone" class="highlight">{{highlight.application.phone}}</a></td>
-				<td>Preferred Phone</td>
-				<td><a href="#" id="phone_number" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.phone.preferred" data-title="Enter Preferred Phone Number">{{doc.application.phone.preferred}}</a></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>Other Phone</td>
-				<td><a href="#" id="cell_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.phone.other" data-title="Enter Other Phone Number">{{doc.application.phone.other}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.address}}
-			<tr>
-				<td><a id="application.address" class="highlight">{{highlight.application.address}}</a></td>
-				<td>Address</td>
-				<td>
-					<a id="VWaddress" href="#" data-type="address" data-pk="1" data-url="/edit/address/{{doc._id}}" data-title="Enter Address"></a>
-				</td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.dob}}
-			<tr>
-				<td><a id="application.dob" class="highlight">{{highlight.application.dob}}</a></td>
-				<td>Date Of Birth</td>
-				<td><a href="#" id="dob" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.dob.date" data-title="Select date">{{doc.application.dob.date}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.marital}}
-			<tr>
-				<td><a id="application.marital" class="highlight">{{highlight.application.marital}}</a></td>
-				<td>Marital Status</td>
-				<td>
-					<a href="#" id="marital_status" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.marital.status" data-title="Enter Marital Status">{{doc.application.marital.status}}</a>
-				</td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.spouse}}
-			<tr>
-				<td><a id="application.spouse" class="highlight">{{highlight.application.spouse}}</a></td>
-				<td>Spouse</td>
-				<td>
-					<a href="#" id="spouse" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.marital.spouse" data-title="Enter Spouse Name">{{doc.application.marital.spouse}}</a>
-				</td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.email}}
-			<tr>
-				<td><a id="application.email" class="highlight">{{highlight.application.email}}</a></td>
-				<td>Email</td>
-				<td><a href="#" id="email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.email" data-title="Enter Email">{{doc.application.email}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.driver_license}}
-			<tr>
-				<td><a id="application.driver_license" class="highlight">{{highlight.application.driver_license}}</a></td>
-				<td>Driver's License</td>
-				<td><a href="#" id="driver_license" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.driver_license.number" data-title="Enter Driver's License Number">{{doc.application.driver_license.number}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.emergency_contact}}
-			<tr>
-				<td><a id="application.emergency_contact" class="highlight">{{highlight.application.emergency_contact}}</a></td>
-				<td>Emergency Contact</td>
-				<td>Name: <a href="#" id="emergency_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.name" data-title="Enter Emergency Contact Name">{{doc.application.emergency_contact.name}}</a>
-					<br>
-					Relationship: <a href="#" id="emergency_relation" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.relationship" data-title="Enter Emergency Contact Relationship">{{doc.application.emergency_contact.relationship}}</a>
-					<br>
-					Phone: <a href="#" id="emergency_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.phone" data-title="Enter Emergency Contact Phone Number">{{doc.application.emergency_contact.phone}}</a>
-					<br>
-					Email: <a href="#" id="emergency_email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.emergency_contact.email" data-title="Enter Emergency Contact Email Address">{{doc.application.emergency_contact.email}}</a>
-				</td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.language}}
-			<tr>
-				<td><a id="application.language" class="highlight">{{highlight.application.language}}</a></td>
-				<td>Language</td>
-				<td>{{doc.application.language}}</td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.veteran}}
-			<tr>
-				<td><a id="application.veteran" class="highlight">{{highlight.application.veteran}}</a></td>
-				<td>Veteran</td>
-				<td>
-					<a href="#" id="veteran" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.veteran" data-title="Select Veteran Status"></a>
-				</td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.owns_home}}
-			<tr>
-				<td><a id="application.owns_home" class="highlight">{{highlight.application.owns_home}}</a></td>
-				<td>Owns Home</td>
-				<td>
-					<a href="#" id="owns_home" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.owns_home" data-title="Select Home Ownership Status"></a>
-				</td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.special_circumstances}}
-			<tr>
-				<td><a id="application.special_circumstances" class="highlight">{{highlight.application.special_circumstances}}</a></td>
-				<td>Special Circumstances</td>
-				<td>
-					<a href="#" id="special_circumstances" data-type="textarea" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.special_circumstances.note" data-title="Enter Special Circumstances">{{doc.application.special_circumstances.note}}</a>
-				</td>
-			</tr>
-		{{/if}}
-		
-		{{#if highlight.application.heard_about}}
-			<tr>
-				<td><a id="application.heard_about" class="highlight">{{highlight.application.heard_about}}</a></td>
-				<td>How Heard about Catalyst</td>
-				<td>
-					<a href="#" id="heard_about" data-type="textarea" data-pk="1" data-url="/edit/{{doc._id}}" data-name="application.heard_about" data-title="Enter how you heard about Catalyst">{{doc.application.heard_about}}</a>
-				</td>
-			</tr>
-		{{/if}}
-
-		<tr><td colspan="3"><b>Property Clarification:</b></td></tr>
-
-		{{#if highlight.property.home_type}}
-			<tr>
-				<td><a id="property.home_type" class="highlight">{{highlight.property.home_type}}</a></td>
-				<td>Home Type</td>
-				<td><a href="#" id="home_type" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.home_type" data-title="Enter Home Type">{{doc.property.home_type}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.property.ownership_length}}
-			<tr>
-				<td><a id="property.ownership_length" class="highlight">{{highlight.property.ownership_length}}</a></td>
-				<td>Length of Ownership</td>
-				<td><a href="#" id="ownership_length" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.ownership_length" data-title="Enter Ownership Length">{{doc.property.ownership_length}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.property.year_constructed}}
-			<tr>
-				<td><a id="property.year_constructed" class="highlight">{{highlight.property.year_constructed}}</a></td>
-				<td>Year Constructed</td>
-				<td><a href="#" id="year_constructed" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.year_constructed" data-title="Enter Year Constructed">{{doc.property.year_constructed}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.property.requested_repairs}}
-			<tr>
-				<td><a id="property.requested_repairs" class="highlight">{{highlight.property.requested_repairs}}</a></td>
-				<td>Requested Repairs</td>
-				<td><a href="#" id="requested_repairs" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.requested_repairs" data-title="Enter Requested Repairs">{{doc.property.requested_repairs}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.application.other_residents}}
-			<tr>
-				<td><a id="application.other_residents" class="highlight">{{highlight.application.other_residents}}</a></td>
-				<td>Other Residents</td>
-				<td>
-					<table class="table table-striped">
-						<thead>
-						<tr>
-							<th>Name</th>
-							<th>Age</th>
-							<th>Relationship</th>
-						</tr>
-						</thead>
-						<tbody>
-						{{#each doc.application.other_residents.name}}
-							<tr>
-								<td><a href="#" class="residents_name" id="residents_name_{{@index}}" data-type="text" data-pk="{{this}}" data-url="/edit/array/{{../doc._id}}" data-name="application.other_residents.name">{{this}}</a></td>
-								<td><a href="#" class="residents_age" id="residents_age_{{@index}}" data-type="text" data-pk="{{lookup ../doc.application.other_residents.age @index}}" data-url="/edit/array/{{../doc._id}}" data-name="application.other_residents.age">{{lookup ../doc.application.other_residents.age @index}}</a></td>
-								<td><a href="#" class="residents_relationship" id="residents_relationship_{{@index}}" data-type="text" data-pk="{{lookup ../doc.application.other_residents.relationship @index}}" data-url="/edit/array/{{../doc._id}}" data-name="application.other_residents.relationship">{{lookup ../doc.application.other_residents.relationship @index}}</a></td>
-							</tr>
-						{{/each}}
-						</tbody>
-					</table>
-				</td>
-			</tr>
-		{{/if}}
-
-	<tr><td colspan="3"><b>Financial Clarification:</b></td></tr>
-
-		{{#if highlight.finance.mortgage}}
-		<tr>
-			<td><a id="finance.mortgage" class="highlight">{{highlight.finance.mortgage}}</a></td>
-			<td>Mortgage Payment</td>
-			<td><a href="#" id="mortgage_payment" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.payment" data-title="Enter Mortgage Payment">{{doc.finance.mortgage.payment}}</a></td>
-		</tr>
-		{{/if}}
-
-		{{#if highlight.finance.mort_up_to_date}}
-		<tr>
-			<td><a id="finance.mort_up_to_date" class="highlight">{{highlight.finance.mort_up_to_date}}</a></td>
-			<td>Mortgage Up-to-Date</td>
-			<td><a href="#" id="mortgage" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.mortgage.up_to_date" data-title="Is Mortgage Up-to-Date?"></a></td>
-		</tr>
-		{{/if}}
-
-		{{#if highlight.finance.income}}
-		<tr>
-			<td><a id="finance.income" class="highlight">{{highlight.finance.income}}</a></td>
-			<td>Income Amount</td>
-			<td><a href="#" id="income" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.income.amount" data-title="Enter Income">{{doc.finance.income.amount}}</a></td>
-		</tr>
-		{{/if}}
-
-		{{#if highlight.finance.client_can_contribute}}
-		<tr>
-			<td><a id="finance.client_can_contribute" class="highlight">{{highlight.finance.client_can_contribute}}</a></td>
-			<td>Client Can Contribute Financially</td>
-			<td>
-				<a href="#" id="f_client_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.client_can_contribute.value" data-title="Can Client Contribute Financially?"></a>
-			</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>Client Financial Contribution</td>
-			<td><a href="#" id="f_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.client_can_contribute.amount" data-title="Enter Contribution Description">{{doc.finance.client_can_contribute.amount}}</a></td>
-		</tr>
-		{{/if}}
-
-		{{#if highlight.finance.associates_can_contribute}}
-		<tr>
-			<td><a id="finance.associates_can_contribute" class="highlight">{{highlight.finance.associates_can_contribute}}</a></td>
-			<td>Associates Can Contribute Financially</td>
-			<td>
-				<a href="#" id="f_associate_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.associates_can_contribute.value" data-title="Can Associates Contribute Financially?"></a>
-			</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>Associate Financial Contribution</td>
-			<td><a href="#" id="f_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.associates_can_contribute.description" data-title="Enter Contribution Description">{{doc.finance.associates_can_contribute.description}}</a></td>
-		</tr>
-		{{/if}}
-
-		{{#if highlight.finance.assets}}
-		<tr>
-			<td><a id="finance.assets" class="highlight">{{highlight.finance.assets}}</a></td>
-			<td>Assets</td>
-			<td>
-				<table class="table table-striped">
-					<thead>
-					<tr>
-						<th>Asset</th>
-						<th>Amount</th>
-					</tr>
-					</thead>
-					{{#each doc.finance.assets.name}}
-						<tr>
-							<td><a href="#" class="asset_name" id="f_asset_name_{{@index}}" data-type="text" data-pk="{{this}}" data-url="/edit/array/{{../doc._id}}" data-name="finance.assets.name">{{this}}</a></td>
-							<td><a href="#" class="asset_value" id="f_asset_value_{{@index}}" data-type="text" data-pk="{{lookup ../doc.finance.assets.value @index}}" data-url="/edit/array/{{../doc._id}}" data-name="finance.assets.value">{{lookup ../doc.finance.assets.value @index}}</a></td>
-						</tr>
-					{{/each}}
-				</table>
-			</td>
-		</tr>
-		{{/if}}
-
-	<tr><td colspan="3"><b>Assistance Clarification:</b></td></tr>
-
-		{{#if highlight.property.client_can_contribute}}
-			<tr>
-				<td><a id="property.client_can_contribute" class="highlight">{{highlight.property.client_can_contribute}}</a></td>
-				<td>Client Can Contribute Labor/Materials</td>
-				<td>
-					<a href="#" id="l_client_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.client_can_contribute.value" data-title="Can Client Contribute Labor?"></a>
-				</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>Client Labor/Materials Contribution</td>
-				<td><a href="#" id="l_client_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.client_can_contribute.description" data-title="Enter Contribution Description">{{doc.property.client_can_contribute.description}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.property.associates_can_contribute}}
-			<tr>
-				<td><a id="property.associates_can_contribute" class="highlight">{{highlight.property.associates_can_contribute}}</a></td>
-				<td>Associates Can Contribute Labor/Materials</td>
-				<td>
-					<a href="#" id="l_associate_can_contrib" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.associates_can_contribute.value" data-title="Can Associates Contribute Labor?"></a>
-				</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>Associate Labor/Materials Contribution</td>
-				<td><a href="#" id="l_associate_contrib" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="property.associates_can_contribute.description" data-title="Enter Contribution Description">{{doc.property.associates_can_contribute.description}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.recruitment.fbo_help}}
-			<tr>
-				<td><a id="recruitment.fbo_help"class="highlight">{{highlight.recruitment.fbo_help}}</a></td>
-				<td>Involved with a Faith-Based Organization</td>
-				<td>
-					<a href="#" id="fbo_help" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="recruitment.fbo_help" data-title="Does client belong to an FBO?"></a>
-				</td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.recruitment.fbo_name}}
-			<tr>
-				<td><a id="recruitment.fbo_name"class="highlight">{{highlight.recruitment.fbo_name}}</a></td>
-				<td>Faith-Based Organization Name</td>
-				<td><a href="#" id="fbo_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="recruitment.fbo_name" data-title="Enter Name of FBO">{{doc.recruitment.fbo_name}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.finance.requested_other_help}}
-			<tr>
-				<td><a id="finance.requested_other_help"class="highlight">{{highlight.finance.requested_other_help}}</a></td>
-				<td>Requested Other Help</td>
-				<td><a href="#" id="request_help" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="finance.requested_other_help.value" data-title="Client Requested Other Help?"></a></td>
-			</tr>
-		{{/if}}
-
-	{{#if doc.advocate.is_advocate}}
-	<tr><td colspan="3"><b>Advocate Clarification:</b></td></tr>
-
-		{{#if highlight.advocate.is_advocate}}
-			<tr>
-				<td><a id="advocate.is_advocate" class="highlight">{{highlight.advocate.is_advocate}}</a></td>
-				<td>Does the Client have an Advocate?</td>
-				<td>
-					Is Advocate: <a href="#" id="is_advocate" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.is_advocate" data-title="Is Client an Advocate?"></a></br>
-					Is Individual: <a href="#" id="individual" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.individual" data-title="Is Client an Individual?"></a></br>
-					Is Non-profit Org: <a href="#" id="npo" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.npo" data-title="Is Client from a Non-Profit?"></a></br>
-					Is Government Agency: <a href="#" id="gov" data-type="select" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.gov" data-title="Is Client from a Government Agency?"></a>
-				</td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.advocate.name}}
-			<tr>
-				<td><a id="advocate.name" class="highlight">{{highlight.advocate.name}}</a></td>
-				<td>Advocate Name</td>
-				<td><a href="#" id="advocate_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.name" data-title="Enter Advocate Name">{{doc.advocate.name}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.advocate.organization_name}}
-			<tr>
-				<td><a id="advocate.organization_name" class="highlight">{{highlight.advocate.organization_name}}</a></td>
-				<td>Advocate Organization Name</td>
-				<td>
-					<a href="#" id="advocate_org_name" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.organization_name" data-title="Enter Advocate Organization">{{doc.advocate.organization_name}}</a>
-				</td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.advocate.relationship}}
-			<tr>
-				<td><a id="advocate.relationship" class="highlight">{{highlight.advocate.relationship}}</a></td>
-				<td>Advocate Relationship</td>
-				<td><a href="#" id="advocate_relationship" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.relationship" data-title="Enter Advocate Relationship">{{doc.advocate.relationship}}</a></td>
-			</tr>
-		{{/if}}
-
-		{{#if highlight.advocate.phone}}
-			<tr>
-				<td><a id="advocate.phone" class="highlight">{{highlight.advocate.phone}}</a></td>
-				<td>Advocate Contact Info</td>
-				<td>
-					Phone: <a href="#" id="advocate_phone" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.phone" data-title="Enter Advocate Phone Number">{{doc.advocate.phone}}</a>
-					<br>
-					Email: <a href="#" id="advocate_email" data-type="text" data-pk="1" data-url="/edit/{{doc._id}}" data-name="advocate.email" data-title="Enter Advocate Email">{{doc.advocate.email}}</a>{{#if doc.advocate.email}}&nbsp;&nbsp;&nbsp; <a href="mailto:{{doc.advocate.email}}"><b>Email {{doc.advocate.name}}</b></a> (Refresh page if email edited){{/if}}
-				</td>
-			</tr>
-		{{/if}}
-	{{/if}}
-	</tbody>
-	</table>
-</div>   <!-- End HUGE Application Clarification Section -->
-
-<div class="container col-xs-12">
-	<h3>A Decision to Make</h3>
-	<p><i>Can this be referred to Handle-It? (less than $500, 2-3 volunteers, one day)</i></p>
-
-	<p><i>
-	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF YES:</b><br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Explain Handle-it process<br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Set Status to Handle-It, make appropriate Vetting Note.<br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#targetClosing"><b>Move to Closing Comments</b></a><br>
-	&nbsp;&nbsp;&nbsp;&nbsp; <b>IF NO:</b> (even if it’s close)<br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Set the status to Hold Pending Discussion<br>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Proceed with Financial Questions
-	</i></p>
 </div>
 
-
-
-
-<div class="container col-xs-12">
-	<h3>Financial Questions</h3>
-	<div id="finacialForm"></div>
-	<br />
-	<h3>Total Vetted Income (and notes regarding the total)</h3>
-	<!-- TODO: Figure out where to route this -->
-	<h4><a id="finance.total_income.value" href="#" data-type="textarea" data-pk="{{doc._id}}" data-url="/edit/{{doc._id}}" data-title="Enter income">{{doc.finance.total_income.value}}</a></h4>
-</div>
-
-<div class="container col-xs-12">
-</div>
-
-
-
-<p id="targetClosing"><br></p>
-<div class="container col-xs-12">
-	<h3>Closing Comments</h3>
-	<p class="scriptText">
-		I believe that completes my questions. Thank you for your time and patience. Please mail/email the documents we have discussed at your earliest convenience. We will be in touch within one week after receiving your documents to inform you about whether or not we can proceed to the next step. As you will recall, that would involve a visit to your home to confirm that the requested repairs are things that Catalyst has the expertise and resources to do.</p>
-
-	<p class="scriptText">Thanks again, {{#if doc.application.name.preferred}}{{doc.application.name.preferred}}{{else}}{{doc.application.name.first}}{{/if}}. I have enjoyed talking to you.</p>
-</div>
-
-
-	<hr/>
-<div class="container col-xs-12">
-	<div class="row">
-		<div class="col-xs-12 col-sm-4">
-			<h3>Vetting Summary</h3>
-			<!-- TODO: Set this url -->
-			<p><a href="#" id="notes.vet_summary" data-type="textarea" data-url="/edit/{{doc._id}}" data-pk="{{doc._id}}">{{doc.notes.vet_summary}}</a></p>
-		</div>
-		<div class="col-xs-12 col-sm-8">
-			<!--VETTING NOTES-->
-			<h3>Vetting Notes</h3>
-	    <div class="form-group">
-	        <form method="post">
-	            <input type="hidden" value="{{doc._id}}" id="appId"/>
-				<input type="hidden" value="{{user}}" id="userId"/>
-	            <table class="table table-striped">
-	                <thead>
-	                <tr>
-	                    <th class="col-sm-2">Date</th>
-	                    <th class="col-sm-6">Note</th>
-						<th class="col-sm-3">Submitted By</th>
-	                    <th class="col-sm-3"></th>
-	                </tr>
-	                </thead>
-	                <tbody id="notes-body">
-	                {{#if vettingNotes}}
-	                    {{#each vettingNotes}}
-	                        <tr>
-	                            <td>{{this.date}}</td>
-	                            <td class="note-descrip">{{this.description}}</td>
-								<td class="note-vetAgent">{{this.vetAgent}}</td>
-	                            <td>
-	                                <form>
-	                                    <input type="hidden" value="{{this._id}}" name="noteId" />
-	                                    <input type="submit" class="update-note btn btn-info" value="Update Note"/>
-	                                    <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
-	                                </form>
-	                            </td>
-	                        </tr>
-	                    {{/each}}
-	                {{else}}
-	                    <tr>
-	                        <td id="empty-notes" class="alert-danger danger" colspan="3">
-	                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
-	                        </td>
-	                    </tr>
-	                {{/if}}
-
-					<tr><!--THIS EMPTY ROW IS NECESSARY FOR addNote.js TO WORK ON MULTIPLE PAGES--></tr>
-	                </tbody>
-	            </table>
-	        </form>
-	    </div>
-	</div>
-	<div class="col-xs-12 col-sm-4 col-md-3">
-		<h3>Site Assessment Summary</h3>
-		{{#if_not_eq doc.notes.site_summary ''}}
-		<p>{{doc.notes.site_summary}}</p>
-		{{else}}
-		<p>[no summary]</p>
-		{{/if_not_eq}}
-	</div>
-	
-</div>
 
 
 
 <script src="/javascript/serviceArea.js" type="text/javascript"></script>
-
-	<script src="/javascript/addItem.js" type="text/javascript"></script>
+<script src="/javascript/addItem.js" type="text/javascript"></script>
 <script>
+	/**
+	 * Handles the back button located at the top of the page
+	 */
+	function goBack() {
+		window.history.back();
+	}
 
+	var workItems = {{{ stringify workItems }}}
+	var docs = {{{ stringify doc }}}
 
-    /**
-     * Handles the back button located at the top of the page
-     */
-    function goBack() {
-        window.history.back();
-    }
-
-
-	var workItems = {{{stringify workItems}}}
-	var docs = {{{stringify doc}}}
-	/*service Area buttons
-	*
-	*/
-	$(document).ready(function() {
-
-		{{#if service}}
-			{{#if doc.service_area}}
-			console.log("service area true");
-			document.getElementById('sa_yes').checked = true;
-			{{else}}
-			console.log("service area false");
-			document.getElementById('sa_no').checked = true;
-
-		    {{/if}}
-		{{/if}}
-
+	$(document).ready(function () {
 		$('.work-item-edit').each(watchEditButton)
 		$('.work-item-delete').on('click', showWorkItemDeleteConfirm)
 		$('.work-item-new').on('click', handleNewWorkItemSubmission)
 		$('.work-item-clear').on('click', handleNewWorkItemClear)
 
-
-
-	});
-    /**
-     * Some inline-editable fields require data from the DB to properly work
-     *  They are defined here instead of a separate file since it needs access
-     *  to the handlebars template system
-     */
-    $(document).ready(function() {
-	    $('#address').editable({
-            value: {
-                line_1: '{{doc.application.address.line_1}}',
-                line_2: '{{doc.application.address.line_2}}',
-                city: '{{doc.application.address.city}}',
-                state: '{{doc.application.address.state}}',
-                zip: '{{doc.application.address.zip}}'
-            }
-        });
-		/* This allows for editable address in second location */
-        $('#VWaddress').editable({
-            value: {
-                line_1: '{{doc.application.address.line_1}}',
-                line_2: '{{doc.application.address.line_2}}',
-                city: '{{doc.application.address.city}}',
-                state: '{{doc.application.address.state}}',
-                zip: '{{doc.application.address.zip}}'
-            }
-        });
-
-        $('#VWname').editable({
-            value: {
-                first: '{{doc.application.name.first}}',
-                middle: '{{doc.application.name.middle}}',
-                last: '{{doc.application.name.last}}'
-            }
-        });
-        $('#veteran').editable({
-            value: '{{doc.application.veteran}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#mortgage').editable({
-            value: '{{doc.finance.mortgage.up_to_date}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#status').editable({
-            value: '{{doc.status}}',
-            source:
-                    [
-                        { value: 'discuss', text: 'On Hold - Pending Discussion' },
-						{ value: 'new', text: 'NEW' },
-						{ value: 'phone', text: 'Phone Call Needed' },
-						{ value: 'handle', text: 'Handle-It' },
-						{ value: 'documents', text: 'Awaiting Documents' },
-						{ value: 'assess', text: 'Site Assessment - Pending' },
-						{ value: 'assessComp', text: 'Site Assessment - Complete' },
-						{ value: 'approval', text: 'Approval Process' },
-						{ value: 'declined', text: 'Declined' },
-						{ value: 'withdrawnooa', text: 'Withdrawn - Outside Service Area' },
-						{ value: 'withdrawn', text: 'Withdrawn' },
-						{ value: 'project', text: 'Approved Project' }
-                    ]
-        });
-        $('#owns_home').editable({
-            value: '{{doc.application.owns_home}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#f_client_can_contrib').editable({
-            value: '{{doc.finance.client_can_contribute.value}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#f_associate_can_contrib').editable({
-            value: '{{doc.finance.associates_can_contribute.value}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#l_client_can_contrib').editable({
-            value: '{{doc.property.client_can_contribute.value}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#l_associate_can_contrib').editable({
-            value: '{{doc.property.associates_can_contribute.value}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#request_help').editable({
-            value: '{{doc.finance.requested_other_help.value}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#fbo_help').editable({
-            value: '{{doc.recruitment.fbo_help}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#is_advocate').editable({
-            value: '{{doc.advocate.is_advocate}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#individual').editable({
-            value: '{{doc.advocate.individual}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#npo').editable({
-            value: '{{doc.advocate.npo}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-        $('#gov').editable({
-            value: '{{doc.advocate.gov}}',
-            source:
-                    [
-                        {value: 'true', text: 'True'},
-                        {value: 'false', text: 'False'}
-                    ]
-        });
-
-        /**
-         * iterate through all dynamic array fields to make them editable
-         * data-pk is set to the current value of the element
-         * An event listener for each link updates data-pk with the edited value
-         **/
-        $('.asset_name').each(function () {
-            var id = '#' + $(this).attr("id");
-            $(id).editable();
-            $(id).click(function () {
-                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
-                $(id).editable("option", "pk", pk);
-            })
-        });
-        $('.asset_value').each(function () {
-            var id = '#' + $(this).attr("id");
-            $(id).editable();
-            $(id).click(function () {
-                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
-                $(id).editable("option", "pk", pk);
-            })
-        });
-        $('.residents_name').each(function () {
-            var id = '#' + $(this).attr("id");
-            $(id).editable();
-            $(id).click(function () {
-                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
-                $(id).editable("option", "pk", pk);
-            });
-        });
-        $('.residents_age').each(function () {
-            var id = '#' + $(this).attr("id");
-            $(id).editable();
-            $(id).click(function () {
-                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
-                $(id).editable("option", "pk", pk);
-            })
-        });
-        $('.residents_relationship').each(function () {
-            var id = '#' + $(this).attr("id");
-            $(id).editable();
-            $(id).click(function () {
-                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
-                $(id).editable("option", "pk", pk);
-            })
-        });
-
-			$('[id="notes.vet_summary"]').editable()
-			$('[id="finance.total_income.value"]').editable()
-
-			var fpb = new FinacialPackageBuilder();
-			fpb.populateHtml();
-			fpb.getData();
+		/**
+		* Some inline-editable fields require data from the DB to properly work
+		*  They are defined here instead of a separate file since it needs access
+		*  to the handlebars template system
+		*/
+		$('#address').editable({
+			value: {
+				line_1: '{{doc.application.address.line_1}}',
+				line_2: '{{doc.application.address.line_2}}',
+				city: '{{doc.application.address.city}}',
+				state: '{{doc.application.address.state}}',
+				zip: '{{doc.application.address.zip}}'
+			}
 		});
+		/* This allows for editable address in second location */
+		$('#VWaddress').editable({
+			value: {
+				line_1: '{{doc.application.address.line_1}}',
+				line_2: '{{doc.application.address.line_2}}',
+				city: '{{doc.application.address.city}}',
+				state: '{{doc.application.address.state}}',
+				zip: '{{doc.application.address.zip}}'
+			}
+		});
+		$('#VWname').editable({
+			value: {
+				first: '{{doc.application.name.first}}',
+				middle: '{{doc.application.name.middle}}',
+				last: '{{doc.application.name.last}}'
+			}
+		});
+		$('#veteran').editable({
+			value: '{{doc.application.veteran}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#mortgage').editable({
+			value: '{{doc.finance.mortgage.up_to_date}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#status').editable({
+			value: '{{doc.status}}',
+			source:
+				[
+					{ value: 'discuss', text: 'On Hold - Pending Discussion' },
+					{ value: 'new', text: 'NEW' },
+					{ value: 'phone', text: 'Phone Call Needed' },
+					{ value: 'handle', text: 'Handle-It' },
+					{ value: 'documents', text: 'Awaiting Documents' },
+					{ value: 'assess', text: 'Site Assessment - Pending' },
+					{ value: 'assessComp', text: 'Site Assessment - Complete' },
+					{ value: 'approval', text: 'Approval Process' },
+					{ value: 'declined', text: 'Declined' },
+					{ value: 'withdrawnooa', text: 'Withdrawn - Outside Service Area' },
+					{ value: 'withdrawn', text: 'Withdrawn' },
+					{ value: 'project', text: 'Approved Project' }
+				]
+		});
+		$('#owns_home').editable({
+			value: '{{doc.application.owns_home}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#f_client_can_contrib').editable({
+			value: '{{doc.finance.client_can_contribute.value}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#f_associate_can_contrib').editable({
+			value: '{{doc.finance.associates_can_contribute.value}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#l_client_can_contrib').editable({
+			value: '{{doc.property.client_can_contribute.value}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#l_associate_can_contrib').editable({
+			value: '{{doc.property.associates_can_contribute.value}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#request_help').editable({
+			value: '{{doc.finance.requested_other_help.value}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#fbo_help').editable({
+			value: '{{doc.recruitment.fbo_help}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#is_advocate').editable({
+			value: '{{doc.advocate.is_advocate}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#individual').editable({
+			value: '{{doc.advocate.individual}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#npo').editable({
+			value: '{{doc.advocate.npo}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+		$('#gov').editable({
+			value: '{{doc.advocate.gov}}',
+			source:
+				[
+					{ value: 'true', text: 'True' },
+					{ value: 'false', text: 'False' }
+				]
+		});
+
+		/**
+		 * iterate through all dynamic array fields to make them editable
+		 * data-pk is set to the current value of the element
+		 * An event listener for each link updates data-pk with the edited value
+		 **/
+		$('.asset_name').each(function () {
+			var id = '#' + $(this).attr("id");
+			$(id).editable();
+			$(id).click(function () {
+				var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+				$(id).editable("option", "pk", pk);
+			})
+		});
+		$('.asset_value').each(function () {
+			var id = '#' + $(this).attr("id");
+			$(id).editable();
+			$(id).click(function () {
+				var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+				$(id).editable("option", "pk", pk);
+			})
+		});
+		$('.residents_name').each(function () {
+			var id = '#' + $(this).attr("id");
+			$(id).editable();
+			$(id).click(function () {
+				var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+				$(id).editable("option", "pk", pk);
+			});
+		});
+		$('.residents_age').each(function () {
+			var id = '#' + $(this).attr("id");
+			$(id).editable();
+			$(id).click(function () {
+				var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+				$(id).editable("option", "pk", pk);
+			})
+		});
+		$('.residents_relationship').each(function () {
+			var id = '#' + $(this).attr("id");
+			$(id).editable();
+			$(id).click(function () {
+				var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+				$(id).editable("option", "pk", pk);
+			})
+		});
+
+		$('[id="notes.vet_summary"]').editable()
+		$('[id="finance.total_income.value"]').editable()
+
+		var fpb = new FinacialPackageBuilder();
+		fpb.populateHtml();
+		fpb.getData();
+
+		/**
+		 * service Area buttons
+		 */
+		{{#if service}}
+			{{#if doc.service_area }}
+				console.log("service area true");
+				document.getElementById('sa_yes').checked = true;
+				{{else}}
+				console.log("service area false");
+				document.getElementById('sa_no').checked = true;
+			{{/if}}
+		{{/if}}
+	});
 
 	/* Finacial Package Builder - Dave Martinez, Feb. 7, 2017
 	 * Builds the vetting worksheet for the appropriate number of financial packages
@@ -1044,401 +1244,399 @@
 	 */
 
 	function FinacialPackageBuilder() {
-		this.htmlTargetSelector = '#finacialForm'
-		this.root = false
-		this.applicationId = '{{ doc._id }}'
+		this.htmlTargetSelector = '#finacialForm';
+		this.root = false;
+		this.applicationId = '{{ doc._id }}';
 
-		this.appID = 123
-		this.docStatus = '{{doc.status}}'
+		this.appID = 123;
+		this.docStatus = '{{doc.status}}';
+
+		this.people = {{{ stringify finances }}};
+	};
 
 
-		this.people = {{{stringify finances}}}
+	this.schema = [
+		{
+			sectionName: 'Income Documentation',
+			items: [
+				{
+					question: 'Do you receive food stamp benefits?',
+					subtext: '<p>If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a></p>',
+					fieldPath: ['food_stamps'],
+					objects: ['Food Stamps documentation']
+				},
+				{
+					question: 'Did you or anyone else in your home file a federal income tax form last year?',
+					subtext: '<p>If yes, request copies of their main tax form(s) (1040 or 1040EZ), and proceed to X. If no proceed to next question.</p>',
+					fieldPath: ['income_tax'],
+					objects: ['Federal Tax Records']
+				},
+				{
+					question: 'Are you or anyone else in your home currently employed?',
+					subtext: '<p>If yes, request Income Documentation for all employed residents and proceed. If no, proceed to next question.</p>',
+					fieldPath: ['employment'],
+					objects: ['Income Documentation [e.g. Pay Stubs]']
+				},
+				{
+					question: 'Do you or anyone else in your home receive Social Security benefits? (retirement; disability; SSI)',
+					subtext: '<p>If yes, request copies of their benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
+					fieldPath: ['ss_ben'],
+					objects: ['Social Security-Documentation']
+				},
+				{
+					question: 'Do you or anyone else in your home receive pension payments?',
+					subtext: '<p>If yes, request copies of check stubs or deposit notices showing total benefit received. If no, proceed to next question.</p>',
+					fieldPath: ['pension'],
+					objects: ['Pension Benefit-Documentation']
+				},
+				{
+					question: 'Do you or anyone else in your home receive housing assistance?',
+					subtext: '<p>If yes, request copies of benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
+					fieldPath: ['house_assist'],
+					objects: ['Housing assistance documentation']
+				}
+			]
+		},
+		{
+			sectionName: 'Asset Documentation',
+			items: [
+				{
+					question: 'Do you anyone else in your home have a checking or a savings account with more than $5,000 on deposit?',
+					subtext: '<p>If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.</p>',
+					fieldPath: ['check_account', 'saving_account'],
+					objects: ['Checking Account documentation', 'Savings Account documentation']
+				},
+				{
+					question: 'Do you or anyone else in your home have money in a retirement account? (e.g. IRA, 401k, etc.)',
+					subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
+					fieldPath: ['ret_fund'],
+					objects: ['Retirement Fund documentation']
+				},
+				{
+					question: 'Do you or anyone else in your home have any other investment or trust accounts?',
+					subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
+					fieldPath: ['invest'],
+					objects: ['Other Investments/Trusts documentation']
+				},
+				{
+					question: 'Do you or anyone else in your home have one or more physical assets (collections, works of art, antique vehicles) worth more than a total of $5,000?',
+					subtext: '<p>If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.</p>',
+					fieldPath: ['physical'],
+					objects: ['Physical Assets-Documentation']
+				},
+				{
+					question: 'Do you or anyone else in your home have other financial resources that my questions haven’t given you an opportunity to tell me about?',
+					subtext: '<p>If yes, record below and proceed to closing. If no, proceed to closing.</p>',
+					fieldPath: ['other_resources', 'proof_own'],
+					hasDescription: true,
+					objects: ['Other', 'Proof of Ownership (could be latest mortgage statement or insurance record)']
+				}
+			]
+		}
+	] // end schema
 
+	this.handleChange = function (e) {
+		if (this.docStatus === 'new') {
+			// Changes document status to 'awaiting documents'
+			xhr(
+				{ name: 'status', value: 'documents' },
+				'POST',
+				'/edit/' + this.applicationId,
+				function (err) {
+					if (!err) { $('#status').editable('setValue', 'documents') }
+				}
+			)
+		}
 
-		this.schema = [
-		  {
-		    sectionName: 'Income Documentation',
-		    items: [
-		      {
-		        question: 'Do you receive food stamp benefits?',
-		        subtext: '<p>If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a></p>',
-		        fieldPath: ['food_stamps'],
-		        objects: ['Food Stamps documentation']
-		      },
-		      {
-		        question: 'Did you or anyone else in your home file a federal income tax form last year?',
-		        subtext: '<p>If yes, request copies of their main tax form(s) (1040 or 1040EZ), and proceed to X. If no proceed to next question.</p>',
-		        fieldPath: ['income_tax'],
-		        objects: ['Federal Tax Records']
-		      },
-		      {
-		        question: 'Are you or anyone else in your home currently employed?',
-		        subtext: '<p>If yes, request Income Documentation for all employed residents and proceed. If no, proceed to next question.</p>',
-		        fieldPath: ['employment'],
-		        objects: ['Income Documentation [e.g. Pay Stubs]']
-		      },
-		      {
-		        question: 'Do you or anyone else in your home receive Social Security benefits? (retirement; disability; SSI)',
-		        subtext: '<p>If yes, request copies of their benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
-		        fieldPath: ['ss_ben'],
-		        objects: ['Social Security-Documentation']
-		      },
-		      {
-		        question: 'Do you or anyone else in your home receive pension payments?',
-		        subtext: '<p>If yes, request copies of check stubs or deposit notices showing total benefit received. If no, proceed to next question.</p>',
-		        fieldPath: ['pension'],
-		        objects: ['Pension Benefit-Documentation']
-		      },
-		      {
-		        question: 'Do you or anyone else in your home receive housing assistance?',
-		        subtext: '<p>If yes, request copies of benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
-		        fieldPath: ['house_assist'],
-		        objects: ['Housing assistance documentation']
-		      }
-		    ]
-		  },
-		  {
-		    sectionName: 'Asset Documentation',
-		    items: [
-		      {
-		        question: 'Do you anyone else in your home have a checking or a savings account with more than $5,000 on deposit?',
-		        subtext: '<p>If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.</p>',
-		        fieldPath: ['check_account', 'saving_account'],
-		        objects: ['Checking Account documentation', 'Savings Account documentation']
-		      },
-		      {
-		        question: 'Do you or anyone else in your home have money in a retirement account? (e.g. IRA, 401k, etc.)',
-		        subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
-		        fieldPath: ['ret_fund'],
-		        objects: ['Retirement Fund documentation']
-		      },
-		      {
-		        question: 'Do you or anyone else in your home have any other investment or trust accounts?',
-		        subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
-		        fieldPath: ['invest'],
-		        objects: ['Other Investments/Trusts documentation']
-		      },
-		      {
-		        question: 'Do you or anyone else in your home have one or more physical assets (collections, works of art, antique vehicles) worth more than a total of $5,000?',
-		        subtext: '<p>If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.</p>',
-		        fieldPath: ['physical'],
-		        objects: ['Physical Assets-Documentation']
-		      },
-		      {
-		        question: 'Do you or anyone else in your home have other financial resources that my questions haven’t given you an opportunity to tell me about?',
-		        subtext: '<p>If yes, record below and proceed to closing. If no, proceed to closing.</p>',
-		        fieldPath: ['other_resources', 'proof_own'],
-		        hasDescription: true,
-		        objects: ['Other', 'Proof of Ownership (could be latest mortgage statement or insurance record)']
-		      }
-		    ]
-		  }
-		] // end schema
+		var nameParts = e.target.name.split('.')
+		var idx = nameParts[0]
+		var boxTicked = nameParts[2]
+		var objectVal = changeObjectValueByPath({}, e.target.name, e.target.checked)
 
-		this.handleChange = function(e) {
-			if (this.docStatus === 'new') {
-				// Changes document status to 'awaiting documents'
-				xhr(
-					{ name: 'status', value: 'documents' },
-					'POST',
-					'/edit/' + this.applicationId,
-					function(err) {
-						if (!err) { $('#status').editable('setValue', 'documents') }
+		// Auto ticks...
+		var siblingInputs = $('input', e.target.parentNode)
+		var currentState = {
+			req: siblingInputs[0].checked,
+			rec: siblingInputs[1].checked,
+			na: siblingInputs[2].checked,
+		}
+
+		if (currentState.rec && !currentState.req && !currentState.na) {
+			// User input received but requested is not checked; tick requested
+			e.preventDefault()
+			e.stopPropagation()
+
+			var targetName = e.target.name.replace(boxTicked, 'req')
+
+			$('[name="' + targetName + '"]').prop('checked', true)
+
+			if (boxTicked === 'req') {
+				alert('You must untick received before requested')
+			}
+
+			var autoUpdateVal = changeObjectValueByPath({}, targetName, true)
+			var autoUpdateChange = {}
+			autoUpdateChange[this.people[idx]._id] = autoUpdateVal[idx]
+
+			window.setTimeout(function () {
+				xhr(autoUpdateChange, 'POST', '/vettingworksheet/finacialForm', function (err) {
+					if (err) {
+						// TODO: If error, flip the value back and show an error message to the user
+						// alert('Value did not save, please reload the page')
 					}
-				)
-			}
-
-			var nameParts = e.target.name.split('.')
-			var idx = nameParts[0]
-			var boxTicked = nameParts[2]
-			var objectVal = changeObjectValueByPath({}, e.target.name, e.target.checked)
-
-			// Auto ticks...
-			var siblingInputs = $('input', e.target.parentNode)
-			var currentState = {
-				req: siblingInputs[0].checked,
-				rec: siblingInputs[1].checked,
-				na: siblingInputs[2].checked,
-			}
-
-			if (currentState.rec && !currentState.req && !currentState.na) {
-				// User input received but requested is not checked; tick requested
-				e.preventDefault()
-				e.stopPropagation()
-
-				var targetName = e.target.name.replace(boxTicked, 'req')
-
-				$('[name="' + targetName + '"]').prop('checked', true)
-
-				if (boxTicked === 'req') {
-					alert('You must untick received before requested')
-				}
-
-				var autoUpdateVal = changeObjectValueByPath({}, targetName, true)
-				var autoUpdateChange = {}
-				autoUpdateChange[ this.people[ idx ]._id ] = autoUpdateVal[idx]
-
-				window.setTimeout(function() {
-					xhr(autoUpdateChange, 'POST', '/vettingworksheet/finacialForm', function(err) {
-						if (err) {
-							// TODO: If error, flip the value back and show an error message to the user
-							// alert('Value did not save, please reload the page')
-						}
-					})
-				}, 250)
+				})
+			}, 250)
 
 
-			} else if (currentState.na && (currentState.rec || currentState.req) && boxTicked === 'na') {
-				// User input na, but received or requested is ticked; untick rec and rec
-				e.preventDefault()
-				e.stopPropagation()
+		} else if (currentState.na && (currentState.rec || currentState.req) && boxTicked === 'na') {
+			// User input na, but received or requested is ticked; untick rec and rec
+			e.preventDefault()
+			e.stopPropagation()
 
+			var targetNameReq = e.target.name.replace(boxTicked, 'req')
+			var targetNameRec = e.target.name.replace(boxTicked, 'rec')
+
+			$('[name="' + targetNameReq + '"]').prop('checked', false)
+			$('[name="' + targetNameRec + '"]').prop('checked', false)
+
+			var autoUpdateValReq = changeObjectValueByPath({}, targetNameReq, false)
+			var autoUpdateValRec = changeObjectValueByPath({}, targetNameRec, false)
+
+			var autoUpdateChangeReq = {}
+			autoUpdateChangeReq[this.people[idx]._id] = autoUpdateValReq[idx]
+
+			var autoUpdateChangeRec = {}
+			autoUpdateChangeRec[this.people[idx]._id] = autoUpdateValRec[idx]
+
+			window.setTimeout(function () {
+				xhr(autoUpdateChangeReq, 'POST', '/vettingworksheet/finacialForm', function (err) {
+					if (err) {
+						// TODO: If error, flip the value back and show an error message to the user
+						// alert('Value did not save, please reload the page')
+					}
+				})
+
+				xhr(autoUpdateChangeRec, 'POST', '/vettingworksheet/finacialForm', function (err) {
+					if (err) {
+						// TODO: If error, flip the value back and show an error message to the user
+						// alert('Value did not save, please reload the page')
+					}
+				})
+			}, 250)
+
+
+		} else if ((boxTicked === 'req' || boxTicked === 'rec') && currentState.na) {
+			// User input req or rec, but na is clicked; untick na
+			var targetName = e.target.name.replace(boxTicked, 'na')
+
+
+			$('[name="' + targetName + '"]').prop('checked', false)
+
+
+			var autoUpdateVal = changeObjectValueByPath({}, targetName, false)
+
+
+			var autoUpdateChange = {}
+			autoUpdateChange[this.people[idx]._id] = autoUpdateVal[idx]
+
+
+
+			window.setTimeout(function () {
+				xhr(autoUpdateChange, 'POST', '/vettingworksheet/finacialForm', function (err) {
+					if (err) {
+						// TODO: If error, flip the value back and show an error message to the user
+						// alert('Value did not save, please reload the page')
+					}
+				})
+			}, 250)
+
+			// Also tick requested if current action is rec. and rec is true and req is false
+			if (boxTicked == 'rec' && currentState.rec === true && currentState.req === false) {
 				var targetNameReq = e.target.name.replace(boxTicked, 'req')
-				var targetNameRec = e.target.name.replace(boxTicked, 'rec')
+				$('[name="' + targetNameReq + '"]').prop('checked', true)
 
-				$('[name="' + targetNameReq + '"]').prop('checked', false)
-				$('[name="' + targetNameRec + '"]').prop('checked', false)
-
-				var autoUpdateValReq = changeObjectValueByPath({}, targetNameReq, false)
-				var autoUpdateValRec = changeObjectValueByPath({}, targetNameRec, false)
-
+				var autoUpdateValReq = changeObjectValueByPath({}, targetNameReq, true)
 				var autoUpdateChangeReq = {}
-				autoUpdateChangeReq[ this.people[ idx ]._id ] = autoUpdateValReq[idx]
 
-				var autoUpdateChangeRec = {}
-				autoUpdateChangeRec[ this.people[ idx ]._id ] = autoUpdateValRec[idx]
+				autoUpdateChangeReq[this.people[idx]._id] = autoUpdateValReq[idx]
 
-				window.setTimeout(function() {
-					xhr(autoUpdateChangeReq, 'POST', '/vettingworksheet/finacialForm', function(err) {
-						if (err) {
-							// TODO: If error, flip the value back and show an error message to the user
-							// alert('Value did not save, please reload the page')
-						}
-					})
-
-					xhr(autoUpdateChangeRec, 'POST', '/vettingworksheet/finacialForm', function(err) {
+				window.setTimeout(function () {
+					xhr(autoUpdateChangeReq, 'POST', '/vettingworksheet/finacialForm', function (err) {
 						if (err) {
 							// TODO: If error, flip the value back and show an error message to the user
 							// alert('Value did not save, please reload the page')
 						}
 					})
 				}, 250)
-
-
-			} else if ((boxTicked === 'req' || boxTicked === 'rec') && currentState.na) {
-				// User input req or rec, but na is clicked; untick na
-				var targetName = e.target.name.replace(boxTicked, 'na')
-
-
-				$('[name="' + targetName + '"]').prop('checked', false)
-
-
-				var autoUpdateVal = changeObjectValueByPath({}, targetName, false)
-
-
-				var autoUpdateChange = {}
-				autoUpdateChange[ this.people[ idx ]._id ] = autoUpdateVal[idx]
-
-
-
-				window.setTimeout(function() {
-					xhr(autoUpdateChange, 'POST', '/vettingworksheet/finacialForm', function(err) {
-						if (err) {
-							// TODO: If error, flip the value back and show an error message to the user
-							// alert('Value did not save, please reload the page')
-						}
-					})
-				}, 250)
-
-				// Also tick requested if current action is rec. and rec is true and req is false
-				if (boxTicked == 'rec' && currentState.rec === true && currentState.req === false) {
-					var targetNameReq = e.target.name.replace(boxTicked, 'req')
-					$('[name="' + targetNameReq + '"]').prop('checked', true)
-
-					var autoUpdateValReq = changeObjectValueByPath({}, targetNameReq, true)
-					var autoUpdateChangeReq = {}
-
-					autoUpdateChangeReq[ this.people[ idx ]._id ] = autoUpdateValReq[idx]
-
-					window.setTimeout(function() {
-						xhr(autoUpdateChangeReq, 'POST', '/vettingworksheet/finacialForm', function(err) {
-							if (err) {
-								// TODO: If error, flip the value back and show an error message to the user
-								// alert('Value did not save, please reload the page')
-							}
-						})
-					}, 250)
-
-				}
 
 			}
 
-			var changedValue = {}
-			changedValue[ this.people[ idx ]._id ] = objectVal[idx]
+		}
 
-			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function(err) {
-				if (err) {
-					// TODO: If error, flip the value back and show an error message to the user
-					// alert('Value did not save, please reload the page')
-				}
-			})
+		var changedValue = {}
+		changedValue[this.people[idx]._id] = objectVal[idx]
 
-		}.bind(this)
+		xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function (err) {
+			if (err) {
+				// TODO: If error, flip the value back and show an error message to the user
+				// alert('Value did not save, please reload the page')
+			}
+		})
 
-
-		this.populateHtml = function() {
-			this.root = $(this.htmlTargetSelector)
+	}.bind(this)
 
 
-			this.schema.forEach(function(section, sectionIdx) {
-				var sectionNode = $('<div></div>').addClass('finacialPackageSection')
-				sectionNode.append('<h4>' + section.sectionName + '</h4>')
-
-				section.items.forEach(function(item, itemIdx) {
-					var itemRow = $('<div></div>').addClass('finacialPackageRow')
-
-					// Question text
-					var itemText = $('<div></div>').addClass('finacialPackageText').appendTo(itemRow)
-					$('<p></p>').addClass('scriptText').text('Q: ' + item.question).appendTo(itemText)
-					$('<i></i>').append(item.subtext).appendTo(itemText)
+	this.populateHtml = function () {
+		this.root = $(this.htmlTargetSelector)
 
 
-					// Header row for questions
-					var itemQuestionRow = $('<div></div>').addClass('row').appendTo(itemRow)
+		this.schema.forEach(function (section, sectionIdx) {
+			var sectionNode = $('<div></div>').addClass('finacialPackageSection')
+			sectionNode.append('<h4>' + section.sectionName + '</h4>')
+
+			section.items.forEach(function (item, itemIdx) {
+				var itemRow = $('<div></div>').addClass('finacialPackageRow')
+
+				// Question text
+				var itemText = $('<div></div>').addClass('finacialPackageText').appendTo(itemRow)
+				$('<p></p>').addClass('scriptText').text('Q: ' + item.question).appendTo(itemText)
+				$('<i></i>').append(item.subtext).appendTo(itemText)
 
 
-					$('<div></div>').addClass('col-xs-4').appendTo(itemQuestionRow)
+				// Header row for questions
+				var itemQuestionRow = $('<div></div>').addClass('row').appendTo(itemRow)
 
-					var headerRow = $('<div></div>').addClass('col-xs-8').appendTo(itemQuestionRow)
-					var headerRowTable = $('<table></table>').addClass('table').appendTo(headerRow)
-					var headerRowTableHeader = $('<thead></thead>').addClass('thead-default')
-					headerRowTableHeader = $('<tr></tr>').appendTo(headerRowTableHeader)
-					headerRowTableHeader.appendTo(headerRowTable)
 
-					this.people.forEach(function(person, personIdx) {
-						$('<th></th>').text(person.name).appendTo(headerRowTableHeader)
-					})
+				$('<div></div>').addClass('col-xs-4').appendTo(itemQuestionRow)
 
-					// Each document object in the item
-					item.objects.forEach(function(obj, objIdx) {
-						var objectRow = $('<div></div>').addClass('row')
+				var headerRow = $('<div></div>').addClass('col-xs-8').appendTo(itemQuestionRow)
+				var headerRowTable = $('<table></table>').addClass('table').appendTo(headerRow)
+				var headerRowTableHeader = $('<thead></thead>').addClass('thead-default')
+				headerRowTableHeader = $('<tr></tr>').appendTo(headerRowTableHeader)
+				headerRowTableHeader.appendTo(headerRowTable)
 
-						var objectLabelCell = $('<div></div>').addClass('col-xs-4').text(obj).appendTo(objectRow)
-						objectLabelCell.append('<br/>')
-						var rowNote = $('<textarea></textarea>').addClass('form-control')
+				this.people.forEach(function (person, personIdx) {
+					$('<th></th>').text(person.name).appendTo(headerRowTableHeader)
+				})
+
+				// Each document object in the item
+				item.objects.forEach(function (obj, objIdx) {
+					var objectRow = $('<div></div>').addClass('row')
+
+					var objectLabelCell = $('<div></div>').addClass('col-xs-4').text(obj).appendTo(objectRow)
+					objectLabelCell.append('<br/>')
+					var rowNote = $('<textarea></textarea>').addClass('form-control')
 						.text(
 							this.people[0] &&
-							this.people[0][ this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] ] ? (
-								this.people[0][ this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] ].note
-							) : ''
+								this.people[0][this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]] ? (
+									this.people[0][this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]].note
+								) : ''
 						)
 						.attr('rows', '4')
 						.attr('name', this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] + '.note')
 						.appendTo(objectLabelCell)
-						rowNote.keyup(this.handleNoteChange)
+					rowNote.keyup(this.handleNoteChange)
 
 
 
-						var objectCheckBoxColumn = $('<div></div>').addClass('col-xs-8').appendTo(objectRow)
-						var checkBoxTable = $('<table></table>').addClass('table').appendTo(objectCheckBoxColumn)
-						checkBoxTable = $('<tbody></tbody>').appendTo(checkBoxTable)
+					var objectCheckBoxColumn = $('<div></div>').addClass('col-xs-8').appendTo(objectRow)
+					var checkBoxTable = $('<table></table>').addClass('table').appendTo(objectCheckBoxColumn)
+					checkBoxTable = $('<tbody></tbody>').appendTo(checkBoxTable)
 
-						var checkBoxRow = $('<tr></tr>').appendTo(checkBoxTable)
+					var checkBoxRow = $('<tr></tr>').appendTo(checkBoxTable)
 
-						this.people.forEach(function(person, personIdx) {
-							var personCell = $('<td></td>').appendTo(checkBoxRow)
-							var thisField = this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]
+					this.people.forEach(function (person, personIdx) {
+						var personCell = $('<td></td>').appendTo(checkBoxRow)
+						var thisField = this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]
 
 
-							var thisFieldInputReq = $('<input type="checkbox"> Requested</input>')
+						var thisFieldInputReq = $('<input type="checkbox"> Requested</input>')
 							.appendTo(personCell)
 							.attr('name', personIdx + '.' + thisField + '.' + 'req')
 							.on('change', this.handleChange)
 
-							if (
-								this.people[personIdx][thisField] &&
-								this.people[personIdx][thisField].req === true
-							) { thisFieldInputReq[0].checked = true }
+						if (
+							this.people[personIdx][thisField] &&
+							this.people[personIdx][thisField].req === true
+						) { thisFieldInputReq[0].checked = true }
 
-							$('<br/>').appendTo(personCell)
+						$('<br/>').appendTo(personCell)
 
-							var thisFieldInputRec = $('<input type="checkbox"> Received</input>')
+						var thisFieldInputRec = $('<input type="checkbox"> Received</input>')
 							.appendTo(personCell)
 							.attr('name', personIdx + '.' + thisField + '.' + 'rec')
 							.on('change', this.handleChange)
 
 
-							if (
-								this.people[personIdx][thisField] &&
-								this.people[personIdx][thisField].rec === true
-							) { thisFieldInputRec[0].checked = true }
+						if (
+							this.people[personIdx][thisField] &&
+							this.people[personIdx][thisField].rec === true
+						) { thisFieldInputRec[0].checked = true }
 
-							// checkBoxRow.append(personCell)
+						// checkBoxRow.append(personCell)
 
-							$('<br/>').appendTo(personCell)
+						$('<br/>').appendTo(personCell)
 
-							var thisFieldInputNA = $('<input type="checkbox"> N/A</input>')
+						var thisFieldInputNA = $('<input type="checkbox"> N/A</input>')
 							.appendTo(personCell)
 							.attr('name', personIdx + '.' + thisField + '.' + 'na')
 							.on('change', this.handleChange)
 
-							if (
-								this.people[personIdx][thisField] &&
-								this.people[personIdx][thisField].na === true
-							) { thisFieldInputNA[0].checked = true }
+						if (
+							this.people[personIdx][thisField] &&
+							this.people[personIdx][thisField].na === true
+						) { thisFieldInputNA[0].checked = true }
 
-							checkBoxRow.append(personCell)
-						}.bind(this))
-
-						objectRow.appendTo(itemRow)
+						checkBoxRow.append(personCell)
 					}.bind(this))
 
-					itemRow.appendTo(sectionNode)
-
+					objectRow.appendTo(itemRow)
 				}.bind(this))
 
-
-				this.root.append(sectionNode)
+				itemRow.appendTo(sectionNode)
 
 			}.bind(this))
-		} // END this.populateHtml
 
 
-		this.getData = function() {
-			return getFormData(this.root)
-		}
+			this.root.append(sectionNode)
 
-		this._TIMEOUT = false
-
-		this.handleNoteChange = function(e) {
-			if (this._TIMEOUT) { window.clearTimeout(this._TIMEOUT) }
-
-			this._TIMEOUT = window.setTimeout(function() {
-				var changedValue = {}
-				changedValue[ this.primaryUser._id ] = {}
-				changedValue[ this.primaryUser._id ][ this.field ] = { note: this.noteValue }
-
-				xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function(err) {
-					// TODO: If error, flip the value back and show an error message to the user
-
-				})
-
-			}.bind({ noteValue: e.target.value, field: e.target.name, primaryUser: this.people[0] }), 500)
-		}.bind(this)
+		}.bind(this))
+	} // END this.populateHtml
 
 
+	this.getData = function () {
+		return getFormData(this.root)
+	}
 
-	} // END FinacialPackageBuilder
+	this._TIMEOUT = false
+
+	this.handleNoteChange = function (e) {
+		if (this._TIMEOUT) { window.clearTimeout(this._TIMEOUT) }
+
+		this._TIMEOUT = window.setTimeout(function () {
+			var changedValue = {}
+			changedValue[this.primaryUser._id] = {}
+			changedValue[this.primaryUser._id][this.field] = { note: this.noteValue }
+
+			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function (err) {
+				// TODO: If error, flip the value back and show an error message to the user
+
+			})
+
+		}.bind({ noteValue: e.target.value, field: e.target.name, primaryUser: this.people[0] }), 500)
+	}.bind(this)
+
+	// END FinacialPackageBuilder
 
 	function getFormData(form) {
 		var formData = {}
 		var inputFields = $('input', form)
-		inputFields.each(function(idx) {
+		inputFields.each(function (idx) {
 			var objectPath = this.name
 			var objectPieces = objectPath.split('.')
 			var currentObjectPlace = formData
-			objectPieces.forEach(function(p, i) {
-				if (i < (objectPieces.length-1)) {
+			objectPieces.forEach(function (p, i) {
+				if (i < (objectPieces.length - 1)) {
 					if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
 					currentObjectPlace = currentObjectPlace[p]
 				} else {
@@ -1455,14 +1653,16 @@
 	}
 
 	function changeObjectValueByPath(obj, path, value) {
-		var objectPieces = path.split('.')
-		var currentObjectPlace = obj
-		objectPieces.forEach(function(p, i) {
-			if (i < (objectPieces.length-1)) {
-				if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
-				currentObjectPlace = currentObjectPlace[p]
-			} else {
-				currentObjectPlace[p] = value
+		var objectPieces = path.split('.');
+		var currentObjectPlace = obj;
+		objectPieces.forEach(function (p, i) {
+			if (i < (objectPieces.length - 1)) {
+				if (!currentObjectPlace[p]) {
+					currentObjectPlace[p] = {}
+					currentObjectPlace = currentObjectPlace[p];
+				} else {
+					currentObjectPlace[p] = value;
+				}
 			}
 		})
 
@@ -1473,16 +1673,16 @@
 		//post to database
 
 		var posting = $.ajax({
-			type : method,
-			url : url,
-			dataType : 'json',
-			contentType : 'application/json; charset=UTF-8',
-			data : JSON.stringify(data)
+			type: method,
+			url: url,
+			dataType: 'json',
+			contentType: 'application/json; charset=UTF-8',
+			data: JSON.stringify(data)
 		});
 
 		//check for error
 		posting.done(function (xhr) {
-		  if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
+			if (xhr.status === 'success' || xhr.status === 200 || xhr.status === '200') {
 				next(null, xhr)
 			}
 			else {
@@ -1506,7 +1706,7 @@
 		var workItemId = $(workItemParent.parentElement).attr('name')
 
 		var currentData = {}
-		$('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+		$('[name*="' + workItemId + '"]', workItemContainer).each(function (idx) {
 			var path = $(this).attr('name').replace(workItemId + '.', '')
 			currentData[path] = this.innerText
 		})
@@ -1514,54 +1714,54 @@
 		workItemContainer.empty()
 
 		var fields = [
-			{field: 'name', text:'Name'},
-			{field: 'description', text: 'Description', type: 'textarea'},
-			{field: 'vettingComments', text: 'Vetting Comments', type: 'textarea'},
-			{field: 'cost', text: 'Cost'},
+			{ field: 'name', text: 'Name' },
+			{ field: 'description', text: 'Description', type: 'textarea' },
+			{ field: 'vettingComments', text: 'Vetting Comments', type: 'textarea' },
+			{ field: 'cost', text: 'Cost' },
 		]
 
-		fields.forEach(function(f) {
+		fields.forEach(function (f) {
 			var formGroup = $('<div class="form-group"></div>')
 			$('<label>' + f.text + '</label>').appendTo(formGroup)
 			if (f.type && f.type === 'textarea') {
 				$('<textarea></textarea>')
-				.addClass('form-control')
-				.attr('name', workItemId + '.' + f.field)
-				.attr('rows', 5)
-				.val(currentData[f.field])
-				.appendTo(formGroup)
+					.addClass('form-control')
+					.attr('name', workItemId + '.' + f.field)
+					.attr('rows', 5)
+					.val(currentData[f.field])
+					.appendTo(formGroup)
 			} else {
 				$('<input></input>')
-				.addClass('form-control')
-				.attr('name', workItemId + '.' + f.field)
-				.val(currentData[f.field])
-				.appendTo(formGroup)
+					.addClass('form-control')
+					.attr('name', workItemId + '.' + f.field)
+					.val(currentData[f.field])
+					.appendTo(formGroup)
 			}
 
 			workItemContainer.append(formGroup)
 		})
 
 		$('<button></button>')
-		.text('Save')
-		.addClass('btn').addClass('btn-primary')
-		.addClass('card-link')
-		.on('click', function(e) {
-			saveWorkItem(workItemContainer)
-		})
-		.appendTo(workItemContainer)
+			.text('Save')
+			.addClass('btn').addClass('btn-primary')
+			.addClass('card-link')
+			.on('click', function (e) {
+				saveWorkItem(workItemContainer)
+			})
+			.appendTo(workItemContainer)
 
 		$('<button></button>')
-		.text('Cancel')
-		.addClass('btn').addClass('btn-danger')
-		.addClass('card-link')
-		.on('click', function(e) {
-			for (let i=0; i<workItems.length; i++) {
-				if (workItems[i]._id === workItemId) {
-					showWorkItem(workItems[i], workItemContainer)
+			.text('Cancel')
+			.addClass('btn').addClass('btn-danger')
+			.addClass('card-link')
+			.on('click', function (e) {
+				for (let i = 0; i < workItems.length; i++) {
+					if (workItems[i]._id === workItemId) {
+						showWorkItem(workItems[i], workItemContainer)
+					}
 				}
-			}
-		})
-		.appendTo(workItemContainer)
+			})
+			.appendTo(workItemContainer)
 	}
 
 	function showWorkItem(data, node) {
@@ -1570,69 +1770,69 @@
 		var cardBlock = node
 
 		$('<h4></h4>').addClass('card-title')
-		.attr('name', data._id + '.name')
-		.text(data.name)
-		.appendTo(cardBlock)
+			.attr('name', data._id + '.name')
+			.text(data.name)
+			.appendTo(cardBlock)
 
 		$('<p></p>').addClass('text-muted')
-		.text(new Date(data.date).toString())
-		.appendTo(cardBlock)
+			.text(new Date(data.date).toString())
+			.appendTo(cardBlock)
 
 		var cardText = $('<p></p>').addClass('card-text')
-		.appendTo(cardBlock)
+			.appendTo(cardBlock)
 
 		$('<strong>Description:</strong>').appendTo(cardText)
-		$('<br></br>').appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
 
 		$('<span></span>')
-		.attr('name', data._id + '.description')
-		.text(data.description)
-		.appendTo(cardText)
+			.attr('name', data._id + '.description')
+			.text(data.description)
+			.appendTo(cardText)
 
-		$('<br></br>').appendTo(cardText)
-		$('<br></br>').appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
 
 		$('<strong>Vetting Comments:</strong>').appendTo(cardText)
-		// $('<br></br>').appendTo(cardText)
+		// $('<br><br>').appendTo(cardText)
 
 		$('<p></p>').text(data.vettingComments)
-		.attr('name', data._id + '.vettingComments')
-		.appendTo(cardText)
-		$('<br></br>').appendTo(cardText)
+			.attr('name', data._id + '.vettingComments')
+			.appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
 
 		$('<strong>Site Comments:</strong>').appendTo(cardText)
-		$('<br></br>').appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
 
 		$('<p></p>')
-		.text(data.siteComments).appendTo(cardText)
-		$('<br></br>').appendTo(cardText)
+			.text(data.siteComments).appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
 
 		$('<strong>Cost:</strong>').appendTo(cardText)
-		$('<br></br>').appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
 
 		$('<span></span>')
-		.attr('name', data._id + '.cost')
-		.text(data.cost)
-		.appendTo(cardText)
+			.attr('name', data._id + '.cost')
+			.text(data.cost)
+			.appendTo(cardText)
 
 		$('<a></a>').addClass('btn').addClass('btn-primary')
-		.addClass('card-link').addClass('work-item-edit')
-		.text('Edit')
-		.attr('href', '#')
-		.on('click', showWorkItemEditForm)
-		.appendTo(cardBlock)
+			.addClass('card-link').addClass('work-item-edit')
+			.text('Edit')
+			.attr('href', '#')
+			.on('click', showWorkItemEditForm)
+			.appendTo(cardBlock)
 
 		$('<a></a>').addClass('btn').addClass('btn-danger')
-		.addClass('card-link').addClass('work-item-delete')
-		.text('Delete')
-		.attr('href', '#')
-		.on('click', showWorkItemDeleteConfirm)
-		.appendTo(cardBlock)
+			.addClass('card-link').addClass('work-item-delete')
+			.text('Delete')
+			.attr('href', '#')
+			.on('click', showWorkItemDeleteConfirm)
+			.appendTo(cardBlock)
 	}
 
 	function saveWorkItem(node) {
 		var data = {}, id = false
-		$('input, textarea', node).each(function(idx) {
+		$('input, textarea', node).each(function (idx) {
 			var path = this.name.split('.')[1]
 			data[path] = this.value
 			if (!id) id = this.name.split('.')[0]
@@ -1642,15 +1842,15 @@
 		var xhrData = JSON.parse(JSON.stringify(data))
 		xhrData.id = id
 
-		xhr(xhrData, 'POST', '/site/updateitem', function(err) {
+		xhr(xhrData, 'POST', '/site/updateitem', function (err) {
 			if (err) {
 				// TODO: If error, flip the value back and show an error message to the user
 				// alert('Value did not save, please reload the page')
 			}
 
-			for (var i=0; i<workItems.length; i++) {
+			for (var i = 0; i < workItems.length; i++) {
 				if (workItems[i]._id === id) {
-					Object.keys(data).forEach(function(k) {
+					Object.keys(data).forEach(function (k) {
 						workItems[i][k] = data[k]
 					})
 
@@ -1668,9 +1868,9 @@
 
 	function handleNewWorkItemSubmission(e) {
 		if (e) e.preventDefault()
-    	var newWorkItem = {}, error = false
+		var newWorkItem = {}, error = false
 
-		$('input, textarea', e.target.parentNode).each(function(idx) {
+		$('input, textarea', e.target.parentNode).each(function (idx) {
 			if (this.value.length === 0 && this.name !== 'cost') {
 				$(this.parentNode).addClass('has-error')
 				error = true
@@ -1681,112 +1881,112 @@
 		})
 
 		if (error === false) {
-			createNewWorkItem(newWorkItem, function(err) {
+			createNewWorkItem(newWorkItem, function (err) {
 				handleNewWorkItemClear()
 			})
 		}
 	}
 
-  function handleNewWorkItemClear(e, node) {
+	function handleNewWorkItemClear(e, node) {
 		if (e) e.preventDefault()
-    $('input, textarea', (e ? e.target.parentNode : node)).each(function(idx) {
-      $(this).val('')
-      $(this.parentNode).removeClass('has-error')
-    })
-  }
+		$('input, textarea', (e ? e.target.parentNode : node)).each(function (idx) {
+			$(this).val('')
+			$(this.parentNode).removeClass('has-error')
+		})
+	}
 
-  function createNewWorkItem(w, next) {
-    var id = docs._id
-    var rightNow = new Date()
+	function createNewWorkItem(w, next) {
+		var id = docs._id
+		var rightNow = new Date()
 
-    w.date = rightNow
-    w.updated = rightNow
-    w.applicationId = id
+		w.date = rightNow
+		w.updated = rightNow
+		w.applicationId = id
 
-    xhr(w, 'POST', '/site/additem', function(err, data) {
-      // TODO: Handle error
-      if (err) { alert('There was an error saving your work item') }
-      w._id = data.itemId
-      workItems.push(w)
-      var newNode = addWorkItem(w)
-      handleNewWorkItemClear(null, $('[name="new"]'))
+		xhr(w, 'POST', '/site/additem', function (err, data) {
+			// TODO: Handle error
+			if (err) { alert('There was an error saving your work item') }
+			w._id = data.itemId
+			workItems.push(w)
+			var newNode = addWorkItem(w)
+			handleNewWorkItemClear(null, $('[name="new"]'))
 
-    })
-  }
+		})
+	}
 
-  function addWorkItem(w) {
-    var cardContainer = $('#workItemCards')
+	function addWorkItem(w) {
+		var cardContainer = $('#workItemCards')
 
-    var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6').addClass('col-md-9').addClass('float-to-right')
-    .appendTo(cardContainer)
+		var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6').addClass('col-md-9').addClass('float-to-right')
+			.appendTo(cardContainer)
 
-    var card = $('<div></div>').addClass('panel panel-default').addClass('work-item')
-    .attr('name', w._id)
-    .appendTo(cardDiv)
+		var card = $('<div></div>').addClass('panel panel-default').addClass('work-item')
+			.attr('name', w._id)
+			.appendTo(cardDiv)
 
-    var cardBlock = $('<div></div>').addClass('panel-body')
-    .appendTo(card)
+		var cardBlock = $('<div></div>').addClass('panel-body')
+			.appendTo(card)
 
 
-    $('<h4></h4>').addClass('card-title')
-    .attr('name', w._id + '.name')
-    .text(w.name)
-    .appendTo(cardBlock)
+		$('<h4></h4>').addClass('card-title')
+			.attr('name', w._id + '.name')
+			.text(w.name)
+			.appendTo(cardBlock)
 
-    $('<p></p>').addClass('text-muted')
-    .text(w.date.toString())
-    .appendTo(cardBlock)
+		$('<p></p>').addClass('text-muted')
+			.text(w.date.toString())
+			.appendTo(cardBlock)
 
-    var cardText = $('<p></p>').addClass('card-text')
-    .appendTo(cardBlock)
+		var cardText = $('<p></p>').addClass('card-text')
+			.appendTo(cardBlock)
 
-    $('<strong>Description:</strong>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
+		$('<strong>Description:</strong>').appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
 
-    $('<span></span>')
-    .attr('name', w._id + '.description')
-    .text(w.description)
-    .appendTo(cardText)
+		$('<span></span>')
+			.attr('name', w._id + '.description')
+			.text(w.description)
+			.appendTo(cardText)
 
-    $('<br></br>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
 
-    $('<strong>Vetting Comments:</strong>').appendTo(cardText)
-    // $('<br></br>').appendTo(cardText)
+		$('<strong>Vetting Comments:</strong>').appendTo(cardText)
+		// $('<br><br>').appendTo(cardText)
 
-    $('<p></p>').text(w.vettingComments).appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
+		$('<p></p>').text(w.vettingComments).appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
 
-    $('<strong>Site Comments:</strong>').appendTo(cardText)
-    // $('<br></br>').appendTo(cardText)
+		$('<strong>Site Comments:</strong>').appendTo(cardText)
+		// $('<br><br>').appendTo(cardText)
 
-    $('<p></p>').text(w.siteComments).appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
+		$('<p></p>').text(w.siteComments).appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
 
-    $('<strong>Cost:</strong>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
+		$('<strong>Cost:</strong>').appendTo(cardText)
+		$('<br><br>').appendTo(cardText)
 
-    $('<span></span>')
-    .attr('name', w._id + '.cost')
-    .text(w.cost)
-    .appendTo(cardText)
+		$('<span></span>')
+			.attr('name', w._id + '.cost')
+			.text(w.cost)
+			.appendTo(cardText)
 
-    $('<a></a>').addClass('btn').addClass('btn-primary')
-    .addClass('card-link').addClass('work-item-edit')
-    .text('Edit')
-    .attr('href', '#')
-    .on('click', showWorkItemEditForm)
-    .appendTo(cardBlock)
+		$('<a></a>').addClass('btn').addClass('btn-primary')
+			.addClass('card-link').addClass('work-item-edit')
+			.text('Edit')
+			.attr('href', '#')
+			.on('click', showWorkItemEditForm)
+			.appendTo(cardBlock)
 
 		$('<a></a>').addClass('btn').addClass('btn-danger')
-		.addClass('card-link').addClass('work-item-delete')
-		.text('Delete')
-		.attr('href', '#')
-		.on('click', showWorkItemDeleteConfirm)
-		.appendTo(cardBlock)
+			.addClass('card-link').addClass('work-item-delete')
+			.text('Delete')
+			.attr('href', '#')
+			.on('click', showWorkItemDeleteConfirm)
+			.appendTo(cardBlock)
 
-    return cardBlock
-  }
+		return cardBlock
+	}
 
 	function showWorkItemDeleteConfirm(e) {
 		e.preventDefault()
@@ -1795,7 +1995,7 @@
 		var workItemId = $(workItemParent.parentElement).attr('name')
 
 		var currentData = {}
-		$('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+		$('[name*="' + workItemId + '"]', workItemContainer).each(function (idx) {
 			var path = $(this).attr('name').replace(workItemId + '.', '')
 			currentData[path] = this.innerText
 		})
@@ -1807,71 +2007,66 @@
 			+ 'will be unable to recover the item.</p>').appendTo(workItemParent)
 
 		$('<a>Continue</a>').addClass('btn').addClass('btn-primary')
-		.appendTo(workItemParent)
-		.on('click', function(e) {
-			deleteWorkItem(workItemId, workItemParent)
-		})
+			.appendTo(workItemParent)
+			.on('click', function (e) {
+				deleteWorkItem(workItemId, workItemParent)
+			})
 
 		$('<a>Cancel</a>').addClass('btn').addClass('btn-danger')
-		.appendTo(workItemParent)
-		.on('click', function(e) {
-			e.preventDefault()
-			for (let i=0; i<workItems.length; i++) {
-				if (workItems[i]._id === workItemId) {
-					showWorkItem(workItems[i], workItemContainer)
+			.appendTo(workItemParent)
+			.on('click', function (e) {
+				e.preventDefault()
+				for (let i = 0; i < workItems.length; i++) {
+					if (workItems[i]._id === workItemId) {
+						showWorkItem(workItems[i], workItemContainer)
+					}
 				}
-			}
-		})
+			})
 	}
 
 	function deleteWorkItem(id, node) {
-		xhr({itemId: id}, 'POST', '/vettingworksheet/deleteitem', function(err, data) {
+		xhr({ itemId: id }, 'POST', '/vettingworksheet/deleteitem', function (err, data) {
 			if (err) { alert('Unable to delete item') }
 			else {
 				var workItemRoot = $('[name="' + id + '"]')
 				workItemRoot.remove()
-				for (var i=0; i<workItems.length; i++) {
+				for (var i = 0; i < workItems.length; i++) {
 					if (workItems[i]._id == id) { workItems.splice(i, 1) }
 				}
 			}
 		})
 	}
 
-$('#csvExportButton').on('click', function(e) {
-	var urlParts = window.location.pathname.split('/')
-  var applicationID = urlParts[urlParts.length-1]
-	var firstname = '{{{doc.application.name.first}}}';
-	var lastname = '{{{doc.application.name.last}}}';
-  var payload = {
-		application: applicationID,
-		firstname: firstname,
-		lastname: lastname
-    }
-    var csvRequest = $.ajax({
-      	type: 'POST',
-        url: '/vettingworksheet/csvExport',
-        dataType: 'json',
-        contentType: 'application/json; chartset=UTF-8',
-        data: JSON.stringify(payload)
-      })
-      csvRequest.done(function(xhr) {
-        if (xhr.status === 'success') {
-          // TODO: Set window.location.href equal to the download file
+	$('#csvExportButton').on('click', function (e) {
+		var urlParts = window.location.pathname.split('/')
+		var applicationID = urlParts[urlParts.length - 1]
+		var firstname = '{{{doc.application.name.first}}}';
+		var lastname = '{{{doc.application.name.last}}}';
+		var payload = {
+			application: applicationID,
+			firstname: firstname,
+			lastname: lastname
+		}
+		var csvRequest = $.ajax({
+			type: 'POST',
+			url: '/vettingworksheet/csvExport',
+			dataType: 'json',
+			contentType: 'application/json; chartset=UTF-8',
+			data: JSON.stringify(payload)
+		});
+		csvRequest.done(function (xhr) {
+			if (xhr.status === 'success') {
+				// TODO: Set window.location.href equal to the download file
 
-		window.location.href = '/vettingworksheet/file/' + '{{{doc.application.name.last}}}' + '-' + '{{{doc.application.name.first}}}' + '-' + applicationID + '-' + 'VettingWorksheet' + '.csv'
+				window.location.href = '/vettingworksheet/file/' + '{{{doc.application.name.last}}}' + '-' + '{{{doc.application.name.first}}}' + '-' + applicationID + '-' + 'VettingWorksheet' + '.csv'
 
-        } else {
-			console.log(xhr.status);
-        }
-      })
-      csvRequest.fail(function(data) {
-		console.log(data.status)
-        debugger
-      })
-    })
-
-
-
-// Work items
-
+			} else {
+				console.log(xhr.status);
+			}
+		});
+		csvRequest.fail(function (data) {
+			console.log(data.status)
+			debugger
+		});
+	});
 </script>

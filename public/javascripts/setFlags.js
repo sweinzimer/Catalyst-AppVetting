@@ -60,7 +60,7 @@ function toggleHL() {
     //POST the data to the database
     var posting = $.ajax({
         type : 'POST',
-        url: "/edit/highlight/" + $("#hl_Id").val(),        //need to append the HighlightPackage ID to the URL
+        url: "/edit/highlight/" + $("#hl_Id").val(),        //appends the HighlightPackage ID to the URL
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(payload)
@@ -68,6 +68,7 @@ function toggleHL() {
     posting.done(function (xhr) {
         if(xhr.status == 200) {
             //on success, toggle the glyph icon
+            console.log('Star Toggling')
             flag[0].firstChild.outerHTML = toggleHlGlyph(flag[0].firstChild.outerHTML);
         }
         else{
