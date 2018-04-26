@@ -118,16 +118,13 @@
 </style>
 
 <script>
-// {{#if user}}
-//   var user = "{{{ user_email }}}"
-// {{else}}
-//   var user = false
-// {{/if}}
-if(user) {
-  user = user_email;
-} else {
-  user = false;
-}
+  // Even though this is in the script section, this part
+  // still needs the {{#if}} styling to work in the navbar - MsH
+{{#if user}}
+  var user = "{{{ user_email }}}"
+{{else}}
+  var user = false
+{{/if}}
 
   if (user !== false) {
     $('#userNav').css('display', 'inline-block')
