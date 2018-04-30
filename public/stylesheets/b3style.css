@@ -33,7 +33,7 @@ hr {
 	border-width: 1px;
 } 
 
-.nav-buttons {
+.ctlst-navbar {
 	padding: 0px;
 	width: 100%;
 	background-color: white;
@@ -52,7 +52,7 @@ hr {
 	padding: 10px;
 }
 
- .da-buttons {
+ .ctlst-buttons {
 	display: flex;
 	list-style-type: none;
 	padding-left: 10px;
