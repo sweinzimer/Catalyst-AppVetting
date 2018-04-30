@@ -31,7 +31,6 @@ module.exports = function (passport) {
 		Promise.props({
 			doc: DocumentPackage.findOne({ _id: ObjectId(req.params.id) }).lean().execAsync(),
 			vettingNotes: VettingNotePackage.find({ applicationId: ObjectId(req.params.id) }).lean().execAsync(),
-
 			finances: FinPackage.find({ appID: ObjectId(req.params.id) }).sort([['_id', 1]]).lean().execAsync(),
 			workItems: WorkItemPackage.find({ applicationId: ObjectId(req.params.id) }).lean().execAsync(),
 			highlight: highlightPackage.findOne({ "documentPackage": ObjectId(req.params.id) }).lean().execAsync()
@@ -44,7 +43,6 @@ module.exports = function (passport) {
 					//get month and day with padding since they are 0 indexed
 					var dobDay = ("00" + result.doc.application.dob.date.getDate()).slice(-2);
 					var dobMon = ("00" + (result.doc.application.dob.date.getMonth() + 1)).slice(-2);
-
 					result.doc.application.dob.date = dobYear + "-" + dobMon + "-" + dobDay;
 				}
 
@@ -97,7 +95,6 @@ module.exports = function (passport) {
 
 	//Insert CSV export route here
 	router.post('/csvExport', isLoggedInPost, function (req, res) {
-
 
 		var applicationID = req.body.application;
 		var firstname = req.body.firstname;
@@ -199,11 +196,7 @@ module.exports = function (passport) {
 				console.log('Sent:', fileName);
 			}
 		});
-
-
 	});
-
-
 
 	router.route('/servicearea')
 		.post(isLoggedInPost, api.updateService, function (req, res) {
@@ -214,7 +207,6 @@ module.exports = function (passport) {
 				res.json(res.locals);
 			}
 		});
-
 
 	router.route('/additem')
 		.post(isLoggedInPost, api.addWorkItem, function (req, res) {
@@ -301,9 +293,6 @@ function isLoggedIn(req, res, next) {
 						res.redirect('/user/login');
 					}
 				}
-
-
-
 			})
 
 			.catch(function (err) {
@@ -316,9 +305,6 @@ function isLoggedIn(req, res, next) {
 		res.redirect('/user/login');
 	}
 }
-
-
-
 
 //post request authenticator.  Checks if user is an admin or vetting agent
 function isLoggedInPost(req, res, next) {
@@ -348,9 +334,6 @@ function isLoggedInPost(req, res, next) {
 						return next('route');
 					}
 				}
-
-
-
 			})
 
 			.catch(function (err) {

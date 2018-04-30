@@ -14,7 +14,7 @@ body {
 }
 
 .fixed {
-    position: absolute;
+    position: fixed;
 }
 
 p.scriptText {
