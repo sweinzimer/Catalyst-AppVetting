@@ -117,15 +117,17 @@
   .navbar-right-link:hover { color: #88adce; text-decoration: underline; }
 </style>
 
-<script>
-  // Even though this is in the script section, this part
-  // still needs the {{#if}} styling to work in the navbar - MsH
 {{#if user}}
+<script>
   var user = "{{{ user_email }}}"
+  </script>
 {{else}}
+<script>
   var user = false
+  </script>
 {{/if}}
 
+<script>
   if (user !== false) {
     $('#userNav').css('display', 'inline-block')
   } else {
