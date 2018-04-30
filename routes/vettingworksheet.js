@@ -8,9 +8,7 @@ var VettingNotePackage = require('../models/vettingNotePackage');
 var config = require('../config')
 var WorkItemPackage = require('../models/workItemPackage');
 var fs = require('fs');
-
 var FinPackage = require('../models/finPackage');
-
 var api = require('../controllers/api');
 var User = require('../models/userPackage');
 
@@ -153,12 +151,9 @@ module.exports = function (passport) {
 					edit_notes_header.on('exit', function (code, signal) {
 
 						if (fs.existsSync('public/exports/' + filename + '-VettingView' + '.csv') && fs.existsSync('public/exports/' + filename + '-notes' + '.csv')) {
-
 							fs.unlinkSync('public/exports/' + filename + '-VettingView' + '.csv');
 							fs.unlinkSync('public/exports/' + filename + '-notes' + '.csv');
-
 						}
-
 
 						if (code !== 0) {
 							res.status(500).send("Export failed: Code 500");
@@ -166,9 +161,6 @@ module.exports = function (passport) {
 						}
 						else {
 							res.status(200).send({ status: 'success' });
-
-
-
 						}
 					});
 				});

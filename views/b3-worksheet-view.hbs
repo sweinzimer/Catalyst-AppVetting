@@ -29,6 +29,7 @@
 
 <br><img src="/images/clear.png" height="35"><br>
 
+<a href="#info"></a>
 <!-- spacer gets past the Vetting Notes Input -->
 <div class="container-fluid body-view">
 	<div class="row">
@@ -263,7 +264,7 @@
 					<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tell me more about…
 					<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; How long has this condition existed?</i>
 			</p>
-
+<a href="#workitems"></a>
 			<div class="row" id="workItemCards">
 				<div class="col-xs-12 col-sm-6 col-md-3">
 					<h3>Add a Work Item</h3>
@@ -328,7 +329,7 @@
 					{{/each}}
 				</div>
 			</div>
-
+<a href="#clarification"></a>
 			<div class="container col-xs-12">
 				<!-- Begin HUGE Application Clarification Section -->
 
@@ -896,11 +897,12 @@
 
 
 
+<a href="#finances"></a>
 
 			<div class="container col-xs-12">
 				<h3>Financial Questions</h3>
 				<div id="finacialForm"></div>
-				<br />
+				<br>
 				<h3>Total Vetted Income (and notes regarding the total)</h3>
 				<!-- TODO: Figure out where to route this -->
 				<h4>
@@ -1001,641 +1003,544 @@
 <script src="/javascript/addItem.js" type="text/javascript"></script>
 <script>
 	/**
-	 * Handles the back button located at the top of the page
-	 */
-	function goBack() {
-		window.history.back();
-	}
-
-	var workItems = {{{ stringify workItems }}}
-	var docs = {{{ stringify doc }}}
-
-	$(document).ready(function () {
+     * Handles the back button located at the top of the page
+     */
+    function goBack() {
+        window.history.back();
+    }
+	var workItems = {{{stringify workItems}}}
+	var docs = {{{stringify doc}}}
+	/*service Area buttons
+	*
+	*/
+	$(document).ready(function() {
+		{{#if service}}
+			{{#if doc.service_area}}
+			console.log("service area true");
+			document.getElementById('sa_yes').checked = true;
+			{{else}}
+			console.log("service area false");
+			document.getElementById('sa_no').checked = true;
+		    {{/if}}
+		{{/if}}
 		$('.work-item-edit').each(watchEditButton)
 		$('.work-item-delete').on('click', showWorkItemDeleteConfirm)
 		$('.work-item-new').on('click', handleNewWorkItemSubmission)
 		$('.work-item-clear').on('click', handleNewWorkItemClear)
-
-		/**
-		* Some inline-editable fields require data from the DB to properly work
-		*  They are defined here instead of a separate file since it needs access
-		*  to the handlebars template system
-		*/
-		$('#address').editable({
-			value: {
-				line_1: '{{doc.application.address.line_1}}',
-				line_2: '{{doc.application.address.line_2}}',
-				city: '{{doc.application.address.city}}',
-				state: '{{doc.application.address.state}}',
-				zip: '{{doc.application.address.zip}}'
-			}
-		});
-		/* This allows for editable address in second location */
-		$('#VWaddress').editable({
-			value: {
-				line_1: '{{doc.application.address.line_1}}',
-				line_2: '{{doc.application.address.line_2}}',
-				city: '{{doc.application.address.city}}',
-				state: '{{doc.application.address.state}}',
-				zip: '{{doc.application.address.zip}}'
-			}
-		});
-		$('#VWname').editable({
-			value: {
-				first: '{{doc.application.name.first}}',
-				middle: '{{doc.application.name.middle}}',
-				last: '{{doc.application.name.last}}'
-			}
-		});
-		$('#veteran').editable({
-			value: '{{doc.application.veteran}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#mortgage').editable({
-			value: '{{doc.finance.mortgage.up_to_date}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#status').editable({
-			value: '{{doc.status}}',
-			source:
-				[
-					{ value: 'discuss', text: 'On Hold - Pending Discussion' },
-					{ value: 'new', text: 'NEW' },
-					{ value: 'phone', text: 'Phone Call Needed' },
-					{ value: 'handle', text: 'Handle-It' },
-					{ value: 'documents', text: 'Awaiting Documents' },
-					{ value: 'assess', text: 'Site Assessment - Pending' },
-					{ value: 'assessComp', text: 'Site Assessment - Complete' },
-					{ value: 'approval', text: 'Approval Process' },
-					{ value: 'declined', text: 'Declined' },
-					{ value: 'withdrawnooa', text: 'Withdrawn - Outside Service Area' },
-					{ value: 'withdrawn', text: 'Withdrawn' },
-					{ value: 'project', text: 'Approved Project' }
-				]
-		});
-		$('#owns_home').editable({
-			value: '{{doc.application.owns_home}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#f_client_can_contrib').editable({
-			value: '{{doc.finance.client_can_contribute.value}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#f_associate_can_contrib').editable({
-			value: '{{doc.finance.associates_can_contribute.value}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#l_client_can_contrib').editable({
-			value: '{{doc.property.client_can_contribute.value}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#l_associate_can_contrib').editable({
-			value: '{{doc.property.associates_can_contribute.value}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#request_help').editable({
-			value: '{{doc.finance.requested_other_help.value}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#fbo_help').editable({
-			value: '{{doc.recruitment.fbo_help}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#is_advocate').editable({
-			value: '{{doc.advocate.is_advocate}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#individual').editable({
-			value: '{{doc.advocate.individual}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#npo').editable({
-			value: '{{doc.advocate.npo}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-		$('#gov').editable({
-			value: '{{doc.advocate.gov}}',
-			source:
-				[
-					{ value: 'true', text: 'True' },
-					{ value: 'false', text: 'False' }
-				]
-		});
-
-		/**
-		 * iterate through all dynamic array fields to make them editable
-		 * data-pk is set to the current value of the element
-		 * An event listener for each link updates data-pk with the edited value
-		 **/
-		$('.asset_name').each(function () {
-			var id = '#' + $(this).attr("id");
-			$(id).editable();
-			$(id).click(function () {
-				var pk = $(id).text() == 'Empty' ? '' : $(id).text();
-				$(id).editable("option", "pk", pk);
-			})
-		});
-		$('.asset_value').each(function () {
-			var id = '#' + $(this).attr("id");
-			$(id).editable();
-			$(id).click(function () {
-				var pk = $(id).text() == 'Empty' ? '' : $(id).text();
-				$(id).editable("option", "pk", pk);
-			})
-		});
-		$('.residents_name').each(function () {
-			var id = '#' + $(this).attr("id");
-			$(id).editable();
-			$(id).click(function () {
-				var pk = $(id).text() == 'Empty' ? '' : $(id).text();
-				$(id).editable("option", "pk", pk);
-			});
-		});
-		$('.residents_age').each(function () {
-			var id = '#' + $(this).attr("id");
-			$(id).editable();
-			$(id).click(function () {
-				var pk = $(id).text() == 'Empty' ? '' : $(id).text();
-				$(id).editable("option", "pk", pk);
-			})
-		});
-		$('.residents_relationship').each(function () {
-			var id = '#' + $(this).attr("id");
-			$(id).editable();
-			$(id).click(function () {
-				var pk = $(id).text() == 'Empty' ? '' : $(id).text();
-				$(id).editable("option", "pk", pk);
-			})
-		});
-
-		$('[id="notes.vet_summary"]').editable()
-		$('[id="finance.total_income.value"]').editable()
-
-		var fpb = new FinacialPackageBuilder();
-		fpb.populateHtml();
-		fpb.getData();
-
-		/**
-		 * service Area buttons
-		 */
-		{{#if service}}
-			{{#if doc.service_area }}
-				console.log("service area true");
-				document.getElementById('sa_yes').checked = true;
-				{{else}}
-				console.log("service area false");
-				document.getElementById('sa_no').checked = true;
-			{{/if}}
-		{{/if}}
 	});
-
+    /**
+     * Some inline-editable fields require data from the DB to properly work
+     *  They are defined here instead of a separate file since it needs access
+     *  to the handlebars template system
+     */
+    $(document).ready(function() {
+	    $('#address').editable({
+            value: {
+                line_1: '{{doc.application.address.line_1}}',
+                line_2: '{{doc.application.address.line_2}}',
+                city: '{{doc.application.address.city}}',
+                state: '{{doc.application.address.state}}',
+                zip: '{{doc.application.address.zip}}'
+            }
+        });
+		/* This allows for editable address in second location */
+        $('#VWaddress').editable({
+            value: {
+                line_1: '{{doc.application.address.line_1}}',
+                line_2: '{{doc.application.address.line_2}}',
+                city: '{{doc.application.address.city}}',
+                state: '{{doc.application.address.state}}',
+                zip: '{{doc.application.address.zip}}'
+            }
+        });
+        $('#VWname').editable({
+            value: {
+                first: '{{doc.application.name.first}}',
+                middle: '{{doc.application.name.middle}}',
+                last: '{{doc.application.name.last}}'
+            }
+        });
+        $('#veteran').editable({
+            value: '{{doc.application.veteran}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#mortgage').editable({
+            value: '{{doc.finance.mortgage.up_to_date}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#status').editable({
+            value: '{{doc.status}}',
+            source:
+                    [
+                        { value: 'discuss', text: 'On Hold - Pending Discussion' },
+						{ value: 'new', text: 'NEW' },
+						{ value: 'phone', text: 'Phone Call Needed' },
+						{ value: 'handle', text: 'Handle-It' },
+						{ value: 'documents', text: 'Awaiting Documents' },
+						{ value: 'assess', text: 'Site Assessment - Pending' },
+						{ value: 'assessComp', text: 'Site Assessment - Complete' },
+						{ value: 'approval', text: 'Approval Process' },
+						{ value: 'declined', text: 'Declined' },
+						{ value: 'withdrawnooa', text: 'Withdrawn - Outside Service Area' },
+						{ value: 'withdrawn', text: 'Withdrawn' },
+						{ value: 'project', text: 'Approved Project' }
+                    ]
+        });
+        $('#owns_home').editable({
+            value: '{{doc.application.owns_home}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#f_client_can_contrib').editable({
+            value: '{{doc.finance.client_can_contribute.value}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#f_associate_can_contrib').editable({
+            value: '{{doc.finance.associates_can_contribute.value}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#l_client_can_contrib').editable({
+            value: '{{doc.property.client_can_contribute.value}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#l_associate_can_contrib').editable({
+            value: '{{doc.property.associates_can_contribute.value}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#request_help').editable({
+            value: '{{doc.finance.requested_other_help.value}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#fbo_help').editable({
+            value: '{{doc.recruitment.fbo_help}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#is_advocate').editable({
+            value: '{{doc.advocate.is_advocate}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#individual').editable({
+            value: '{{doc.advocate.individual}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#npo').editable({
+            value: '{{doc.advocate.npo}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        $('#gov').editable({
+            value: '{{doc.advocate.gov}}',
+            source:
+                    [
+                        {value: 'true', text: 'True'},
+                        {value: 'false', text: 'False'}
+                    ]
+        });
+        /**
+         * iterate through all dynamic array fields to make them editable
+         * data-pk is set to the current value of the element
+         * An event listener for each link updates data-pk with the edited value
+         **/
+        $('.asset_name').each(function () {
+            var id = '#' + $(this).attr("id");
+            $(id).editable();
+            $(id).click(function () {
+                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+                $(id).editable("option", "pk", pk);
+            })
+        });
+        $('.asset_value').each(function () {
+            var id = '#' + $(this).attr("id");
+            $(id).editable();
+            $(id).click(function () {
+                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+                $(id).editable("option", "pk", pk);
+            })
+        });
+        $('.residents_name').each(function () {
+            var id = '#' + $(this).attr("id");
+            $(id).editable();
+            $(id).click(function () {
+                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+                $(id).editable("option", "pk", pk);
+            });
+        });
+        $('.residents_age').each(function () {
+            var id = '#' + $(this).attr("id");
+            $(id).editable();
+            $(id).click(function () {
+                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+                $(id).editable("option", "pk", pk);
+            })
+        });
+        $('.residents_relationship').each(function () {
+            var id = '#' + $(this).attr("id");
+            $(id).editable();
+            $(id).click(function () {
+                var pk = $(id).text() == 'Empty' ? '' : $(id).text();
+                $(id).editable("option", "pk", pk);
+            })
+        });
+			$('[id="notes.vet_summary"]').editable()
+			$('[id="finance.total_income.value"]').editable()
+			var fpb = new FinacialPackageBuilder();
+			fpb.populateHtml();
+			fpb.getData();
+		});
 	/* Finacial Package Builder - Dave Martinez, Feb. 7, 2017
 	 * Builds the vetting worksheet for the appropriate number of financial packages
 	 * in the document.
 	 */
-
 	function FinacialPackageBuilder() {
-		this.htmlTargetSelector = '#finacialForm';
-		this.root = false;
-		this.applicationId = '{{ doc._id }}';
-
-		this.appID = 123;
-		this.docStatus = '{{doc.status}}';
-
-		this.people = {{{ stringify finances }}};
-	};
-
-
-	this.schema = [
-		{
-			sectionName: 'Income Documentation',
-			items: [
-				{
-					question: 'Do you receive food stamp benefits?',
-					subtext: '<p>If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a></p>',
-					fieldPath: ['food_stamps'],
-					objects: ['Food Stamps documentation']
-				},
-				{
-					question: 'Did you or anyone else in your home file a federal income tax form last year?',
-					subtext: '<p>If yes, request copies of their main tax form(s) (1040 or 1040EZ), and proceed to X. If no proceed to next question.</p>',
-					fieldPath: ['income_tax'],
-					objects: ['Federal Tax Records']
-				},
-				{
-					question: 'Are you or anyone else in your home currently employed?',
-					subtext: '<p>If yes, request Income Documentation for all employed residents and proceed. If no, proceed to next question.</p>',
-					fieldPath: ['employment'],
-					objects: ['Income Documentation [e.g. Pay Stubs]']
-				},
-				{
-					question: 'Do you or anyone else in your home receive Social Security benefits? (retirement; disability; SSI)',
-					subtext: '<p>If yes, request copies of their benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
-					fieldPath: ['ss_ben'],
-					objects: ['Social Security-Documentation']
-				},
-				{
-					question: 'Do you or anyone else in your home receive pension payments?',
-					subtext: '<p>If yes, request copies of check stubs or deposit notices showing total benefit received. If no, proceed to next question.</p>',
-					fieldPath: ['pension'],
-					objects: ['Pension Benefit-Documentation']
-				},
-				{
-					question: 'Do you or anyone else in your home receive housing assistance?',
-					subtext: '<p>If yes, request copies of benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
-					fieldPath: ['house_assist'],
-					objects: ['Housing assistance documentation']
-				}
-			]
-		},
-		{
-			sectionName: 'Asset Documentation',
-			items: [
-				{
-					question: 'Do you anyone else in your home have a checking or a savings account with more than $5,000 on deposit?',
-					subtext: '<p>If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.</p>',
-					fieldPath: ['check_account', 'saving_account'],
-					objects: ['Checking Account documentation', 'Savings Account documentation']
-				},
-				{
-					question: 'Do you or anyone else in your home have money in a retirement account? (e.g. IRA, 401k, etc.)',
-					subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
-					fieldPath: ['ret_fund'],
-					objects: ['Retirement Fund documentation']
-				},
-				{
-					question: 'Do you or anyone else in your home have any other investment or trust accounts?',
-					subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
-					fieldPath: ['invest'],
-					objects: ['Other Investments/Trusts documentation']
-				},
-				{
-					question: 'Do you or anyone else in your home have one or more physical assets (collections, works of art, antique vehicles) worth more than a total of $5,000?',
-					subtext: '<p>If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.</p>',
-					fieldPath: ['physical'],
-					objects: ['Physical Assets-Documentation']
-				},
-				{
-					question: 'Do you or anyone else in your home have other financial resources that my questions haven’t given you an opportunity to tell me about?',
-					subtext: '<p>If yes, record below and proceed to closing. If no, proceed to closing.</p>',
-					fieldPath: ['other_resources', 'proof_own'],
-					hasDescription: true,
-					objects: ['Other', 'Proof of Ownership (could be latest mortgage statement or insurance record)']
-				}
-			]
-		}
-	] // end schema
-
-	this.handleChange = function (e) {
-		if (this.docStatus === 'new') {
-			// Changes document status to 'awaiting documents'
-			xhr(
-				{ name: 'status', value: 'documents' },
-				'POST',
-				'/edit/' + this.applicationId,
-				function (err) {
-					if (!err) { $('#status').editable('setValue', 'documents') }
-				}
-			)
-		}
-
-		var nameParts = e.target.name.split('.')
-		var idx = nameParts[0]
-		var boxTicked = nameParts[2]
-		var objectVal = changeObjectValueByPath({}, e.target.name, e.target.checked)
-
-		// Auto ticks...
-		var siblingInputs = $('input', e.target.parentNode)
-		var currentState = {
-			req: siblingInputs[0].checked,
-			rec: siblingInputs[1].checked,
-			na: siblingInputs[2].checked,
-		}
-
-		if (currentState.rec && !currentState.req && !currentState.na) {
-			// User input received but requested is not checked; tick requested
-			e.preventDefault()
-			e.stopPropagation()
-
-			var targetName = e.target.name.replace(boxTicked, 'req')
-
-			$('[name="' + targetName + '"]').prop('checked', true)
-
-			if (boxTicked === 'req') {
-				alert('You must untick received before requested')
+		this.htmlTargetSelector = '#finacialForm'
+		this.root = false
+		this.applicationId = '{{ doc._id }}'
+		this.appID = 123
+		this.docStatus = '{{doc.status}}'
+		this.people = {{{stringify finances}}}
+		this.schema = [
+		  {
+		    sectionName: 'Income Documentation',
+		    items: [
+		      {
+		        question: 'Do you receive food stamp benefits?',
+		        subtext: '<p>If Yes, request the benefit letters as documentation, and <a href="#targetClosing"><b>Move to Closing Comments</b></a></p>',
+		        fieldPath: ['food_stamps'],
+		        objects: ['Food Stamps documentation']
+		      },
+		      {
+		        question: 'Did you or anyone else in your home file a federal income tax form last year?',
+		        subtext: '<p>If yes, request copies of their main tax form(s) (1040 or 1040EZ), and proceed to X. If no proceed to next question.</p>',
+		        fieldPath: ['income_tax'],
+		        objects: ['Federal Tax Records']
+		      },
+		      {
+		        question: 'Are you or anyone else in your home currently employed?',
+		        subtext: '<p>If yes, request Income Documentation for all employed residents and proceed. If no, proceed to next question.</p>',
+		        fieldPath: ['employment'],
+		        objects: ['Income Documentation [e.g. Pay Stubs]']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home receive Social Security benefits? (retirement; disability; SSI)',
+		        subtext: '<p>If yes, request copies of their benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
+		        fieldPath: ['ss_ben'],
+		        objects: ['Social Security-Documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home receive pension payments?',
+		        subtext: '<p>If yes, request copies of check stubs or deposit notices showing total benefit received. If no, proceed to next question.</p>',
+		        fieldPath: ['pension'],
+		        objects: ['Pension Benefit-Documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home receive housing assistance?',
+		        subtext: '<p>If yes, request copies of benefit letters or bank statements showing benefit deposits and proceed. If no, proceed to the next question.</p>',
+		        fieldPath: ['house_assist'],
+		        objects: ['Housing assistance documentation']
+		      }
+		    ]
+		  },
+		  {
+		    sectionName: 'Asset Documentation',
+		    items: [
+		      {
+		        question: 'Do you anyone else in your home have a checking or a savings account with more than $5,000 on deposit?',
+		        subtext: '<p>If yes, request copies of most recent bank statements if they haven’t already been requested as other documentation.<br/>If no, proceed to the next question.</p>',
+		        fieldPath: ['check_account', 'saving_account'],
+		        objects: ['Checking Account documentation', 'Savings Account documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home have money in a retirement account? (e.g. IRA, 401k, etc.)',
+		        subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
+		        fieldPath: ['ret_fund'],
+		        objects: ['Retirement Fund documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home have any other investment or trust accounts?',
+		        subtext: '<p>If yes, request copies of most recent account statements. If no, proceed to the next question.</p>',
+		        fieldPath: ['invest'],
+		        objects: ['Other Investments/Trusts documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home have one or more physical assets (collections, works of art, antique vehicles) worth more than a total of $5,000?',
+		        subtext: '<p>If yes, request copies of appraisals or other form of valuation. If no, proceed to the next question.</p>',
+		        fieldPath: ['physical'],
+		        objects: ['Physical Assets-Documentation']
+		      },
+		      {
+		        question: 'Do you or anyone else in your home have other financial resources that my questions haven’t given you an opportunity to tell me about?',
+		        subtext: '<p>If yes, record below and proceed to closing. If no, proceed to closing.</p>',
+		        fieldPath: ['other_resources', 'proof_own'],
+		        hasDescription: true,
+		        objects: ['Other', 'Proof of Ownership (could be latest mortgage statement or insurance record)']
+		      }
+		    ]
+		  }
+		] // end schema
+		this.handleChange = function(e) {
+			if (this.docStatus === 'new') {
+				// Changes document status to 'awaiting documents'
+				xhr(
+					{ name: 'status', value: 'documents' },
+					'POST',
+					'/edit/' + this.applicationId,
+					function(err) {
+						if (!err) { $('#status').editable('setValue', 'documents') }
+					}
+				)
 			}
-
-			var autoUpdateVal = changeObjectValueByPath({}, targetName, true)
-			var autoUpdateChange = {}
-			autoUpdateChange[this.people[idx]._id] = autoUpdateVal[idx]
-
-			window.setTimeout(function () {
-				xhr(autoUpdateChange, 'POST', '/vettingworksheet/finacialForm', function (err) {
-					if (err) {
-						// TODO: If error, flip the value back and show an error message to the user
-						// alert('Value did not save, please reload the page')
-					}
-				})
-			}, 250)
-
-
-		} else if (currentState.na && (currentState.rec || currentState.req) && boxTicked === 'na') {
-			// User input na, but received or requested is ticked; untick rec and rec
-			e.preventDefault()
-			e.stopPropagation()
-
-			var targetNameReq = e.target.name.replace(boxTicked, 'req')
-			var targetNameRec = e.target.name.replace(boxTicked, 'rec')
-
-			$('[name="' + targetNameReq + '"]').prop('checked', false)
-			$('[name="' + targetNameRec + '"]').prop('checked', false)
-
-			var autoUpdateValReq = changeObjectValueByPath({}, targetNameReq, false)
-			var autoUpdateValRec = changeObjectValueByPath({}, targetNameRec, false)
-
-			var autoUpdateChangeReq = {}
-			autoUpdateChangeReq[this.people[idx]._id] = autoUpdateValReq[idx]
-
-			var autoUpdateChangeRec = {}
-			autoUpdateChangeRec[this.people[idx]._id] = autoUpdateValRec[idx]
-
-			window.setTimeout(function () {
-				xhr(autoUpdateChangeReq, 'POST', '/vettingworksheet/finacialForm', function (err) {
-					if (err) {
-						// TODO: If error, flip the value back and show an error message to the user
-						// alert('Value did not save, please reload the page')
-					}
-				})
-
-				xhr(autoUpdateChangeRec, 'POST', '/vettingworksheet/finacialForm', function (err) {
-					if (err) {
-						// TODO: If error, flip the value back and show an error message to the user
-						// alert('Value did not save, please reload the page')
-					}
-				})
-			}, 250)
-
-
-		} else if ((boxTicked === 'req' || boxTicked === 'rec') && currentState.na) {
-			// User input req or rec, but na is clicked; untick na
-			var targetName = e.target.name.replace(boxTicked, 'na')
-
-
-			$('[name="' + targetName + '"]').prop('checked', false)
-
-
-			var autoUpdateVal = changeObjectValueByPath({}, targetName, false)
-
-
-			var autoUpdateChange = {}
-			autoUpdateChange[this.people[idx]._id] = autoUpdateVal[idx]
-
-
-
-			window.setTimeout(function () {
-				xhr(autoUpdateChange, 'POST', '/vettingworksheet/finacialForm', function (err) {
-					if (err) {
-						// TODO: If error, flip the value back and show an error message to the user
-						// alert('Value did not save, please reload the page')
-					}
-				})
-			}, 250)
-
-			// Also tick requested if current action is rec. and rec is true and req is false
-			if (boxTicked == 'rec' && currentState.rec === true && currentState.req === false) {
-				var targetNameReq = e.target.name.replace(boxTicked, 'req')
-				$('[name="' + targetNameReq + '"]').prop('checked', true)
-
-				var autoUpdateValReq = changeObjectValueByPath({}, targetNameReq, true)
-				var autoUpdateChangeReq = {}
-
-				autoUpdateChangeReq[this.people[idx]._id] = autoUpdateValReq[idx]
-
-				window.setTimeout(function () {
-					xhr(autoUpdateChangeReq, 'POST', '/vettingworksheet/finacialForm', function (err) {
+			var nameParts = e.target.name.split('.')
+			var idx = nameParts[0]
+			var boxTicked = nameParts[2]
+			var objectVal = changeObjectValueByPath({}, e.target.name, e.target.checked)
+			// Auto ticks...
+			var siblingInputs = $('input', e.target.parentNode)
+			var currentState = {
+				req: siblingInputs[0].checked,
+				rec: siblingInputs[1].checked,
+				na: siblingInputs[2].checked,
+			}
+			if (currentState.rec && !currentState.req && !currentState.na) {
+				// User input received but requested is not checked; tick requested
+				e.preventDefault()
+				e.stopPropagation()
+				var targetName = e.target.name.replace(boxTicked, 'req')
+				$('[name="' + targetName + '"]').prop('checked', true)
+				if (boxTicked === 'req') {
+					alert('You must untick received before requested')
+				}
+				var autoUpdateVal = changeObjectValueByPath({}, targetName, true)
+				var autoUpdateChange = {}
+				autoUpdateChange[ this.people[ idx ]._id ] = autoUpdateVal[idx]
+				window.setTimeout(function() {
+					xhr(autoUpdateChange, 'POST', '/vettingworksheet/finacialForm', function(err) {
 						if (err) {
 							// TODO: If error, flip the value back and show an error message to the user
 							// alert('Value did not save, please reload the page')
 						}
 					})
 				}, 250)
-
+			} else if (currentState.na && (currentState.rec || currentState.req) && boxTicked === 'na') {
+				// User input na, but received or requested is ticked; untick rec and rec
+				e.preventDefault()
+				e.stopPropagation()
+				var targetNameReq = e.target.name.replace(boxTicked, 'req')
+				var targetNameRec = e.target.name.replace(boxTicked, 'rec')
+				$('[name="' + targetNameReq + '"]').prop('checked', false)
+				$('[name="' + targetNameRec + '"]').prop('checked', false)
+				var autoUpdateValReq = changeObjectValueByPath({}, targetNameReq, false)
+				var autoUpdateValRec = changeObjectValueByPath({}, targetNameRec, false)
+				var autoUpdateChangeReq = {}
+				autoUpdateChangeReq[ this.people[ idx ]._id ] = autoUpdateValReq[idx]
+				var autoUpdateChangeRec = {}
+				autoUpdateChangeRec[ this.people[ idx ]._id ] = autoUpdateValRec[idx]
+				window.setTimeout(function() {
+					xhr(autoUpdateChangeReq, 'POST', '/vettingworksheet/finacialForm', function(err) {
+						if (err) {
+							// TODO: If error, flip the value back and show an error message to the user
+							// alert('Value did not save, please reload the page')
+						}
+					})
+					xhr(autoUpdateChangeRec, 'POST', '/vettingworksheet/finacialForm', function(err) {
+						if (err) {
+							// TODO: If error, flip the value back and show an error message to the user
+							// alert('Value did not save, please reload the page')
+						}
+					})
+				}, 250)
+			} else if ((boxTicked === 'req' || boxTicked === 'rec') && currentState.na) {
+				// User input req or rec, but na is clicked; untick na
+				var targetName = e.target.name.replace(boxTicked, 'na')
+				$('[name="' + targetName + '"]').prop('checked', false)
+				var autoUpdateVal = changeObjectValueByPath({}, targetName, false)
+				var autoUpdateChange = {}
+				autoUpdateChange[ this.people[ idx ]._id ] = autoUpdateVal[idx]
+				window.setTimeout(function() {
+					xhr(autoUpdateChange, 'POST', '/vettingworksheet/finacialForm', function(err) {
+						if (err) {
+							// TODO: If error, flip the value back and show an error message to the user
+							// alert('Value did not save, please reload the page')
+						}
+					})
+				}, 250)
+				// Also tick requested if current action is rec. and rec is true and req is false
+				if (boxTicked == 'rec' && currentState.rec === true && currentState.req === false) {
+					var targetNameReq = e.target.name.replace(boxTicked, 'req')
+					$('[name="' + targetNameReq + '"]').prop('checked', true)
+					var autoUpdateValReq = changeObjectValueByPath({}, targetNameReq, true)
+					var autoUpdateChangeReq = {}
+					autoUpdateChangeReq[ this.people[ idx ]._id ] = autoUpdateValReq[idx]
+					window.setTimeout(function() {
+						xhr(autoUpdateChangeReq, 'POST', '/vettingworksheet/finacialForm', function(err) {
+							if (err) {
+								// TODO: If error, flip the value back and show an error message to the user
+								// alert('Value did not save, please reload the page')
+							}
+						})
+					}, 250)
+				}
 			}
-
-		}
-
-		var changedValue = {}
-		changedValue[this.people[idx]._id] = objectVal[idx]
-
-		xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function (err) {
-			if (err) {
-				// TODO: If error, flip the value back and show an error message to the user
-				// alert('Value did not save, please reload the page')
-			}
-		})
-
-	}.bind(this)
-
-
-	this.populateHtml = function () {
-		this.root = $(this.htmlTargetSelector)
-
-
-		this.schema.forEach(function (section, sectionIdx) {
-			var sectionNode = $('<div></div>').addClass('finacialPackageSection')
-			sectionNode.append('<h4>' + section.sectionName + '</h4>')
-
-			section.items.forEach(function (item, itemIdx) {
-				var itemRow = $('<div></div>').addClass('finacialPackageRow')
-
-				// Question text
-				var itemText = $('<div></div>').addClass('finacialPackageText').appendTo(itemRow)
-				$('<p></p>').addClass('scriptText').text('Q: ' + item.question).appendTo(itemText)
-				$('<i></i>').append(item.subtext).appendTo(itemText)
-
-
-				// Header row for questions
-				var itemQuestionRow = $('<div></div>').addClass('row').appendTo(itemRow)
-
-
-				$('<div></div>').addClass('col-xs-4').appendTo(itemQuestionRow)
-
-				var headerRow = $('<div></div>').addClass('col-xs-8').appendTo(itemQuestionRow)
-				var headerRowTable = $('<table></table>').addClass('table').appendTo(headerRow)
-				var headerRowTableHeader = $('<thead></thead>').addClass('thead-default')
-				headerRowTableHeader = $('<tr></tr>').appendTo(headerRowTableHeader)
-				headerRowTableHeader.appendTo(headerRowTable)
-
-				this.people.forEach(function (person, personIdx) {
-					$('<th></th>').text(person.name).appendTo(headerRowTableHeader)
-				})
-
-				// Each document object in the item
-				item.objects.forEach(function (obj, objIdx) {
-					var objectRow = $('<div></div>').addClass('row')
-
-					var objectLabelCell = $('<div></div>').addClass('col-xs-4').text(obj).appendTo(objectRow)
-					objectLabelCell.append('<br/>')
-					var rowNote = $('<textarea></textarea>').addClass('form-control')
+			var changedValue = {}
+			changedValue[ this.people[ idx ]._id ] = objectVal[idx]
+			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function(err) {
+				if (err) {
+					// TODO: If error, flip the value back and show an error message to the user
+					// alert('Value did not save, please reload the page')
+				}
+			})
+		}.bind(this)
+		this.populateHtml = function() {
+			this.root = $(this.htmlTargetSelector)
+			this.schema.forEach(function(section, sectionIdx) {
+				var sectionNode = $('<div></div>').addClass('finacialPackageSection')
+				sectionNode.append('<h4>' + section.sectionName + '</h4>')
+				section.items.forEach(function(item, itemIdx) {
+					var itemRow = $('<div></div>').addClass('finacialPackageRow')
+					// Question text
+					var itemText = $('<div></div>').addClass('finacialPackageText').appendTo(itemRow)
+					$('<p></p>').addClass('scriptText').text('Q: ' + item.question).appendTo(itemText)
+					$('<i></i>').append(item.subtext).appendTo(itemText)
+					// Header row for questions
+					var itemQuestionRow = $('<div></div>').addClass('row').appendTo(itemRow)
+					$('<div></div>').addClass('col-xs-4').appendTo(itemQuestionRow)
+					var headerRow = $('<div></div>').addClass('col-xs-8').appendTo(itemQuestionRow)
+					var headerRowTable = $('<table></table>').addClass('table').appendTo(headerRow)
+					var headerRowTableHeader = $('<thead></thead>').addClass('thead-default')
+					headerRowTableHeader = $('<tr></tr>').appendTo(headerRowTableHeader)
+					headerRowTableHeader.appendTo(headerRowTable)
+					this.people.forEach(function(person, personIdx) {
+						$('<th></th>').text(person.name).appendTo(headerRowTableHeader)
+					})
+					// Each document object in the item
+					item.objects.forEach(function(obj, objIdx) {
+						var objectRow = $('<div></div>').addClass('row')
+						var objectLabelCell = $('<div></div>').addClass('col-xs-4').text(obj).appendTo(objectRow)
+						objectLabelCell.append('<br/>')
+						var rowNote = $('<textarea></textarea>').addClass('form-control')
 						.text(
 							this.people[0] &&
-								this.people[0][this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]] ? (
-									this.people[0][this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]].note
-								) : ''
+							this.people[0][ this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] ] ? (
+								this.people[0][ this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] ].note
+							) : ''
 						)
 						.attr('rows', '4')
 						.attr('name', this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx] + '.note')
 						.appendTo(objectLabelCell)
-					rowNote.keyup(this.handleNoteChange)
-
-
-
-					var objectCheckBoxColumn = $('<div></div>').addClass('col-xs-8').appendTo(objectRow)
-					var checkBoxTable = $('<table></table>').addClass('table').appendTo(objectCheckBoxColumn)
-					checkBoxTable = $('<tbody></tbody>').appendTo(checkBoxTable)
-
-					var checkBoxRow = $('<tr></tr>').appendTo(checkBoxTable)
-
-					this.people.forEach(function (person, personIdx) {
-						var personCell = $('<td></td>').appendTo(checkBoxRow)
-						var thisField = this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]
-
-
-						var thisFieldInputReq = $('<input type="checkbox"> Requested</input>')
+						rowNote.keyup(this.handleNoteChange)
+						var objectCheckBoxColumn = $('<div></div>').addClass('col-xs-8').appendTo(objectRow)
+						var checkBoxTable = $('<table></table>').addClass('table').appendTo(objectCheckBoxColumn)
+						checkBoxTable = $('<tbody></tbody>').appendTo(checkBoxTable)
+						var checkBoxRow = $('<tr></tr>').appendTo(checkBoxTable)
+						this.people.forEach(function(person, personIdx) {
+							var personCell = $('<td></td>').appendTo(checkBoxRow)
+							var thisField = this.schema[sectionIdx].items[itemIdx].fieldPath[objIdx]
+							var thisFieldInputReq = $('<input type="checkbox"> Requested</input>')
 							.appendTo(personCell)
 							.attr('name', personIdx + '.' + thisField + '.' + 'req')
 							.on('change', this.handleChange)
-
-						if (
-							this.people[personIdx][thisField] &&
-							this.people[personIdx][thisField].req === true
-						) { thisFieldInputReq[0].checked = true }
-
-						$('<br/>').appendTo(personCell)
-
-						var thisFieldInputRec = $('<input type="checkbox"> Received</input>')
+							if (
+								this.people[personIdx][thisField] &&
+								this.people[personIdx][thisField].req === true
+							) { thisFieldInputReq[0].checked = true }
+							$('<br/>').appendTo(personCell)
+							var thisFieldInputRec = $('<input type="checkbox"> Received</input>')
 							.appendTo(personCell)
 							.attr('name', personIdx + '.' + thisField + '.' + 'rec')
 							.on('change', this.handleChange)
-
-
-						if (
-							this.people[personIdx][thisField] &&
-							this.people[personIdx][thisField].rec === true
-						) { thisFieldInputRec[0].checked = true }
-
-						// checkBoxRow.append(personCell)
-
-						$('<br/>').appendTo(personCell)
-
-						var thisFieldInputNA = $('<input type="checkbox"> N/A</input>')
+							if (
+								this.people[personIdx][thisField] &&
+								this.people[personIdx][thisField].rec === true
+							) { thisFieldInputRec[0].checked = true }
+							// checkBoxRow.append(personCell)
+							$('<br/>').appendTo(personCell)
+							var thisFieldInputNA = $('<input type="checkbox"> N/A</input>')
 							.appendTo(personCell)
 							.attr('name', personIdx + '.' + thisField + '.' + 'na')
 							.on('change', this.handleChange)
-
-						if (
-							this.people[personIdx][thisField] &&
-							this.people[personIdx][thisField].na === true
-						) { thisFieldInputNA[0].checked = true }
-
-						checkBoxRow.append(personCell)
+							if (
+								this.people[personIdx][thisField] &&
+								this.people[personIdx][thisField].na === true
+							) { thisFieldInputNA[0].checked = true }
+							checkBoxRow.append(personCell)
+						}.bind(this))
+						objectRow.appendTo(itemRow)
 					}.bind(this))
-
-					objectRow.appendTo(itemRow)
+					itemRow.appendTo(sectionNode)
 				}.bind(this))
-
-				itemRow.appendTo(sectionNode)
-
+				this.root.append(sectionNode)
 			}.bind(this))
-
-
-			this.root.append(sectionNode)
-
-		}.bind(this))
-	} // END this.populateHtml
-
-
-	this.getData = function () {
-		return getFormData(this.root)
-	}
-
-	this._TIMEOUT = false
-
-	this.handleNoteChange = function (e) {
-		if (this._TIMEOUT) { window.clearTimeout(this._TIMEOUT) }
-
-		this._TIMEOUT = window.setTimeout(function () {
-			var changedValue = {}
-			changedValue[this.primaryUser._id] = {}
-			changedValue[this.primaryUser._id][this.field] = { note: this.noteValue }
-
-			xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function (err) {
-				// TODO: If error, flip the value back and show an error message to the user
-
-			})
-
-		}.bind({ noteValue: e.target.value, field: e.target.name, primaryUser: this.people[0] }), 500)
-	}.bind(this)
-
-	// END FinacialPackageBuilder
-
+		} // END this.populateHtml
+		this.getData = function() {
+			return getFormData(this.root)
+		}
+		this._TIMEOUT = false
+		this.handleNoteChange = function(e) {
+			if (this._TIMEOUT) { window.clearTimeout(this._TIMEOUT) }
+			this._TIMEOUT = window.setTimeout(function() {
+				var changedValue = {}
+				changedValue[ this.primaryUser._id ] = {}
+				changedValue[ this.primaryUser._id ][ this.field ] = { note: this.noteValue }
+				xhr(changedValue, 'POST', '/vettingworksheet/finacialForm', function(err) {
+					// TODO: If error, flip the value back and show an error message to the user
+				})
+			}.bind({ noteValue: e.target.value, field: e.target.name, primaryUser: this.people[0] }), 500)
+		}.bind(this)
+	} // END FinacialPackageBuilder
 	function getFormData(form) {
 		var formData = {}
 		var inputFields = $('input', form)
-		inputFields.each(function (idx) {
+		inputFields.each(function(idx) {
 			var objectPath = this.name
 			var objectPieces = objectPath.split('.')
 			var currentObjectPlace = formData
-			objectPieces.forEach(function (p, i) {
-				if (i < (objectPieces.length - 1)) {
+			objectPieces.forEach(function(p, i) {
+				if (i < (objectPieces.length-1)) {
 					if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
 					currentObjectPlace = currentObjectPlace[p]
 				} else {
@@ -1647,229 +1552,182 @@
 				}
 			}.bind(this))
 		})
-
 		return formData
 	}
-
 	function changeObjectValueByPath(obj, path, value) {
-		var objectPieces = path.split('.');
-		var currentObjectPlace = obj;
-		objectPieces.forEach(function (p, i) {
-			if (i < (objectPieces.length - 1)) {
-				if (!currentObjectPlace[p]) {
-					currentObjectPlace[p] = {}
-					currentObjectPlace = currentObjectPlace[p];
-				} else {
-					currentObjectPlace[p] = value;
-				}
+		var objectPieces = path.split('.')
+		var currentObjectPlace = obj
+		objectPieces.forEach(function(p, i) {
+			if (i < (objectPieces.length-1)) {
+				if (!currentObjectPlace[p]) currentObjectPlace[p] = {}
+				currentObjectPlace = currentObjectPlace[p]
+			} else {
+				currentObjectPlace[p] = value
 			}
 		})
-
 		return obj
 	}
-
 	function xhr(data, method, url, next) {
 		//post to database
-
 		var posting = $.ajax({
-			type: method,
-			url: url,
-			dataType: 'json',
-			contentType: 'application/json; charset=UTF-8',
-			data: JSON.stringify(data)
+			type : method,
+			url : url,
+			dataType : 'json',
+			contentType : 'application/json; charset=UTF-8',
+			data : JSON.stringify(data)
 		});
-
 		//check for error
 		posting.done(function (xhr) {
-			if (xhr.status === 'success' || xhr.status === 200 || xhr.status === '200') {
+		  if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
 				next(null, xhr)
 			}
 			else {
 				next(new Error('Could not complete xhr'))
 			}
 		});
-
 		posting.fail(function (res) {
 			next(new Error('Could not complete xhr'))
 		});
 	}
-
 	function watchEditButton(idx) {
 		$(this).on('click', showWorkItemEditForm)
 	}
-
 	function showWorkItemEditForm(e) {
 		e.preventDefault()
 		var workItemParent = this.parentElement
 		var workItemContainer = $(workItemParent)
 		var workItemId = $(workItemParent.parentElement).attr('name')
-
 		var currentData = {}
-		$('[name*="' + workItemId + '"]', workItemContainer).each(function (idx) {
+		$('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
 			var path = $(this).attr('name').replace(workItemId + '.', '')
 			currentData[path] = this.innerText
 		})
-
 		workItemContainer.empty()
-
 		var fields = [
-			{ field: 'name', text: 'Name' },
-			{ field: 'description', text: 'Description', type: 'textarea' },
-			{ field: 'vettingComments', text: 'Vetting Comments', type: 'textarea' },
-			{ field: 'cost', text: 'Cost' },
+			{field: 'name', text:'Name'},
+			{field: 'description', text: 'Description', type: 'textarea'},
+			{field: 'vettingComments', text: 'Vetting Comments', type: 'textarea'},
+			{field: 'cost', text: 'Cost'},
 		]
-
-		fields.forEach(function (f) {
+		fields.forEach(function(f) {
 			var formGroup = $('<div class="form-group"></div>')
 			$('<label>' + f.text + '</label>').appendTo(formGroup)
 			if (f.type && f.type === 'textarea') {
 				$('<textarea></textarea>')
-					.addClass('form-control')
-					.attr('name', workItemId + '.' + f.field)
-					.attr('rows', 5)
-					.val(currentData[f.field])
-					.appendTo(formGroup)
+				.addClass('form-control')
+				.attr('name', workItemId + '.' + f.field)
+				.attr('rows', 5)
+				.val(currentData[f.field])
+				.appendTo(formGroup)
 			} else {
 				$('<input></input>')
-					.addClass('form-control')
-					.attr('name', workItemId + '.' + f.field)
-					.val(currentData[f.field])
-					.appendTo(formGroup)
+				.addClass('form-control')
+				.attr('name', workItemId + '.' + f.field)
+				.val(currentData[f.field])
+				.appendTo(formGroup)
 			}
-
 			workItemContainer.append(formGroup)
 		})
-
 		$('<button></button>')
-			.text('Save')
-			.addClass('btn').addClass('btn-primary')
-			.addClass('card-link')
-			.on('click', function (e) {
-				saveWorkItem(workItemContainer)
-			})
-			.appendTo(workItemContainer)
-
+		.text('Save')
+		.addClass('btn').addClass('btn-primary')
+		.addClass('card-link')
+		.on('click', function(e) {
+			saveWorkItem(workItemContainer)
+		})
+		.appendTo(workItemContainer)
 		$('<button></button>')
-			.text('Cancel')
-			.addClass('btn').addClass('btn-danger')
-			.addClass('card-link')
-			.on('click', function (e) {
-				for (let i = 0; i < workItems.length; i++) {
-					if (workItems[i]._id === workItemId) {
-						showWorkItem(workItems[i], workItemContainer)
-					}
+		.text('Cancel')
+		.addClass('btn').addClass('btn-danger')
+		.addClass('card-link')
+		.on('click', function(e) {
+			for (let i=0; i<workItems.length; i++) {
+				if (workItems[i]._id === workItemId) {
+					showWorkItem(workItems[i], workItemContainer)
 				}
-			})
-			.appendTo(workItemContainer)
+			}
+		})
+		.appendTo(workItemContainer)
 	}
-
 	function showWorkItem(data, node) {
 		node.empty()
-
 		var cardBlock = node
-
 		$('<h4></h4>').addClass('card-title')
-			.attr('name', data._id + '.name')
-			.text(data.name)
-			.appendTo(cardBlock)
-
+		.attr('name', data._id + '.name')
+		.text(data.name)
+		.appendTo(cardBlock)
 		$('<p></p>').addClass('text-muted')
-			.text(new Date(data.date).toString())
-			.appendTo(cardBlock)
-
+		.text(new Date(data.date).toString())
+		.appendTo(cardBlock)
 		var cardText = $('<p></p>').addClass('card-text')
-			.appendTo(cardBlock)
-
+		.appendTo(cardBlock)
 		$('<strong>Description:</strong>').appendTo(cardText)
-		$('<br><br>').appendTo(cardText)
-
+		$('<br></br>').appendTo(cardText)
 		$('<span></span>')
-			.attr('name', data._id + '.description')
-			.text(data.description)
-			.appendTo(cardText)
-
-		$('<br><br>').appendTo(cardText)
-		$('<br><br>').appendTo(cardText)
-
+		.attr('name', data._id + '.description')
+		.text(data.description)
+		.appendTo(cardText)
+		$('<br></br>').appendTo(cardText)
+		$('<br></br>').appendTo(cardText)
 		$('<strong>Vetting Comments:</strong>').appendTo(cardText)
-		// $('<br><br>').appendTo(cardText)
-
+		// $('<br></br>').appendTo(cardText)
 		$('<p></p>').text(data.vettingComments)
-			.attr('name', data._id + '.vettingComments')
-			.appendTo(cardText)
-		$('<br><br>').appendTo(cardText)
-
+		.attr('name', data._id + '.vettingComments')
+		.appendTo(cardText)
+		$('<br></br>').appendTo(cardText)
 		$('<strong>Site Comments:</strong>').appendTo(cardText)
-		$('<br><br>').appendTo(cardText)
-
+		$('<br></br>').appendTo(cardText)
 		$('<p></p>')
-			.text(data.siteComments).appendTo(cardText)
-		$('<br><br>').appendTo(cardText)
-
+		.text(data.siteComments).appendTo(cardText)
+		$('<br></br>').appendTo(cardText)
 		$('<strong>Cost:</strong>').appendTo(cardText)
-		$('<br><br>').appendTo(cardText)
-
+		$('<br></br>').appendTo(cardText)
 		$('<span></span>')
-			.attr('name', data._id + '.cost')
-			.text(data.cost)
-			.appendTo(cardText)
-
+		.attr('name', data._id + '.cost')
+		.text(data.cost)
+		.appendTo(cardText)
 		$('<a></a>').addClass('btn').addClass('btn-primary')
-			.addClass('card-link').addClass('work-item-edit')
-			.text('Edit')
-			.attr('href', '#')
-			.on('click', showWorkItemEditForm)
-			.appendTo(cardBlock)
-
+		.addClass('card-link').addClass('work-item-edit')
+		.text('Edit')
+		.attr('href', '#')
+		.on('click', showWorkItemEditForm)
+		.appendTo(cardBlock)
 		$('<a></a>').addClass('btn').addClass('btn-danger')
-			.addClass('card-link').addClass('work-item-delete')
-			.text('Delete')
-			.attr('href', '#')
-			.on('click', showWorkItemDeleteConfirm)
-			.appendTo(cardBlock)
+		.addClass('card-link').addClass('work-item-delete')
+		.text('Delete')
+		.attr('href', '#')
+		.on('click', showWorkItemDeleteConfirm)
+		.appendTo(cardBlock)
 	}
-
 	function saveWorkItem(node) {
 		var data = {}, id = false
-		$('input, textarea', node).each(function (idx) {
+		$('input, textarea', node).each(function(idx) {
 			var path = this.name.split('.')[1]
 			data[path] = this.value
 			if (!id) id = this.name.split('.')[0]
 		})
-
 		// XHR here
 		var xhrData = JSON.parse(JSON.stringify(data))
 		xhrData.id = id
-
-		xhr(xhrData, 'POST', '/site/updateitem', function (err) {
+		xhr(xhrData, 'POST', '/site/updateitem', function(err) {
 			if (err) {
 				// TODO: If error, flip the value back and show an error message to the user
 				// alert('Value did not save, please reload the page')
 			}
-
-			for (var i = 0; i < workItems.length; i++) {
+			for (var i=0; i<workItems.length; i++) {
 				if (workItems[i]._id === id) {
-					Object.keys(data).forEach(function (k) {
+					Object.keys(data).forEach(function(k) {
 						workItems[i][k] = data[k]
 					})
-
 					showWorkItem(workItems[i], node)
 				}
 			}
 		})
-
-
-
-
-
-
 	}
-
 	function handleNewWorkItemSubmission(e) {
 		if (e) e.preventDefault()
-		var newWorkItem = {}, error = false
-
-		$('input, textarea', e.target.parentNode).each(function (idx) {
+    	var newWorkItem = {}, error = false
+		$('input, textarea', e.target.parentNode).each(function(idx) {
 			if (this.value.length === 0 && this.name !== 'cost') {
 				$(this.parentNode).addClass('has-error')
 				error = true
@@ -1878,194 +1736,159 @@
 				$(this.parentNode).removeClass('has-error')
 			}
 		})
-
 		if (error === false) {
-			createNewWorkItem(newWorkItem, function (err) {
+			createNewWorkItem(newWorkItem, function(err) {
 				handleNewWorkItemClear()
 			})
 		}
 	}
-
-	function handleNewWorkItemClear(e, node) {
+  function handleNewWorkItemClear(e, node) {
 		if (e) e.preventDefault()
-		$('input, textarea', (e ? e.target.parentNode : node)).each(function (idx) {
-			$(this).val('')
-			$(this.parentNode).removeClass('has-error')
-		})
-	}
-
-	function createNewWorkItem(w, next) {
-		var id = docs._id
-		var rightNow = new Date()
-
-		w.date = rightNow
-		w.updated = rightNow
-		w.applicationId = id
-
-		xhr(w, 'POST', '/site/additem', function (err, data) {
-			// TODO: Handle error
-			if (err) { alert('There was an error saving your work item') }
-			w._id = data.itemId
-			workItems.push(w)
-			var newNode = addWorkItem(w)
-			handleNewWorkItemClear(null, $('[name="new"]'))
-
-		})
-	}
-
-	function addWorkItem(w) {
-		var cardContainer = $('#workItemCards')
-
-		var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6').addClass('col-md-9').addClass('float-to-right')
-			.appendTo(cardContainer)
-
-		var card = $('<div></div>').addClass('panel panel-default').addClass('work-item')
-			.attr('name', w._id)
-			.appendTo(cardDiv)
-
-		var cardBlock = $('<div></div>').addClass('panel-body')
-			.appendTo(card)
-
-
-		$('<h4></h4>').addClass('card-title')
-			.attr('name', w._id + '.name')
-			.text(w.name)
-			.appendTo(cardBlock)
-
-		$('<p></p>').addClass('text-muted')
-			.text(w.date.toString())
-			.appendTo(cardBlock)
-
-		var cardText = $('<p></p>').addClass('card-text')
-			.appendTo(cardBlock)
-
-		$('<strong>Description:</strong>').appendTo(cardText)
-		$('<br><br>').appendTo(cardText)
-
-		$('<span></span>')
-			.attr('name', w._id + '.description')
-			.text(w.description)
-			.appendTo(cardText)
-
-		$('<br><br>').appendTo(cardText)
-		$('<br><br>').appendTo(cardText)
-
-		$('<strong>Vetting Comments:</strong>').appendTo(cardText)
-		// $('<br><br>').appendTo(cardText)
-
-		$('<p></p>').text(w.vettingComments).appendTo(cardText)
-		$('<br><br>').appendTo(cardText)
-
-		$('<strong>Site Comments:</strong>').appendTo(cardText)
-		// $('<br><br>').appendTo(cardText)
-
-		$('<p></p>').text(w.siteComments).appendTo(cardText)
-		$('<br><br>').appendTo(cardText)
-
-		$('<strong>Cost:</strong>').appendTo(cardText)
-		$('<br><br>').appendTo(cardText)
-
-		$('<span></span>')
-			.attr('name', w._id + '.cost')
-			.text(w.cost)
-			.appendTo(cardText)
-
-		$('<a></a>').addClass('btn').addClass('btn-primary')
-			.addClass('card-link').addClass('work-item-edit')
-			.text('Edit')
-			.attr('href', '#')
-			.on('click', showWorkItemEditForm)
-			.appendTo(cardBlock)
-
+    $('input, textarea', (e ? e.target.parentNode : node)).each(function(idx) {
+      $(this).val('')
+      $(this.parentNode).removeClass('has-error')
+    })
+  }
+  function createNewWorkItem(w, next) {
+    var id = docs._id
+    var rightNow = new Date()
+    w.date = rightNow
+    w.updated = rightNow
+    w.applicationId = id
+    xhr(w, 'POST', '/site/additem', function(err, data) {
+      // TODO: Handle error
+      if (err) { alert('There was an error saving your work item') }
+      w._id = data.itemId
+      workItems.push(w)
+      var newNode = addWorkItem(w)
+      handleNewWorkItemClear(null, $('[name="new"]'))
+    })
+  }
+  function addWorkItem(w) {
+    var cardContainer = $('#workItemCards')
+    var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6').addClass('col-md-9').addClass('float-to-right')
+    .appendTo(cardContainer)
+    var card = $('<div></div>').addClass('panel panel-default').addClass('work-item')
+    .attr('name', w._id)
+    .appendTo(cardDiv)
+    var cardBlock = $('<div></div>').addClass('panel-body')
+    .appendTo(card)
+    $('<h4></h4>').addClass('card-title')
+    .attr('name', w._id + '.name')
+    .text(w.name)
+    .appendTo(cardBlock)
+    $('<p></p>').addClass('text-muted')
+    .text(w.date.toString())
+    .appendTo(cardBlock)
+    var cardText = $('<p></p>').addClass('card-text')
+    .appendTo(cardBlock)
+    $('<strong>Description:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+    $('<span></span>')
+    .attr('name', w._id + '.description')
+    .text(w.description)
+    .appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+    $('<strong>Vetting Comments:</strong>').appendTo(cardText)
+    // $('<br></br>').appendTo(cardText)
+    $('<p></p>').text(w.vettingComments).appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+    $('<strong>Site Comments:</strong>').appendTo(cardText)
+    // $('<br></br>').appendTo(cardText)
+    $('<p></p>').text(w.siteComments).appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+    $('<strong>Cost:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+    $('<span></span>')
+    .attr('name', w._id + '.cost')
+    .text(w.cost)
+    .appendTo(cardText)
+    $('<a></a>').addClass('btn').addClass('btn-primary')
+    .addClass('card-link').addClass('work-item-edit')
+    .text('Edit')
+    .attr('href', '#')
+    .on('click', showWorkItemEditForm)
+    .appendTo(cardBlock)
 		$('<a></a>').addClass('btn').addClass('btn-danger')
-			.addClass('card-link').addClass('work-item-delete')
-			.text('Delete')
-			.attr('href', '#')
-			.on('click', showWorkItemDeleteConfirm)
-			.appendTo(cardBlock)
-
-		return cardBlock
-	}
-
+		.addClass('card-link').addClass('work-item-delete')
+		.text('Delete')
+		.attr('href', '#')
+		.on('click', showWorkItemDeleteConfirm)
+		.appendTo(cardBlock)
+    return cardBlock
+  }
 	function showWorkItemDeleteConfirm(e) {
 		e.preventDefault()
 		var workItemParent = this.parentElement
 		var workItemContainer = $(workItemParent)
 		var workItemId = $(workItemParent.parentElement).attr('name')
-
 		var currentData = {}
-		$('[name*="' + workItemId + '"]', workItemContainer).each(function (idx) {
+		$('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
 			var path = $(this).attr('name').replace(workItemId + '.', '')
 			currentData[path] = this.innerText
 		})
-
 		workItemContainer.empty()
-
 		$('<h4>Are you sure?</h4>').appendTo(workItemParent)
 		$('<p>You are about to delete this work item. After selecting confirm, you '
 			+ 'will be unable to recover the item.</p>').appendTo(workItemParent)
-
 		$('<a>Continue</a>').addClass('btn').addClass('btn-primary')
-			.appendTo(workItemParent)
-			.on('click', function (e) {
-				deleteWorkItem(workItemId, workItemParent)
-			})
-
+		.appendTo(workItemParent)
+		.on('click', function(e) {
+			deleteWorkItem(workItemId, workItemParent)
+		})
 		$('<a>Cancel</a>').addClass('btn').addClass('btn-danger')
-			.appendTo(workItemParent)
-			.on('click', function (e) {
-				e.preventDefault()
-				for (let i = 0; i < workItems.length; i++) {
-					if (workItems[i]._id === workItemId) {
-						showWorkItem(workItems[i], workItemContainer)
-					}
+		.appendTo(workItemParent)
+		.on('click', function(e) {
+			e.preventDefault()
+			for (let i=0; i<workItems.length; i++) {
+				if (workItems[i]._id === workItemId) {
+					showWorkItem(workItems[i], workItemContainer)
 				}
-			})
+			}
+		})
 	}
-
 	function deleteWorkItem(id, node) {
-		xhr({ itemId: id }, 'POST', '/vettingworksheet/deleteitem', function (err, data) {
+		xhr({itemId: id}, 'POST', '/vettingworksheet/deleteitem', function(err, data) {
 			if (err) { alert('Unable to delete item') }
 			else {
 				var workItemRoot = $('[name="' + id + '"]')
 				workItemRoot.remove()
-				for (var i = 0; i < workItems.length; i++) {
+				for (var i=0; i<workItems.length; i++) {
 					if (workItems[i]._id == id) { workItems.splice(i, 1) }
 				}
 			}
 		})
 	}
-
-	$('#csvExportButton').on('click', function (e) {
-		var urlParts = window.location.pathname.split('/')
-		var applicationID = urlParts[urlParts.length - 1]
-		var firstname = '{{{doc.application.name.first}}}';
-		var lastname = '{{{doc.application.name.last}}}';
-		var payload = {
-			application: applicationID,
-			firstname: firstname,
-			lastname: lastname
-		}
-		var csvRequest = $.ajax({
-			type: 'POST',
-			url: '/vettingworksheet/csvExport',
-			dataType: 'json',
-			contentType: 'application/json; chartset=UTF-8',
-			data: JSON.stringify(payload)
-		});
-		csvRequest.done(function (xhr) {
-			if (xhr.status === 'success') {
-				// TODO: Set window.location.href equal to the download file
-
-				window.location.href = '/vettingworksheet/file/' + '{{{doc.application.name.last}}}' + '-' + '{{{doc.application.name.first}}}' + '-' + applicationID + '-' + 'VettingWorksheet' + '.csv'
-
-			} else {
-				console.log(xhr.status);
-			}
-		});
-		csvRequest.fail(function (data) {
-			console.log(data.status)
-			debugger
-		});
-	});
+$('#csvExportButton').on('click', function(e) {
+	var urlParts = window.location.pathname.split('/')
+  var applicationID = urlParts[urlParts.length-1]
+	var firstname = '{{{doc.application.name.first}}}';
+	var lastname = '{{{doc.application.name.last}}}';
+  var payload = {
+		application: applicationID,
+		firstname: firstname,
+		lastname: lastname
+    }
+    var csvRequest = $.ajax({
+      	type: 'POST',
+        url: '/vettingworksheet/csvExport',
+        dataType: 'json',
+        contentType: 'application/json; chartset=UTF-8',
+        data: JSON.stringify(payload)
+      })
+      csvRequest.done(function(xhr) {
+        if (xhr.status === 'success') {
+          // TODO: Set window.location.href equal to the download file
+		window.location.href = '/vettingworksheet/file/' + '{{{doc.application.name.last}}}' + '-' + '{{{doc.application.name.first}}}' + '-' + applicationID + '-' + 'VettingWorksheet' + '.csv'
+        } else {
+			console.log(xhr.status);
+        }
+      })
+      csvRequest.fail(function(data) {
+		console.log(data.status)
+        debugger
+      })
+    })
+// Work items
 </script>
