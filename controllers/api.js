@@ -1025,7 +1025,11 @@ module.exports = {
 
 		var admin = new RolePackage();
 		admin.role_name = "ADMIN";
-		admin.role_display = "Admin";
+        admin.role_display = "Admin";
+        
+        var project_manager = new RolePackage();
+		project_manager.role_name = "PROJECT_MANAGER";
+		project_manager.role_display = "Project Manager";
 
 		vet.saveAsync(function (err, doc, numAffected) {
             if (err) {

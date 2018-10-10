@@ -99,5 +99,18 @@ UserPackageSchema.methods.isSite = function() {
 		return false;
 	}
 }
+
+//user has project manager privilages
+UserPackageSchema.methods.isProjectManager = function() {
+	if(this.user_role == "PROJECT_MANAGER" || this.user_role == "ADMIN") {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+
+
 var UserPackage = mongoose.model('UserPackage', UserPackageSchema);
 module.exports = UserPackage;
