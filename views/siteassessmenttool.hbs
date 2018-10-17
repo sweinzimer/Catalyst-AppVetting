@@ -21,6 +21,10 @@
     content:  "\2190 ";
     font-size: 24px;
   }
+
+ .assessment-checklist li {
+   list-style-type: none;
+ }
 </style>
 
 
@@ -47,6 +51,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#work" role="tab">Work Items</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#checklist" role="tab">Checklist</a>
       </li>
     </ul>
 
@@ -292,6 +299,123 @@
         </div>
       </div><!-- end #work -->
 
+      <div class="tab-pane" id="checklist" role="tabpanel">
+        <br>
+        <ul class="assessment-checklist">
+          <li>
+            <h4>Hazardous Materials</h4>
+            <p>
+              <strong>Lead</strong> <br/>
+              <label>Yes
+                <input type="radio" name="has_lead" value="yes">
+              </label>
+              <label>No
+                <input type="radio" name="has_lead" value="no">
+              </label>
+              <label>Unsure
+                <input type="radio" name="has_lead" value="unsure">
+              </label>              
+            </p>
+            <p>
+              <strong>Asbestos</strong> <br/>
+              <label>Yes
+                <input type="radio" name="has_asbestos" value="yes">
+              </label>
+              <label>No
+                <input type="radio" name="has_asbestos" value="no">
+              </label>
+              <label>Unsure
+                <input type="radio" name="has_asbestos" value="unsure">
+              </label>              
+            </p>
+            <p>
+              <strong>Safety Plan</strong> <br/>
+              <textarea name="safety_plan"></textarea>
+            </p>
+          </li>
+
+          <li>
+            <h4>Tools / Rentals</h4>
+          </li>
+
+          <li>
+            <h4>Subcontractors</h4><br/>
+            <textarea name="subcontractors"></textarea>
+          </li>
+
+          <li>
+            <h4>Other Costs</h4>
+            <p>
+              <strong>Permit</strong>
+              <br/>
+              <textarea name="permit_text"></textarea>
+              <br/>
+              <label>Total Cost:
+                <input type="number" name="permit_cost" value="0.00">
+              </label>
+            </p>
+            <p>
+              <strong>Portapottie</strong><br/>
+              <label>
+                Required:
+                <input type="checkbox" name="porta_pottie_required" />
+              </label>
+              <br/>
+              <label>
+                Cost:
+                <input type="number" name="porta_pottie_cost" value="0.00" />
+              </label>
+            </p>
+            <p>
+              <strong>Waste / Dump Trailer</strong><br/>
+              <label>
+                Required:
+                <input type="checkbox" name="waste_dumpster_required" />
+              </label>
+              <br/>
+              <label>
+                Cost:
+                <input type="number" name="waste_dumpster_cost" value="0.00" />
+              </label>
+            </p>
+          </li>
+
+          <li>
+            <h4>Estimates</h4>
+            <p>
+              <label>
+                <strong>Total Cost</strong><br>
+                <input type="number" name="estimates_total_cost" value="0.00" />
+              </label>
+            </p>
+            <p>
+              <label>
+                <strong>Volunteers Needed</strong><br>
+                <input type="number" name="estimates_volunteers_needed" value="0" />
+              </label>
+            </p>
+          </li>
+
+          <li>
+            <h4>Proposed Dates</h4>
+            <p>
+              <label>
+                <strong>Start Date</strong>
+                <input type="date" name="proposed_dates_start" />
+              </label>
+            </p>
+            <p>
+              <label>
+                <strong>End Date</strong>
+                <input type="date" name="proposed_dates_end" />
+              </label>
+            </p>
+          </li>
+          
+        </ul>
+        
+      </div><!-- end #checklist -->
+      
     </div>
 
   </div>
