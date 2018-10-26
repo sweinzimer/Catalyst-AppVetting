@@ -16,10 +16,7 @@ var AssessmentPackageSchema = new Schema({
 
   applicationId: ObjectId,
 
-  materials: [{
-    name: String,
-    cost: Number
-  }],
+  materials: String,
 
   hazard_safety: {
     has_lead: { type: String, default: "unsure" },
@@ -27,18 +24,15 @@ var AssessmentPackageSchema = new Schema({
     safety_plan: String
   },
 
-  tool_rentals: [{
-    name: String,
-    cost: { type: Number, default: 0 }
-  }],
+  tool_rentals: String,
 
   subcontractors: String,
 
   other_costs: {
-    permit: [{
+    permit: {
       name: String,
-      cost: Number
-    }],
+      cost: { type: Number, default: 0 },
+    },
     porta_pottie: {
       required: Boolean,
       cost: { type: Number, default: 0 },
@@ -54,11 +48,26 @@ var AssessmentPackageSchema = new Schema({
     volunteers_needed: Number
   },
   
-  proposed_dates: [{
-    name: String,
-    date: Date
-  }]
+  proposed_dates: {
+    start_date: Date,
+    end_date: Date
+  }
 });
 
 
-module.exports = mongoose.model('AssessmentPackage', AssessmentPackageSchema);
+var AssessmentPackage = mongoose.model('AssessmentPackage', AssessmentPackageSchema);
+
+AssessmentPackage.empty = {
+  hazard_safety: {
+    has_lead: null, has_asbestos: null
+  },
+  other_costs: {
+    permit: { cost: 0 },
+    porta_pottie: { required: false, cost: 0 },
+    waste_dumpster: { required: false, cost: 0 }
+  },
+  estimates: { total_cost: 0, volunteers_needed: 0 },
+  proposed_dates: { }
+}
+
+module.exports = AssessmentPackage;

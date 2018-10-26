@@ -221,7 +221,7 @@ module.exports = {
 				}}
 			]).execAsync(),
 			work: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
-      assessment: AssessmentPackage.find({ applicationId: Object(req.params.id) }).lean().execAsync()
+      assessment: AssessmentPackage.find({ applicationId: ObjectId(req.params.id) }).lean().execAsync()
 
     }).then(function(results) {
 			console.log("results\n", results);
@@ -1425,6 +1425,42 @@ module.exports = {
 
 
 	},
+
+
+  // Create / Update Assessment Checklist record
+  saveAssessmentDocument: function(req, res, next) {
+    console.log('saving assessment')
+
+    Promise.props({
+      assessment: AssessmentPackage.findOneAndUpdate(
+          { applicationId: req.body.applicationId },
+          { $set: req.body },
+          { new: true,
+            upsert: true,
+            runValidators: true,
+            setDefaultsOnInsert: true
+          }
+      ).execAsync()
+    }).then(function (results) {
+      console.log(results);
+      if (results.assessment !== null) {
+        console.log('[ API ] saveAssessmentDocument :: Assessment found: TRUE');
+        res.locals.status = '200';
+      } else {
+        console.log('[ API ] saveAssessmentDocument :: Assessment found: FALSE');
+        res.locals.status = '500';
+      }
+      res.locals.results = results
+
+      next();
+
+    }).catch(function (err) {
+      console.error(err)
+      
+    }).catch(next);
+
+    
+  },
 
 	//update financial package
 	updateFinance: function(req, res, next) {
