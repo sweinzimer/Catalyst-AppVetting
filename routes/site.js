@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
+var AssessmentPackage = require('../models/assessmentPackage.js');
 
 var api = require('../controllers/api');
 var User = require('../models/userPackage');
@@ -11,7 +12,6 @@ var config = require('../config')
 var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose we are using the Bluebird promise library
 Promise.promisifyAll(mongoose); // Convert mongoose API to always return promises using Bluebird's promisifyAll
-
 
 
 //Need ObjectID to search by ObjectID
@@ -67,6 +67,7 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
 	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
+  payload.assessment = res.locals.assessment || AssessmentPackage.empty;
 	console.log("results");
     console.log(payload);
  
@@ -109,8 +110,20 @@ router.route('/updatesummary')
         res.json(res.locals);
     }
 	});	
-		
-	
+
+  // Handle saving the assessment checklist.
+router.route('/assessment')
+	    .post(isLoggedInPost, api.saveAssessmentDocument, function (req, res) {
+        console.log('from /site/assessment')
+        console.log(res.locals)
+        if (res.locals.status !== '200') {
+          res.status(500).send("Could not update assessment document");
+        } else {
+          res.json(res.locals.results);
+        }
+      });
+
+
 //route catches invalid post requests.
 router.use('*', function route2(req, res, next) {
 	if(res.locals.status == '406'){

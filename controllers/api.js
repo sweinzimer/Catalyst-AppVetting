@@ -35,6 +35,7 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
+var AssessmentPackage = require('../models/assessmentPackage.js');
 
 var WorkItemPackage = require('../models/workItemPackage');
 var UserPackage = require('../models/userPackage');
@@ -204,49 +205,39 @@ module.exports = {
 	
 	//site assessment get docs for view
 	getDocumentSite: function (req, res, next) {
-        // Log the api call we make along with the _id used by it
-        console.log('[ API ] getDocumentSite :: Call invoked with id: ' + req.params.id);
+    // Log the api call we make along with the _id used by it
+    console.log('[ API ] getDocumentSite :: Call invoked with id: ' + req.params.id);
 		// Use results.DocumentPackage.<whatever you need> to access the information
-        Promise.props({
-            //document: DocumentPackage.findById(req.params.id).lean().execAsync()
-			doc: DocumentPackage.aggregate(
-				[
+    Promise.props({
+      //document: DocumentPackage.findById(req.params.id).lean().execAsync()
+			doc: DocumentPackage.aggregate([
 				{$match: { _id : mongoose.Types.ObjectId(req.params.id)}},
-					{ $redact: {
-						$cond: {
-							if: { $eq: [ "$level", 5 ] },
-							then: "$$PRUNE",
-							else: "$$DESCEND"
-						}
-					}}
-					
-				]
-			).execAsync(),
-			work: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync()
-			
-        })
-            .then(function(results) {
-				console.log("results");
-				
-				
-				console.log(results);
-                if (!results) {
-                    console.log('[ API ] getDocumentStatusSite :: Documents package found: FALSE');
-                }
-                else {
-                    console.log('[ API ] getDocumentStatusSite :: Documents package found: TRUE');
-                }
-				res.locals.results = results;
+				{ $redact: {
+					$cond: {
+						if: { $eq: [ "$level", 5 ] },
+						then: "$$PRUNE",
+						else: "$$DESCEND"
+					}
+				}}
+			]).execAsync(),
+			work: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
+      assessment: AssessmentPackage.find({ applicationId: ObjectId(req.params.id) }).lean().execAsync()
 
-                // If we are at this line all promises have executed and returned
-                // Call next() to pass all of this glorious data to the next express router
-                next();
-            })
-            .catch(function(err) {
-                console.error(err);
-            })
-            .catch(next);
-    },
+    }).then(function(results) {
+			console.log("results\n", results);
+      if (!results) {
+        console.log('[ API ] getDocumentStatusSite :: Documents package found: FALSE');
+      }
+      else {
+        console.log('[ API ] getDocumentStatusSite :: Documents package found: TRUE');
+      }
+			res.locals.results = results;
+      next();
+
+    }).catch(function(err) {
+      console.error(err);
+    }).catch(next);
+  },
 
 	getUsers: function(req, res, next) {
 		console.log("getting users");
@@ -401,6 +392,21 @@ module.exports = {
             })
             .catch(next);
     },
+
+  // Fetch only status: "project" documents for this year.
+  getProjectDocuments: function(req, res, next) {
+    var currentYear = new Date().getFullYear();
+    Promise.props({
+      projects: DocumentPackage.find({ status: "project", app_year: currentYear }).lean().execAsync()
+
+    }).then(function (results) {
+      res.locals.projects = results.projects;
+
+    }).catch(function (err) {
+      console.log(err);
+      next();
+    })
+  },
 	
 	getDocsByYear: function(req, res, next) {
 		console.log('[ API ] getDocumentByStatus :: Call invoked');
@@ -1509,6 +1515,42 @@ module.exports = {
 
 
 	},
+
+
+  // Create / Update Assessment Checklist record
+  saveAssessmentDocument: function(req, res, next) {
+    console.log('saving assessment')
+
+    Promise.props({
+      assessment: AssessmentPackage.findOneAndUpdate(
+          { applicationId: req.body.applicationId },
+          { $set: req.body },
+          { new: true,
+            upsert: true,
+            runValidators: true,
+            setDefaultsOnInsert: true
+          }
+      ).execAsync()
+    }).then(function (results) {
+      console.log(results);
+      if (results.assessment !== null) {
+        console.log('[ API ] saveAssessmentDocument :: Assessment found: TRUE');
+        res.locals.status = '200';
+      } else {
+        console.log('[ API ] saveAssessmentDocument :: Assessment found: FALSE');
+        res.locals.status = '500';
+      }
+      res.locals.results = results
+
+      next();
+
+    }).catch(function (err) {
+      console.error(err)
+      
+    }).catch(next);
+
+    
+  },
 
 	//update financial package
 	updateFinance: function(req, res, next) {
