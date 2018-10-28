@@ -36,6 +36,7 @@ var appform = require('./routes/appform')(passport);
 var vettingworksheet = require('./routes/vettingworksheet')(passport);
 var regUser = require('./routes/regUser')(passport);
 var site = require('./routes/site')(passport);
+var planning = require('./routes/planning')(passport);
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -201,10 +202,11 @@ app.use('/view', view);
 app.use('/edit', edit);
 app.use('/application', appform);
 app.use('/vettingworksheet', vettingworksheet);
+
 app.use('/user', regUser);
 
 app.use('/site', site);
-
+app.use('/pm', planning);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries
 // Links to jQuery and Boots strap files
