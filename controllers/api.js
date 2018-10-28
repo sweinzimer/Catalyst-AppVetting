@@ -238,7 +238,41 @@ module.exports = {
       console.error(err);
     }).catch(next);
   },
+//site assessment get docs for view
+getDocumentPlanning: function (req, res, next) {
+    // Log the api call we make along with the _id used by it
+    console.log('[ API ] getDocumentSite :: Call invoked with id: ' + req.params.id);
+		// Use results.DocumentPackage.<whatever you need> to access the information
+    Promise.props({
+      //document: DocumentPackage.findById(req.params.id).lean().execAsync()
+			doc: DocumentPackage.aggregate([
+				{$match: { _id : mongoose.Types.ObjectId(req.params.id)}},
+				{ $redact: {
+					$cond: {
+						if: { $eq: [ "$level", 5 ] },
+						then: "$$PRUNE",
+						else: "$$DESCEND"
+					}
+				}}
+			]).execAsync(),
+			work: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
+      planning: PlanningPackage.find({ applicationId: ObjectId(req.params.id) }).lean().execAsync()
 
+    }).then(function(results) {
+			console.log("results\n", results);
+      if (!results) {
+        console.log('[ API ] getDocumentStatusSite :: Documents package found: FALSE');
+      }
+      else {
+        console.log('[ API ] getDocumentStatusSite :: Documents package found: TRUE');
+      }
+			res.locals.results = results;
+      next();
+
+    }).catch(function(err) {
+      console.error(err);
+    }).catch(next);
+  },
 	getUsers: function(req, res, next) {
 		console.log("getting users");
 		 Promise.props({

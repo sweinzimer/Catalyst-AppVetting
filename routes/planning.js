@@ -17,7 +17,7 @@ Promise.promisifyAll(mongoose); // Convert mongoose API to always return promise
 //Need ObjectID to search by ObjectID
 var ObjectId = require('mongodb').ObjectID;
 
-module.exports = function(passport) {router.get('/:id', isLoggedIn, api.getDocumentPlanning, function(req, res, next) {
+module.exports = function(passport) {router.get('/', isLoggedIn, api.getDocumentPlanning, function(req, res, next) {
     //Checking what's in params
     //console.log("Rendering application " + ObjectId(req.params.id));
 	//TEST
