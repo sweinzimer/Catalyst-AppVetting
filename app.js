@@ -147,6 +147,18 @@ hbs.registerHelper('otherResidents', function(residentsObject) {
   }
 })
 
+hbs.registerHelper('select', function(values) {
+  console.log('here');
+  console.log(values);
+  var $el = $('select');
+  console.log($el);
+  var i = 0;
+  for(i; i<values.length; i++)
+  {
+    $el.find('[value="' + values[i] + '"]').attr({'selected': 'selected'});
+  }
+  return $el.html();
+})
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Middleware
 // Use any middleware for the application that is needed. bodyParse allows parsing to

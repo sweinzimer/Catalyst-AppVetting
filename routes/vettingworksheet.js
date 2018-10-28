@@ -346,6 +346,7 @@ function isLoggedInPost(req, res, next) {
 
 						if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
 							res.locals.role = results.user.user_role;
+							res.locals.user_roles = result.user.user_roles;
 							return next();
 
 						}

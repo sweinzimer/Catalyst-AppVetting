@@ -261,7 +261,18 @@ module.exports = {
                     console.log('users found');
 					for(var x=0; x<results.users.length; x++) {
 						results.users[x].salt = "";
-						results.users[x].hash = "";
+                        results.users[x].hash = "";
+                        console.log('here');
+                        console.log(results.users[x]);
+                        results.users[x].user_roles_display="";
+                        if (results.users[x].user_roles === undefined || results.users[x].user_roles.length===0 ) {
+                            results.users[x].user_roles_display += results.users[x].user_role + " | ";
+                        }
+                        else {
+                            for (var i = 0; i < results.users[x].user_roles.length; i++) {
+                                results.users[x].user_roles_display += results.users[x].user_roles[i] + " | ";
+                            }
+                        }
 					}
 				}
 
@@ -876,7 +887,86 @@ module.exports = {
 		}
     },
 
+    updateUserRoles: function(req, res, next) {
+        // When executed this will apply updates to a user and return the MODIFIED user
+        // Log the _id, name, and value that are passed to the function
 
+         console.log('[ API ] updateUserRoles :: Call invoked with _id: ' + req.body.pk
+           + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
+        //console.log(req.body.name + ' + ' + req.body.value);
+	   //console.log("in req body");
+        console.log(req.body)
+		//res.locals.status = 200;
+		//next();
+        // Build the name:value pairs to be updated
+        // Since there is only one name and one value, we can use the method below
+
+		
+			
+		        var updates = {};
+				//updates[req.body.name] = req.body.value;
+               
+                var user_roles = JSON.parse(req.body.user_roles);
+                console.log(user_roles);
+              
+				// Record Update time
+				//filters
+				var conditions = {};
+                conditions['_id'] = req.body.Id;
+                console.log(req.body['user_roles']);
+				console.log("Search Filter:");
+				console.log(conditions);
+                console.log("Update:");
+                updates['user_roles'] = user_roles;
+                
+               
+                updates['updated'] = Date.now();
+                
+				console.log(updates);
+
+				Promise.props({
+					user: UserPackage.findOneAndUpdate(
+						// Condition
+						conditions,
+						// Updates
+						{
+							// $set: {name: value}
+							$set: updates
+						},
+						// Options
+						{
+							// new - defaults to false, returns the modified document when true, or the original when false
+							new: true,
+							// runValidators - defaults to false, make sure the data fits the model before applying the update
+							runValidators: true
+						}
+						// Callback if needed
+						// { }
+					).execAsync()
+				})
+					.then(function (results) {
+						console.log(results);
+						// TODO: Confirm true/false is correct
+						if (results) {
+							console.log('[ API ] updateUser :: Documents package found: TRUE');
+						}
+						else {
+							console.log('[ API ] updateUser :: Documents package found: FALSE');
+						}
+						res.locals.results = results;
+						//sending a status of 200 for now
+						res.locals.status = '200';
+
+						// If we are at this line all promises have executed and returned
+						// Call next() to pass all of this glorious data to the next express router
+						next();
+					})
+					.catch(function (err) {
+						console.error(err);
+					})
+					.catch(next);
+		
+    },
 
 
 	updatePassword: function(req, res, next) {
