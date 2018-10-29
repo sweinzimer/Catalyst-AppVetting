@@ -36,6 +36,7 @@ var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var AssessmentPackage = require('../models/assessmentPackage.js');
+var ProjectPlanPackage = require('../models/projectPlanPackage.js');
 
 var WorkItemPackage = require('../models/workItemPackage');
 var UserPackage = require('../models/userPackage');
@@ -1458,9 +1459,41 @@ module.exports = {
       console.error(err)
       
     }).catch(next);
-
-    
   },
+
+  // Create / Update Project Plan record
+  saveProjectPlanDocument: function(req, res, next) {
+    console.log('saving project plan')
+
+    Promise.props({
+      projectPlan: ProjectPlanPackage.findOneAndUpdate(
+        { applicationId: req.body.applicationId },
+        { $set: req.body },
+        { new: true,
+          upsert: true,
+          runValidators: true,
+          setDefaultsOnInsert: true
+        }
+      ).execAsync()
+    }).then(function (results) {
+      console.log(results);
+      if (results.projectPlan !== null) {
+        console.log('[ API ] saveProjectPlanDocument :: Assessment found: TRUE');
+        res.locals.status = '200';
+      } else {
+        console.log('[ API ] saveProjectPlanDocument :: Assessment found: FALSE');
+        res.locals.status = '500';
+      }
+      res.locals.results = results
+
+      next();
+
+    }).catch(function (err) {
+      console.error(err)
+      
+    }).catch(next);
+  },
+
 
 	//update financial package
 	updateFinance: function(req, res, next) {
