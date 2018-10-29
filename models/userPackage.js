@@ -10,6 +10,9 @@ var UserPackageSchema = new Schema({
 	user_created:	Date,
 	user_updated:	{type: Date, default: Date.now},
 	user_role:		String,
+	user_roles: [{
+		type: String
+	}],
 	user_activity:		String,
 	contact_info:	{
 		user_name:	{
@@ -70,6 +73,14 @@ UserPackageSchema.methods.validPassword = function(password) {
 	var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
 	return this.hash == hash;
 };
+
+UserPackageSchema.methods.UserRolesDisplay = function(){
+	var s = "";
+	for(var i=0; i < this.user_roles.length; i++)
+	{
+		s+= this.user_roles[i]+" | ";
+	}
+}
 
 //determine if user has vetting privilages
 UserPackageSchema.methods.isVetting = function(cb) {

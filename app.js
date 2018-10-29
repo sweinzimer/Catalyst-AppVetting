@@ -36,6 +36,7 @@ var appform = require('./routes/appform')(passport);
 var vettingworksheet = require('./routes/vettingworksheet')(passport);
 var regUser = require('./routes/regUser')(passport);
 var site = require('./routes/site')(passport);
+var planning = require('./routes/planning')(passport);
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -147,6 +148,18 @@ hbs.registerHelper('otherResidents', function(residentsObject) {
   }
 })
 
+hbs.registerHelper('select', function(values) {
+  console.log('here');
+  console.log(values);
+  var $el = $('select');
+  console.log($el);
+  var i = 0;
+  for(i; i<values.length; i++)
+  {
+    $el.find('[value="' + values[i] + '"]').attr({'selected': 'selected'});
+  }
+  return $el.html();
+})
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Middleware
 // Use any middleware for the application that is needed. bodyParse allows parsing to
@@ -189,10 +202,11 @@ app.use('/view', view);
 app.use('/edit', edit);
 app.use('/application', appform);
 app.use('/vettingworksheet', vettingworksheet);
+
 app.use('/user', regUser);
 
 app.use('/site', site);
-
+app.use('/pm', planning);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries
 // Links to jQuery and Boots strap files

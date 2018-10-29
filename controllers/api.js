@@ -36,8 +36,12 @@ var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var AssessmentPackage = require('../models/assessmentPackage.js');
+<<<<<<< HEAD
 var ProjectPlanPackage = require('../models/projectPlanPackage.js');
 
+=======
+var AssessmentPackage = require('../models/planningPackage.js');
+>>>>>>> origin/develop
 var WorkItemPackage = require('../models/workItemPackage');
 var UserPackage = require('../models/userPackage');
 var RolePackage = require('../models/rolePackage');
@@ -239,7 +243,41 @@ module.exports = {
       console.error(err);
     }).catch(next);
   },
+//site assessment get docs for view
+getDocumentPlanning: function (req, res, next) {
+    // Log the api call we make along with the _id used by it
+    console.log('[ API ] getDocumentSite :: Call invoked with id: ' + req.params.id);
+		// Use results.DocumentPackage.<whatever you need> to access the information
+    Promise.props({
+      //document: DocumentPackage.findById(req.params.id).lean().execAsync()
+			doc: DocumentPackage.aggregate([
+				{$match: { _id : mongoose.Types.ObjectId(req.params.id)}},
+				{ $redact: {
+					$cond: {
+						if: { $eq: [ "$level", 5 ] },
+						then: "$$PRUNE",
+						else: "$$DESCEND"
+					}
+				}}
+			]).execAsync(),
+			work: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
+      planning: PlanningPackage.find({ applicationId: ObjectId(req.params.id) }).lean().execAsync()
 
+    }).then(function(results) {
+			console.log("results\n", results);
+      if (!results) {
+        console.log('[ API ] getDocumentStatusSite :: Documents package found: FALSE');
+      }
+      else {
+        console.log('[ API ] getDocumentStatusSite :: Documents package found: TRUE');
+      }
+			res.locals.results = results;
+      next();
+
+    }).catch(function(err) {
+      console.error(err);
+    }).catch(next);
+  },
 	getUsers: function(req, res, next) {
 		console.log("getting users");
 		 Promise.props({
@@ -253,7 +291,18 @@ module.exports = {
                     console.log('users found');
 					for(var x=0; x<results.users.length; x++) {
 						results.users[x].salt = "";
-						results.users[x].hash = "";
+                        results.users[x].hash = "";
+                        console.log('here');
+                        console.log(results.users[x]);
+                        results.users[x].user_roles_display="";
+                        if (results.users[x].user_roles === undefined || results.users[x].user_roles.length===0 ) {
+                            results.users[x].user_roles_display += results.users[x].user_role + " | ";
+                        }
+                        else {
+                            for (var i = 0; i < results.users[x].user_roles.length; i++) {
+                                results.users[x].user_roles_display += results.users[x].user_roles[i] + " | ";
+                            }
+                        }
 					}
 				}
 
@@ -883,7 +932,86 @@ module.exports = {
 		}
     },
 
+    updateUserRoles: function(req, res, next) {
+        // When executed this will apply updates to a user and return the MODIFIED user
+        // Log the _id, name, and value that are passed to the function
 
+         console.log('[ API ] updateUserRoles :: Call invoked with _id: ' + req.body.pk
+           + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
+        //console.log(req.body.name + ' + ' + req.body.value);
+	   //console.log("in req body");
+        console.log(req.body)
+		//res.locals.status = 200;
+		//next();
+        // Build the name:value pairs to be updated
+        // Since there is only one name and one value, we can use the method below
+
+		
+			
+		        var updates = {};
+				//updates[req.body.name] = req.body.value;
+               
+                var user_roles = JSON.parse(req.body.user_roles);
+                console.log(user_roles);
+              
+				// Record Update time
+				//filters
+				var conditions = {};
+                conditions['_id'] = req.body.Id;
+                console.log(req.body['user_roles']);
+				console.log("Search Filter:");
+				console.log(conditions);
+                console.log("Update:");
+                updates['user_roles'] = user_roles;
+                
+               
+                updates['updated'] = Date.now();
+                
+				console.log(updates);
+
+				Promise.props({
+					user: UserPackage.findOneAndUpdate(
+						// Condition
+						conditions,
+						// Updates
+						{
+							// $set: {name: value}
+							$set: updates
+						},
+						// Options
+						{
+							// new - defaults to false, returns the modified document when true, or the original when false
+							new: true,
+							// runValidators - defaults to false, make sure the data fits the model before applying the update
+							runValidators: true
+						}
+						// Callback if needed
+						// { }
+					).execAsync()
+				})
+					.then(function (results) {
+						console.log(results);
+						// TODO: Confirm true/false is correct
+						if (results) {
+							console.log('[ API ] updateUser :: Documents package found: TRUE');
+						}
+						else {
+							console.log('[ API ] updateUser :: Documents package found: FALSE');
+						}
+						res.locals.results = results;
+						//sending a status of 200 for now
+						res.locals.status = '200';
+
+						// If we are at this line all promises have executed and returned
+						// Call next() to pass all of this glorious data to the next express router
+						next();
+					})
+					.catch(function (err) {
+						console.error(err);
+					})
+					.catch(next);
+		
+    },
 
 
 	updatePassword: function(req, res, next) {

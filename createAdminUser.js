@@ -51,7 +51,8 @@ var adminUser = {
     "ID_badge": true
   },
   "user_created": 1492547010917,
-  "user_role": "ADMIN"
+  "user_role": "ADMIN",
+  "user_roles": ["ADMIN"]
 }
 
 api.postUser({ body: adminUser }, { send: () => {} }, () => {})
