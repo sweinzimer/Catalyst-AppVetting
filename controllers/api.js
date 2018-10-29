@@ -36,15 +36,12 @@ var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var AssessmentPackage = require('../models/assessmentPackage.js');
-<<<<<<< HEAD
 var ProjectPlanPackage = require('../models/projectPlanPackage.js');
-
-=======
-var AssessmentPackage = require('../models/planningPackage.js');
->>>>>>> origin/develop
 var WorkItemPackage = require('../models/workItemPackage');
 var UserPackage = require('../models/userPackage');
 var RolePackage = require('../models/rolePackage');
+
+var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
 
 var FinancialPackage = require('../models/finPackage');
 var crypto = require('crypto');
