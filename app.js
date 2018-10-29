@@ -37,6 +37,9 @@ var vettingworksheet = require('./routes/vettingworksheet')(passport);
 var regUser = require('./routes/regUser')(passport);
 var site = require('./routes/site')(passport);
 var planning = require('./routes/planning')(passport);
+var projectsummary = require('./routes/projectsummary')(passport);
+var volunteers = require('./routes/volunteers')(passport);
+var projectview = require('./routes/projectview')(passport);
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -207,6 +210,10 @@ app.use('/user', regUser);
 
 app.use('/site', site);
 app.use('/pm', planning);
+
+app.use('/projectsummary', projectsummary);
+app.use('/volunteers', volunteers);
+app.use('/projectview', projectview);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries
 // Links to jQuery and Boots strap files
