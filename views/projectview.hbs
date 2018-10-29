@@ -1,0 +1,1025 @@
+<!-- Project View (once clicked on it)  
+      -- Should have Client Name and address at the top (as in the mock up)
+      -- The following Tabs:
+          * Project Assessment Form 
+          * Work Items  
+          * Leaders 
+          * Planning (using the Planning Form for contents) 
+          * Partners (needs new data base fields for Org Name, Org Address, Contact Name, Contact Phone, Contact email) 
+          * Wrap Up (using the Wrap Up Form for contents)  -->
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="/javascript/xedit.js" type="text/javascript"></script>
+
+<style>
+  button.btn.btn-primary.btn-sm.editable-submit {
+    width: 35px;
+    height: 35px;
+  }
+
+  button.btn.btn-primary.btn-sm.editable-submit:after {
+    content:  "\2713 ";
+    font-size: 24px;
+  }
+
+  button.btn.btn-default.btn-sm.editable-cancel {
+    width: 35px;
+    height: 35px;
+  }
+  button.btn.btn-default.btn-sm.editable-cancel:after {
+    content:  "\2190 ";
+    font-size: 24px;
+  }
+</style>
+
+
+<div class="row">
+  <div class="col-sm-12">
+    <h5>Project View!  **NEW**</h5>
+
+    {{#each results.doc}}
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 style="display:inline-block;">{{application.name.first}} {{application.name.middle}} {{application.name.last}}</h1>
+          <h3 style="float:right;display:inline-block;" class="text-muted">#{{app_name}}</h4>
+        </div>
+      </div>
+      <h5>Status: <a href="#" id="status" data-type="select" data-pk="{{_id}}" data-url="/edit/{{_id}}" data-name="status" data-title="Select status"></a></h5>
+    {{/each}}
+
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#projectInfo" role="tab">Project Info</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#contact" role="tab">Contact (DEL)</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#work" role="tab">Work item Status</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#leaders" role="tab">Leaders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#planning" role="tab">Planning</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#partners" role="tab">Partners</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#wrapUp" role="tab">Wrap Up</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane" id="contact" role="tabpanel">
+        <br />
+        {{#each results.doc}}
+          <div class="row">
+            <div class="col-xs-12 col-sm-6" style="float:left;">
+              <h4>Applicant Contact Info</h4>
+              <table class="table">
+                <tr>
+                  <th class="col-xs-3">Address</th>
+                  <td class="col-xs-9">
+                    {{application.address.line_1}}<br/>
+                    {{#if_not_eq application.address.line_2 ''}}
+                      {{application.address.line_2}}<br/>
+                    {{/if_not_eq}}
+                    {{application.address.city}}, {{application.address.state}} {{application.address.state}}<br/>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Phone</th>
+                  <td class="col-xs-9">{{application.phone.preferred}}</td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Email</th>
+                  <td class="col-xs-9">
+                    {{#if_not_eq application.email ''}}
+                      <a href="mailto:{{application.email}}">{{application.email}}</a>
+                    {{else}}
+                      None
+                    {{/if_not_eq}}
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Advocate Info</th>
+                  <td class="col-xs-9">
+                    {{#if advocate.is_advocate}}
+                      {{advocate.name}}<br/>
+                      {{advocate.phone}}<br/>
+                      {{advocate.relationship}}, {{advocate.organization_name}}<br/>
+                      {{#if advocate.npo}}Non-profit<br/>{{/if}}
+                      {{#if advocate.gov}}Government<br/>{{/if}}
+                    {{else}}
+                      None
+                    {{/if}}
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Emergency Contact</th>
+                  <td class="col-xs-9">
+                    {{application.emergency_contact.name}}<br/>
+                    {{application.emergency_contact.relationship}}<br/>
+                    {{application.emergency_contact.phone}}
+                  </td>
+                </tr>
+
+              </table>
+
+              <h5>Applicant information</h5>
+              <table class="table">
+                <tr>
+                  <th class="col-xs-3">Age</th>
+                  <td class="col-xs-9">{{ageAndBirthday application.dob.date}}</td>
+                </tr>
+
+
+                <tr>
+                  <th class="col-xs-3">Owns home</th>
+                  <td class="col-xs-9">{{#if application.owns_home}}Yes{{else}}No{{/if}}</td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Spouse</th>
+                  <td class="col-xs-9">
+                    {{#if_not_eq application.marital.spouse ''}}
+                      {{application.marital.spouse}}, {{application.marital.status}}
+                    {{else}}
+                      None
+                    {{/if_not_eq}}
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Other residents</th>
+                  <td class="col-xs-9">{{otherResidents application.other_residents}}</td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Veteran Status</th>
+                  <td class="col-xs-9">{{#if application.veteran}}Veteran{{else}}None{{/if}}</td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Language</th>
+                  <td class="col-xs-9">{{application.language}}</td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Heard About</th>
+                  <td class="col-xs-9">
+                    {{#if_not_eq application.heard_about ''}}
+                      {{application.heard_about}}
+                    {{else}}
+                      No answer
+                    {{/if_not_eq}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+
+            <div class="col-xs-12 col-sm-6" style="float:left;">
+              <h4>Vetting Summary</h4>
+              <p>
+                {{#if_not_eq notes.vet_summary ''}}
+                  {{notes.vet_summary}}
+                {{else}}
+                  [no vetting summary]
+                {{/if_not_eq}}
+              </p>
+
+<!--               <h4>Map</h4>
+              <iframe width="100%" height="350" frameborder="0" style="border:0"
+              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD2CmgnSECdg_g-aFgp95NUBv2QUEidDvs&q={{googleMapAddr application.address}}"></iframe> -->
+            </div>
+          </div>
+        {{/each}}
+      </div><!-- end #contact -->
+
+      <div class="tab-pane active" id="projectInfo" role="tabpanel"><!-- start #projectInfo -->
+        <br />
+        {{#each results.doc}}
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <h4>Property Information</h4>
+              <table class="table">
+
+                <tr>
+                  <th class="col-sm-3">Property Type</th>
+                  <td class="col-sm-9">{{property.home_type}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Year Constructed</th>
+                  <td class="col-sm-9">{{property.year_constructed}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Days/Volunteers Needed</th>
+                  <td class="col-sm-9">11</td>
+                  <!-- <td class="col-sm-9">{{property.requested_repairs}}</td> -->
+                </tr>
+                <tr>
+                  <th class="col-sm-3">EST. Cost</th>
+                  <td class="col-sm-9">$1,200</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Funding Sources</th>
+                  <td class="col-sm-9">Funds raised</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3">Crew Chief</th>
+                  <td class="col-sm-9">FirstName LastName</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3">Project Advocate</th>
+                  <td class="col-sm-9">FirstName LastName</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3">Site Host</th>
+                  <td class="col-sm-9">FirstName LastName</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3">Project # (yr/total)</th>
+                  <td class="col-sm-9">551</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3">Lead / Asbestos Result</th>
+                  <td class="col-sm-9">PASS</td>
+                </tr>
+
+               <!--  <tr>
+                  <th class="col-sm-3">Client Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.client_can_contribute.value}}
+                      Yes - {{property.client_can_contribute.description}}
+                    {{else}} No {{/if}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Associates Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.associates_can_contribute.value}}
+                      Yes - {{property.associates_can_contribute.description}}
+                    {{else}} No{{/if}}
+                  </td>
+                </tr> -->
+              </table>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <h4>Summary</h4>
+              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
+              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
+            </div>
+          </div>
+        {{/each}}
+      </div><!-- end #projectInfo -->
+
+
+      <div class="tab-pane" id="partners" role="tabpanel"><!-- start #partners -->
+        <br />
+        {{#each results.doc}}
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <h4>Partners Info</h4>
+              <table class="table">
+
+<!--                 <tr>
+                  <th class="col-sm-3">Home Type</th>
+                  <td class="col-sm-9">{{property.home_type}}</td>
+                </tr> -->
+
+                <tr>
+                  <th class="col-sm-3">Church Partner(s)</th>
+                  <td class="col-sm-9">Church Name #1....</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3"></th>
+                  <td class="col-sm-9">Church Name #2....</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3">Other Partner(s)</th>
+                  <td class="col-sm-9">Test Realtor Ltd.</td>
+                </tr>
+
+                <tr>
+                  <!-- TODO: Clairify "length" unit -->
+                  <th class="col-sm-3">Final Volunteer Count</th>
+                  <td class="col-sm-9">{{property.ownership_length}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Final Labour-Hrs Count</th>
+                  <td class="col-sm-9">{{property.year_constructed}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Final $ in kind given</th>
+                  <td class="col-sm-9">$5,000</td>
+                </tr>
+                <!-- <tr>
+                  <th class="col-sm-3">Requested Repairs</th>
+                  <td class="col-sm-9">{{property.requested_repairs}}</td>
+                </tr> -->
+                <tr>
+                  <th class="col-sm-3">Client Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.client_can_contribute.value}}
+                      Yes - {{property.client_can_contribute.description}}
+                    {{else}} No {{/if}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Associates Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.associates_can_contribute.value}}
+                      Yes - {{property.associates_can_contribute.description}}
+                    {{else}} No{{/if}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <h4>Summary</h4>
+              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
+              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
+            </div>
+          </div>
+        {{/each}}
+      </div><!-- end #partners -->
+
+
+      <div class="tab-pane" id="planning" role="tabpanel"><!-- start #planning -->
+        <br />
+        {{#each results.doc}}
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <h4>Planning Info</h4>
+              <table class="table">
+
+<!--                 <tr>
+                  <th class="col-sm-3">Home Type</th>
+                  <td class="col-sm-9">{{property.home_type}}</td>
+                </tr> -->
+
+                <tr>
+                  <th class="col-sm-3">Church Partner(s)</th>
+                  <td class="col-sm-9">Church Name #1....</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3"></th>
+                  <td class="col-sm-9">Church Name #2....</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3">Other Partner(s)</th>
+                  <td class="col-sm-9">Test Realtor Ltd.</td>
+                </tr>
+
+                <tr>
+                  <!-- TODO: Clairify "length" unit -->
+                  <th class="col-sm-3">Final Volunteer Count</th>
+                  <td class="col-sm-9">{{property.ownership_length}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Final Labour-Hrs Count</th>
+                  <td class="col-sm-9">{{property.year_constructed}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Final $ in kind given</th>
+                  <td class="col-sm-9">$5,000</td>
+                </tr>
+                <!-- <tr>
+                  <th class="col-sm-3">Requested Repairs</th>
+                  <td class="col-sm-9">{{property.requested_repairs}}</td>
+                </tr> -->
+                <tr>
+                  <th class="col-sm-3">Client Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.client_can_contribute.value}}
+                      Yes - {{property.client_can_contribute.description}}
+                    {{else}} No {{/if}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Associates Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.associates_can_contribute.value}}
+                      Yes - {{property.associates_can_contribute.description}}
+                    {{else}} No{{/if}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <h4>Summary</h4>
+              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
+              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
+            </div>
+          </div>
+        {{/each}}
+      </div><!-- end #planning -->
+
+
+      <div class="tab-pane" id="leaders" role="tabpanel"><!-- start #leaders -->
+        <br />
+        {{#each results.doc}}
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <h4>Leaders Info</h4>
+              <table class="table">
+
+<!--                 <tr>
+                  <th class="col-sm-3">Home Type</th>
+                  <td class="col-sm-9">{{property.home_type}}</td>
+                </tr> -->
+
+                <tr>
+                  <th class="col-sm-3">Church Partner(s)</th>
+                  <td class="col-sm-9">Church Name #1....</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3"></th>
+                  <td class="col-sm-9">Church Name #2....</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3">Other Partner(s)</th>
+                  <td class="col-sm-9">Test Realtor Ltd.</td>
+                </tr>
+
+                <tr>
+                  <!-- TODO: Clairify "length" unit -->
+                  <th class="col-sm-3">Final Volunteer Count</th>
+                  <td class="col-sm-9">{{property.ownership_length}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Final Labour-Hrs Count</th>
+                  <td class="col-sm-9">{{property.year_constructed}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Final $ in kind given</th>
+                  <td class="col-sm-9">$5,000</td>
+                </tr>
+                <!-- <tr>
+                  <th class="col-sm-3">Requested Repairs</th>
+                  <td class="col-sm-9">{{property.requested_repairs}}</td>
+                </tr> -->
+                <tr>
+                  <th class="col-sm-3">Client Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.client_can_contribute.value}}
+                      Yes - {{property.client_can_contribute.description}}
+                    {{else}} No {{/if}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Associates Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.associates_can_contribute.value}}
+                      Yes - {{property.associates_can_contribute.description}}
+                    {{else}} No{{/if}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <h4>Summary</h4>
+              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
+              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
+            </div>
+          </div>
+        {{/each}}
+      </div><!-- end #leaders -->
+
+
+      <div class="tab-pane" id="wrapUp" role="tabpanel"><!-- start #wrapUp -->
+        <br />
+        {{#each results.doc}}
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <h4>Wrap up Info</h4>
+              <table class="table">
+
+<!--                 <tr>
+                  <th class="col-sm-3">Home Type</th>
+                  <td class="col-sm-9">{{property.home_type}}</td>
+                </tr> -->
+
+                <tr>
+                  <th class="col-sm-3">Church Partner(s)</th>
+                  <td class="col-sm-9">Church Name #1....</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3"></th>
+                  <td class="col-sm-9">Church Name #2....</td>
+                </tr>
+
+                <tr>
+                  <th class="col-sm-3">Other Partner(s)</th>
+                  <td class="col-sm-9">Test Realtor Ltd.</td>
+                </tr>
+
+                <tr>
+                  <!-- TODO: Clairify "length" unit -->
+                  <th class="col-sm-3">Final Volunteer Count</th>
+                  <td class="col-sm-9">{{property.ownership_length}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Final Labour-Hrs Count</th>
+                  <td class="col-sm-9">{{property.year_constructed}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Final $ in kind given</th>
+                  <td class="col-sm-9">$5,000</td>
+                </tr>
+                <!-- <tr>
+                  <th class="col-sm-3">Requested Repairs</th>
+                  <td class="col-sm-9">{{property.requested_repairs}}</td>
+                </tr> -->
+                <tr>
+                  <th class="col-sm-3">Client Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.client_can_contribute.value}}
+                      Yes - {{property.client_can_contribute.description}}
+                    {{else}} No {{/if}}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Associates Can Contrib.</th>
+                  <td class="col-sm-9">
+                    {{#if property.associates_can_contribute.value}}
+                      Yes - {{property.associates_can_contribute.description}}
+                    {{else}} No{{/if}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <h4>Summary</h4>
+              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
+              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
+            </div>
+          </div>
+        {{/each}}
+      </div><!-- end #wrapUp -->
+
+
+      <div class="tab-pane" id="work" role="tabpanel"><!-- START #work -->
+        <br />
+        <div class="row" id="workItemCards">
+          <div class="col-xs-12 col-sm-6">
+            <div class="card work-item" name="new">
+              <div class="card-block">
+                
+
+              <h4>Applicant Contact Info</h4>
+              <table class="table">
+                <tr>
+                  <th class="col-xs-3">Address</th>
+                  <td class="col-xs-9">
+                    {{application.address.line_1}}<br/>
+                    {{#if_not_eq application.address.line_2 ''}}
+                      {{application.address.line_2}}<br/>
+                    {{/if_not_eq}}
+                    {{application.address.city}}, {{application.address.state}} {{application.address.state}}<br/>
+                  </td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Phone</th>
+                  <td class="col-xs-9">{{application.phone.preferred}}</td>
+                </tr>
+
+                <tr>
+                  <th class="col-xs-3">Email</th>
+                  <td class="col-xs-9">
+                    {{#if_not_eq application.email ''}}
+                      <a href="mailto:{{application.email}}">{{application.email}}</a>
+                    {{else}}
+                      None
+                    {{/if_not_eq}}
+                  </td>
+                </tr>
+
+
+                <h4 class="card-title">New Work Item</h4>
+                <p class="card-text">
+                  <div class="form-group">
+                    <label class="form-control-label">Name*</label>
+                    <input type="text" class="form-control" name="name"></input>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Description*</label>
+                    <textarea class="form-control" name="description" rows="5"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Site Comments*</label>
+                    <textarea class="form-control" name="siteComments" rows="5"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Cost</label>
+                    <input type="cost" class="form-control" name="cost"></input>
+                  </div>
+
+
+
+                </p>
+                <a href="#" class="btn btn-primary card-link work-item-new">Save</a>
+                <a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
+              </div>
+            </div>
+          </div>
+
+<!--           {{#each results.work}}
+            <div class="col-xs-12 col-sm-6">
+              <div class="card work-item" name="{{_id}}">
+                <div class="card-block">
+                  <h4 class="card-title" name="{{_id}}.name">{{name}}</h4>
+                  <p class="text-muted">{{date}}</p>
+                  <p class="card-text">
+                    <strong>Description:</strong><br/>
+                    <span name="{{_id}}.description">{{description}}</span><br/>
+                    <br/>
+                    <strong>Vetting comments:</strong><br/>
+                    {{vettingComments}}<br/>
+                    <br/>
+                    <strong>Site comments:</strong><br/>
+                    <span name="{{_id}}.siteComments">{{siteComments}}</span><br/>
+                    <br/>
+                    <strong>Cost:</strong><br/>
+                    <span name="{{_id}}.cost">{{cost}}</span>
+                  </p>
+                  <a href="#" class="btn btn-primary card-link work-item-edit">Edit</a>
+                </div>
+              </div>
+            </div>
+          {{/each}} -->
+        </div>
+      </div><!-- END #work -->
+
+
+
+
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+  var workItems = {{{stringify results.work}}}
+  var docs = {{{stringify results.doc}}}
+  $(document).ready(function() {
+    $('.work-item-edit').each(watchEditButton)
+    $('.work-item-new').on('click', handleNewWorkItemSubmission)
+    $('.work-item-clear').on('click', handleNewWorkItemClear)
+    $('#site_summary').on('keydown', handleSiteSummaryInput)
+
+    $('#status').editable({
+        value: docs[0].status,
+        source: [
+          {value: 'assess', text: 'Site Assessment - Pending'},
+          {value: 'assessComp', text: 'Site Assessment - Complete'},
+        ]
+    });
+
+
+  })
+
+  function handleSiteSummaryInput(e) {
+    if (window.siteSummaryTimeout) {
+      window.clearTimeout(window.siteSummaryTimeout)
+    }
+    // TODO: set this URL
+    window.siteSummaryTimeout = window.setTimeout(function() {
+      xhr(
+        { id: docs[0]._id, name: 'notes.site_summary', value: this.val },
+        'POST',
+        '/site/updatesummary',
+        function(err, data) {
+          console.info('site summary saved')
+        }
+      )
+    }.bind({val: e.target.value}), 500)
+  }
+
+  // Used with $(*).each
+  function watchEditButton(idx) {
+    $(this).on('click', showWorkItemEditForm)
+  }
+
+  function showWorkItemEditForm(e) {
+    e.preventDefault()
+    var workItemParent = this.parentElement
+    var workItemContainer = $(workItemParent)
+    var workItemId = $(workItemParent.parentElement).attr('name')
+
+    var currentData = {}
+    $('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+      var path = $(this).attr('name').replace(workItemId + '.', '')
+      currentData[path] = this.innerText
+    })
+
+    workItemContainer.empty()
+
+    var fields = [
+      {field: 'name', text:'Name'},
+      {field: 'description', text: 'Description', type: 'textarea'},
+      {field: 'siteComments', text: 'Site Comments', type: 'textarea'},
+      {field: 'cost', text: 'Cost'},
+    ]
+
+    fields.forEach(function(f) {
+      var formGroup = $('<div class="form-group"></div>')
+      $('<label>' + f.text + '</label>').appendTo(formGroup)
+      if (f.type && f.type === 'textarea') {
+        $('<textarea></textarea>')
+        .addClass('form-control')
+        .attr('name', workItemId + '.' + f.field)
+        .attr('rows', 5)
+        .val(currentData[f.field])
+        .appendTo(formGroup)
+      } else {
+        $('<input></input>')
+        .addClass('form-control')
+        .attr('name', workItemId + '.' + f.field)
+        .val(currentData[f.field])
+        .appendTo(formGroup)
+      }
+
+      workItemContainer.append(formGroup)
+    })
+
+    $('<button></button>')
+    .text('Save')
+    .addClass('btn').addClass('btn-primary')
+    .addClass('card-link')
+    .on('click', function(e) {
+      saveWorkItem(workItemContainer)
+    })
+    .appendTo(workItemContainer)
+
+    $('<button></button>')
+    .text('Cancel')
+    .addClass('btn').addClass('btn-danger')
+    .addClass('card-link')
+    .on('click', function(e) {
+      for (let i=0; i<workItems.length; i++) {
+        if (workItems[i]._id === workItemId) {
+          showWorkItem(workItems[i], workItemContainer)
+        }
+      }
+    })
+    .appendTo(workItemContainer)
+  }
+
+  function showWorkItem(data, node) {
+    node.empty()
+
+    var cardBlock = node
+
+    $('<h4></h4>').addClass('card-title')
+    .attr('name', data._id + '.name')
+    .text(data.name)
+    .appendTo(cardBlock)
+
+    $('<p></p>').addClass('text-muted')
+    .text(new Date(data.date).toString())
+    .appendTo(cardBlock)
+
+    var cardText = $('<p></p>').addClass('card-text')
+    .appendTo(cardBlock)
+
+    $('<strong>Description:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<span></span>')
+    .attr('name', data._id + '.description')
+    .text(data.description)
+    .appendTo(cardText)
+
+    $('<br></br>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Vetting Comments:</strong>').appendTo(cardText)
+    // $('<br></br>').appendTo(cardText)
+
+    $('<p></p>').text(data.vettingComments).appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Site Comments:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<p></p>').attr('name', data._id + '.siteComments')
+    .text(data.siteComments).appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Cost:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<span></span>')
+    .attr('name', data._id + '.cost')
+    .text(data.cost)
+    .appendTo(cardText)
+
+    $('<a></a>').addClass('btn').addClass('btn-primary')
+    .addClass('card-link').addClass('work-item-edit')
+    .text('Edit')
+    .attr('href', '#')
+    .on('click', showWorkItemEditForm)
+    .appendTo(cardBlock)
+  }
+
+  function saveWorkItem(node) {
+    var data = {}, id = false
+    $('input, textarea', node).each(function(idx) {
+      var path = this.name.split('.')[1]
+      data[path] = this.value
+      if (!id) id = this.name.split('.')[0]
+    })
+
+    // XHR here
+    var xhrData = JSON.parse(JSON.stringify(data))
+    xhrData.id = id
+
+    xhr(xhrData, 'POST', '/site/updateitem', function(err) {
+      if (err) {
+        // TODO: If error, flip the value back and show an error message to the user
+        // alert('Value did not save, please reload the page')
+      }
+
+      for (var i=0; i<workItems.length; i++) {
+        if (workItems[i]._id === id) {
+          Object.keys(data).forEach(function(k) {
+            workItems[i][k] = data[k]
+          })
+
+          showWorkItem(workItems[i], node)
+        }
+      }
+    })
+
+
+
+
+
+
+  }
+
+  function xhr(data, method, url, next) {
+    //post to database
+
+    var posting = $.ajax({
+      type : method,
+      url : url,
+      dataType : 'json',
+      contentType : 'application/json; charset=UTF-8',
+      data : JSON.stringify(data)
+    });
+
+    //check for error
+    posting.done(function (xhr) {
+      if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
+        next(null, xhr)
+      } else {
+        next(new Error('Could not complete xhr'))
+      }
+    });
+
+    posting.fail(function (res) {
+      next(new Error('Could not complete xhr'))
+    });
+  }
+
+  function handleNewWorkItemSubmission(e) {
+    var newWorkItem = {}, error = false
+
+    $('input, textarea', e.target.parentNode).each(function(idx) {
+      if (this.value.length === 0 && this.name !== 'cost') {
+        $(this.parentNode).addClass('has-danger')
+        error = true
+      } else {
+        newWorkItem[this.name] = this.value
+        $(this.parentNode).removeClass('has-danger')
+      }
+    })
+
+    if (error === false) {
+      createNewWorkItem(newWorkItem, function(err) {
+        handleNewWorkItemClear()
+      })
+    }
+  }
+
+  function handleNewWorkItemClear(e, node) {
+    $('input, textarea', (e ? e.target.parentNode : node)).each(function(idx) {
+      $(this).val('')
+      $(this.parentNode).removeClass('has-danger')
+    })
+  }
+
+  function createNewWorkItem(w, next) {
+    var id = docs[0]._id
+    var rightNow = new Date()
+
+    w.date = rightNow
+    w.updated = rightNow
+    w.applicationId = id
+
+    xhr(w, 'POST', '/site/additem', function(err, data) {
+      // TODO: Handle error
+      if (err) { alert('There was an error saving your work item') }
+
+      w._id = data.itemId
+      workItems.push(w)
+      var newNode = addWorkItem(w)
+      handleNewWorkItemClear(null, $('[name="new"]'))
+
+    })
+  }
+
+  function addWorkItem(w) {
+    var cardContainer = $('#workItemCards')
+
+    var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6')
+    .appendTo(cardContainer)
+
+    var card = $('<div></div>').addClass('card').addClass('work-item')
+    .attr('name', w._id)
+    .appendTo(cardDiv)
+
+    var cardBlock = $('<div></div>').addClass('card-block')
+    .appendTo(card)
+
+
+    $('<h4></h4>').addClass('card-title')
+    .attr('name', w._id + '.name')
+    .text(w.name)
+    .appendTo(cardBlock)
+
+    $('<p></p>').addClass('text-muted')
+    .text(w.date.toString())
+    .appendTo(cardBlock)
+
+    var cardText = $('<p></p>').addClass('card-text')
+    .appendTo(cardBlock)
+
+    $('<strong>Description:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<span></span>')
+    .attr('name', w._id + '.description')
+    .text(w.description)
+    .appendTo(cardText)
+
+    $('<br></br>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Vetting Comments:</strong>').appendTo(cardText)
+    // $('<br></br>').appendTo(cardText)
+
+    $('<p></p>').text(w.vettingComments).appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Site Comments:</strong>').appendTo(cardText)
+    // $('<br></br>').appendTo(cardText)
+
+    $('<p></p>').text(w.siteComments).appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<strong>Cost:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
+    $('<span></span>')
+    .attr('name', w._id + '.cost')
+    .text(w.cost)
+    .appendTo(cardText)
+
+    $('<a></a>').addClass('btn').addClass('btn-primary')
+    .addClass('card-link').addClass('work-item-edit')
+    .text('Edit')
+    .attr('href', '#')
+    .on('click', showWorkItemEditForm)
+    .appendTo(cardBlock)
+
+    return cardBlock
+  }
+
+
+
+</script>

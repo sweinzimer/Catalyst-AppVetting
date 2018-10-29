@@ -41,6 +41,8 @@ var WorkItemPackage = require('../models/workItemPackage');
 var UserPackage = require('../models/userPackage');
 var RolePackage = require('../models/rolePackage');
 
+var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
+
 var FinancialPackage = require('../models/finPackage');
 var crypto = require('crypto');
 var bluebird = require('bluebird');
