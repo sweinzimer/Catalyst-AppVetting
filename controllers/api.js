@@ -36,6 +36,7 @@ var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var AssessmentPackage = require('../models/assessmentPackage.js');
+var PlanningPackage = require('../models/planningPackage.js');
 var ProjectPlanPackage = require('../models/projectPlanPackage.js');
 var WorkItemPackage = require('../models/workItemPackage');
 var UserPackage = require('../models/userPackage');
