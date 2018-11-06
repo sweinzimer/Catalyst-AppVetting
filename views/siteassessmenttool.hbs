@@ -324,7 +324,7 @@
       <!-- Assessment Checklist -->
       <div class="tab-pane" id="checklist" role="tabpanel">
         <form>
-          {{#each results.assessment}}
+          {{#each assessment}}
           <ul class="assessment-checklist">
             <br />
             <li class="checklist-item">
@@ -489,7 +489,7 @@
 </div>
 
 <script>
- var assessment = {{{ stringify results.assessment }}}
+ var assessment = {{{ stringify assessment }}}
    window.assessment = assessment;
 
  var workItems = {{{stringify results.work}}}

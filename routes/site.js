@@ -67,9 +67,15 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
 	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
-  payload.assessment = res.locals.assessment || AssessmentPackage.empty;
+  if (res.locals.results.assessment && res.locals.results.assessment.length > 0) {
+    console.log("Found assessment: ", res.locals.results.assessment);
+    payload.assessment = res.locals.results.assessment;
+  } else {
+    payload.assessment = [AssessmentPackage.empty];
+    console.log("No assessment found. Using empty: ", payload.assessment);
+  }
 	console.log("results");
-    console.log(payload);
+  console.log(payload);
  
 	res.render('siteassessmenttool', payload);
 
