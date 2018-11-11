@@ -1489,17 +1489,30 @@ getDocumentPlanning: function (req, res, next) {
 			}
 			if(req.body.vettingComments != null) {
 				updates.vettingComments = req.body.vettingComments;
-			}
+            }
+            if(req.body.projectComments != null)
+            {
+                updates.projectComments = req.body.projectComments;
+            }
 		}
 		
 		else if(res.locals.role == "SITE") {
-			updates.siteComments = req.body.siteComments;
+            if(req.body.siteComments != null) {
+				updates.siteComments = req.body.siteComments;
+			}
+           
 		}
         else {
 			if(req.body.vettingComments != null) {
-				updates.vettingComments = req.body.vettingComments;
-			}
-		}
+                updates.vettingComments = req.body.vettingComments;
+                
+            }
+           
+        }
+        
+        if(req.body.siteComments != null) {
+            updates.siteComments = req.body.siteComments;
+        }
         //filters
         var conditions = {};
         conditions['_id'] = req.body.id;

@@ -582,39 +582,11 @@
       <div class="tab-pane" id="work" role="tabpanel"><!-- START #work -->
         <br />
         <div class="row" id="workItemCards">
-          <div class="col-xs-12 col-sm-6">
+          {{!-- <div class="col-xs-12 col-sm-6">
             <div class="card work-item" name="new">
-              <div class="card-block">
-                
-
-              <h4>Applicant Contact Info</h4>
-              <table class="table">
-                <tr>
-                  <th class="col-xs-3">Address</th>
-                  <td class="col-xs-9">
-                    {{application.address.line_1}}<br/>
-                    {{#if_not_eq application.address.line_2 ''}}
-                      {{application.address.line_2}}<br/>
-                    {{/if_not_eq}}
-                    {{application.address.city}}, {{application.address.state}} {{application.address.state}}<br/>
-                  </td>
-                </tr>
-
-                <tr>
-                  <th class="col-xs-3">Phone</th>
-                  <td class="col-xs-9">{{application.phone.preferred}}</td>
-                </tr>
-
-                <tr>
-                  <th class="col-xs-3">Email</th>
-                  <td class="col-xs-9">
-                    {{#if_not_eq application.email ''}}
-                      <a href="mailto:{{application.email}}">{{application.email}}</a>
-                    {{else}}
-                      None
-                    {{/if_not_eq}}
-                  </td>
-                </tr>
+              <div class="card-block">             
+          
+            
 
 
                 <h4 class="card-title">New Work Item</h4>
@@ -642,10 +614,10 @@
                 <a href="#" class="btn btn-primary card-link work-item-new">Save</a>
                 <a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
               </div>
-            </div>
-          </div>
+            </div> 
+          </div> --}}
 
-<!--           {{#each results.work}}
+         {{#each results.work}}
             <div class="col-xs-12 col-sm-6">
               <div class="card work-item" name="{{_id}}">
                 <div class="card-block">
@@ -656,19 +628,22 @@
                     <span name="{{_id}}.description">{{description}}</span><br/>
                     <br/>
                     <strong>Vetting comments:</strong><br/>
-                    {{vettingComments}}<br/>
+                    <span name="{{_id}}.vettingComments">{{vettingComments}}</span><br/>
                     <br/>
                     <strong>Site comments:</strong><br/>
                     <span name="{{_id}}.siteComments">{{siteComments}}</span><br/>
                     <br/>
+                    <strong>Project comments:</strong><br/>
+                    <span name="{{_id}}.projectComments">{{projectComments}}</span><br/>
+                    <br/>
                     <strong>Cost:</strong><br/>
                     <span name="{{_id}}.cost">{{cost}}</span>
-                  </p>
-                  <a href="#" class="btn btn-primary card-link work-item-edit">Edit</a>
+                  </p>  
+                  <a href="#" class="btn btn-primary card-link work-item-comment">Add Comment</a>                
                 </div>
               </div>
             </div>
-          {{/each}} -->
+          {{/each}}
         </div>
       </div><!-- END #work -->
 
@@ -685,7 +660,7 @@
   var workItems = {{{stringify results.work}}}
   var docs = {{{stringify results.doc}}}
   $(document).ready(function() {
-    $('.work-item-edit').each(watchEditButton)
+    $('.work-item-comment').each(watchEditButton)
     $('.work-item-new').on('click', handleNewWorkItemSubmission)
     $('.work-item-clear').on('click', handleNewWorkItemClear)
     $('#site_summary').on('keydown', handleSiteSummaryInput)
@@ -735,13 +710,12 @@
       currentData[path] = this.innerText
     })
 
-    workItemContainer.empty()
+    $(this).toggle();
+    //workItemContainer.empty()
 
     var fields = [
-      {field: 'name', text:'Name'},
-      {field: 'description', text: 'Description', type: 'textarea'},
-      {field: 'siteComments', text: 'Site Comments', type: 'textarea'},
-      {field: 'cost', text: 'Cost'},
+      {field: 'projectComments', text:'Project Comments', type: 'textarea'},
+     
     ]
 
     fields.forEach(function(f) {
@@ -819,15 +793,27 @@
     $('<strong>Vetting Comments:</strong>').appendTo(cardText)
     // $('<br></br>').appendTo(cardText)
 
-    $('<p></p>').text(data.vettingComments).appendTo(cardText)
+    $('<p></p>').attr('name', data._id + '.vettingComments')
+    .text(data.vettingComments).appendTo(cardText)
     $('<br></br>').appendTo(cardText)
 
     $('<strong>Site Comments:</strong>').appendTo(cardText)
     $('<br></br>').appendTo(cardText)
+  
+    
 
     $('<p></p>').attr('name', data._id + '.siteComments')
     .text(data.siteComments).appendTo(cardText)
     $('<br></br>').appendTo(cardText)
+
+    $('<strong>Project Comments:</strong>').appendTo(cardText)
+    $('<br></br>').appendTo(cardText) 
+    
+
+    $('<p></p>').attr('name', data._id + '.projectComments')
+    .text(data.projectComments).appendTo(cardText)
+    $('<br></br>').appendTo(cardText)
+
 
     $('<strong>Cost:</strong>').appendTo(cardText)
     $('<br></br>').appendTo(cardText)
@@ -838,8 +824,8 @@
     .appendTo(cardText)
 
     $('<a></a>').addClass('btn').addClass('btn-primary')
-    .addClass('card-link').addClass('work-item-edit')
-    .text('Edit')
+    .addClass('card-link').addClass('work-item-comment')
+    .text('Add Comment')
     .attr('href', '#')
     .on('click', showWorkItemEditForm)
     .appendTo(cardBlock)
@@ -870,6 +856,7 @@
           })
 
           showWorkItem(workItems[i], node)
+          //$('.work-items-comment').toggle();
         }
       }
     })
