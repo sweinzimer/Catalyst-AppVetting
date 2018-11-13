@@ -433,6 +433,43 @@ router.post('/updateNote', isLoggedInPost, api.updateVettingNote, function(req, 
 });
 
 
+/**
+ * Route for adding notes
+**/
+router.post('/addProjectNote', isLoggedInPost, api.postProjectNote, function(req, res, next) {
+    if(res.locals.status != '200'){
+        res.status(500).send("Could not add note");
+    }
+    else{
+        res.status(200).send({ status: 'success' });
+    }
+});
+
+/**
+ * Route for deleting notes
+ **/
+router.post('/delProjectNote', isLoggedInPost, api.removeProjectNote, function deleteNote(req, res, next) {
+    if(res.locals.status != '200'){
+        res.status(500).send("Could not delete note");
+    }
+    else{
+        res.status(200).send({ status: '200'});
+    }
+});
+
+/**
+ * Route for updating project notes
+ **/
+router.post('/updateProjectNote', isLoggedInPost, api.updateProjectNote, function(req, res, next) {
+    if(res.locals.status != '200'){
+        res.status(500).send("Could not update note");
+    }
+    else{
+        res.status(200).send({ status: '200'});
+    }
+});
+
+
 /* Route to specific application by DocumentPackage Object ID */
 router.get('/:id', isLoggedIn, function(req, res, next) {
     //Checking what's in params
