@@ -38,7 +38,7 @@ var regUser = require('./routes/regUser')(passport);
 var site = require('./routes/site')(passport);
 var planning = require('./routes/planning')(passport);
 var projectsummary = require('./routes/projectsummary')(passport);
-var volunteers = require('./routes/volunteers')(passport);
+var partners = require('./routes/partners')(passport);
 var projectview = require('./routes/projectview')(passport);
 
 
@@ -212,7 +212,7 @@ app.use('/site', site);
 app.use('/pm', planning);
 
 app.use('/projectsummary', projectsummary);
-app.use('/volunteers', volunteers);
+app.use('/partners', partners);
 app.use('/projectview', projectview);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries

@@ -44,6 +44,7 @@ var UserPackage = require('../models/userPackage');
 var RolePackage = require('../models/rolePackage');
 
 var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
+var PartnerPackage = require('../models/partnerPackage.js');
 
 var FinancialPackage = require('../models/finPackage');
 var crypto = require('crypto');
@@ -411,7 +412,13 @@ getDocumentPlanning: function (req, res, next) {
             approval: DocumentPackage.find({status: "approval"}).lean().execAsync(),
             handle: DocumentPackage.find({status: "handle"}).lean().execAsync(),
             declined: DocumentPackage.find({status: "declined", app_year : year}).lean().execAsync(),
-            project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync()
+            project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync(),
+            handleToBeAssigned: DocumentPackage.find({status: "handleToBeAssigned", app_year : year}).lean().execAsync(),
+            handleAssigned: DocumentPackage.find({status: "handleAssigned", app_year : year}).lean().execAsync(),
+            projectUpcoming: DocumentPackage.find({status: "projectUpcoming", app_year : year}).lean().execAsync(),
+            projectInProgress: DocumentPackage.find({status: "projectInProgress", app_year : year}).lean().execAsync(),
+            projectGoBacks: DocumentPackage.find({status: "projectGoBacks", app_year : year}).lean().execAsync(),
+            projectCompleted: DocumentPackage.find({status: "projectCompleted", app_year : year}).lean().execAsync()
         })
             .then(function (results) {
                 if (!results) {
@@ -2198,4 +2205,171 @@ getDocumentPlanning: function (req, res, next) {
             })
             .catch(next);
     },
+
+    //Project Summary  get docs for view
+    getDocProjectSummaryStatus: function (req, res, next) {
+        // Log the api call we make along with the _id used by it
+        console.log('[ API ] getDocProjectSummaryStatus :: ');
+        
+        // Use results.ProjectSummaryPackage.<whatever you need> to access the information
+        Promise.props({
+            //document: ProjectSummaryPackage.findById(req.params.id).lean().execAsync()
+            handleToBeAssigned: ProjectSummaryPackage.aggregate(
+                [
+                {$match: { status: "handleToBeAssigned"}},
+                    { $redact: {
+                        $cond: {
+                            if: { $eq: [ "$level", 5 ] },
+                            then: "$$PRUNE",
+                            else: "$$DESCEND"
+                        }
+                    }}
+                    
+                ]
+            ).execAsync(),
+            
+            handleAssigned: ProjectSummaryPackage.aggregate(
+                [
+                {$match: { status: "handleAssigned" }},
+                    { $redact: {
+                        $cond: {
+                            if: { $eq: [ "$level", 5 ] },
+                            then: "$$PRUNE",
+                            else: "$$DESCEND"
+                        }
+                    }}
+                    
+                ]
+            ).execAsync(),
+            
+            complete: ProjectSummaryPackage.aggregate(  //In Template, used to be complete: 
+                [
+                {$match: { status: "handleCompleted" }},
+                    { $redact: {
+                        $cond: {
+                            if: { $eq: [ "$level", 5 ] },
+                            then: "$$PRUNE",
+                            else: "$$DESCEND"
+                        }
+                    }}
+                    
+                ]
+            ).execAsync(),
+            
+            projectUpcoming: ProjectSummaryPackage.aggregate(
+                [
+                {$match: { status: "projectUpcoming" }},
+                    { $redact: {
+                        $cond: {
+                            if: { $eq: [ "$level", 5 ] },
+                            then: "$$PRUNE",
+                            else: "$$DESCEND"
+                        }
+                    }}
+                    
+                ]
+            ).execAsync(),
+            
+            projectInProgress: ProjectSummaryPackage.aggregate(
+                [
+                {$match: { status: "projectInProgress" }},
+                    { $redact: {
+                        $cond: {
+                            if: { $eq: [ "$level", 5 ] },
+                            then: "$$PRUNE",
+                            else: "$$DESCEND"
+                        }
+                    }}
+                    
+                ]
+            ).execAsync(),
+
+            projectGoBacks: ProjectSummaryPackage.aggregate(
+                [
+                {$match: { status: "projectGoBacks" }},
+                    { $redact: {
+                        $cond: {
+                            if: { $eq: [ "$level", 5 ] },
+                            then: "$$PRUNE",
+                            else: "$$DESCEND"
+                        }
+                    }}
+                    
+                ]
+            ).execAsync(),
+
+            projectCompleted: ProjectSummaryPackage.aggregate(
+                [
+                {$match: { status: "projectCompleted" }},
+                    { $redact: {
+                        $cond: {
+                            if: { $eq: [ "$level", 5 ] },
+                            then: "$$PRUNE",
+                            else: "$$DESCEND"
+                        }
+                    }}
+                    
+                ]
+            ).execAsync()
+        })
+            .then(function(results) {
+                console.log("results");
+                
+                
+                console.log(results);
+                if (!results) {
+                    console.log('[ API ] getDocProjectSummaryStatus :: Project Summary package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] getDocProjectSummaryStatus :: Project Summary found: TRUE');
+
+                }
+
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+
+      // Create / Update Assessment Checklist record
+  saveProjectSummaryStatus: function(req, res, next) {
+    console.log('Saving Project Summary Status for: ' + req.body.applicationId);
+
+    Promise.props({
+      assessment: AssessmentPackage.findOneAndUpdate(
+          { applicationId: req.body.applicationId },
+          { $set: req.body },
+          { new: true,
+            upsert: true,
+            runValidators: true,
+            setDefaultsOnInsert: true
+          }
+      ).execAsync()
+    }).then(function (results) {
+      console.log(results);
+      if (results.assessment !== null) {
+        console.log('[ API ] saveProjectSummaryStatus :: Project found: TRUE');
+        res.locals.status = '200';
+      } else {
+        console.log('[ API ] saveProjectSummaryStatus :: Project found: FALSE');
+        res.locals.status = '500';
+      }
+      res.locals.results = results
+
+      next();
+
+    }).catch(function (err) {
+      console.error(err)
+      
+    }).catch(next);
+
+    
+  },
+
 };
