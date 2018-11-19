@@ -37,7 +37,7 @@ var ProjectSummarySchema = new Schema({
 
   applicationId: ObjectId,
 
-  projStatus: String,
+  status: String,
 
   partners: [{
     org_name: String,
@@ -92,4 +92,4 @@ var ProjectSummarySchema = new Schema({
 });
 
 
-module.exports = mongoose.model('ProjectSummary', ProjectSummarySchema);
+module.exports = mongoose.model('ProjectSummaryPackage', ProjectSummarySchema);      //ProjectSummaryPackage
