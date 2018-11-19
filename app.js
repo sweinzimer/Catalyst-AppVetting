@@ -17,7 +17,7 @@ var morgan = require('morgan');
 var session = require('express-session');
 var app = express();
 //configure passport
-app.use(session({ secret: 'hidethissomewhere'}));
+app.use(session({ secret: 'hidethissomewhere', resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
