@@ -67,7 +67,10 @@ AssessmentPackage.empty = {
     waste_dumpster: { required: false, cost: 0 }
   },
   estimates: { total_cost: 0, volunteers_needed: 0 },
-  proposed_dates: { }
+  proposed_dates: {
+    start_date: '',
+    end_date: ''
+  }
 }
 
 module.exports = AssessmentPackage;

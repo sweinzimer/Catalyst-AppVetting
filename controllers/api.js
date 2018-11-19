@@ -34,14 +34,17 @@ var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 var HighlightPackage = require('../models/highlightPackage');
+var ProjectNotePackage = require('../models/projectNotePackage.js');
 var VettingNotePackage = require('../models/vettingNotePackage');
 var AssessmentPackage = require('../models/assessmentPackage.js');
-var AssessmentPackage = require('../models/planningPackage.js');
+var PlanningPackage = require('../models/planningPackage.js');
+var ProjectPlanPackage = require('../models/projectPlanPackage.js');
 var WorkItemPackage = require('../models/workItemPackage');
 var UserPackage = require('../models/userPackage');
 var RolePackage = require('../models/rolePackage');
 
 var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
+var PartnerPackage = require('../models/partnerPackage.js');
 
 var FinancialPackage = require('../models/finPackage');
 var crypto = require('crypto');
@@ -223,8 +226,8 @@ module.exports = {
 				}}
 			]).execAsync(),
 			work: WorkItemPackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
-      assessment: AssessmentPackage.find({ applicationId: ObjectId(req.params.id) }).lean().execAsync()
-
+      assessment: AssessmentPackage.find({ applicationId: ObjectId(req.params.id) }).lean().execAsync(),
+      projectNotes: ProjectNotePackage.find({applicationId: ObjectId(req.params.id)}).lean().execAsync(),
     }).then(function(results) {
 			console.log("results\n", results);
       if (!results) {
@@ -232,6 +235,7 @@ module.exports = {
       }
       else {
         console.log('[ API ] getDocumentStatusSite :: Documents package found: TRUE');
+        
       }
 			res.locals.results = results;
       next();
@@ -1323,6 +1327,50 @@ getDocumentPlanning: function (req, res, next) {
 
     },
 
+    postProjectNote: function(req, res, next) {
+        console.log('[ API ] postProjectNote :: call invoked');
+		console.log(req.body);
+		var userID = req.body.user.toString();
+		Promise.props({
+            user: UserPackage.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+        })
+            .then(function(results) {
+				console.log(results);
+                if (!results) {
+                    console.log('[ API ] postProjectNote :: User package found: FALSE');
+                }
+                else {
+                    console.log('[ API ] postProjectNote :: User package found: TRUE');
+					var note = new ProjectNotePackage(req.body);
+					var firstName = results.user.contact_info.user_name.user_first;
+					console.log('first name');
+					console.log(firstName);
+					note.projectPlanner = results.user.contact_info.user_name.user_first + " " + results.user.contact_info.user_name.user_last;
+					console.log(note.projectPlanner);
+
+					note.saveAsync(function (err, note, numAffected) {
+						if (err) {
+							console.error(err);
+						}
+						else if (numAffected == 1) {
+							console.log('[ API ] postVettingNote :: Note created with _id: ' + note._id);
+							//send note ID so it can be referenced without page refresh
+							res.send( { status : 200, noteId: note._id, projectPlanner: note.projectPlanner } );
+						}
+					})
+
+
+
+				}
+			})
+            .catch(function(err) {
+                console.error(err);
+            })
+            .catch(next);
+
+
+    },
+
 	//post new work item
 	addWorkItem: function(req, res, next) {
         console.log('[ API ] addWorkItem :: Call invoked');
@@ -1369,6 +1417,40 @@ getDocumentPlanning: function (req, res, next) {
             }
             else {
                 console.log('[ API ] removeVettingNote :: Note found: FALSE');
+            }
+            next();
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+    },
+
+    /**
+     * Description: remove a vetting note from the database
+     * Type: POST
+     * Params: _id of Vetting Note
+     * Address: api.removeVettingNote
+     * Returns: confirmation of delete
+     */
+    removeProjectNote: function(req, res, next) {
+        console.log('[ API ] removeProjectNote :: Call invoked');
+		//console.log(req.locals.status);
+        Promise.props({
+            note: ProjectNotePackage.remove(
+                {
+                    _id: req.body.noteId
+                }
+            ).execAsync()
+        })
+        .then(function (results) {
+            if (results) {
+                console.log('[ API ] removeProjectNote :: Note found: TRUE');
+                res.locals.results = results;
+                //sending a status of 200 for now
+                res.locals.status = '200';
+            }
+            else {
+                console.log('[ API ] removeProjectNote :: Note found: FALSE');
             }
             next();
         })
@@ -1469,6 +1551,64 @@ getDocumentPlanning: function (req, res, next) {
             .catch(next);
     },
 
+    updateProjectNote: function(req, res, next) {
+        // Log the _id, name, and value that are passed to the function
+        console.log('[ API ] updateProjectNote :: Call invoked with note _id: ' + req.body.id
+            + ' | description: ' + req.body.description);
+
+        var updates = {};
+        updates.description = req.body.description;
+
+        //filters
+        var conditions = {};
+        conditions['_id'] = req.body.id;
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
+        console.log(updates);
+
+        Promise.props({
+            note: ProjectNotePackage.findOneAndUpdate(
+                // Condition
+                conditions,
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: updates
+                },
+                // Options
+                {
+                    // new - defaults to false, returns the modified document when true, or the original when false
+                    new: true,
+                    // runValidators - defaults to false, make sure the data fits the model before applying the update
+                    runValidators: true
+                }
+                // Callback if needed
+                // { }
+            ).execAsync()
+        })
+            .then(function (results) {
+                console.log(results);
+                if (results.note != null) {
+                    console.log('[ API ] updateProjectNote :: Note found: TRUE');
+                    res.locals.status = '200';
+                }
+                else {
+                    console.log('[ API ] updateProjectNote :: Note found: FALSE');
+                    res.locals.status = '500';
+                }
+                res.locals.results = results;
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+
 
 
 	updateWorkItem: function(req, res, next) {
@@ -1494,17 +1634,30 @@ getDocumentPlanning: function (req, res, next) {
 			}
 			if(req.body.vettingComments != null) {
 				updates.vettingComments = req.body.vettingComments;
-			}
+            }
+            if(req.body.projectComments != null)
+            {
+                updates.projectComments = req.body.projectComments;
+            }
 		}
 		
 		else if(res.locals.role == "SITE") {
-			updates.siteComments = req.body.siteComments;
+            if(req.body.siteComments != null) {
+				updates.siteComments = req.body.siteComments;
+			}
+           
 		}
         else {
 			if(req.body.vettingComments != null) {
-				updates.vettingComments = req.body.vettingComments;
-			}
-		}
+                updates.vettingComments = req.body.vettingComments;
+                
+            }
+           
+        }
+        
+        if(req.body.siteComments != null) {
+            updates.siteComments = req.body.siteComments;
+        }
         //filters
         var conditions = {};
         conditions['_id'] = req.body.id;
@@ -1590,9 +1743,41 @@ getDocumentPlanning: function (req, res, next) {
       console.error(err)
       
     }).catch(next);
-
-    
   },
+
+  // Create / Update Project Plan record
+  saveProjectPlanDocument: function(req, res, next) {
+    console.log('saving project plan')
+
+    Promise.props({
+      projectPlan: ProjectPlanPackage.findOneAndUpdate(
+        { applicationId: req.body.applicationId },
+        { $set: req.body },
+        { new: true,
+          upsert: true,
+          runValidators: true,
+          setDefaultsOnInsert: true
+        }
+      ).execAsync()
+    }).then(function (results) {
+      console.log(results);
+      if (results.projectPlan !== null) {
+        console.log('[ API ] saveProjectPlanDocument :: Assessment found: TRUE');
+        res.locals.status = '200';
+      } else {
+        console.log('[ API ] saveProjectPlanDocument :: Assessment found: FALSE');
+        res.locals.status = '500';
+      }
+      res.locals.results = results
+
+      next();
+
+    }).catch(function (err) {
+      console.error(err)
+      
+    }).catch(next);
+  },
+
 
 	//update financial package
 	updateFinance: function(req, res, next) {

@@ -265,6 +265,11 @@
                               .text(data.siteComments).appendTo(cardText)
    $('<br></br>').appendTo(cardText)
 
+   
+   $('<p></p>').attr('name', data._id + '.projectComments')
+                              .text(data.projectComments).appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+
    $('<strong>Cost:</strong>').appendTo(cardText)
    $('<br></br>').appendTo(cardText)
 

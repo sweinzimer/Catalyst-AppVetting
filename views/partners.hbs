@@ -1,0 +1,78 @@
+<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="/javascript/xedit.js" type="text/javascript"></script>
+
+<style>
+  button.btn.btn-primary.btn-sm.editable-submit {
+    width: 35px;
+    height: 35px;
+  }
+
+  button.btn.btn-primary.btn-sm.editable-submit:after {
+    content:  "\2713 ";
+    font-size: 24px;
+  }
+
+  button.btn.btn-default.btn-sm.editable-cancel {
+    width: 35px;
+    height: 35px;
+  }
+  button.btn.btn-default.btn-sm.editable-cancel:after {
+    content:  "\2190 ";
+    font-size: 24px;
+  }
+</style>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h5>Add Partners</h5>
+
+    <div class="row">
+              <div class="col-xs-12 col-sm-6">
+               <!--  <h4>Partners</h4> -->
+                <table class="table">
+
+                  <tr>
+                    <th class="col-sm-3">Organization Name: </th>
+                    <td class="col-sm-9"><select>Select from list...</select></td>
+                    <h5>Status: <a href="#" id="status" data-type="select" data-pk="{{_id}}" data-url="/edit/{{_id}}" data-name="status" data-title="Select status"></a></h5>
+                  </tr>
+                  <tr>
+                    <th class="col-sm-3">Organization Address:</th>
+                    <td class="col-sm-9"><select>Select from list...</select></td>
+                  </tr>
+                  <tr>
+                    <th class="col-sm-3">Contact Name:</th>
+                    <td class="col-sm-9">11</td>
+                    <!-- <td class="col-sm-9">{{property.requested_repairs}}</td> -->
+                  </tr>
+                  <tr>
+                    <th class="col-sm-3">Contact Phone:</th>
+                    <td class="col-sm-9"><select>Select from list...</select></td>
+                  </tr>
+                  <tr>
+                    <th class="col-sm-3">Contact Email:</th>
+                    <td class="col-sm-9"><select>Select from list...</select></td>
+                  </tr>
+               
+                </table>
+              </div>    
+
+  </div>
+</div>
+
+<script src="/javascript/searchYear.js" type="text/javascript"></script>
+<!-- Make entire table rows clickable! -->
+<script>
+    jQuery(document).ready(function($) {
+        $(".clickable-row").click(function() {
+            window.location = $(this).data("href");
+        });
+    });
+</script>
+
+<style type="text/css">
+  .bg-pink {
+    background-color: #ff72b3;
+  }
+</style>

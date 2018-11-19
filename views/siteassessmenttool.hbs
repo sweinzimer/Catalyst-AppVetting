@@ -310,6 +310,9 @@
                     <strong>Site comments:</strong><br/>
                     <span name="{{_id}}.siteComments">{{siteComments}}</span><br/>
                     <br/>
+                    <strong>Project Comments:</strong><br/>
+                    {{projectComments}}<br/>
+                    <br/>
                     <strong>Cost:</strong><br/>
                     <span name="{{_id}}.cost">{{cost}}</span>
                   </p>
@@ -324,7 +327,7 @@
       <!-- Assessment Checklist -->
       <div class="tab-pane" id="checklist" role="tabpanel">
         <form>
-          {{#each results.assessment}}
+          {{#each assessment}}
           <ul class="assessment-checklist">
             <br />
             <li class="checklist-item">
@@ -489,7 +492,7 @@
 </div>
 
 <script>
- var assessment = {{{ stringify results.assessment }}}
+ var assessment = {{{ stringify assessment }}}
    window.assessment = assessment;
 
  var workItems = {{{stringify results.work}}}
@@ -642,6 +645,12 @@
 
    $('<p></p>').attr('name', data._id + '.siteComments')
                               .text(data.siteComments).appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+
+   $('<strong>Project Comments:</strong>').appendTo(cardText)
+   // $('<br></br>').appendTo(cardText)
+
+   $('<p></p>').text(data.projectComments).appendTo(cardText)
    $('<br></br>').appendTo(cardText)
 
    $('<strong>Cost:</strong>').appendTo(cardText)
@@ -815,6 +824,12 @@
    // $('<br></br>').appendTo(cardText)
 
    $('<p></p>').text(w.siteComments).appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+
+  $('<strong>Project Comments:</strong>').appendTo(cardText)
+   // $('<br></br>').appendTo(cardText)
+
+   $('<p></p>').text(w.projectComments).appendTo(cardText)
    $('<br></br>').appendTo(cardText)
 
    $('<strong>Cost:</strong>').appendTo(cardText)

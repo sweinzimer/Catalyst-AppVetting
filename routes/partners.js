@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
-var DocumentPackage = require('../models/documentPackage');
+//var DocumentPackage = require('../models/documentPackage');
+var PartnerPackage = require('../models/partnerPackage');
 
 var api = require('../controllers/api');
 var User = require('../models/userPackage');
@@ -18,100 +19,100 @@ Promise.promisifyAll(mongoose); // Convert mongoose API to always return promise
 var ObjectId = require('mongodb').ObjectID;
 
 module.exports = function(passport) {
-router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) {
+// router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) {
 
-	//separate applications in res.locals.results based on status of
-	//assessemnt pending or assessment complete
-	var payload = {};
-    console.log(res.locals.results);
-	if(res.locals.results.site[0] == null) {
-		console.log('[ ROUTER ] /site :: Unable to find Document Packages with status: \'assess\'');
-	}
-	else {
-		res.locals.results.site.forEach(function (element) {
-            element = formatElement(element);
-        });
-	}
+// 	//separate applications in res.locals.results based on status of
+// 	//assessemnt pending or assessment complete
+// 	var payload = {};
+//     console.log(res.locals.results);
+// 	if(res.locals.results.site[0] == null) {
+// 		console.log('[ ROUTER ] /site :: Unable to find Document Packages with status: \'assess\'');
+// 	}
+// 	else {
+// 		res.locals.results.site.forEach(function (element) {
+//             element = formatElement(element);
+//         });
+// 	}
 
-	payload.site = res.locals.results.site;
+// 	payload.site = res.locals.results.site;
 
-	if(res.locals.results.complete[0] == null) {
-		console.log('[ ROUTER ] /site :: Unable to find Document Packages with status: \'assess\'');
-	}
-	else {
-		res.locals.results.complete.forEach(function (element) {
-            element = formatElement(element);
-        });
-	}
+// 	if(res.locals.results.complete[0] == null) {
+// 		console.log('[ ROUTER ] /site :: Unable to find Document Packages with status: \'assess\'');
+// 	}
+// 	else {
+// 		res.locals.results.complete.forEach(function (element) {
+//             element = formatElement(element);
+//         });
+// 	}
 
-	payload.complete = res.locals.results.complete;
-	payload.user = req.user._id;
-	payload.user_email = res.locals.email;
-	payload.user_role = res.locals.role;
+// 	payload.complete = res.locals.results.complete;
+// 	payload.user = req.user._id;
+// 	payload.user_email = res.locals.email;
+// 	payload.user_role = res.locals.role;
 
-	console.log("payload");
-	console.log(payload);
+// 	console.log("payload");
+// 	console.log(payload);
 	
 	
-	res.render('volunteers', payload);
+// 	res.render('partners', payload);
+// });
+
+router.get('/', isLoggedIn, api.getDocumentSite, function(req, res, next) {
+	console.log("RENDERING PARTNERS PAGE");
+	res.render('partners');
 });
 
-router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
-    //Checking what's in params
-    //console.log("Rendering application " + ObjectId(req.params.id));
-	//TEST
-	console.log("rendering test application");
-    var payload = {}
-	payload.doc = res.locals.results.doc[0];
-	payload.work = res.locals.results.work;
-	payload.user = req.user._id;
-	payload.user_email = res.locals.email;
-	payload.user_role = res.locals.role;
-	console.log("results");
-    console.log(payload);
- 
-	res.render('siteassessmenttool', payload);
-	
-	//R-TESTING:
-	// res.render('b3-view', payload);
-
-
-});
+// router.get('/partners', isLoggedIn, api.getDocumentSite, function(req, res, next) {
+// 	console.log("RENDERING PARTNERS PAGE");
+// 	res.render('partners');
+// });
 
 
 
-//same as vetting route.  Shouldn't be issues with logic as is
-router.route('/additem')
-	.post(isLoggedInPost, api.addWorkItem, function(req, res) {
-	if(res.locals.status != '200'){
-        res.status(500).send("Could not add work item");
-    }
-    else{
-        res.json(res.locals);
-    }
-	});
 
-//added logic to api.updateWorkItem to handle site agent. 
-//needs role from 'isLoggedInPost' route	
-router.route('/updateitem')
-	.post(isLoggedInPost, api.updateWorkItem, function(req, res) {
-	if(res.locals.status != '200'){
-        res.status(500).send("Could not update work item");
-    }
-    else{
-        res.json(res.locals);
-    }
-	});
 
-router.route('/updatesummary')
-	.post(isLoggedInPost, api.putUpdateDocument, function(req, res) {
-	if(res.locals.status != '200'){
-        res.status(500).send("Could not update work item");
-    }
-    else{
-        res.json(res.locals);
-    }
-	});	
+// //R - Add work Item
+// router.route('/addPartner')
+// 	.post(isLoggedInPost, api.addPartner, function(req, res) {
+// 	if(res.locals.status != '200'){
+//         res.status(500).send("Could not add partner");
+//     }
+//     else{
+//         res.json(res.locals);
+//     }
+// 	});
+
+// router.route('/getPartner')
+// 	.post(isLoggedInPost, api.getPartner, function(req, res) {
+// 	if(res.locals.status != '200'){
+//         res.status(500).send("Could not get partners");
+//     }
+//     else{
+//         res.json(res.locals);
+//     }
+// 	});
+
+// router.route('/removePartner')
+// 	.post(isLoggedInPost, api.removePartner, function(req, res) {
+// 	if(res.locals.status != '200'){
+//         res.status(500).send("Could not remove partner");
+//     }
+//     else{
+//         res.json(res.locals);
+//     }
+// 	});
+
+
+
+// router.route('/updatesummary')
+// 	.post(isLoggedInPost, api.putUpdateDocument, function(req, res) {
+// 	if(res.locals.status != '200'){
+//         res.status(500).send("Could not update work item");
+//     }
+//     else{
+//         res.json(res.locals);
+//     }
+// 	});	
 		
 	
 //route catches invalid post requests.

@@ -70,6 +70,7 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
 	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
+	payload.projectNotes = res.locals.results.projectNotes;
 	console.log("results");
     console.log(payload);
  
