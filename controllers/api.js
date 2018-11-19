@@ -44,6 +44,7 @@ var UserPackage = require('../models/userPackage');
 var RolePackage = require('../models/rolePackage');
 
 var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
+var PartnerPackage = require('../models/partnerPackage.js');
 
 var FinancialPackage = require('../models/finPackage');
 var crypto = require('crypto');
