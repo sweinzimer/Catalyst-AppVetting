@@ -31,6 +31,10 @@
     content:  "\2190 ";
     font-size: 24px;
   }
+
+ select.task-owner {
+   min-width: 12em;
+ }
 </style>
 
 
@@ -510,70 +514,262 @@
         <br />
         {{#each results.doc}}
           <div class="row">
-            <div class="col-xs-12 col-sm-6">
-              <h4>Wrap up Info</h4>
-              <table class="table">
+            <h4>Wrap up Info</h4>
+            <table class="table">
 
-<!--                 <tr>
-                  <th class="col-sm-3">Home Type</th>
-                  <td class="col-sm-9">{{property.home_type}}</td>
-                </tr> -->
+              <tr>
+                <th class="col-xs-12 col-sm-6">Return volunteer sign-up sheet to office</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="signup_sheet_office_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="signup_sheet_office">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
 
-                <tr>
-                  <th class="col-sm-3">Church Partner(s)</th>
-                  <td class="col-sm-9">Church Name #1....</td>
-                </tr>
+              <tr>
+                <th class="col-xs-12 col-sm-6">Record volunteer hours / info</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="record_volunteer_info_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="record_volunteer_info">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
 
-                <tr>
-                  <th class="col-sm-3"></th>
-                  <td class="col-sm-9">Church Name #2....</td>
-                </tr>
+              <tr>
+                <th class="col-xs-12 col-sm-6">In-kind donations info</th>
+                <td class="col-xs-6 col-sm-2">
+                  TODO
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                </td>
+              </tr>
 
-                <tr>
-                  <th class="col-sm-3">Other Partner(s)</th>
-                  <td class="col-sm-9">Test Realtor Ltd.</td>
-                </tr>
+              <tr>
+                <th class="col-xs-12 col-sm-6">Schedule porta pottie pickup
+                  <span class="wrapup-required"></span>
+                </th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="porta_pottie_pickup_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="porta_pottie_pickup">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
 
-                <tr>
-                  <!-- TODO: Clairify "length" unit -->
-                  <th class="col-sm-3">Final Volunteer Count</th>
-                  <td class="col-sm-9">{{property.ownership_length}}</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Final Labour-Hrs Count</th>
-                  <td class="col-sm-9">{{property.year_constructed}}</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Final $ in kind given</th>
-                  <td class="col-sm-9">$5,000</td>
-                </tr>
-                <!-- <tr>
-                  <th class="col-sm-3">Requested Repairs</th>
-                  <td class="col-sm-9">{{property.requested_repairs}}</td>
-                </tr> -->
-                <tr>
-                  <th class="col-sm-3">Client Can Contrib.</th>
-                  <td class="col-sm-9">
-                    {{#if property.client_can_contribute.value}}
-                      Yes - {{property.client_can_contribute.description}}
-                    {{else}} No {{/if}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Associates Can Contrib.</th>
-                  <td class="col-sm-9">
-                    {{#if property.associates_can_contribute.value}}
-                      Yes - {{property.associates_can_contribute.description}}
-                    {{else}} No{{/if}}
-                  </td>
-                </tr>
-              </table>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-              <h4>Summary</h4>
-              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
-              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
-            </div>
+              <tr>
+                <th class="col-xs-12 col-sm-6">Schedule waste bin pickup office</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="waste_dumpster_pickup_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="waste_dumpster_pickup">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th class="col-xs-12 col-sm-6">Arrange for disposal of waste</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="waste_disposal_arrangement_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="waste_disposal_arrangement">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th class="col-xs-12 col-sm-6">Return materials and rentals</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="return_materials_rentals_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="return_materials_rentals">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th class="col-xs-12 col-sm-6">Turn in receipts and expenses to office</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="turn_in_receipts_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="turn_in_receipts">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th class="col-xs-12 col-sm-6">Process reimbursement checks</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="process_reimbursement_checks_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="process_reimbursement_checks">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th class="col-xs-12 col-sm-6">Submit photos to Flickr album or send to office</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="upload_photos_flickr_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="upload_photos_flickr">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th class="col-xs-12 col-sm-6">Project report form submitted to office</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="report_form_submission_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="report_form_submission">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th class="col-xs-12 col-sm-6">Update the project webpage</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="update_project_webpage_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="update_project_webpage">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th class="col-xs-12 col-sm-6">Call client to ask how project went</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="client_phone_followup_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="client_phone_followup">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th class="col-xs-12 col-sm-6">Send volunteer thank you email</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="send_thank_you_email_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="send_thank_you_email">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th class="col-xs-12 col-sm-6">Determine if follow-up is needed</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="determine_followup_required_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="determine_followup_required">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <th class="col-xs-12 col-sm-6">Send closing recipient letter</th>
+                <td class="col-xs-6 col-sm-2">
+                  <label>
+                    <input type="checkbox" name="send_closing_letter_complete" />
+                    Complete <span class="wrapup-completed-on"></span>
+                  </label>
+                </td>
+                <td class="col-xs-6 col-sm-4">
+                  Owner
+                  <select class="task-owner" data-owner-of="send_closing_letter">
+                    <option></option>
+                  </select>
+                </td>
+              </tr>
+
+
+            </table>
           </div>
         {{/each}}
       </div><!-- end #wrapUp -->
