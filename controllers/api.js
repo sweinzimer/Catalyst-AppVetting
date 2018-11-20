@@ -1299,7 +1299,7 @@ getDocumentPlanning: function (req, res, next) {
         });
     },
 
-        //post delete Partner
+    //post delete Partner
     deletePartner: function(req, res, next) {
         console.log('[ API ] deletePartner :: Call invoked: req.body: ');
         console.log(req.body);
