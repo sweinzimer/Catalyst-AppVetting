@@ -3,6 +3,8 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
+var AssessmentPackage = require('../models/planningPackage.js');
+var PartnerPackage = require('../models/partnerPackage');
 
 var api = require('../controllers/api');
 var User = require('../models/userPackage');
@@ -12,107 +14,105 @@ var Promise = require('bluebird'); // Import promise engine
 mongoose.Promise = require('bluebird'); // Tell mongoose we are using the Bluebird promise library
 Promise.promisifyAll(mongoose); // Convert mongoose API to always return promises using Bluebird's promisifyAll
 
-
-
 //Need ObjectID to search by ObjectID
 var ObjectId = require('mongodb').ObjectID;
 
 module.exports = function(passport) {
-router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) {
 
-	//separate applications in res.locals.results based on status of
-	//assessemnt pending or assessment complete
-	var payload = {};
+//router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) {
+router.get('/', api.getPartner, function(req, res, next) {
+	var results = {};
     console.log(res.locals.results);
-	if(res.locals.results.site[0] == null) {
-		console.log('[ ROUTER ] /site :: Unable to find Document Packages with status: \'assess\'');
-	}
-	else {
-		res.locals.results.site.forEach(function (element) {
-            element = formatElement(element);
-        });
+	if(res.locals.results.partner[0] == null) {
+		console.log('[ ROUTER ] /partners :: Unable to find any Partners in database');
 	}
 
-	payload.site = res.locals.results.site;
+	results.partner = res.locals.results.partner;
 
-	if(res.locals.results.complete[0] == null) {
-		console.log('[ ROUTER ] /site :: Unable to find Document Packages with status: \'assess\'');
-	}
-	else {
-		res.locals.results.complete.forEach(function (element) {
-            element = formatElement(element);
-        });
-	}
+	results.count = res.locals.results.count;
 
-	payload.complete = res.locals.results.complete;
-	payload.user = req.user._id;
-	payload.user_email = res.locals.email;
-	payload.user_role = res.locals.role;
-
-	console.log("payload");
-	console.log(payload);
+	console.log(results);
 	
-	
-	res.render('volunteers', payload);
-});
-
-router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
-    //Checking what's in params
-    //console.log("Rendering application " + ObjectId(req.params.id));
-	//TEST
-	console.log("rendering test application");
-    var payload = {}
-	payload.doc = res.locals.results.doc[0];
-	payload.work = res.locals.results.work;
-	payload.user = req.user._id;
-	payload.user_email = res.locals.email;
-	payload.user_role = res.locals.role;
-	console.log("results");
-    console.log(payload);
- 
-	res.render('siteassessmenttool', payload);
-	
-	//R-TESTING:
-	// res.render('b3-view', payload);
-
-
+	res.render('partners', results);
 });
 
 
+// //router.get('/', isLoggedIn, api.getDocumentSite, function(req, res, next) {
+// router.get('/', api.getPartner, function(req, res, next) {
+// 	console.log("RENDERING PARTNERS PAGE");
+	
+// 	//var results = {};
+// 	//res.render('partners', payload);
+// 	.post(api.getPartner, function(req, res) {
 
-//same as vetting route.  Shouldn't be issues with logic as is
-router.route('/additem')
-	.post(isLoggedInPost, api.addWorkItem, function(req, res) {
+// 	console.log("\n/partners/getPartner POST TRIGGERED...\nreq:\n" + req);
+// 	if(res.locals.status != '200'){
+//         res.status(500).send("Could not get partners");
+//     }
+//     else{
+//     	console.log(res);
+//         res.json(res.locals);
+//     }
+
+// });
+
+
+
+//R - create Partners  -  localhost:8000/partners/createPartner
+// ADD BACK isLoggedInPost to EACH ONE!		//.post(isLoggedInPost, api.addPartner, function(req, res) {
+router.route('/createPartner')
+	.post(api.createPartner, function(req, res) {
+	
+	console.log("\n/partners/createPartner POST TRIGGERED...\nreq:\n" + req);
 	if(res.locals.status != '200'){
-        res.status(500).send("Could not add work item");
+        res.status(500).send("Could not create partner");
     }
-    else{
+    else {
+    	console.log("res: " + res);
         res.json(res.locals);
     }
-	});
+});
 
-//added logic to api.updateWorkItem to handle site agent. 
-//needs role from 'isLoggedInPost' route	
-router.route('/updateitem')
-	.post(isLoggedInPost, api.updateWorkItem, function(req, res) {
+//isLoggedInPost, 
+router.route('/deletePartner')
+	.post(api.deletePartner, function(req, res) {
+
+	console.log("\n/partners/deletePartner POST TRIGGERED...\nreq:\n" + req);
 	if(res.locals.status != '200'){
-        res.status(500).send("Could not update work item");
+        res.status(500).send("Could not remove Partner");
     }
-    else{
+    else {
         res.json(res.locals);
     }
-	});
+});
 
-router.route('/updatesummary')
-	.post(isLoggedInPost, api.putUpdateDocument, function(req, res) {
+//isLoggedInPost
+router.route('/getPartner')
+	.post(api.getPartner, function(req, res) {
+
+	console.log("\n/partners/getPartner POST TRIGGERED...\nreq:\n" + req);
 	if(res.locals.status != '200'){
-        res.status(500).send("Could not update work item");
+        res.status(500).send("Could not get partners");
     }
     else{
+    	console.log(res);
         res.json(res.locals);
     }
-	});	
-		
+});
+
+// //isLoggedInPost, 
+// router.route('/updatePartner')
+// 	.post(api.updatePartner, function(req, res) {
+
+// 	console.log("\n/partners/updatePartner POST TRIGGERED...\nreq:\n" + req);
+// 	if(res.locals.status != '200'){
+//         res.status(500).send("Could not update partner");
+//     }
+//     else{
+//         res.json(res.locals);
+//     }
+// });
+
 	
 //route catches invalid post requests.
 router.use('*', function route2(req, res, next) {
@@ -160,11 +160,62 @@ function formatStatus(element) {
     var status;
 
     switch (element.status){
+        case 'new':
+            status = 'NEW';
+            break;
+        case 'phone':
+            status = 'Phone Call Needed';
+            break;
+        case 'handle':
+            status = 'Handle-It';
+            break;
+        case 'documents':
+            status = 'Awaiting Documents';
+            break;
+        case 'discuss':
+            status = 'On Hold - Pending Discussion';
+            break;
         case 'assess':
             status = 'Site Assessment - Pending';
             break;
 		case 'assessComp':
 			status = 'Site Assessment - Complete';
+			break;
+        case 'approval':
+            status = 'Approval Process';
+            break;
+        case 'declined':
+            status = 'Declined';
+			break;
+		case 'withdrawnooa':
+			status = 'Withdrawn - Out of Service Area';
+			break;
+        case 'withdrawn':
+            status = 'Withdrawn';
+            break;
+        case 'project':
+            status ='Approved Project';
+            break;
+		case 'handleToBeAssigned':
+			status = 'Handle - To Be Assigned';
+			break;
+        case 'handleAssigned':
+            status = 'Handle - Pending';
+            break;
+		case 'handleCompleted':
+			status = 'Handle - Completed';
+			break;
+		case 'projectUpcoming':
+			status = 'Project - Upcoming';
+			break;
+        case 'projectInProgress':
+            status = 'Project - In Progress';
+            break;
+		case 'projectGoBacks':
+			status = 'Project - Go Backs';
+			break;
+		case 'projectCompleted':
+			status = 'Project - Completed';
 			break;
         default:
             status = element.status;
@@ -173,9 +224,6 @@ function formatStatus(element) {
     element.status = status;
     return element;
 }
-
-
-
 
 
 
@@ -272,8 +320,6 @@ function isLoggedInPost(req, res, next) {
 							return next('route');
 						}
 					}
-
-
 
 			})
 

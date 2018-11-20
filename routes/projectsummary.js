@@ -326,6 +326,15 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
     //add all other existing statuses to processing array
     payload.processing = [];
 
+
+    payload.handleToBeAssigned = [];
+    payload.handleAssigned = [];
+    payload.handleCompleted = [];
+    payload.projectUpcoming = [];
+    payload.projectInProgress = [];
+    payload.projectGoBacks = [];
+    payload.projectCompleted = [];
+
     if (res.locals.results.phone[0] == null) {
         console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'phone\'');
     } else {
@@ -387,6 +396,69 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
         res.locals.results.approval.forEach(function (element) {
             element = formatElement(element);
             payload.processing.push(element);
+        });
+    }
+
+	if (res.locals.results.handleToBeAssigned[0] == null) {
+        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'handleToBeAssigned\'');
+    } else {
+        res.locals.results.handleToBeAssigned.forEach(function (element) {
+            element = formatElement(element);
+            payload.handleToBeAssigned.push(element);
+        });
+    }
+
+	if (res.locals.results.handleAssigned[0] == null) {
+        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'handleAssigned\'');
+    } else {
+        res.locals.results.handleAssigned.forEach(function (element) {
+            element = formatElement(element);
+            payload.handleAssigned.push(element);
+        });
+    }
+
+	if (res.locals.results.handleCompleted[0] == null) {
+        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'handleCompleted\'');
+    } else {
+        res.locals.results.handleCompleted.forEach(function (element) {
+            element = formatElement(element);
+            payload.handleCompleted.push(element);
+        });
+    }
+
+	if (res.locals.results.projectUpcoming[0] == null) {
+        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'projectUpcoming\'');
+    } else {
+        res.locals.results.projectUpcoming.forEach(function (element) {
+            element = formatElement(element);
+            payload.projectUpcoming.push(element);
+        });
+    }
+
+	if (res.locals.results.projectInProgress[0] == null) {
+        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'projectInProgress\'');
+    } else {
+        res.locals.results.projectInProgress.forEach(function (element) {
+            element = formatElement(element);
+            payload.projectInProgress.push(element);
+        });
+    }
+
+	if (res.locals.results.projectGoBacks[0] == null) {
+        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'projectGoBacks\'');
+    } else {
+        res.locals.results.projectGoBacks.forEach(function (element) {
+            element = formatElement(element);
+            payload.projectGoBacks.push(element);
+        });
+    }
+
+	if (res.locals.results.projectCompleted[0] == null) {
+        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'projectCompleted\'');
+    } else {
+        res.locals.results.projectCompleted.forEach(function (element) {
+            element = formatElement(element);
+            payload.projectCompleted.push(element);
         });
     }
 
@@ -575,6 +647,27 @@ function formatStatus(element) {
         case 'project':
             status ='Approved Project';
             break;
+		case 'handleToBeAssigned':
+			status = 'Handle - To Be Assigned';
+			break;
+        case 'handleAssigned':
+            status = 'Handle - Pending';
+            break;
+		case 'handleCompleted':
+			status = 'Handle - Completed';
+			break;
+		case 'projectUpcoming':
+			status = 'Project - Upcoming';
+			break;
+        case 'projectInProgress':
+            status = 'Project - In Progress';
+            break;
+		case 'projectGoBacks':
+			status = 'Project - Go Backs';
+			break;
+		case 'projectCompleted':
+			status = 'Project - Completed';
+			break;
         default:
             status = element.status;
     }

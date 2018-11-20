@@ -310,6 +310,9 @@
                     <strong>Site comments:</strong><br/>
                     <span name="{{_id}}.siteComments">{{siteComments}}</span><br/>
                     <br/>
+                    <strong>Project Comments:</strong><br/>
+                    {{projectComments}}<br/>
+                    <br/>
                     <strong>Cost:</strong><br/>
                     <span name="{{_id}}.cost">{{cost}}</span>
                   </p>
@@ -644,6 +647,12 @@
                               .text(data.siteComments).appendTo(cardText)
    $('<br></br>').appendTo(cardText)
 
+   $('<strong>Project Comments:</strong>').appendTo(cardText)
+   // $('<br></br>').appendTo(cardText)
+
+   $('<p></p>').text(data.projectComments).appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+
    $('<strong>Cost:</strong>').appendTo(cardText)
    $('<br></br>').appendTo(cardText)
 
@@ -815,6 +824,12 @@
    // $('<br></br>').appendTo(cardText)
 
    $('<p></p>').text(w.siteComments).appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+
+  $('<strong>Project Comments:</strong>').appendTo(cardText)
+   // $('<br></br>').appendTo(cardText)
+
+   $('<p></p>').text(w.projectComments).appendTo(cardText)
    $('<br></br>').appendTo(cardText)
 
    $('<strong>Cost:</strong>').appendTo(cardText)
