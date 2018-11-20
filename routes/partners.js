@@ -26,13 +26,10 @@ router.get('/', api.getPartner, function(req, res, next) {
 	if(res.locals.results.partner[0] == null) {
 		console.log('[ ROUTER ] /partners :: Unable to find any Partners in database');
 	}
-
 	results.partner = res.locals.results.partner;
-
 	results.count = res.locals.results.count;
 
 	console.log(results);
-	
 	res.render('partners', results);
 });
 
