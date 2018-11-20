@@ -12,18 +12,13 @@ var ObjectId = Schema.ObjectId;
 
 var PartnersSchema = new Schema({
 
+  	applicationId: ObjectId,
 
-  applicationId: ObjectId,
-
-  nickname: String,
-
-  partners: [{
     org_name: String,
     org_address: String,
     contact_name: String,
     contact_phone: String,
     contact_email: String
-  }]
 });
 
 module.exports = mongoose.model('partnerPackage', PartnersSchema);
