@@ -415,6 +415,7 @@ getDocumentPlanning: function (req, res, next) {
             project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync(),
             handleToBeAssigned: DocumentPackage.find({status: "handleToBeAssigned", app_year : year}).lean().execAsync(),
             handleAssigned: DocumentPackage.find({status: "handleAssigned", app_year : year}).lean().execAsync(),
+            handleCompleted: DocumentPackage.find({status: "handleCompleted", app_year : year}).lean().execAsync(),
             projectUpcoming: DocumentPackage.find({status: "projectUpcoming", app_year : year}).lean().execAsync(),
             projectInProgress: DocumentPackage.find({status: "projectInProgress", app_year : year}).lean().execAsync(),
             projectGoBacks: DocumentPackage.find({status: "projectGoBacks", app_year : year}).lean().execAsync(),
@@ -1276,6 +1277,81 @@ getDocumentPlanning: function (req, res, next) {
             })
             .catch(next);
     },
+
+
+    //post create Partner
+    createPartner: function(req, res, next) {
+        console.log('[ API ] createPartner :: Call invoked');
+        console.log(req.body);
+        var item = new PartnerPackage(req.body);
+
+        item.saveAsync(function (err, note, numAffected) {
+            if (err) {
+                console.error(err);
+            }
+            else if (numAffected == 1) {
+                console.log("saved!");
+                console.log('[ API ] createPartner :: New Partner created with _id: ' + item._id);
+                console.log(item);
+                //send note ID so it can be referenced without page refresh
+                res.send( { status : 200, _id: item._id } );
+            }
+        });
+    },
+
+    //post delete Partner
+    deletePartner: function(req, res, next) {
+        console.log('[ API ] deletePartner :: Call invoked: req.body: ');
+        console.log(req.body);
+        Promise.props({
+            note: PartnerPackage.remove(
+                {
+                    _id: req.body._id
+                }
+            ).execAsync()
+        })
+        .then(function (results) {
+            if (results) {
+                console.log('[ API ] deletePartner :: Partner found: TRUE');
+                res.locals.results = results;
+                //sending a status of 200 for now
+                res.locals.status = '200';
+            }
+            else {
+                console.log('[ API ] deletePartner :: Partner found: FALSE');
+            }
+            next();
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+    },
+
+    //post get all Partners
+    getPartner: function(req, res, next) {
+        console.log('[ API ] getPartner :: Call invoked: req.body: ');
+        console.log(req.body);
+        Promise.props({
+            partner: PartnerPackage.find().execAsync(),
+            count: PartnerPackage.count().execAsync()
+        })
+        .then(function (results) {
+            if (results) {
+                console.log('[ API ] getPartner :: Partner(s) found: TRUE');
+                res.locals.results = results;
+                res.locals.status = '200';
+            }
+            else {
+                console.log('[ API ] getPartner :: Partner(s) found: FALSE');
+            }
+            next();
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+    },
+
+
     /**
      * Description: add a vetting note to the database
      * Type: POST
@@ -1390,6 +1466,7 @@ getDocumentPlanning: function (req, res, next) {
         });
 
     },
+
 
     /**
      * Description: remove a vetting note from the database
@@ -2242,9 +2319,23 @@ getDocumentPlanning: function (req, res, next) {
                 ]
             ).execAsync(),
             
-            complete: ProjectSummaryPackage.aggregate(  //In Template, used to be complete: 
+            complete: ProjectSummaryPackage.aggregate(          //Depleted, not being used
                 [
                 {$match: { status: "handleCompleted" }},
+                    { $redact: {
+                        $cond: {
+                            if: { $eq: [ "$level", 5 ] },
+                            then: "$$PRUNE",
+                            else: "$$DESCEND"
+                        }
+                    }}
+                    
+                ]
+            ).execAsync(),
+
+            handleCompleted: ProjectSummaryPackage.aggregate(
+                [
+                {$match: { status: "handleAssigned" }},
                     { $redact: {
                         $cond: {
                             if: { $eq: [ "$level", 5 ] },
