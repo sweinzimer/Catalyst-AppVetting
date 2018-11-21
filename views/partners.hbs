@@ -23,18 +23,51 @@
   }
 </style>
 
-<!-- <div class="row"> -->
-  <!-- <div class="col-xs-12"> -->
+<div class="row">
+  <div class="col-xs-12">
     <h5>Global Partners List</h5>
 
-    <div class="row">
-      <div class="col-xs-12 col-sm-6">
-        <table style="margin-bottom:20px;">
+<!--     <div class="row">
+      <div class="col-xs-12 col-sm-6"> -->
+        <table id="buttonTable" name="buttonTable" style="display:block;">
+        <h3 name="newPartnerLabel" style="display:none;">Adding NEW Partner</h3>
           <thead> 
-              <th class="col-sm-7"><button name="createPartner" class="btn btn-success">Add New Partner</button></th>
-              <th class="col-sm-4"><button name="removePartner" class="btn btn-warning" onclick="showRemoveButtons()">Remove Partners</button></th>
+              <th class="col-sm-7"><button onclick="createPartnerBtnPressed()" name="createPartner" class="createPartnerBtn btn btn-success">Add New Partner</button></th>
+              <th class="col-sm-4"><button onclick="removePartnerBtnPressed()" name="removePartner" class="removePartnerBtn btn btn-warning">Remove Partners</button></th>
           </thead>
         </table>
+
+        <span name="formSpan" style="display:none;">
+          <div>
+              <form class="form-inline editableform" style="">
+                <div class="control-group form-group">
+                  <!-- <div class="editable-input"> -->
+                    <!-- <select type="radio" class="form-control input-sm"> -->  <!-- <option value="projectCompleted">Project - Completed</option> -->
+                    <label class="partnerAddTextLabel"><strong>Organization:</strong>
+                      <input required name="create_org_name" type="text" class="form-control input-sm" style="padding-left: 10px;margin-left: 50px;"></label><br>
+                    <label class="partnerAddTextLabel"><strong>Address:</strong>
+                      <input name="create_org_address" type="text" class="form-control input-sm" style="padding-left: 10px;margin-left: 85px;"></label><br>
+                    <label class="partnerAddTextLabel"><strong>Contact Name:</strong>
+                      <input name="create_contact_name" type="text" class="form-control input-sm" style="padding-left: 10px;margin-left: 40px;"></label><br>
+                    <label class="partnerAddTextLabel"><strong>Contact Phone:</strong>
+                      <input name="create_contact_phone" type="text" class="form-control input-sm" style="padding-left: 10px;margin-left: 35px;"></label><br>
+                    <label class="partnerAddTextLabel"><strong>Contact Email:</strong>
+                      <input name="create_contact_email" type="text" class="form-control input-sm" style="padding-left: 10px;margin-left: 40px;"></label><br>
+
+                  <div class="editable-buttons">
+                      <!-- <div name="createPartnerSpinning" class="editableform-loading" style="display: none;"></div> -->
+                      <button onsubmit="createPartnerSubmitBtn()" name="submitAddPartnerBtn" class="btnCheckmark btn btn-primary btn-sm editable-submit">
+                        <i class="glyphicon glyphicon-ok"></i>
+                      </button>
+                      <button onclick="discardPartnerFormBtnPressed()" name="cancelAddPartnerBtn" class="btnBackArrow btn btn-default btn-sm editable-cancel">
+                        <i class="glyphicon glyphicon-remove"></i>
+                      </button>
+                  </div>
+                
+              </div>
+            </form>
+          </div>
+        </span>
 
         <table class="table">
           <thead> 
@@ -86,30 +119,99 @@
        contact_phone: '(647) 384 2342',
        contact_email: 'info@rona.ca', -->
 
-    </div>    
   </div>
 </div>
 
 <script src="/javascript/searchYear.js" type="text/javascript"></script>
 <!-- Make entire table rows clickable! -->
 <script>
-    function showRemoveButtons() {
+    function removePartnerBtnPressed() {
         var eachBtn = document.getElementsByName("removeThisPartner");
         var mainBtn = document.getElementsByName("removePartner");
+        var createBtn = document.getElementsByName("createPartner");
+
         for (var i = 0; i < eachBtn.length; i++) {
             if (eachBtn[i].style.display === "none") {
                 eachBtn[i].style.display = "block";
+                
                 mainBtn[0].className = "btn btn-cancel";
-                mainBtn[0].innerText = "Cancel Changes";
+                mainBtn[0].innerText = "Done";
+                mainBtn[0].style.paddingLeft  = "58px";
+                mainBtn[0].style.paddingRight = "59px";
+
+                createBtn[0].disabled = true;
+
             } else {
                 eachBtn[i].style.display = "none";
-                mainBtn[0].className = "btn btn-warning";
-                mainBtn[0].innerText = "Remove Partners";
+                  mainBtn[0].className = "btn btn-warning";
+                  mainBtn[0].innerText = "Remove Partners";
+                  mainBtn[0].style.padding = ".5rem 1rem";
+                createBtn[0].disabled = false;
               // mainBtn.style.marginLeft = '10px';
               // mainBtn.style.paddingRight = '10px';
             }
         }
     }
+
+
+    function createPartnerBtnPressed() {
+        var buttonTable = document.getElementsByName("buttonTable");
+        var newPartnerLabel = document.getElementsByName("newPartnerLabel");
+        var formSpan = document.getElementsByName("formSpan");
+
+        buttonTable[0].style.display = "none";
+        newPartnerLabel[0].style.display = "block";
+        formSpan[0].style.display = "block";
+    }
+
+
+    function discardPartnerFormBtnPressed() {
+        var buttonTable = document.getElementsByName("buttonTable");
+        var newPartnerLabel = document.getElementsByName("newPartnerLabel");
+        var formSpan = document.getElementsByName("formSpan");
+
+        buttonTable[0].style.display = "block";
+        newPartnerLabel[0].style.display = "none";
+        formSpan[0].style.display = "none";
+    }
+
+    function createPartnerSubmitBtn() {
+
+        var sendData =  {
+                  org_name:      document.getElementsByName("create_org_name")[0].value,
+                  org_address:   document.getElementsByName("create_org_address")[0].value,
+                  contact_name:  document.getElementsByName("create_contact_name")[0].value,
+                  contact_phone: document.getElementsByName("create_contact_phone")[0].value,
+                  contact_email: document.getElementsByName("create_contact_email")[0].value,
+        };
+
+        var buttonTable = document.getElementsByName("buttonTable");
+        var newPartnerLabel = document.getElementsByName("newPartnerLabel");
+        var formSpan = document.getElementsByName("formSpan");
+
+        buttonTable[0].style.display = "none";
+        newPartnerLabel[0].style.display = "block";
+        formSpan[0].style.display = "block";
+
+
+        xhr(sendData, 'POST', '/partners/createPartner', function(err) {
+            if (err) {
+                alert('Value did not save, please reload the page');
+            }
+            else {
+                //BUTTON STUFF
+                    // <table name="buttonTable" style="display:block;">
+                    // <h3 name="newPartnerLabel" style="display:none;">Adding NEW Partner</h3>
+                    // <span name="formSpan" style="display:none;">
+
+
+                buttonTable[0].style.display = "block";
+
+            }
+        })
+
+    }
+
 
 
     function removeThisBtn(remId) {
@@ -129,9 +231,9 @@
                 alert('Value did not save, please reload the page');
             }
             else {
-                var hideDeleted = document.getElementsByClassName(remId);
-                hideDeleted[0].style.display = "none";
-                var arrLen = document.getElementsByName("5bf46c83f77af5c8ac4a7777").length;
+                // var hideDeleted = document.getElementsByClassName(remId);
+                // hideDeleted[0].style.display = "none";
+                // var arrLen = document.getElementsByName("5bf46c83f77af5c8ac4a7777").length;
 
                 while (document.getElementsByName(remId).length !== 0) {
                    document.getElementsByName(remId)[0].remove();
@@ -162,7 +264,7 @@
         data : JSON.stringify(data)
       });
 
-      alert('xhr function called... TRIED POST');
+      // alert('xhr function called...');
 
       //check for error
       posting.done(function (xhr) {
@@ -193,4 +295,23 @@
   .dataRow {
     background-color: #ff72b3 !important;
   }
+
+
+  .partnerAddTextLabel {
+    margin-left: 30px;
+  }
+
+  .btnCheckmark {
+    margin-left: 180px;
+  }
+
+  table[name=buttonTable] {
+    margin-bottom:20px;
+  }
+  
+  h3[name=newPartnerLabel] {
+    margin-bottom:20px;
+    text-decoration: underline;
+  }
+  
 </style>
