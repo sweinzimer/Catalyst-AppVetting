@@ -29,6 +29,7 @@
  * Import any other required modules
  */
 
+//getProjPartnersLeaders setProjPartnersLeaders 
 
 var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
@@ -1279,8 +1280,8 @@ getDocumentPlanning: function (req, res, next) {
     },
 
 
-    //post create Partner
-    createPartner: function(req, res, next) {
+    //post create Partner       //next
+    createPartner: function(req, res) {
         console.log('[ API ] createPartner :: Call invoked');
         console.log(req.body);
         var item = new PartnerPackage(req.body);
@@ -1299,7 +1300,7 @@ getDocumentPlanning: function (req, res, next) {
         });
     },
 
-    //post delete Partner
+    //post delete Partner           //next
     deletePartner: function(req, res, next) {
         console.log('[ API ] deletePartner :: Call invoked: req.body: ');
         console.log(req.body);
@@ -1327,6 +1328,7 @@ getDocumentPlanning: function (req, res, next) {
         });
     },
 
+
     //post get all Partners
     getPartner: function(req, res, next) {
         console.log('[ API ] getPartner :: Call invoked: req.body: ');
@@ -1350,6 +1352,170 @@ getDocumentPlanning: function (req, res, next) {
             console.error(err);
         });
     },
+
+
+    //post - SET (Store) partners and leaders associated to that project
+    setProjPartnersLeaders: function(req, res, next) {
+        console.log("**** TEST 1 PASS *** ");
+        console.log('[ API ] setProjPartnersLeaders :: Call invoked');
+        console.log(req.body);
+        var projectId = req.body.projectId || 223344;                                       //TEST NUM
+        
+        // var item = new ProjectSummaryPackage(req.body);
+
+        Promise.props({
+            updateStatus:   ProjectSummaryPackage.update(
+                                {"projectId": projectId },           //Query
+                                {  $set: {
+                                            "assocPartners": req.body.assocArray
+                                          }
+                                },   
+                                { upsert: true }
+                            ).execAsync()
+        })
+        .then(function (thisRes) {
+            if (thisRes) {
+                console.log('[ API ] setProjPartnersLeaders :: item UPDATED: TRUE');
+                console.log(thisRes.updateStatus);
+
+            res.locals.results = thisRes;
+            res.locals.status = '200';
+            } else {
+                console.log('[ API ] setProjPartnersLeaders :: item UPDATED: FALSE');
+            }
+            next();
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+    },
+
+//. R- TEST TEST TEST //223344
+    //post - GET (Retrieve) partners and leaders associated to that project
+    getProjPartnersLeaders: function(req, res, next) {
+        console.log("**** TEST 2 PASS *** ");
+        console.log('[ API ] getProjPartnersLeaders :: Call invoked');
+        console.log(req.body);
+       
+        var projectId = req.body.projectId || 223344;                                       //TEST NUM
+
+        // var projectId = String(req.body.projectId);
+        var resArray = [];
+        var unAssocArray = [];
+
+        Promise.props({
+            allPartners: PartnerPackage.find().execAsync(),
+            pCount: PartnerPackage.count().execAsync(),
+            assocPartners: ProjectSummaryPackage.find({"projectId": projectId }).execAsync(),
+        })
+        .then(function (assocRes) {
+            
+            var allPartners = assocRes.allPartners;                             //Array of Objects
+            var assocPartners = assocRes.assocPartners[0].assocPartners;        //An array of IDS
+            var unAssocArray = assocRes.allPartners;  
+            var uIDs = [];
+
+            if (assocRes) {
+                console.log('[ API ] getProjPartnersLeaders :: item(s) found: TRUE');
+
+                console.log("Partner Associations Result: " + assocPartners);
+                
+                for (var aCnt = 0; aCnt < assocPartners.length; aCnt++) {
+                    for (var allCnt=0; allCnt < allPartners.length; allCnt++) {    
+                        if (allPartners[allCnt]._id == assocPartners[aCnt]) {
+                                resArray.push(allPartners[allCnt]);
+                                //break;
+
+                        } 
+                        else if (allCnt + 1 == allPartners.length) {
+                            uIDs.push(assocPartners[aCnt]);
+                        }
+                    }
+                }
+
+
+                    // var array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]; = unAssocArray
+
+                    // var filtered = unAssocArray.filter(function(value, index, array){
+                    //     var isFound = true;
+                    //     for (var aCnt = 0; aCnt < assocPartners.length; aCnt++) {
+                    //         if value._id == assocPartners[aCnt] {
+                    //             isFound = false;
+                    //         }
+                    //     }
+                    //     return isFound;
+                    // });
+
+                    var filtered = unAssocArray.filter(customFilter);
+
+                    function customFilter(eachObj) {
+                        var isFound = false;
+                        for (var aCnt = 0; aCnt < assocPartners.length; aCnt++) {
+                            if (eachObj._id == assocPartners[aCnt]) {
+                                isFound = true; 
+                            } 
+                        }
+                        return (! isFound);
+                    }
+
+            
+
+                // for (var allCnt=0; allCnt < allPartners.length; allCnt++) { 
+                //         for (var aCnt = 0; aCnt < assocPartners.length; aCnt++) {
+                //             if  (allPartners[allCnt]._id == assocPartners[aCnt]) {
+                //                 unAssocArray.push(assocRes.allPartners[allCnt]);
+                //             }
+                //         }   
+
+                // }
+
+
+                if (resArray.length > 0) {
+                    console.log(resArray.length);
+                }
+            //res.locals.results = results;
+            // res.locals.results = { ans: JSON.stringify(resArray) };
+            // res.locals.results = assocRes.allPartners;
+
+            var sendRes =   { 
+                                pAll:   allPartners, 
+                                aCount: assocRes.pCount, 
+                                pAssoc: resArray,
+                                aIDs:   assocPartners,
+                                uAssoc: filtered,
+                                uCount: filtered.length,
+                                uIDs:   uIDs
+                            };
+
+            res.locals.results = sendRes;
+            res.locals.status = '200';
+            } else {
+                console.log('[ API ] getProjPartnersLeaders :: item(s) found: FALSE');
+            }
+            next();
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+    },
+
+
+        //db.collection.update
+
+        //var item = new PartnerPackage(req.body);
+        // item.update(function (err, note, numAffected) {
+        //     if (err) {
+        //         console.error(err);
+        //     }
+        //     else if (numAffected == 1) {
+        //         console.log("saved!");
+        //         console.log('[ API ] setProjPartnersLeaders ::  created with _id: ' + item._id);
+        //         console.log(item);
+        //         //send note ID so it can be referenced without page refresh
+        //         res.send( { status : 200, _id: item._id } );
+        //     }
+        // });
+
 
 
     /**
