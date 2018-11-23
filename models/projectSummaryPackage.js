@@ -39,13 +39,9 @@ var ProjectSummarySchema = new Schema({
 
   status: String,
 
-  partners: [{
-    org_name: String,
-    org_address: String,
-    contact_name: String,
-    contact_phone: String,
-    contact_email: String
-  }],
+  projectId: String,
+
+  assocPartners: {type: Array},
 
   materials: [{
     name: String,
