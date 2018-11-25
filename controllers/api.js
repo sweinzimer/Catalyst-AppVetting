@@ -1519,7 +1519,7 @@ getDocumentPlanning: function (req, res, next) {
                                 { upsert: true }
                             ).execAsync()
         })
-   setProjPartnersLeaders     .then(function (thisRes) {
+        .then(function (thisRes) {
             if (thisRes) {
                 console.log('[ API ] setProjPartnersLeaders :: item UPDATED: TRUE');
                 console.log(thisRes.updateStatus);
