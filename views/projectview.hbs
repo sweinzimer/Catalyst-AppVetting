@@ -302,78 +302,16 @@
 
 <!-- Partners (needs new data base fields for Org Name, Org Address, Contact Name, Contact Phone, Contact email)  -->
       <div class="tab-pane" id="partners" role="tabpanel"><!-- start #partners -->
-        <br />
-        {{#each results.doc}}
-          <div class="row">
-            <div class="col-xs-12 col-sm-6">
-              <h4>Partners Info ----><a href="../partners">CLICK HERE TO TEST</a>ADD/REMOVE PARTNERS</h4>
-              <table class="table">
 
-<!--                 <tr>
-                  <th class="col-sm-3">Home Type</th>
-                  <td class="col-sm-9">{{property.home_type}}</td>
-                </tr> -->
+            {{> partners}}
 
-                <tr>
-                  <th class="col-sm-3">Church Partner(s)</th>
-                  <td class="col-sm-9">Church Name #1....</td>
-                </tr>
-
-                <tr>
-                  <th class="col-sm-3"></th>
-                  <td class="col-sm-9">Church Name #2....</td>
-                </tr>
-
-                <tr>
-                  <th class="col-sm-3">Other Partner(s)</th>
-                  <td class="col-sm-9">Test Realtor Ltd.</td>
-                </tr>
-
-                <tr>
-                  <!-- TODO: Clairify "length" unit -->
-                  <th class="col-sm-3">Final Volunteer Count</th>
-                  <td class="col-sm-9">{{property.ownership_length}}</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Final Labour-Hrs Count</th>
-                  <td class="col-sm-9">{{property.year_constructed}}</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Final $ in kind given</th>
-                  <td class="col-sm-9">$5,000</td>
-                </tr>
-                <!-- <tr>
-                  <th class="col-sm-3">Requested Repairs</th>
-                  <td class="col-sm-9">{{property.requested_repairs}}</td>
-                </tr> -->
-                <tr>
-                  <th class="col-sm-3">Client Can Contrib.</th>
-                  <td class="col-sm-9">
-                    {{#if property.client_can_contribute.value}}
-                      Yes - {{property.client_can_contribute.description}}
-                    {{else}} No {{/if}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Associates Can Contrib.</th>
-                  <td class="col-sm-9">
-                    {{#if property.associates_can_contribute.value}}
-                      Yes - {{property.associates_can_contribute.description}}
-                    {{else}} No{{/if}}
-                  </td>
-                </tr>
-              </table>
-            </div>
-            
             <div class="col-xs-12 col-sm-6">
               <h4>Summary</h4>
               <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
               <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
             </div>
-          </div>
-        {{/each}}
       </div><!-- end #partners -->
-
+      
 
       <div class="tab-pane" id="planning" role="tabpanel"><!-- start #planning -->
         <br />
