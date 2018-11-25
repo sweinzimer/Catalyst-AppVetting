@@ -1405,7 +1405,7 @@ getDocumentPlanning: function (req, res, next) {
                     if (err) {
                         console.error(err);
                     }
-                    else if (numAffected == 1) {
+                    else  {
                         console.log('[ API ] getProjPartner createPartner :: New Partner created with _id: ' + item._id);
                         console.log(item);
 
