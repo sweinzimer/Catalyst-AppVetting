@@ -20,7 +20,7 @@ var ObjectId = require('mongodb').ObjectID;
 module.exports = function(passport) {
 
 //router.get('/', isLoggedIn, api.getPartner, function(req, res, next) {
-router.get('/', api.getProjPartnersLeaders, function(req, res, next) {
+router.get('/', isLoggedIn, api.getProjPartnersLeaders, function(req, res, next) {
 	var results = {};
 
 	console.log("R-RES-1");
@@ -35,7 +35,8 @@ router.get('/', api.getProjPartnersLeaders, function(req, res, next) {
 
 
 	console.log(results);
-	res.render('partners', results);
+	// res.render('partners', results);
+	res.send(results);
 });
 
 
@@ -60,7 +61,7 @@ router.get('/', api.getProjPartnersLeaders, function(req, res, next) {
 
 
 //isLoggedInPost, 
-router.route('/getPartnerAssoc')									// FOR getProjPartnersLeaders
+router.route('/getPartnerAssoc', isLoggedIn)									// FOR getProjPartnersLeaders
 	.post(api.getProjPartnersLeaders, function(req, res) {
 
 	console.log("\n/partners/getPartnerAssoc POST TRIGGERED...\nreq:\n" + req);
@@ -75,7 +76,7 @@ router.route('/getPartnerAssoc')									// FOR getProjPartnersLeaders
 
 
 //isLoggedInPost, 
-router.route('/createPartnerAssoc')
+router.route('/createPartnerAssoc', isLoggedIn)
 	.post(api.setProjPartnersLeaders, function(req, res) {
 	
 	console.log("\n/partners/createPartnerAssoc POST TRIGGERED...\nreq:\n" + req);
@@ -91,7 +92,7 @@ router.route('/createPartnerAssoc')
 
 //R - create Partners  -  localhost:8000/partners/createPartner
 // ADD BACK isLoggedInPost to EACH ONE!		//.post(isLoggedInPost, api.addPartner, function(req, res) {
-router.route('/createPartner')
+router.route('/createPartner', isLoggedIn)
 	.post(api.createPartner, function(req, res) {
 	
 	console.log("\n/partners/createPartner POST TRIGGERED...\nreq:\n" + req);

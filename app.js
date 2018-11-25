@@ -59,6 +59,8 @@ hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
 app.set('view options', { layout: 'layout' });
 
+// hbs.registerPartial('partnerTab', path.join(__dirname,'views/partners.hbs'));
+
 hbs.registerHelper("debug", function(optionalValue) {
     console.log("Current Context");
     console.log("====================");

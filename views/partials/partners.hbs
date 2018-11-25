@@ -7,8 +7,14 @@
 
 <!--        Btn: #addAssocPartners
         [ THIS = CURRENT PARTNERS ]     -->
-<span name="currentPartnersViewSpan" style="display:block;">                   <!-- currentPartnersViewSpan -->
-  <div class="col-xs-12">                           
+<span name="currentPartnersViewSpan" style="display:block;">        <!-- currentPartnersViewSpan -->
+  <div class="col-xs-12">
+    <input type="hidden" value="{{partDocId}}" name="partAppId1" style="display:none;">
+    <input type="hidden" value="{{part.[0].projectId}}" name="partAppId2" style="display:none;">
+    <input type="hidden" value="{{part.[1].projectId}}" name="partAppId3" style="display:none;">
+    <input type="hidden" value="{{part.projectId}}" name="partAppId" style="display:none;">
+    <input type="hidden" value="{{results.projectId}}" name="partAppId4" style="display:none;">
+
       <h3 name="currentPartnersLabel" class="h3underline">List of Partners</h3>
         <thead> 
             <th class="col-sm-7"><button onclick="addAssocPartnersBtn()" name="accessAssocPartners" class="accessAssocPartners btn btn-info">Modify Partners for this Project</button></th>
@@ -23,8 +29,8 @@
                     </thead> 
                     <tbody>
                         
-                        {{#if results.pAssoc}}
-                          {{#each results.pAssoc}}
+                        {{#if part}}
+                          {{#each part.pAssoc}}
                             <div class="{{_id}}" name="{{_id}}">
                               <tr class="{{_id}}" name="{{_id}}">
                                 <th class="col-sm-4" name="{{_id}}">{{org_name}}</th>
@@ -136,9 +142,9 @@
                   <th class="col-sm-7">Information</th>
             </thead> 
             <tbody>
-                
-                {{#if results.pAssoc}}
-                  {{#each results.pAssoc}}
+              
+                {{#if part}}
+                  {{#each part.pAssoc}}
                     <div class="{{_id}}" name="p_{{_id}}">
                       <tr class="{{_id}}" name="p_{{_id}}">
                         <th class="col-sm-4" name="p_{{_id}}">{{org_name}}</th>
@@ -166,8 +172,8 @@
                   {{/each}}
                 {{/if}}
 
-                {{#if results.uAssoc}}
-                  {{#each results.uAssoc}}
+                {{#if part}}
+                  {{#each part.uAssoc}}
                     <div class="{{_id}}" name="u_{{_id}}">
                       <tr class="{{_id}}" name="u_{{_id}}">
                         <th class="col-sm-4" name="u_{{_id}}">{{org_name}}</th>
@@ -196,6 +202,7 @@
                 {{/if}}
 
 
+
             </tbody>
           </table>
 </span>
@@ -209,8 +216,8 @@
             </thead> 
             <tbody>
                 
-                {{#if results.pAll}}
-                  {{#each results.pAll}}
+                {{#if part}}
+                  {{#each part.pAll}}
                     <div class="{{_id}}" name="{{_id}}">
                       <tr class="{{_id}}" name="{{_id}}">
                         <th class="col-sm-4" name="{{_id}}">{{org_name}}</th>
@@ -453,7 +460,10 @@
     }
 
     function assignSelectedBtn(inObject) {
-        var sendData = {assocArray: inObject};
+        var docuId = document.getElementsByName("partAppId")[0].value;
+        var sendData = {  assocArray: inObject,
+                          projectId: docuId
+                       };
         xhr(sendData, 'POST', '/partners/createPartnerAssoc', function(err) {
             if (err) {
                 alert('Value did not save, please reload the page');
