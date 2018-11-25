@@ -29,7 +29,6 @@
  * Import any other required modules
  */
 
-//getProjPartnersLeaders setProjPartnersLeaders 
 
 var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
@@ -1420,7 +1419,7 @@ getDocumentPlanning: function (req, res, next) {
                         console.log("\nCREATED Blank Document-Partner Association ----->\n");
                         console.log(newSendRes);
 
-                        // res.locals.results.part = newSendRes;
+                        res.locals.results.part = newSendRes;
                         req.partnerTime = newSendRes;
                         res.locals.status = '200';
                     }
@@ -1449,7 +1448,6 @@ getDocumentPlanning: function (req, res, next) {
                         }
                     }
                 }
-
 
                     var filtered = unAssocArray.filter(customFilter);
 
@@ -1484,7 +1482,7 @@ getDocumentPlanning: function (req, res, next) {
                                 // uIDs:   uIDs
                             };
             req.partnerTime = sendRes;
-            // res.locals.results.part = sendRes;
+            res.locals.results.part = sendRes;
             // req.partnerTime = sendRes;
             res.locals.status = '200';
             } else {

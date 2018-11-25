@@ -74,7 +74,7 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, api.getProjPartnersLeaders, 
 	payload.user_role = res.locals.role;
 	payload.projectNotes = res.locals.results.projectNotes;
 
-	payload.part = req.partnerTime||res.locals.results.part;			//Data for Partners Tab Partial
+	payload.part = res.locals.results.part||req.partnerTime;			//Data for Partners Tab Partial
 	payload.partDocId = res.locals.results.doc[0]._id;
 	console.log("results");
     console.log(payload);
