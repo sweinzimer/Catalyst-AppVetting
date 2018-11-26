@@ -10,6 +10,33 @@
 
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+<script>
+  var dataPAF = {};
+  var apple = "...data...";
+   {{#if results.doc}}
+  {{#each results.doc}}
+    dataPAF.fullName = "{{application.name.first}} {{application.name.middle}} {{application.name.last}}";
+    dataPAF.addr1 = "{{application.address.line_1}}, ";
+    dataPAF.addr2 = "{{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}";
+    dataPAF.addr3 = "{{application.address.city}}, {{application.address.state}}  {{application.address.zip}}"
+    //dataPAF.addr2 = apple;
+
+  {{/each}}
+  {{/if}}
+</script>
+
+<!-- <script src='/javascripts/makePDF/pdfmake.min.js'></script>
+<script src='/javascripts/makePDF/vfs_fonts.js'></script>
+
+<script src='/javascripts/makePDF/exportPAForm.js'></script> -->
+
+<!-- Scripts for loading export PDF functions -->
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.39/pdfmake.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.39/vfs_fonts.js'></script>
+<script src='/javascripts/generateReports/exportPAForm.js'></script>
+<script src='/javascripts/generateReports/exportHandleForm.js'></script>
+
 <script src="/javascript/xedit.js" type="text/javascript"></script>
 <script src="/javascript/addProjectNote.js" type="text/javascript"></script>
 <style>
@@ -35,9 +62,10 @@
 
 
 <div class="row">
-
   <div class="col-sm-12">
-    <h5>Project View!  **NEW**</h5>
+    <h5>Project View!  **NEW**<button class="btn btn-success" style="margin-left: 5%" onclick="exportPAFtoPDF()">Export PAF Report</button>
+                              <button class="btn btn-success" style="margin-left: 3%" onclick="exportHandletoPDF()">Export Handle-It Report</button>
+    </h5>
   <nav class="navbar">
 	 <div class="input-group">
 		<input type="text" id="note" class="form-control" placeholder="Enter Project Planning Note Here...">
@@ -49,8 +77,8 @@
     {{#each results.doc}}
       <div class="row">
         <div class="col-xs-12">
-          <h1 style="display:inline-block;">{{application.name.first}} {{application.name.middle}} {{application.name.last}}</h1> 
-          <h4 style="float:center;margin-left:50px;display:inline-block;">{{application.address.line_1}}{{#if_not_eq application.address.line_2 ''}}, {{application.address.line_2}}{{/if_not_eq}}, {{application.address.city}}, {{application.address.state}} {{application.address.zip}}</h4>
+          <h1 style="display:inline-block;">{{application.name.first}} {{application.name.middle}} {{application.name.last}}</h1>
+          <h4 style="float:center;margin-left:50px;display:inline-block;">{{application.address.line_1}}{{#if_not_eq application.address.line_2 ''}}, {{application.address.line_2}}{{/if_not_eq}}, {{application.address.city}}, {{application.address.state}} {{application.address.zip}}</h4> 
           <h3 style="float:right;display:inline-block;" class="text-muted">#{{app_name}}</h4>
         </div>
       </div>
