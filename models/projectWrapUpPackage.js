@@ -16,13 +16,13 @@ var ProjectWrapUpPackageSchema = new Schema({
   signup_sheet_office: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   record_volunteer_info: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   in_kind_donations: {
@@ -33,80 +33,105 @@ var ProjectWrapUpPackageSchema = new Schema({
     required: Boolean,
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   waste_dumpster_pickup: {
     required: Boolean,
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   waste_disposal_arrangement: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   return_materials_rentals: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   turn_in_receipts: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   process_reimbursement_checks: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   upload_photos_flickr: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   report_form_submission: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   update_project_webpage: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   client_phone_followup: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   send_thank_you_email: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   determine_followup_required: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   },
 
   send_closing_letter: {
     complete: Boolean,
     completed_on: Date,
-    owner: [String]
+    owner: ObjectId
   }
 
 });
+
+var ProjectWrapUpPackage = mongoose.model('ProjectWrapUpPackage', ProjectWrapUpPackageSchema);
+
+ProjectWrapUpPackage.empty = function (applicationId) {
+  return {
+    applicationId: applicationId,
+    signup_sheet_office: { complete: false },
+    record_volunteer_info: { complete: false },
+    porta_pottie_pickup: { complete: false },
+    waste_dumpster_pickup: { complete: false },
+    waste_disposal_arrangement: { complete: false },
+    return_materials_rentals: { complete: false },
+    turn_in_receipts: { complete: false },
+    process_reimbursement_checks: { complete: false },
+    upload_photos_flickr: { complete: false },
+    report_form_submission: { complete: false },
+    update_project_webpage: { complete: false },
+    client_phone_followup: { complete: false },
+    send_thank_you_email: { complete: false },
+    determine_followup_required: { complete: false },
+    send_closing_letter: { complete: false }
+  }
+};
+
+module.exports = ProjectWrapUpPackage;

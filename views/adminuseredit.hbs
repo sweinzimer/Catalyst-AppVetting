@@ -172,16 +172,20 @@
 
       <dt class="col-xs-4">Roles</dt>
       <dd class="col-xs-8">
-        
         <select class="selectpicker showtick" id="user_roles" title="{{user.user_roles}}" multiple>
           <option value="VET">Vetting Agent</option>
           <option value="SITE">Site Assement</option>
           <option value="PROJECT_MANAGMENT">Project Managment</option>
           <option value="ADMIN">Admin</option>          
         </select>
-       
+      </dd>
 
-</a>
+      <dt class="col-xs-4">Assign Tasks</dt>
+      <dd class="col-xs-8">
+        <a href="#" id="assign_tasks" data-type="select"
+           data-pk="{{ user._id }}"
+           data-url="/user/editUser" data-title="Assign Tasks">
+        </a>
       </dd>
 
       <dt class="col-xs-4">Activity</dt>
@@ -263,6 +267,7 @@
     'user_documents.waiver_signed',
     'user_documents.background_check',
     'user_documents.ID_badge',
+    'assign_tasks'
   ]
 
   function changePassword(e) {
@@ -358,6 +363,14 @@ $('.bootstrap-select').click(function(e)
       ]
       
     }) */
+
+    $('#assign_tasks').editable({
+      value: {{ user.assign_tasks }},
+      source: [
+        { value: false, text: 'False'},
+        { value: true, text: 'True' }
+      ]
+    })
 
     $("[id='user_documents.waiver_signed']").editable({
       value: {{ user.user_documents.waiver_signed }},

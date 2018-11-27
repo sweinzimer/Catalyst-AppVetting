@@ -35,6 +35,10 @@
  select.task-owner {
    min-width: 12em;
  }
+
+ select.task-owner.unassigned {
+   
+ }
 </style>
 
 
@@ -541,9 +545,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="signup_sheet_office">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="signup_sheet_office"></select>
                 </td>
               </tr>
 
@@ -557,9 +559,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="record_volunteer_info">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="record_volunteer_info"></select>
                 </td>
               </tr>
 
@@ -584,9 +584,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="porta_pottie_pickup">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="porta_pottie_pickup"></select>
                 </td>
               </tr>
 
@@ -600,9 +598,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="waste_dumpster_pickup">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="waste_dumpster_pickup"></select>
                 </td>
               </tr>
 
@@ -616,9 +612,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="waste_disposal_arrangement">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="waste_disposal_arrangement"></select>
                 </td>
               </tr>
 
@@ -632,9 +626,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="return_materials_rentals">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="return_materials_rentals"></select>
                 </td>
               </tr>
 
@@ -648,9 +640,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="turn_in_receipts">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="turn_in_receipts"></select>
                 </td>
               </tr>
 
@@ -664,9 +654,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="process_reimbursement_checks">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="process_reimbursement_checks"></select>
                 </td>
               </tr>
 
@@ -680,9 +668,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="upload_photos_flickr">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="upload_photos_flickr"></select>
                 </td>
               </tr>
 
@@ -696,9 +682,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="report_form_submission">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="report_form_submission"></select>
                 </td>
               </tr>
 
@@ -712,9 +696,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="update_project_webpage">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="update_project_webpage"></select>
                 </td>
               </tr>
 
@@ -728,9 +710,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="client_phone_followup">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="client_phone_followup"></select>
                 </td>
               </tr>
 
@@ -744,9 +724,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="send_thank_you_email">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="send_thank_you_email"></select>
                 </td>
               </tr>
 
@@ -760,9 +738,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="determine_followup_required">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="determine_followup_required"></select>
                 </td>
               </tr>
 
@@ -776,9 +752,7 @@
                 </td>
                 <td class="col-xs-6 col-sm-4">
                   Owner
-                  <select class="task-owner" data-owner-of="send_closing_letter">
-                    <option></option>
-                  </select>
+                  <select class="task-owner" data-owner-of="send_closing_letter"></select>
                 </td>
               </tr>
 
@@ -913,361 +887,386 @@
 </div>
 
 <script>
-  var workItems = {{{stringify results.work}}}
-  var docs = {{{stringify results.doc}}}
-  $(document).ready(function() {
-    $('.work-item-comment').each(watchEditButton)
-    $('.work-item-new').on('click', handleNewWorkItemSubmission)
-    $('.work-item-clear').on('click', handleNewWorkItemClear)
-    $('#site_summary').on('keydown', handleSiteSummaryInput)
+ var workItems = {{{stringify results.work}}};
+ var docs = {{{stringify results.doc}}};
+ var assignableUsers = {{{ stringify assignableUsers }}};
+ var wrapUp = {{{ stringify wrapUp }}};
+ $(document).ready(function() {
+   $('.work-item-comment').each(watchEditButton)
+   $('.work-item-new').on('click', handleNewWorkItemSubmission)
+   $('.work-item-clear').on('click', handleNewWorkItemClear)
+   $('#site_summary').on('keydown', handleSiteSummaryInput)
 
-    $('#status').editable({
-        value: docs[0].status,
-        source: [
-          {value: 'handleToBeAssigned', text: 'Handle-It - To Be Assigned'},
-          {value: 'handleAssigned', text: 'Handle-It - Assigned'},
-          {value: 'handleCompleted', text: 'Handle-It - Completed'},
-          {value: 'projectUpcoming', text: 'Project - Upcoming'},
-          {value: 'projectInProgress', text: 'Project - In Process'},
-          {value: 'projectGoBacks', text: 'Project - Go Backs'},
-          {value: 'projectCompleted', text: 'Project - Completed'},
-        ]
-    });
+   $('#status').editable({
+     value: docs[0].status,
+     source: [
+       {value: 'handleToBeAssigned', text: 'Handle-It - To Be Assigned'},
+       {value: 'handleAssigned', text: 'Handle-It - Assigned'},
+       {value: 'handleCompleted', text: 'Handle-It - Completed'},
+       {value: 'projectUpcoming', text: 'Project - Upcoming'},
+       {value: 'projectInProgress', text: 'Project - In Process'},
+       {value: 'projectGoBacks', text: 'Project - Go Backs'},
+       {value: 'projectCompleted', text: 'Project - Completed'},
+     ]
+   });
 
+   // Populate the owner dropdown boxes with assignable users. Save them when changed.
+   $('.task-owner').each(function () {
+     var $this = $(this);
+     var taskName = $this.data('owner-of');
+     $this.empty();
+     $this.append('<option value="">Unassigned</option>');
 
-  })
+     $.each(assignableUsers, function (i, user) {
+       var fullName = user.contact_info.user_name.user_first + ' ' +
+                      user.contact_info.user_name.user_last;
+       $option = $('<option value="' + user._id + '">' + fullName + '</option>');
+       // TODO
+       // if (wrapup record [ taskName ].owner = user._id) {
+       //     $option.prop('selected', 'selected')
+       // }
+       $this.append($option);
+     });
 
-  function handleSiteSummaryInput(e) {
-    if (window.siteSummaryTimeout) {
-      window.clearTimeout(window.siteSummaryTimeout)
-    }
-    // TODO: set this URL
-    window.siteSummaryTimeout = window.setTimeout(function() {
-      xhr(
-        { id: docs[0]._id, name: 'notes.site_summary', value: this.val },
-        'POST',
-        '/site/updatesummary',
-        function(err, data) {
-          console.info('site summary saved')
-        }
-      )
-    }.bind({val: e.target.value}), 500)
-  }
+       $this.change(updateWrapupOwner);
+   })
 
-  // Used with $(*).each
-  function watchEditButton(idx) {
-    $(this).on('click', showWorkItemEditForm)
-  }
+ })
 
-  function showWorkItemEditForm(e) {
-    e.preventDefault()
-    var workItemParent = this.parentElement
-    var workItemContainer = $(workItemParent)
-    var workItemId = $(workItemParent.parentElement).attr('name')
+   function handleSiteSummaryInput(e) {
+     if (window.siteSummaryTimeout) {
+       window.clearTimeout(window.siteSummaryTimeout)
+     }
+     // TODO: set this URL
+     window.siteSummaryTimeout = window.setTimeout(function() {
+       xhr(
+         { id: docs[0]._id, name: 'notes.site_summary', value: this.val },
+         'POST',
+         '/site/updatesummary',
+         function(err, data) {
+           console.info('site summary saved')
+         }
+       )
+     }.bind({val: e.target.value}), 500)
+   }
 
-    var currentData = {}
-    $('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
-      var path = $(this).attr('name').replace(workItemId + '.', '')
-      currentData[path] = this.innerText
-    })
+   // Used with $(*).each
+   function watchEditButton(idx) {
+     $(this).on('click', showWorkItemEditForm)
+   }
 
-    $(this).toggle();
-    //workItemContainer.empty()
+   function showWorkItemEditForm(e) {
+     e.preventDefault()
+     var workItemParent = this.parentElement
+     var workItemContainer = $(workItemParent)
+     var workItemId = $(workItemParent.parentElement).attr('name')
 
-    var fields = [
-      {field: 'projectComments', text:'Project Comments', type: 'textarea'},
+     var currentData = {}
+     $('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+       var path = $(this).attr('name').replace(workItemId + '.', '')
+       currentData[path] = this.innerText
+     })
+
+     $(this).toggle();
+     //workItemContainer.empty()
+
+     var fields = [
+       {field: 'projectComments', text:'Project Comments', type: 'textarea'},
+       
+     ]
+
+     fields.forEach(function(f) {
+       var formGroup = $('<div class="form-group"></div>')
+       $('<label>' + f.text + '</label>').appendTo(formGroup)
+       if (f.type && f.type === 'textarea') {
+         $('<textarea></textarea>')
+           .addClass('form-control')
+           .attr('name', workItemId + '.' + f.field)
+           .attr('rows', 5)
+           .val(currentData[f.field])
+           .appendTo(formGroup)
+       } else {
+         $('<input></input>')
+           .addClass('form-control')
+           .attr('name', workItemId + '.' + f.field)
+           .val(currentData[f.field])
+           .appendTo(formGroup)
+       }
+
+       workItemContainer.append(formGroup)
+     })
+
+     $('<button></button>')
+           .text('Save')
+           .addClass('btn').addClass('btn-primary')
+           .addClass('card-link')
+           .on('click', function(e) {
+             saveWorkItem(workItemContainer)
+           })
+           .appendTo(workItemContainer)
+
+     $('<button></button>')
+           .text('Cancel')
+           .addClass('btn').addClass('btn-danger')
+           .addClass('card-link')
+           .on('click', function(e) {
+             for (let i=0; i<workItems.length; i++) {
+               if (workItems[i]._id === workItemId) {
+                 showWorkItem(workItems[i], workItemContainer)
+               }
+             }
+           })
+           .appendTo(workItemContainer)
+   }
+
+   function showWorkItem(data, node) {
+     node.empty()
+
+     var cardBlock = node
+
+     $('<h4></h4>').addClass('card-title')
+                   .attr('name', data._id + '.name')
+                   .text(data.name)
+                   .appendTo(cardBlock)
+
+     $('<p></p>').addClass('text-muted')
+                   .text(new Date(data.date).toString())
+                   .appendTo(cardBlock)
+
+     var cardText = $('<p></p>').addClass('card-text')
+                                .appendTo(cardBlock)
+
+     $('<strong>Description:</strong>').appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
+
+     $('<span></span>')
+                                .attr('name', data._id + '.description')
+                                .text(data.description)
+                                .appendTo(cardText)
+
+     $('<br></br>').appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
+
+     $('<strong>Vetting Comments:</strong>').appendTo(cardText)
+     // $('<br></br>').appendTo(cardText)
+
+     $('<p></p>').attr('name', data._id + '.vettingComments')
+                                .text(data.vettingComments).appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
+
+     $('<strong>Site Comments:</strong>').appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
      
-    ]
-
-    fields.forEach(function(f) {
-      var formGroup = $('<div class="form-group"></div>')
-      $('<label>' + f.text + '</label>').appendTo(formGroup)
-      if (f.type && f.type === 'textarea') {
-        $('<textarea></textarea>')
-        .addClass('form-control')
-        .attr('name', workItemId + '.' + f.field)
-        .attr('rows', 5)
-        .val(currentData[f.field])
-        .appendTo(formGroup)
-      } else {
-        $('<input></input>')
-        .addClass('form-control')
-        .attr('name', workItemId + '.' + f.field)
-        .val(currentData[f.field])
-        .appendTo(formGroup)
-      }
-
-      workItemContainer.append(formGroup)
-    })
-
-    $('<button></button>')
-    .text('Save')
-    .addClass('btn').addClass('btn-primary')
-    .addClass('card-link')
-    .on('click', function(e) {
-      saveWorkItem(workItemContainer)
-    })
-    .appendTo(workItemContainer)
-
-    $('<button></button>')
-    .text('Cancel')
-    .addClass('btn').addClass('btn-danger')
-    .addClass('card-link')
-    .on('click', function(e) {
-      for (let i=0; i<workItems.length; i++) {
-        if (workItems[i]._id === workItemId) {
-          showWorkItem(workItems[i], workItemContainer)
-        }
-      }
-    })
-    .appendTo(workItemContainer)
-  }
-
-  function showWorkItem(data, node) {
-    node.empty()
-
-    var cardBlock = node
-
-    $('<h4></h4>').addClass('card-title')
-    .attr('name', data._id + '.name')
-    .text(data.name)
-    .appendTo(cardBlock)
-
-    $('<p></p>').addClass('text-muted')
-    .text(new Date(data.date).toString())
-    .appendTo(cardBlock)
-
-    var cardText = $('<p></p>').addClass('card-text')
-    .appendTo(cardBlock)
-
-    $('<strong>Description:</strong>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-
-    $('<span></span>')
-    .attr('name', data._id + '.description')
-    .text(data.description)
-    .appendTo(cardText)
-
-    $('<br></br>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-
-    $('<strong>Vetting Comments:</strong>').appendTo(cardText)
-    // $('<br></br>').appendTo(cardText)
-
-    $('<p></p>').attr('name', data._id + '.vettingComments')
-    .text(data.vettingComments).appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-
-    $('<strong>Site Comments:</strong>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-  
-    
-
-    $('<p></p>').attr('name', data._id + '.siteComments')
-    .text(data.siteComments).appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-
-    $('<strong>Project Comments:</strong>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText) 
-    
-
-    $('<p></p>').attr('name', data._id + '.projectComments')
-    .text(data.projectComments).appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-
-
-    $('<strong>Cost:</strong>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-
-    $('<span></span>')
-    .attr('name', data._id + '.cost')
-    .text(data.cost)
-    .appendTo(cardText)
-
-    $('<a></a>').addClass('btn').addClass('btn-primary')
-    .addClass('card-link').addClass('work-item-comment')
-    .text('Add Comment')
-    .attr('href', '#')
-    .on('click', showWorkItemEditForm)
-    .appendTo(cardBlock)
-  }
-
-  function saveWorkItem(node) {
-    var data = {}, id = false
-    $('input, textarea', node).each(function(idx) {
-      var path = this.name.split('.')[1]
-      data[path] = this.value
-      if (!id) id = this.name.split('.')[0]
-    })
-
-    // XHR here
-    var xhrData = JSON.parse(JSON.stringify(data))
-    xhrData.id = id
-
-    xhr(xhrData, 'POST', '/site/updateitem', function(err) {
-      if (err) {
-        // TODO: If error, flip the value back and show an error message to the user
-        // alert('Value did not save, please reload the page')
-      }
-
-      for (var i=0; i<workItems.length; i++) {
-        if (workItems[i]._id === id) {
-          Object.keys(data).forEach(function(k) {
-            workItems[i][k] = data[k]
-          })
-
-          showWorkItem(workItems[i], node)
-          //$('.work-items-comment').toggle();
-        }
-      }
-    })
-
-
-
-
-
-
-  }
-
-  function xhr(data, method, url, next) {
-    //post to database
-
-    var posting = $.ajax({
-      type : method,
-      url : url,
-      dataType : 'json',
-      contentType : 'application/json; charset=UTF-8',
-      data : JSON.stringify(data)
-    });
-
-    //check for error
-    posting.done(function (xhr) {
-      if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
-        next(null, xhr)
-      } else {
-        next(new Error('Could not complete xhr'))
-      }
-    });
-
-    posting.fail(function (res) {
-      next(new Error('Could not complete xhr'))
-    });
-  }
-
-  function handleNewWorkItemSubmission(e) {
-    var newWorkItem = {}, error = false
-
-    $('input, textarea', e.target.parentNode).each(function(idx) {
-      if (this.value.length === 0 && this.name !== 'cost') {
-        $(this.parentNode).addClass('has-danger')
-        error = true
-      } else {
-        newWorkItem[this.name] = this.value
-        $(this.parentNode).removeClass('has-danger')
-      }
-    })
-
-    if (error === false) {
-      createNewWorkItem(newWorkItem, function(err) {
-        handleNewWorkItemClear()
-      })
-    }
-  }
-
-  function handleNewWorkItemClear(e, node) {
-    $('input, textarea', (e ? e.target.parentNode : node)).each(function(idx) {
-      $(this).val('')
-      $(this.parentNode).removeClass('has-danger')
-    })
-  }
-
-  function createNewWorkItem(w, next) {
-    var id = docs[0]._id
-    var rightNow = new Date()
-
-    w.date = rightNow
-    w.updated = rightNow
-    w.applicationId = id
-
-    xhr(w, 'POST', '/site/additem', function(err, data) {
-      // TODO: Handle error
-      if (err) { alert('There was an error saving your work item') }
-
-      w._id = data.itemId
-      workItems.push(w)
-      var newNode = addWorkItem(w)
-      handleNewWorkItemClear(null, $('[name="new"]'))
-
-    })
-  }
-
-  function addWorkItem(w) {
-    var cardContainer = $('#workItemCards')
-
-    var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6')
-    .appendTo(cardContainer)
-
-    var card = $('<div></div>').addClass('card').addClass('work-item')
-    .attr('name', w._id)
-    .appendTo(cardDiv)
-
-    var cardBlock = $('<div></div>').addClass('card-block')
-    .appendTo(card)
-
-
-    $('<h4></h4>').addClass('card-title')
-    .attr('name', w._id + '.name')
-    .text(w.name)
-    .appendTo(cardBlock)
-
-    $('<p></p>').addClass('text-muted')
-    .text(w.date.toString())
-    .appendTo(cardBlock)
-
-    var cardText = $('<p></p>').addClass('card-text')
-    .appendTo(cardBlock)
-
-    $('<strong>Description:</strong>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-
-    $('<span></span>')
-    .attr('name', w._id + '.description')
-    .text(w.description)
-    .appendTo(cardText)
-
-    $('<br></br>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-
-    $('<strong>Vetting Comments:</strong>').appendTo(cardText)
-    // $('<br></br>').appendTo(cardText)
-
-    $('<p></p>').text(w.vettingComments).appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-
-    $('<strong>Site Comments:</strong>').appendTo(cardText)
-    // $('<br></br>').appendTo(cardText)
-
-    $('<p></p>').text(w.siteComments).appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-
-    $('<strong>Cost:</strong>').appendTo(cardText)
-    $('<br></br>').appendTo(cardText)
-
-    $('<span></span>')
-    .attr('name', w._id + '.cost')
-    .text(w.cost)
-    .appendTo(cardText)
-
-    $('<a></a>').addClass('btn').addClass('btn-primary')
-    .addClass('card-link').addClass('work-item-edit')
-    .text('Edit')
-    .attr('href', '#')
-    .on('click', showWorkItemEditForm)
-    .appendTo(cardBlock)
-
-    return cardBlock
-  }
+     
+
+     $('<p></p>').attr('name', data._id + '.siteComments')
+                                .text(data.siteComments).appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
+
+     $('<strong>Project Comments:</strong>').appendTo(cardText)
+     $('<br></br>').appendTo(cardText) 
+     
+
+     $('<p></p>').attr('name', data._id + '.projectComments')
+                                .text(data.projectComments).appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
+
+
+     $('<strong>Cost:</strong>').appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
+
+     $('<span></span>')
+                                .attr('name', data._id + '.cost')
+                                .text(data.cost)
+                                .appendTo(cardText)
+
+     $('<a></a>').addClass('btn').addClass('btn-primary')
+                                .addClass('card-link').addClass('work-item-comment')
+                                .text('Add Comment')
+                                .attr('href', '#')
+                                .on('click', showWorkItemEditForm)
+                                .appendTo(cardBlock)
+   }
+
+   function saveWorkItem(node) {
+     var data = {}, id = false
+     $('input, textarea', node).each(function(idx) {
+       var path = this.name.split('.')[1]
+       data[path] = this.value
+       if (!id) id = this.name.split('.')[0]
+     })
+
+     // XHR here
+     var xhrData = JSON.parse(JSON.stringify(data))
+     xhrData.id = id
+
+     xhr(xhrData, 'POST', '/site/updateitem', function(err) {
+       if (err) {
+         // TODO: If error, flip the value back and show an error message to the user
+         // alert('Value did not save, please reload the page')
+       }
+
+       for (var i=0; i<workItems.length; i++) {
+         if (workItems[i]._id === id) {
+           Object.keys(data).forEach(function(k) {
+             workItems[i][k] = data[k]
+           })
+
+           showWorkItem(workItems[i], node)
+           //$('.work-items-comment').toggle();
+         }
+       }
+     })
+
+
+
+
+
+
+   }
+
+   function xhr(data, method, url, next) {
+     //post to database
+
+     var posting = $.ajax({
+       type : method,
+       url : url,
+       dataType : 'json',
+       contentType : 'application/json; charset=UTF-8',
+       data : JSON.stringify(data)
+     });
+
+     //check for error
+     posting.done(function (xhr) {
+       if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
+         next(null, xhr)
+       } else {
+         next(new Error('Could not complete xhr'))
+       }
+     });
+
+     posting.fail(function (res) {
+       next(new Error('Could not complete xhr'))
+     });
+   }
 
+   function handleNewWorkItemSubmission(e) {
+     var newWorkItem = {}, error = false
+
+     $('input, textarea', e.target.parentNode).each(function(idx) {
+       if (this.value.length === 0 && this.name !== 'cost') {
+         $(this.parentNode).addClass('has-danger')
+         error = true
+       } else {
+         newWorkItem[this.name] = this.value
+         $(this.parentNode).removeClass('has-danger')
+       }
+     })
+
+     if (error === false) {
+       createNewWorkItem(newWorkItem, function(err) {
+         handleNewWorkItemClear()
+       })
+     }
+   }
+
+   function handleNewWorkItemClear(e, node) {
+     $('input, textarea', (e ? e.target.parentNode : node)).each(function(idx) {
+       $(this).val('')
+       $(this.parentNode).removeClass('has-danger')
+     })
+   }
+
+   function createNewWorkItem(w, next) {
+     var id = docs[0]._id
+     var rightNow = new Date()
+
+     w.date = rightNow
+     w.updated = rightNow
+     w.applicationId = id
+
+     xhr(w, 'POST', '/site/additem', function(err, data) {
+       // TODO: Handle error
+       if (err) { alert('There was an error saving your work item') }
+
+       w._id = data.itemId
+       workItems.push(w)
+       var newNode = addWorkItem(w)
+       handleNewWorkItemClear(null, $('[name="new"]'))
+
+     })
+   }
+
+   function addWorkItem(w) {
+     var cardContainer = $('#workItemCards')
+
+     var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6')
+                                   .appendTo(cardContainer)
+
+     var card = $('<div></div>').addClass('card').addClass('work-item')
+                                .attr('name', w._id)
+                                .appendTo(cardDiv)
+
+     var cardBlock = $('<div></div>').addClass('card-block')
+                                     .appendTo(card)
+
+
+     $('<h4></h4>').addClass('card-title')
+                                     .attr('name', w._id + '.name')
+                                     .text(w.name)
+                                     .appendTo(cardBlock)
+
+     $('<p></p>').addClass('text-muted')
+                                     .text(w.date.toString())
+                                     .appendTo(cardBlock)
+
+     var cardText = $('<p></p>').addClass('card-text')
+                                .appendTo(cardBlock)
+
+     $('<strong>Description:</strong>').appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
+
+     $('<span></span>')
+                                .attr('name', w._id + '.description')
+                                .text(w.description)
+                                .appendTo(cardText)
+
+     $('<br></br>').appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
+
+     $('<strong>Vetting Comments:</strong>').appendTo(cardText)
+     // $('<br></br>').appendTo(cardText)
+
+     $('<p></p>').text(w.vettingComments).appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
+
+     $('<strong>Site Comments:</strong>').appendTo(cardText)
+     // $('<br></br>').appendTo(cardText)
+
+     $('<p></p>').text(w.siteComments).appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
+
+     $('<strong>Cost:</strong>').appendTo(cardText)
+     $('<br></br>').appendTo(cardText)
+
+     $('<span></span>')
+                                .attr('name', w._id + '.cost')
+                                .text(w.cost)
+                                .appendTo(cardText)
+
+     $('<a></a>').addClass('btn').addClass('btn-primary')
+                                .addClass('card-link').addClass('work-item-edit')
+                                .text('Edit')
+                                .attr('href', '#')
+                                .on('click', showWorkItemEditForm)
+                                .appendTo(cardBlock)
+
+     return cardBlock
+   }
+
+   function updateWrapupOwner () {
+
+   }
 
 
 </script>
