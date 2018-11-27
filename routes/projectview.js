@@ -90,8 +90,6 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
          });
 
 
-
-
 //same as vetting route.  Shouldn't be issues with logic as is
 router.route('/additem')
 	.post(isLoggedInPost, api.addWorkItem, function(req, res) {
