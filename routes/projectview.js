@@ -5,6 +5,7 @@ var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 
 var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
+// var PartnerPackage = require('../models/partners.js');
 
 var api = require('../controllers/api');
 var User = require('../models/userPackage');
@@ -15,9 +16,10 @@ mongoose.Promise = require('bluebird'); // Tell mongoose we are using the Bluebi
 Promise.promisifyAll(mongoose); // Convert mongoose API to always return promises using Bluebird's promisifyAll
 
 
-
 //Need ObjectID to search by ObjectID
 var ObjectId = require('mongodb').ObjectID;
+
+
 
 module.exports = function(passport) {
 router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) {
@@ -59,29 +61,34 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 	res.redirect('/projectsummary');
 });
 
-  router.get('/:id', isLoggedIn, api.getDocumentSite, api.getAssignableUsers, api.getWrapUpDoc,
-             function(req, res, next) {
-               //Checking what's in params
-               //console.log("Rendering application " + ObjectId(req.params.id));
-	             //TEST
-	             console.log("rendering test application");
+  router
+    .get('/:id', isLoggedIn, api.getDocumentSite, api.getProjPartnersLeaders,
+         api.getAssignableUsers, api.getWrapUpDoc,
+         function(req, res, next) {
+           //Checking what's in params
+           //console.log("Rendering application " + ObjectId(req.params.id));
 
-               var payload = {};
-	             payload.doc = res.locals.results.doc[0];
-	             payload.work = res.locals.results.work;
-	             payload.user = req.user._id;
-	             payload.user_email = res.locals.email;
-	             payload.user_role = res.locals.role;
-	             payload.projectNotes = res.locals.results.projectNotes;
-               payload.assignableUsers = res.locals.assignableUsers;
-               payload.wrapUp = res.locals.wrapUp;
-	             console.log("results");
-               console.log(payload);
-               
-	             // res.render('siteassessmenttool', payload);
-	             res.render('projectview', payload);
+	         console.log("rendering test application");
+           var payload = {};
 
-             });
+	         payload.doc = res.locals.results.doc[0];
+	         payload.work = res.locals.results.work;
+	         payload.user = req.user._id;
+	         payload.user_email = res.locals.email;
+	         payload.user_role = res.locals.role;
+	         payload.projectNotes = res.locals.results.projectNotes;
+           payload.assignableUsers = res.locals.assignableUsers;
+           payload.wrapUp = res.locals.wrapUp;
+	         payload.part = res.locals.results.part||req.partnerTime;			//Data for Partners Tab Partial
+	         payload.partDocId = res.locals.results.doc[0]._id;
+	         console.log("results");
+           console.log(payload);
+           
+	         // res.render('siteassessmenttool', payload);
+	         res.render('projectview', payload);
+
+         });
+
 
 
 

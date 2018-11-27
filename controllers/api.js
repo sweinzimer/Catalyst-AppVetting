@@ -212,6 +212,7 @@ module.exports = {
 	getDocumentSite: function (req, res, next) {
     // Log the api call we make along with the _id used by it
     console.log('[ API ] getDocumentSite :: Call invoked with id: ' + req.params.id);
+    res.locals.docId = req.params.id;
 		// Use results.DocumentPackage.<whatever you need> to access the information
     Promise.props({
       //document: DocumentPackage.findById(req.params.id).lean().execAsync()
@@ -1279,7 +1280,7 @@ getDocumentPlanning: function (req, res, next) {
     },
 
 
-    //post create Partner
+    //post create Partner       //next
     createPartner: function(req, res, next) {
         console.log('[ API ] createPartner :: Call invoked');
         console.log(req.body);
@@ -1295,11 +1296,14 @@ getDocumentPlanning: function (req, res, next) {
                 console.log(item);
                 //send note ID so it can be referenced without page refresh
                 res.send( { status : 200, _id: item._id } );
+            } else {
+                console.log ('[ API ] :: createPartner error.')
             }
+            next();
         });
     },
 
-        //post delete Partner
+    //post delete Partner           //next
     deletePartner: function(req, res, next) {
         console.log('[ API ] deletePartner :: Call invoked: req.body: ');
         console.log(req.body);
@@ -1327,6 +1331,7 @@ getDocumentPlanning: function (req, res, next) {
         });
     },
 
+
     //post get all Partners
     getPartner: function(req, res, next) {
         console.log('[ API ] getPartner :: Call invoked: req.body: ');
@@ -1343,6 +1348,184 @@ getDocumentPlanning: function (req, res, next) {
             }
             else {
                 console.log('[ API ] getPartner :: Partner(s) found: FALSE');
+            }
+            next();
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+    },
+
+
+
+    //post - GET (Retrieve) partners and leaders associated to that project
+    getProjPartnersLeaders: function(req, res, next) {
+        //console.log(req.body);
+        
+        var projectId =  ObjectId(req.params.id) || 34 ||req.params.id || req.body.projectId || 223344;        //223344 is a test user                               //TEST NUM
+        console.log('[ API ] getProjPartnersLeaders :: Call invoked for: ' + projectId);
+
+        res.locals.docId = projectId;
+
+        // var projectId = String(req.body.projectId);
+        var resArray = [];
+        //var unAssocArray = [];
+
+
+        Promise.props({
+            allPartners: PartnerPackage.find().execAsync(),
+            pCount: PartnerPackage.count().execAsync(),
+            assocPartners: ProjectSummaryPackage.find({"projectId": projectId }).execAsync()
+            // assocPartners: ProjectSummaryPackage.findAllAndUpdate(
+            //                 {"projectId": projectId },
+            //                 { $setOnInsert: {"projectId": projectId } }, 
+            //                 { returnOriginal: false,
+            //                           upsert: true   }
+            // ).execAsync()
+        })
+        .then(function (assocRes) {
+            
+            var allPartners = assocRes.allPartners;                             //Array of Objects
+
+            var unAssocArray = assocRes.allPartners;  
+            var uIDs = [];
+
+            if (! assocRes.assocPartners[0]) {
+
+                console.log('[ API ] getProjPartner createPartner :: Call invoked');
+                // console.log(req.body);
+
+                // var empty = [];
+                // var newBody = {    "projectId": projectId 
+                //               };
+
+                var item = new ProjectSummaryPackage({"projectId": projectId });
+
+                item.saveAsync(function (err, note, numAffected) {
+                    if (err) {
+                        console.error(err);
+                    }
+                    else  {
+                        console.log('[ API ] getProjPartner createPartner :: New Partner created with _id: ' + item._id);
+                        console.log(item);
+
+                        var newSendRes =   { 
+                                            pAll:   allPartners, 
+                                            pAssoc: {},
+                                            uAssoc: allPartners,
+                                            projectId: projectId
+                                        };
+
+                        console.log("\nCREATED Blank Document-Partner Association ----->\n");
+                        console.log(newSendRes);
+
+                        res.locals.results.part = newSendRes;
+                        req.partnerTime = newSendRes;
+                        res.locals.status = '200';
+                    }
+                });
+
+
+            } 
+
+
+
+            else if (assocRes) {
+              var assocPartners = assocRes.assocPartners[0].assocPartners || null;        //An array of IDS
+                console.log('[ API ] getProjPartnersLeaders :: item(s) found: TRUE');
+
+                console.log("Partner Associations Result: " + assocPartners);
+                
+                for (var aCnt = 0; aCnt < assocPartners.length; aCnt++) {
+                    for (var allCnt=0; allCnt < allPartners.length; allCnt++) {    
+                        if (allPartners[allCnt]._id == assocPartners[aCnt]) {
+                                resArray.push(allPartners[allCnt]);
+                                //break;
+
+                        } 
+                        else if (allCnt + 1 == allPartners.length) {
+                            uIDs.push(assocPartners[aCnt]);
+                        }
+                    }
+                }
+
+                    var filtered = unAssocArray.filter(customFilter);
+
+                    function customFilter(eachObj) {
+                        var isFound = false;
+                        for (var aCnt = 0; aCnt < assocPartners.length; aCnt++) {
+                            if (eachObj._id == assocPartners[aCnt]) {
+                                isFound = true; 
+                            } 
+                        }
+                        return (! isFound);
+                    }
+
+            
+
+
+                if (resArray.length > 0) {
+                    console.log(resArray.length);
+                }
+            //res.locals.results = results;
+            // res.locals.results = { ans: JSON.stringify(resArray) };
+            // res.locals.results = assocRes.allPartners;
+
+            var sendRes =   { 
+                                pAll:   allPartners, 
+                                // aCount: assocRes.pCount, 
+                                pAssoc: resArray,
+                                // aIDs:   assocPartners,
+                                uAssoc: filtered,
+                                projectId: projectId
+                                // uCount: filtered.length,
+                                // uIDs:   uIDs
+                            };
+            req.partnerTime = sendRes;
+            res.locals.results.part = sendRes;
+            // req.partnerTime = sendRes;
+            res.locals.status = '200';
+            } else {
+                console.log('[ API ] getProjPartnersLeaders :: item(s) found: FALSE');
+            }
+            next();
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+    },
+
+
+    //post - SET (Store) partners and leaders associated to that project
+    setProjPartnersLeaders: function(req, res, next) {
+        
+        console.log("**Setting Doc-Partner Association with body: **");
+        console.log(req.body);
+
+        //console.log(req.body);
+        var projectId = req.body.projectId || res.locals.docId;        //223344 is a test user 
+        console.log('[ API ] setProjPartnersLeaders :: Call invoked for: ' + projectId);
+        // var item = new ProjectSummaryPackage(req.body);
+
+        Promise.props({
+            updateStatus:   ProjectSummaryPackage.update(
+                                {"projectId": projectId },           //Query
+                                {  $set: {
+                                            "assocPartners": req.body.assocArray
+                                          }
+                                },   
+                                { upsert: true }
+                            ).execAsync()
+        })
+        .then(function (thisRes) {
+            if (thisRes) {
+                console.log('[ API ] setProjPartnersLeaders :: item UPDATED: TRUE');
+                console.log(thisRes.updateStatus);
+
+            res.locals.results = thisRes;
+            res.locals.status = '200';
+            } else {
+                console.log('[ API ] setProjPartnersLeaders :: item UPDATED: FALSE');
             }
             next();
         })
