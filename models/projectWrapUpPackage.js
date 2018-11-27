@@ -116,21 +116,21 @@ var ProjectWrapUpPackage = mongoose.model('ProjectWrapUpPackage', ProjectWrapUpP
 ProjectWrapUpPackage.empty = function (applicationId) {
   return {
     applicationId: applicationId,
-    signup_sheet_office: { complete: false },
-    record_volunteer_info: { complete: false },
-    porta_pottie_pickup: { complete: false },
-    waste_dumpster_pickup: { complete: false },
-    waste_disposal_arrangement: { complete: false },
-    return_materials_rentals: { complete: false },
-    turn_in_receipts: { complete: false },
-    process_reimbursement_checks: { complete: false },
-    upload_photos_flickr: { complete: false },
-    report_form_submission: { complete: false },
-    update_project_webpage: { complete: false },
-    client_phone_followup: { complete: false },
-    send_thank_you_email: { complete: false },
-    determine_followup_required: { complete: false },
-    send_closing_letter: { complete: false }
+    signup_sheet_office: { complete: false, owner: null },
+    record_volunteer_info: { complete: false, owner: null },
+    porta_pottie_pickup: { complete: false, owner: null },
+    waste_dumpster_pickup: { complete: false, owner: null },
+    waste_disposal_arrangement: { complete: false, owner: null },
+    return_materials_rentals: { complete: false, owner: null },
+    turn_in_receipts: { complete: false, owner: null },
+    process_reimbursement_checks: { complete: false, owner: null },
+    upload_photos_flickr: { complete: false, owner: null },
+    report_form_submission: { complete: false, owner: null },
+    update_project_webpage: { complete: false, owner: null },
+    client_phone_followup: { complete: false, owner: null },
+    send_thank_you_email: { complete: false, owner: null },
+    determine_followup_required: { complete: false, owner: null },
+    send_closing_letter: { complete: false, owner: null }
   }
 };
 

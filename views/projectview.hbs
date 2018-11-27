@@ -506,8 +506,9 @@
                 <th class="col-xs-12 col-sm-6">Return volunteer sign-up sheet to office</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="signup_sheet_office_complete" />
-                    Complete <span class="wrapup-completed-on"></span>
+                    <input type="checkbox" name="signup_sheet_office"
+                           {{#if (wrapUp.signup_sheet_office.complete)}} checked="checked" {{/if}}/>
+                    Complete {{ stringify wrapUp.signup_sheet_office}}<span class="wrapup-completed-on"></span>
                   </label>
                 </td>
                 <td class="col-xs-6 col-sm-4">
@@ -520,7 +521,7 @@
                 <th class="col-xs-12 col-sm-6">Record volunteer hours / info</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="record_volunteer_info_complete" />
+                    <input type="checkbox" name="record_volunteer_info" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -545,7 +546,7 @@
                 </th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="porta_pottie_pickup_complete" />
+                    <input type="checkbox" name="porta_pottie_pickup" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -559,7 +560,7 @@
                 <th class="col-xs-12 col-sm-6">Schedule waste bin pickup office</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="waste_dumpster_pickup_complete" />
+                    <input type="checkbox" name="waste_dumpster_pickup" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -573,7 +574,7 @@
                 <th class="col-xs-12 col-sm-6">Arrange for disposal of waste</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="waste_disposal_arrangement_complete" />
+                    <input type="checkbox" name="waste_disposal_arrangement" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -587,7 +588,7 @@
                 <th class="col-xs-12 col-sm-6">Return materials and rentals</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="return_materials_rentals_complete" />
+                    <input type="checkbox" name="return_materials_rentals" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -601,7 +602,7 @@
                 <th class="col-xs-12 col-sm-6">Turn in receipts and expenses to office</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="turn_in_receipts_complete" />
+                    <input type="checkbox" name="turn_in_receipts" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -615,7 +616,7 @@
                 <th class="col-xs-12 col-sm-6">Process reimbursement checks</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="process_reimbursement_checks_complete" />
+                    <input type="checkbox" name="process_reimbursement_checks" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -629,7 +630,7 @@
                 <th class="col-xs-12 col-sm-6">Submit photos to Flickr album or send to office</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="upload_photos_flickr_complete" />
+                    <input type="checkbox" name="upload_photos_flickr" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -643,7 +644,7 @@
                 <th class="col-xs-12 col-sm-6">Project report form submitted to office</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="report_form_submission_complete" />
+                    <input type="checkbox" name="report_form_submission" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -657,7 +658,7 @@
                 <th class="col-xs-12 col-sm-6">Update the project webpage</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="update_project_webpage_complete" />
+                    <input type="checkbox" name="update_project_webpage" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -671,7 +672,7 @@
                 <th class="col-xs-12 col-sm-6">Call client to ask how project went</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="client_phone_followup_complete" />
+                    <input type="checkbox" name="client_phone_followup" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -685,7 +686,7 @@
                 <th class="col-xs-12 col-sm-6">Send volunteer thank you email</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="send_thank_you_email_complete" />
+                    <input type="checkbox" name="send_thank_you_email" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -699,7 +700,7 @@
                 <th class="col-xs-12 col-sm-6">Determine if follow-up is needed</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="determine_followup_required_complete" />
+                    <input type="checkbox" name="determine_followup_required" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -713,7 +714,7 @@
                 <th class="col-xs-12 col-sm-6">Send closing recipient letter</th>
                 <td class="col-xs-6 col-sm-2">
                   <label>
-                    <input type="checkbox" name="send_closing_letter_complete" />
+                    <input type="checkbox" name="send_closing_letter" />
                     Complete <span class="wrapup-completed-on"></span>
                   </label>
                 </td>
@@ -735,40 +736,40 @@
         <div class="row" id="workItemCards">
           {{!-- <div class="col-xs-12 col-sm-6">
             <div class="card work-item" name="new">
-              <div class="card-block">             
-          
+            <div class="card-block">             
+            
             
 
 
-                <h4 class="card-title">New Work Item</h4>
-                <p class="card-text">
-                  <div class="form-group">
-                    <label class="form-control-label">Name*</label>
-                    <input type="text" class="form-control" name="name"></input>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-control-label">Description*</label>
-                    <textarea class="form-control" name="description" rows="5"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-control-label">Site Comments*</label>
-                    <textarea class="form-control" name="siteComments" rows="5"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label class="form-control-label">Cost</label>
-                    <input type="cost" class="form-control" name="cost"></input>
-                  </div>
+            <h4 class="card-title">New Work Item</h4>
+            <p class="card-text">
+            <div class="form-group">
+            <label class="form-control-label">Name*</label>
+            <input type="text" class="form-control" name="name"></input>
+            </div>
+            <div class="form-group">
+            <label class="form-control-label">Description*</label>
+            <textarea class="form-control" name="description" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+            <label class="form-control-label">Site Comments*</label>
+            <textarea class="form-control" name="siteComments" rows="5"></textarea>
+            </div>
+            <div class="form-group">
+            <label class="form-control-label">Cost</label>
+            <input type="cost" class="form-control" name="cost"></input>
+            </div>
 
 
 
-                </p>
-                <a href="#" class="btn btn-primary card-link work-item-new">Save</a>
-                <a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
-              </div>
+            </p>
+            <a href="#" class="btn btn-primary card-link work-item-new">Save</a>
+            <a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
+            </div>
             </div> 
-          </div> --}}
+            </div> --}}
 
-         {{#each results.work}}
+          {{#each results.work}}
             <div class="col-xs-12 col-sm-6">
               <div class="card work-item" name="{{_id}}">
                 <div class="card-block">
@@ -797,53 +798,53 @@
           {{/each}}
         </div>
       </div><!-- END #work -->
-<div class="tab-pane" id="notes" role="tabpanel">
-  <div class="col-xs-12 col-sm-12">
-			<!--VETTING NOTES-->
-			<h3>Project Notes</h3>
-	    <div class="form-group">
-	        <form method="post">
+      <div class="tab-pane" id="notes" role="tabpanel">
+        <div class="col-xs-12 col-sm-12">
+			    <!--VETTING NOTES-->
+			    <h3>Project Notes</h3>
+	        <div class="form-group">
+	          <form method="post">
 	            <input type="hidden" value="{{doc._id}}" id="appId"/>
 				      <input type="hidden" value="{{user}}" id="userId"/>
 	            <table class="table table-striped">
-	                <thead>
+	              <thead>
 	                <tr>
-	                    <th >Date</th>
-	                    <th>Note</th>
-						          <th>Submitted By</th>
-	                    <th             </tr>
-	                </thead>
-	                <tbody id="notes-body">
+	                  <th >Date</th>
+	                  <th>Note</th>
+						        <th>Submitted By</th>
+	                  <th             </tr>
+	              </thead>
+	              <tbody id="notes-body">
 	                {{#if projectNotes}}
-	                    {{#each projectNotes}}
-	                        <tr>
-	                            <td>{{this.date}}</td>
-	                            <td class="note-descrip">{{this.description}}</td>
-								              <td class="note-vetAgent">{{this.projectPlanner}}</td>
-	                            <td>
-	                                <form>
-	                                    <input type="hidden" value="{{this._id}}" name="noteId" />
-	                                    <input type="submit" class="update-note btn btn-info" value="Update Note"/>
-	                                    <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
-	                                </form>
-	                            </td>
-	                        </tr>
-	                    {{/each}}
-	                {{else}}
+	                  {{#each projectNotes}}
 	                    <tr>
-	                        <td id="empty-notes" class="alert-danger danger" colspan="3">
-	                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
-	                        </td>
+	                      <td>{{this.date}}</td>
+	                      <td class="note-descrip">{{this.description}}</td>
+								        <td class="note-vetAgent">{{this.projectPlanner}}</td>
+	                      <td>
+	                        <form>
+	                          <input type="hidden" value="{{this._id}}" name="noteId" />
+	                          <input type="submit" class="update-note btn btn-info" value="Update Note"/>
+	                          <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
+	                        </form>
+	                      </td>
 	                    </tr>
+	                  {{/each}}
+	                {{else}}
+	                  <tr>
+	                    <td id="empty-notes" class="alert-danger danger" colspan="3">
+	                      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
+	                    </td>
+	                  </tr>
 	                {{/if}}
 
-					<tr><!--THIS EMPTY ROW IS NECESSARY FOR addProjectNote.js TO WORK ON MULTIPLE PAGES--></tr>
-	                </tbody>
+					        <tr><!--THIS EMPTY ROW IS NECESSARY FOR addProjectNote.js TO WORK ON MULTIPLE PAGES--></tr>
+	              </tbody>
 	            </table>
-	        </form>
-	    </div>
-	</div>
-</div>
+	          </form>
+	        </div>
+	      </div>
+      </div>
 
 
 
@@ -877,6 +878,8 @@
      ]
    });
 
+   $('#wrapUp input:checkbox').change(updateWrapup);
+   
    // Populate the owner dropdown boxes with assignable users. Save them when changed.
    $('.task-owner').each(function () {
      var $this = $(this);
@@ -895,345 +898,377 @@
        $this.append($option);
      });
 
-       $this.change(updateWrapupOwner);
+     $this.change(updateWrapup);
    })
 
  })
 
-   function handleSiteSummaryInput(e) {
-     if (window.siteSummaryTimeout) {
-       window.clearTimeout(window.siteSummaryTimeout)
-     }
-     // TODO: set this URL
-     window.siteSummaryTimeout = window.setTimeout(function() {
-       xhr(
-         { id: docs[0]._id, name: 'notes.site_summary', value: this.val },
-         'POST',
-         '/site/updatesummary',
-         function(err, data) {
-           console.info('site summary saved')
-         }
-       )
-     }.bind({val: e.target.value}), 500)
+ function handleSiteSummaryInput(e) {
+   if (window.siteSummaryTimeout) {
+     window.clearTimeout(window.siteSummaryTimeout)
    }
-
-   // Used with $(*).each
-   function watchEditButton(idx) {
-     $(this).on('click', showWorkItemEditForm)
-   }
-
-   function showWorkItemEditForm(e) {
-     e.preventDefault()
-     var workItemParent = this.parentElement
-     var workItemContainer = $(workItemParent)
-     var workItemId = $(workItemParent.parentElement).attr('name')
-
-     var currentData = {}
-     $('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
-       var path = $(this).attr('name').replace(workItemId + '.', '')
-       currentData[path] = this.innerText
-     })
-
-     $(this).toggle();
-     //workItemContainer.empty()
-
-     var fields = [
-       {field: 'projectComments', text:'Project Comments', type: 'textarea'},
-       
-     ]
-
-     fields.forEach(function(f) {
-       var formGroup = $('<div class="form-group"></div>')
-       $('<label>' + f.text + '</label>').appendTo(formGroup)
-       if (f.type && f.type === 'textarea') {
-         $('<textarea></textarea>')
-           .addClass('form-control')
-           .attr('name', workItemId + '.' + f.field)
-           .attr('rows', 5)
-           .val(currentData[f.field])
-           .appendTo(formGroup)
-       } else {
-         $('<input></input>')
-           .addClass('form-control')
-           .attr('name', workItemId + '.' + f.field)
-           .val(currentData[f.field])
-           .appendTo(formGroup)
+   // TODO: set this URL
+   window.siteSummaryTimeout = window.setTimeout(function() {
+     xhr(
+       { id: docs[0]._id, name: 'notes.site_summary', value: this.val },
+       'POST',
+       '/site/updatesummary',
+       function(err, data) {
+         console.info('site summary saved')
        }
+     )
+   }.bind({val: e.target.value}), 500)
+ }
 
-       workItemContainer.append(formGroup)
-     })
+ // Used with $(*).each
+ function watchEditButton(idx) {
+   $(this).on('click', showWorkItemEditForm)
+ }
 
-     $('<button></button>')
-           .text('Save')
-           .addClass('btn').addClass('btn-primary')
-           .addClass('card-link')
-           .on('click', function(e) {
-             saveWorkItem(workItemContainer)
-           })
-           .appendTo(workItemContainer)
+ function showWorkItemEditForm(e) {
+   e.preventDefault()
+   var workItemParent = this.parentElement
+   var workItemContainer = $(workItemParent)
+   var workItemId = $(workItemParent.parentElement).attr('name')
 
-     $('<button></button>')
-           .text('Cancel')
-           .addClass('btn').addClass('btn-danger')
-           .addClass('card-link')
-           .on('click', function(e) {
-             for (let i=0; i<workItems.length; i++) {
-               if (workItems[i]._id === workItemId) {
-                 showWorkItem(workItems[i], workItemContainer)
-               }
+   var currentData = {}
+   $('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+     var path = $(this).attr('name').replace(workItemId + '.', '')
+     currentData[path] = this.innerText
+   })
+
+   $(this).toggle();
+   //workItemContainer.empty()
+
+   var fields = [
+     {field: 'projectComments', text:'Project Comments', type: 'textarea'},
+     
+   ]
+
+   fields.forEach(function(f) {
+     var formGroup = $('<div class="form-group"></div>')
+     $('<label>' + f.text + '</label>').appendTo(formGroup)
+     if (f.type && f.type === 'textarea') {
+       $('<textarea></textarea>')
+         .addClass('form-control')
+         .attr('name', workItemId + '.' + f.field)
+         .attr('rows', 5)
+         .val(currentData[f.field])
+         .appendTo(formGroup)
+     } else {
+       $('<input></input>')
+         .addClass('form-control')
+         .attr('name', workItemId + '.' + f.field)
+         .val(currentData[f.field])
+         .appendTo(formGroup)
+     }
+
+     workItemContainer.append(formGroup)
+   })
+
+   $('<button></button>')
+         .text('Save')
+         .addClass('btn').addClass('btn-primary')
+         .addClass('card-link')
+         .on('click', function(e) {
+           saveWorkItem(workItemContainer)
+         })
+         .appendTo(workItemContainer)
+
+   $('<button></button>')
+         .text('Cancel')
+         .addClass('btn').addClass('btn-danger')
+         .addClass('card-link')
+         .on('click', function(e) {
+           for (let i=0; i<workItems.length; i++) {
+             if (workItems[i]._id === workItemId) {
+               showWorkItem(workItems[i], workItemContainer)
              }
-           })
-           .appendTo(workItemContainer)
-   }
+           }
+         })
+         .appendTo(workItemContainer)
+ }
 
-   function showWorkItem(data, node) {
-     node.empty()
+ function showWorkItem(data, node) {
+   node.empty()
 
-     var cardBlock = node
+   var cardBlock = node
 
-     $('<h4></h4>').addClass('card-title')
-                   .attr('name', data._id + '.name')
-                   .text(data.name)
-                   .appendTo(cardBlock)
+   $('<h4></h4>').addClass('card-title')
+                 .attr('name', data._id + '.name')
+                 .text(data.name)
+                 .appendTo(cardBlock)
 
-     $('<p></p>').addClass('text-muted')
-                   .text(new Date(data.date).toString())
-                   .appendTo(cardBlock)
+   $('<p></p>').addClass('text-muted')
+                 .text(new Date(data.date).toString())
+                 .appendTo(cardBlock)
 
-     var cardText = $('<p></p>').addClass('card-text')
-                                .appendTo(cardBlock)
+   var cardText = $('<p></p>').addClass('card-text')
+                              .appendTo(cardBlock)
 
-     $('<strong>Description:</strong>').appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
+   $('<strong>Description:</strong>').appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
 
-     $('<span></span>')
-                                .attr('name', data._id + '.description')
-                                .text(data.description)
-                                .appendTo(cardText)
+   $('<span></span>')
+                              .attr('name', data._id + '.description')
+                              .text(data.description)
+                              .appendTo(cardText)
 
-     $('<br></br>').appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
 
-     $('<strong>Vetting Comments:</strong>').appendTo(cardText)
-     // $('<br></br>').appendTo(cardText)
+   $('<strong>Vetting Comments:</strong>').appendTo(cardText)
+   // $('<br></br>').appendTo(cardText)
 
-     $('<p></p>').attr('name', data._id + '.vettingComments')
-                                .text(data.vettingComments).appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
+   $('<p></p>').attr('name', data._id + '.vettingComments')
+                              .text(data.vettingComments).appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
 
-     $('<strong>Site Comments:</strong>').appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
-     
-     
+   $('<strong>Site Comments:</strong>').appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+   
+   
 
-     $('<p></p>').attr('name', data._id + '.siteComments')
-                                .text(data.siteComments).appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
+   $('<p></p>').attr('name', data._id + '.siteComments')
+                              .text(data.siteComments).appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
 
-     $('<strong>Project Comments:</strong>').appendTo(cardText)
-     $('<br></br>').appendTo(cardText) 
-     
+   $('<strong>Project Comments:</strong>').appendTo(cardText)
+   $('<br></br>').appendTo(cardText) 
+   
 
-     $('<p></p>').attr('name', data._id + '.projectComments')
-                                .text(data.projectComments).appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
-
-
-     $('<strong>Cost:</strong>').appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
-
-     $('<span></span>')
-                                .attr('name', data._id + '.cost')
-                                .text(data.cost)
-                                .appendTo(cardText)
-
-     $('<a></a>').addClass('btn').addClass('btn-primary')
-                                .addClass('card-link').addClass('work-item-comment')
-                                .text('Add Comment')
-                                .attr('href', '#')
-                                .on('click', showWorkItemEditForm)
-                                .appendTo(cardBlock)
-   }
-
-   function saveWorkItem(node) {
-     var data = {}, id = false
-     $('input, textarea', node).each(function(idx) {
-       var path = this.name.split('.')[1]
-       data[path] = this.value
-       if (!id) id = this.name.split('.')[0]
-     })
-
-     // XHR here
-     var xhrData = JSON.parse(JSON.stringify(data))
-     xhrData.id = id
-
-     xhr(xhrData, 'POST', '/site/updateitem', function(err) {
-       if (err) {
-         // TODO: If error, flip the value back and show an error message to the user
-         // alert('Value did not save, please reload the page')
-       }
-
-       for (var i=0; i<workItems.length; i++) {
-         if (workItems[i]._id === id) {
-           Object.keys(data).forEach(function(k) {
-             workItems[i][k] = data[k]
-           })
-
-           showWorkItem(workItems[i], node)
-           //$('.work-items-comment').toggle();
-         }
-       }
-     })
+   $('<p></p>').attr('name', data._id + '.projectComments')
+                              .text(data.projectComments).appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
 
 
+   $('<strong>Cost:</strong>').appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
 
+   $('<span></span>')
+                              .attr('name', data._id + '.cost')
+                              .text(data.cost)
+                              .appendTo(cardText)
 
+   $('<a></a>').addClass('btn').addClass('btn-primary')
+                              .addClass('card-link').addClass('work-item-comment')
+                              .text('Add Comment')
+                              .attr('href', '#')
+                              .on('click', showWorkItemEditForm)
+                              .appendTo(cardBlock)
+ }
 
+ function saveWorkItem(node) {
+   var data = {}, id = false
+   $('input, textarea', node).each(function(idx) {
+     var path = this.name.split('.')[1]
+     data[path] = this.value
+     if (!id) id = this.name.split('.')[0]
+   })
 
-   }
+   // XHR here
+   var xhrData = JSON.parse(JSON.stringify(data))
+   xhrData.id = id
 
-   function xhr(data, method, url, next) {
-     //post to database
-
-     var posting = $.ajax({
-       type : method,
-       url : url,
-       dataType : 'json',
-       contentType : 'application/json; charset=UTF-8',
-       data : JSON.stringify(data)
-     });
-
-     //check for error
-     posting.done(function (xhr) {
-       if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
-         next(null, xhr)
-       } else {
-         next(new Error('Could not complete xhr'))
-       }
-     });
-
-     posting.fail(function (res) {
-       next(new Error('Could not complete xhr'))
-     });
-   }
-
-   function handleNewWorkItemSubmission(e) {
-     var newWorkItem = {}, error = false
-
-     $('input, textarea', e.target.parentNode).each(function(idx) {
-       if (this.value.length === 0 && this.name !== 'cost') {
-         $(this.parentNode).addClass('has-danger')
-         error = true
-       } else {
-         newWorkItem[this.name] = this.value
-         $(this.parentNode).removeClass('has-danger')
-       }
-     })
-
-     if (error === false) {
-       createNewWorkItem(newWorkItem, function(err) {
-         handleNewWorkItemClear()
-       })
+   xhr(xhrData, 'POST', '/site/updateitem', function(err) {
+     if (err) {
+       // TODO: If error, flip the value back and show an error message to the user
+       // alert('Value did not save, please reload the page')
      }
-   }
 
-   function handleNewWorkItemClear(e, node) {
-     $('input, textarea', (e ? e.target.parentNode : node)).each(function(idx) {
-       $(this).val('')
+     for (var i=0; i<workItems.length; i++) {
+       if (workItems[i]._id === id) {
+         Object.keys(data).forEach(function(k) {
+           workItems[i][k] = data[k]
+         })
+
+         showWorkItem(workItems[i], node)
+         //$('.work-items-comment').toggle();
+       }
+     }
+   })
+
+
+
+
+
+
+ }
+
+ function xhr(data, method, url, next) {
+   //post to database
+
+   var posting = $.ajax({
+     type : method,
+     url : url,
+     dataType : 'json',
+     contentType : 'application/json; charset=UTF-8',
+     data : JSON.stringify(data)
+   });
+
+   //check for error
+   posting.done(function (xhr) {
+     if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
+       next(null, xhr)
+     } else {
+       next(new Error('Could not complete xhr'))
+     }
+   });
+
+   posting.fail(function (res) {
+     next(new Error('Could not complete xhr'))
+   });
+ }
+
+ function handleNewWorkItemSubmission(e) {
+   var newWorkItem = {}, error = false
+
+   $('input, textarea', e.target.parentNode).each(function(idx) {
+     if (this.value.length === 0 && this.name !== 'cost') {
+       $(this.parentNode).addClass('has-danger')
+       error = true
+     } else {
+       newWorkItem[this.name] = this.value
        $(this.parentNode).removeClass('has-danger')
+     }
+   })
+
+   if (error === false) {
+     createNewWorkItem(newWorkItem, function(err) {
+       handleNewWorkItemClear()
      })
    }
+ }
 
-   function createNewWorkItem(w, next) {
-     var id = docs[0]._id
-     var rightNow = new Date()
+ function handleNewWorkItemClear(e, node) {
+   $('input, textarea', (e ? e.target.parentNode : node)).each(function(idx) {
+     $(this).val('')
+     $(this.parentNode).removeClass('has-danger')
+   })
+ }
 
-     w.date = rightNow
-     w.updated = rightNow
-     w.applicationId = id
+ function createNewWorkItem(w, next) {
+   var id = docs[0]._id
+   var rightNow = new Date()
 
-     xhr(w, 'POST', '/site/additem', function(err, data) {
-       // TODO: Handle error
-       if (err) { alert('There was an error saving your work item') }
+   w.date = rightNow
+   w.updated = rightNow
+   w.applicationId = id
 
-       w._id = data.itemId
-       workItems.push(w)
-       var newNode = addWorkItem(w)
-       handleNewWorkItemClear(null, $('[name="new"]'))
+   xhr(w, 'POST', '/site/additem', function(err, data) {
+     // TODO: Handle error
+     if (err) { alert('There was an error saving your work item') }
 
-     })
+     w._id = data.itemId
+     workItems.push(w)
+     var newNode = addWorkItem(w)
+     handleNewWorkItemClear(null, $('[name="new"]'))
+
+   })
+ }
+
+ function addWorkItem(w) {
+   var cardContainer = $('#workItemCards')
+
+   var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6')
+                                 .appendTo(cardContainer)
+
+   var card = $('<div></div>').addClass('card').addClass('work-item')
+                              .attr('name', w._id)
+                              .appendTo(cardDiv)
+
+   var cardBlock = $('<div></div>').addClass('card-block')
+                                   .appendTo(card)
+
+
+   $('<h4></h4>').addClass('card-title')
+                                   .attr('name', w._id + '.name')
+                                   .text(w.name)
+                                   .appendTo(cardBlock)
+
+   $('<p></p>').addClass('text-muted')
+                                   .text(w.date.toString())
+                                   .appendTo(cardBlock)
+
+   var cardText = $('<p></p>').addClass('card-text')
+                              .appendTo(cardBlock)
+
+   $('<strong>Description:</strong>').appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+
+   $('<span></span>')
+                              .attr('name', w._id + '.description')
+                              .text(w.description)
+                              .appendTo(cardText)
+
+   $('<br></br>').appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+
+   $('<strong>Vetting Comments:</strong>').appendTo(cardText)
+   // $('<br></br>').appendTo(cardText)
+
+   $('<p></p>').text(w.vettingComments).appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+
+   $('<strong>Site Comments:</strong>').appendTo(cardText)
+   // $('<br></br>').appendTo(cardText)
+
+   $('<p></p>').text(w.siteComments).appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+
+   $('<strong>Cost:</strong>').appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+
+   $('<span></span>')
+                              .attr('name', w._id + '.cost')
+                              .text(w.cost)
+                              .appendTo(cardText)
+
+   $('<a></a>').addClass('btn').addClass('btn-primary')
+                              .addClass('card-link').addClass('work-item-edit')
+                              .text('Edit')
+                              .attr('href', '#')
+                              .on('click', showWorkItemEditForm)
+                              .appendTo(cardBlock)
+
+   return cardBlock
+ }
+
+ function updateWrapup () {
+   
+   $('#wrapUp input:checkbox').each(function () {
+     var $this = $(this);
+     var name = $this.attr('name')
+     
+     wrapUp[name].complete = $this.prop('checked');
+     if (wrapUp[name].complete && !wrapUp[name].completed_on) {
+       wrapUp[name].completed_on = Date.now();
+     } else if (!wrapUp[name].complete) {
+       wrapUp[name].completed_on = null;
+     }
+   });
+
+   $('#wrapUp select.task-owner').each(function () {
+     var $this = $(this);
+     wrapUp[ $this.data('owner-of') ]. owner = $this.val() || null;
+   });
+
+   console.log(wrapUp);
+   if (typeof wrapUp.__v !== 'undefined') {
+     delete wrapUp.__v;
    }
-
-   function addWorkItem(w) {
-     var cardContainer = $('#workItemCards')
-
-     var cardDiv = $('<div></div>').addClass('col-xs-12').addClass('col-sm-6')
-                                   .appendTo(cardContainer)
-
-     var card = $('<div></div>').addClass('card').addClass('work-item')
-                                .attr('name', w._id)
-                                .appendTo(cardDiv)
-
-     var cardBlock = $('<div></div>').addClass('card-block')
-                                     .appendTo(card)
-
-
-     $('<h4></h4>').addClass('card-title')
-                                     .attr('name', w._id + '.name')
-                                     .text(w.name)
-                                     .appendTo(cardBlock)
-
-     $('<p></p>').addClass('text-muted')
-                                     .text(w.date.toString())
-                                     .appendTo(cardBlock)
-
-     var cardText = $('<p></p>').addClass('card-text')
-                                .appendTo(cardBlock)
-
-     $('<strong>Description:</strong>').appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
-
-     $('<span></span>')
-                                .attr('name', w._id + '.description')
-                                .text(w.description)
-                                .appendTo(cardText)
-
-     $('<br></br>').appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
-
-     $('<strong>Vetting Comments:</strong>').appendTo(cardText)
-     // $('<br></br>').appendTo(cardText)
-
-     $('<p></p>').text(w.vettingComments).appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
-
-     $('<strong>Site Comments:</strong>').appendTo(cardText)
-     // $('<br></br>').appendTo(cardText)
-
-     $('<p></p>').text(w.siteComments).appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
-
-     $('<strong>Cost:</strong>').appendTo(cardText)
-     $('<br></br>').appendTo(cardText)
-
-     $('<span></span>')
-                                .attr('name', w._id + '.cost')
-                                .text(w.cost)
-                                .appendTo(cardText)
-
-     $('<a></a>').addClass('btn').addClass('btn-primary')
-                                .addClass('card-link').addClass('work-item-edit')
-                                .text('Edit')
-                                .attr('href', '#')
-                                .on('click', showWorkItemEditForm)
-                                .appendTo(cardBlock)
-
-     return cardBlock
-   }
-
-   function updateWrapupOwner () {
-
-   }
+   
+   $.ajax({
+     url: '/projectview/wrapup',
+     method: 'POST',
+     dataType: 'json',
+     contentType: 'application/json; charset=utf8',
+     data: JSON.stringify(wrapUp),
+     success: function () {
+       console.log("Saved and received: ", arguments)
+     }
+   });
+ }
 
 
 </script>

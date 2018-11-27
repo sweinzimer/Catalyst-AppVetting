@@ -2684,6 +2684,39 @@ getDocumentPlanning: function (req, res, next) {
       }
 
     }).catch(next);
+  },
+
+  // Create / Update Assessment Checklist record
+  saveProjectWrapUp: function(req, res, next) {
+    console.log('Saving Project Summary Status for: ' + req.body.applicationId);
+
+    Promise.props({
+      projectWrapUp: ProjectWrapUpPackage.findOneAndUpdate(
+        { applicationId: req.body.applicationId },
+        { $set: req.body },
+        { new: true,
+          upsert: true,
+          runValidators: true,
+          setDefaultsOnInsert: true
+        }
+      ).execAsync()
+    }).then(function (results) {
+      console.log(results);
+      if (results.assessment !== null) {
+        console.log('[ API ] saveProjectWrapUp :: Project found: TRUE');
+        res.locals.status = '200';
+      } else {
+        console.log('[ API ] saveProjectWrapUp :: Project found: FALSE');
+        res.locals.status = '500';
+      }
+      res.locals.results = results
+
+      next();
+
+    }).catch(function (err) {
+      console.error(err)
+      
+    }).catch(next);
   }
 
 };

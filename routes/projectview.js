@@ -6,6 +6,7 @@ var DocumentPackage = require('../models/documentPackage');
 
 var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
 // var PartnerPackage = require('../models/partners.js');
+var ProjectWrapUpPackage = require('../models/projectWrapUpPackage.js');
 
 var api = require('../controllers/api');
 var User = require('../models/userPackage');
@@ -78,7 +79,7 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 	         payload.user_role = res.locals.role;
 	         payload.projectNotes = res.locals.results.projectNotes;
            payload.assignableUsers = res.locals.assignableUsers;
-           payload.wrapUp = res.locals.wrapUp;
+           payload.wrapUp = res.locals.wrapUp ? res.locals.wrapUp : ProjectWrapUpPackage.empty(req.params.id);
 	         payload.part = res.locals.results.part||req.partnerTime;			//Data for Partners Tab Partial
 	         payload.partDocId = res.locals.results.doc[0]._id;
 	         console.log("results");
@@ -122,7 +123,16 @@ router.route('/updatesummary')
         res.json(res.locals);
     }
 	});	
-		
+
+router.route('/wrapup')
+      .post(isLoggedInPost, api.saveProjectWrapUp, function(req, res) {
+	      if(res.locals.status != '200'){
+          res.status(500).send("Could not update wrapup");
+        }
+        else{
+          res.json(res.locals);
+        }
+      })
 	
 //route catches invalid post requests.
 router.use('*', function route2(req, res, next) {
