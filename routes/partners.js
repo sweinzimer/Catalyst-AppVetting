@@ -19,21 +19,24 @@ var ObjectId = require('mongodb').ObjectID;
 
 module.exports = function(passport) {
 
-//router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) {
-router.get('/', api.getPartner, function(req, res, next) {
+//router.get('/', isLoggedIn, api.getPartner, function(req, res, next) {
+router.get('/', isLoggedIn, api.getProjPartnersLeaders, function(req, res, next) {
 	var results = {};
+
+	console.log("R-RES-1");
     console.log(res.locals.results);
-	if(res.locals.results.partner[0] == null) {
+
+	if(! res.locals.results) {
 		console.log('[ ROUTER ] /partners :: Unable to find any Partners in database');
 	}
+	//results.partner = res.locals.results.pAll;
+	//results.pAssoc = res.locals.results.pAssoc;
+	//results.pCount = res.locals.results.pCount;
 
-	results.partner = res.locals.results.partner;
-
-	results.count = res.locals.results.count;
 
 	console.log(results);
-	
-	res.render('partners', results);
+	// res.render('partners', results);
+	res.send(results);
 });
 
 
@@ -57,10 +60,39 @@ router.get('/', api.getPartner, function(req, res, next) {
 // });
 
 
+//isLoggedInPost, 
+router.route('/getPartnerAssoc', isLoggedIn)									// FOR getProjPartnersLeaders
+	.post(api.getProjPartnersLeaders, function(req, res) {
+
+	console.log("\n/partners/getPartnerAssoc POST TRIGGERED...\nreq:\n" + req);
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not get partner Associations");
+    }
+    else{
+    	console.log("res: " + res);
+        res.json(res.locals);
+    }
+});
+
+
+//isLoggedInPost, 
+router.route('/createPartnerAssoc', isLoggedIn)
+	.post(api.setProjPartnersLeaders, function(req, res) {
+	
+	console.log("\n/partners/createPartnerAssoc POST TRIGGERED...\nreq:\n" + req);
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not create partner Associations");
+    }
+    else {
+    	console.log("res: " + res);
+        res.json(res.locals);
+    }
+});
+
 
 //R - create Partners  -  localhost:8000/partners/createPartner
 // ADD BACK isLoggedInPost to EACH ONE!		//.post(isLoggedInPost, api.addPartner, function(req, res) {
-router.route('/createPartner')
+router.route('/createPartner', isLoggedIn)
 	.post(api.createPartner, function(req, res) {
 	
 	console.log("\n/partners/createPartner POST TRIGGERED...\nreq:\n" + req);
@@ -77,7 +109,7 @@ router.route('/createPartner')
 router.route('/deletePartner')
 	.post(api.deletePartner, function(req, res) {
 
-	console.log("\n/partners/deletePartner POST TRIGGERED...\nreq:\n" + req);
+	console.log("\n/partners/deletePartner AFTER POST TRIGGERED...\nreq:\n" + req);
 	if(res.locals.status != '200'){
         res.status(500).send("Could not remove Partner");
     }
@@ -90,7 +122,7 @@ router.route('/deletePartner')
 router.route('/getPartner')
 	.post(api.getPartner, function(req, res) {
 
-	console.log("\n/partners/getPartner POST TRIGGERED...\nreq:\n" + req);
+	console.log("\n/partners/getPartner AFTER POST TRIGGERED...\nreq:\n" + req);
 	if(res.locals.status != '200'){
         res.status(500).send("Could not get partners");
     }
