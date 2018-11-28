@@ -51,55 +51,32 @@
                 <a class="nav-link" href="/application/add">Apply</a>
             </li>
 
-            {{#if_eq role "ADMIN"}}
+           
+          
+            {{#if_in user_roles "VET"}}
             <li class="nav-item">
               <a class="nav-link" href="/view">Vetting</a>
             </li>
-            {{/if_eq}}
-            {{#if_eq role "VET"}}
-            <li class="nav-item">
-              <a class="nav-link" href="/view">Vetting</a>
-            </li>
-            {{/if_eq}}
-            {{#if_eq role "ADMIN"}}
+            {{/if_in}}
+            {{#if_in user_roles "ADMIN"}}
               <li class="nav-item">
                   <a class="nav-link" href="/user/userList">Users</a>
               </li>
-            {{/if_eq}}
+            {{/if_in}}
 
-            {{#if_eq role "ADMIN"}}
+
+            {{#if_in user_roles "SITE"}}
             <li class="nav-item">
               <a class="nav-link" href="/site">Site Assessment</a>
             </li>
-            {{/if_eq}}
-
-            {{#if_eq role "VET"}}
-            <li class="nav-item">
-              <a class="nav-link" href="/site">Site Assessment</a>
-            </li>
-            {{/if_eq}}
-
-            {{#if_eq role "SITE"}}
-            <li class="nav-item">
-              <a class="nav-link" href="/site">Site Assessment</a>
-            </li>
-            {{/if_eq}}
-            {{#if_eq role "PROJECT_MANAGER"}}
-            <li class="nav-item">
-              <a class="nav-link" href="/pm">Project Managment</a>
-            </li>
-            {{/if_eq}}
-            {{#if_eq role "ADMIN"}}
-            <li class="nav-item">
-              <a class="nav-link" href="/pm">Project Managment</a>
-            </li>
-            {{/if_eq}}
+            {{/if_in}}
+           
   <!--    NEW CHANGES -->
-            {{#if_eq role "ADMIN"}}
+            {{#if_in user_roles "PROJECT_MANAGMENT"}}
             <li class="nav-item">
               <a class="nav-link" href="/projectsummary">Project Summary (WIP)</a>
             </li>
-            {{/if_eq}}
+            {{/if_in}}
 
         </ul>
         <div class="navbar-right">

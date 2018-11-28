@@ -42,7 +42,7 @@ var ProjectPlanPackage = require('../models/projectPlanPackage.js');
 var WorkItemPackage = require('../models/workItemPackage');
 var UserPackage = require('../models/userPackage');
 var RolePackage = require('../models/rolePackage');
-
+var ProjectWrapUpPackage = require('../models/projectWrapUpPackage.js');
 var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
 var PartnerPackage = require('../models/partnerPackage.js');
 
@@ -2645,5 +2645,78 @@ getDocumentPlanning: function (req, res, next) {
 
     
   },
+
+  // Find all users that may be assigned tasks.
+  getAssignableUsers: function (req, res, next) {
+    Promise.props({
+      assignableUsers: UserPackage.find({ assign_tasks: true }).execAsync()
+
+    }).then(function (results) {
+      res.locals.assignableUsers = results.assignableUsers;
+      next();
+
+    }).catch(next);
+  },
+
+  // Find the wrap-up document for a project.
+  getWrapUpDoc: function (req, res, next) {
+    Promise.props({
+      wrapUp: ProjectWrapUpPackage.find({ applicationId: ObjectId(req.params.id) }).execAsync()
+
+    }).then(function (results) {
+      if (results.wrapUp.length <= 0) {
+        console.log('Req Params [getWrapUpDoc] ', req.params);
+        // Create new wrapUp and set that as new wrapUp.
+        ProjectWrapUpPackage.create(
+          ProjectWrapUpPackage.empty( ObjectId(req.params.id) ),
+          function(err, wrapUp) {
+            if (err) {
+              next(err)
+            } else {
+              res.locals.wrapUp = wrapUp
+              next()
+            }
+          })
+      } else {
+        // Just set the existing wrapUp
+        res.locals.wrapUp = results.wrapUp[0]
+        next();
+      }
+
+    }).catch(next);
+  },
+
+  // Create / Update Assessment Checklist record
+  saveProjectWrapUp: function(req, res, next) {
+    console.log('Saving Project Summary Status for: ' + req.body.applicationId);
+
+    Promise.props({
+      projectWrapUp: ProjectWrapUpPackage.findOneAndUpdate(
+        { applicationId: req.body.applicationId },
+        { $set: req.body },
+        { new: true,
+          upsert: true,
+          runValidators: true,
+          setDefaultsOnInsert: true
+        }
+      ).execAsync()
+    }).then(function (results) {
+      console.log(results);
+      if (results.assessment !== null) {
+        console.log('[ API ] saveProjectWrapUp :: Project found: TRUE');
+        res.locals.status = '200';
+      } else {
+        console.log('[ API ] saveProjectWrapUp :: Project found: FALSE');
+        res.locals.status = '500';
+      }
+      res.locals.results = results
+
+      next();
+
+    }).catch(function (err) {
+      console.error(err)
+      
+    }).catch(next);
+  }
 
 };

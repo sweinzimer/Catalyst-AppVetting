@@ -6,6 +6,7 @@ var DocumentPackage = require('../models/documentPackage');
 
 var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
 // var PartnerPackage = require('../models/partners.js');
+var ProjectWrapUpPackage = require('../models/projectWrapUpPackage.js');
 
 var api = require('../controllers/api');
 var User = require('../models/userPackage');
@@ -61,33 +62,33 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 	res.redirect('/projectsummary');
 });
 
-router.use('/:id', isLoggedIn, api.getDocumentSite, api.getProjPartnersLeaders);
+  router
+    .get('/:id', isLoggedIn, api.getDocumentSite, api.getProjPartnersLeaders,
+         api.getAssignableUsers, api.getWrapUpDoc,
+         function(req, res, next) {
+           //Checking what's in params
+           //console.log("Rendering application " + ObjectId(req.params.id));
 
-router.get('/:id', isLoggedIn, api.getDocumentSite, api.getProjPartnersLeaders, function(req, res, next) {
-    //Checking what's in params
-    //console.log("Rendering application " + ObjectId(req.params.id));
+	         console.log("rendering test application");
+           var payload = {};
 
-	console.log("rendering test application");
-    var payload = {};
+	         payload.doc = res.locals.results.doc[0];
+	         payload.work = res.locals.results.work;
+	         payload.user = req.user._id;
+	         payload.user_email = res.locals.email;
+	         payload.user_role = res.locals.role;
+	         payload.projectNotes = res.locals.results.projectNotes;
+           payload.assignableUsers = res.locals.assignableUsers;
+           payload.wrapUp = res.locals.wrapUp ? res.locals.wrapUp : ProjectWrapUpPackage.empty(req.params.id);
+	         payload.part = res.locals.results.part||req.partnerTime;			//Data for Partners Tab Partial
+	         payload.partDocId = res.locals.results.doc[0]._id;
+	         console.log("results");
+           console.log(payload);
+           
+	         // res.render('siteassessmenttool', payload);
+	         res.render('projectview', payload);
 
-	payload.doc = res.locals.results.doc[0];
-	payload.work = res.locals.results.work;
-	payload.user = req.user._id;
-	payload.user_email = res.locals.email;
-	payload.user_role = res.locals.role;
-	payload.projectNotes = res.locals.results.projectNotes;
-
-	payload.part = res.locals.results.part||req.partnerTime;			//Data for Partners Tab Partial
-	payload.partDocId = res.locals.results.doc[0]._id;
-	console.log("results");
-    console.log(payload);
- 
-	// res.render('siteassessmenttool', payload);
-	res.render('projectview', payload);
-
-	// })
-});
-
+         });
 
 
 //same as vetting route.  Shouldn't be issues with logic as is
@@ -122,7 +123,16 @@ router.route('/updatesummary')
         res.json(res.locals);
     }
 	});	
-		
+
+router.route('/wrapup')
+      .post(isLoggedInPost, api.saveProjectWrapUp, function(req, res) {
+	      if(res.locals.status != '200'){
+          res.status(500).send("Could not update wrapup");
+        }
+        else{
+          res.json(res.locals);
+        }
+      })
 	
 //route catches invalid post requests.
 router.use('*', function route2(req, res, next) {

@@ -79,6 +79,7 @@ module.exports = function (passport) {
 			payload.user_email = res.locals.email;
 			payload.user_role = res.locals.role;
 			payload.user_roles= res.locals.user_roles
+      payload.user.assign_tasks = payload.user.assign_tasks || false;
 			console.log("payload");
 			console.log(payload);
 			res.render('adminuseredit', payload);
