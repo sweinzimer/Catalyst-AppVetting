@@ -165,6 +165,10 @@ hbs.registerHelper('select', function(values) {
   }
   return $el.html();
 })
+
+hbs.registerHelper('getCompletedDate', function (item, name) {
+  return item.getCompletedDate(name);
+})
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Middleware
 // Use any middleware for the application that is needed. bodyParse allows parsing to

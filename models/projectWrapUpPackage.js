@@ -111,6 +111,14 @@ var ProjectWrapUpPackageSchema = new Schema({
 
 });
 
+ProjectWrapUpPackageSchema.methods.getCompletedDate = function (name) {
+  if (this[name] && this[name].completed_on !== null) {
+    return this[name].completed_on.toLocaleDateString()
+  } else {
+    return ''
+  }
+}
+
 var ProjectWrapUpPackage = mongoose.model('ProjectWrapUpPackage', ProjectWrapUpPackageSchema);
 
 ProjectWrapUpPackage.empty = function (applicationId) {
@@ -133,5 +141,6 @@ ProjectWrapUpPackage.empty = function (applicationId) {
     send_closing_letter: { complete: false, owner: null }
   }
 };
+
 
 module.exports = ProjectWrapUpPackage;

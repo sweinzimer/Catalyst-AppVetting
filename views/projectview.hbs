@@ -1,35 +1,35 @@
 <!-- Project View (once clicked on it)  
-      -- Should have Client Name and address at the top (as in the mock up)
-      -- The following Tabs:
-          * Project Assessment Form 
-          * Work Items  
-          * Leaders 
-          * Planning (using the Planning Form for contents) 
-          * Partners (needs new data base fields for Org Name, Org Address, Contact Name, Contact Phone, Contact email) 
-          * Wrap Up (using the Wrap Up Form for contents)  -->
+   -- Should have Client Name and address at the top (as in the mock up)
+   -- The following Tabs:
+     * Project Assessment Form 
+     * Work Items  
+     * Leaders 
+     * Planning (using the Planning Form for contents) 
+     * Partners (needs new data base fields for Org Name, Org Address, Contact Name, Contact Phone, Contact email) 
+     * Wrap Up (using the Wrap Up Form for contents)  -->
 
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
 <script>
-  var dataPAF = {};
-  var apple = "...data...";
-   {{#if results.doc}}
-  {{#each results.doc}}
-    dataPAF.fullName = "{{application.name.first}} {{application.name.middle}} {{application.name.last}}";
-    dataPAF.addr1 = "{{application.address.line_1}}, ";
-    dataPAF.addr2 = "{{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}";
-    dataPAF.addr3 = "{{application.address.city}}, {{application.address.state}}  {{application.address.zip}}"
-    //dataPAF.addr2 = apple;
+ var dataPAF = {};
+ var apple = "...data...";
+ {{#if results.doc}}
+ {{#each results.doc}}
+ dataPAF.fullName = "{{application.name.first}} {{application.name.middle}} {{application.name.last}}";
+ dataPAF.addr1 = "{{application.address.line_1}}, ";
+ dataPAF.addr2 = "{{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}";
+ dataPAF.addr3 = "{{application.address.city}}, {{application.address.state}}  {{application.address.zip}}"
+ //dataPAF.addr2 = apple;
 
-  {{/each}}
-  {{/if}}
+ {{/each}}
+ {{/if}}
 </script>
 
 <!-- <script src='/javascripts/makePDF/pdfmake.min.js'></script>
-<script src='/javascripts/makePDF/vfs_fonts.js'></script>
+     <script src='/javascripts/makePDF/vfs_fonts.js'></script>
 
-<script src='/javascripts/makePDF/exportPAForm.js'></script> -->
+     <script src='/javascripts/makePDF/exportPAForm.js'></script> -->
 
 <!-- Scripts for loading export PDF functions -->
 <script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.39/pdfmake.min.js'></script>
@@ -40,24 +40,24 @@
 <script src="/javascript/xedit.js" type="text/javascript"></script>
 <script src="/javascript/addProjectNote.js" type="text/javascript"></script>
 <style>
-  button.btn.btn-primary.btn-sm.editable-submit {
-    width: 35px;
-    height: 35px;
-  }
+ button.btn.btn-primary.btn-sm.editable-submit {
+   width: 35px;
+   height: 35px;
+ }
 
-  button.btn.btn-primary.btn-sm.editable-submit:after {
-    content:  "\2713 ";
-    font-size: 24px;
-  }
+ button.btn.btn-primary.btn-sm.editable-submit:after {
+   content:  "\2713 ";
+   font-size: 24px;
+ }
 
-  button.btn.btn-default.btn-sm.editable-cancel {
-    width: 35px;
-    height: 35px;
-  }
-  button.btn.btn-default.btn-sm.editable-cancel:after {
-    content:  "\2190 ";
-    font-size: 24px;
-  }
+ button.btn.btn-default.btn-sm.editable-cancel {
+   width: 35px;
+   height: 35px;
+ }
+ button.btn.btn-default.btn-sm.editable-cancel:after {
+   content:  "\2190 ";
+   font-size: 24px;
+ }
 
  select.task-owner {
    min-width: 12em;
@@ -72,16 +72,16 @@
 <div class="row">
   <div class="col-sm-12">
     <h5>Project View!  **NEW**<button class="btn btn-success" style="margin-left: 5%" onclick="exportPAFtoPDF()">Export PAF Report</button>
-                              <button class="btn btn-success" style="margin-left: 3%" onclick="exportHandletoPDF()">Export Handle-It Report</button>
+      <button class="btn btn-success" style="margin-left: 3%" onclick="exportHandletoPDF()">Export Handle-It Report</button>
     </h5>
-  <nav class="navbar">
-	 <div class="input-group">
-		<input type="text" id="note" class="form-control" placeholder="Enter Project Planning Note Here...">
-		<span class="input-group-btn">
-			<button id="addNote" class="btn btn-primary" type="submit">Add Note</button>
-		</span>
-	</div>
-</nav>
+    <nav class="navbar">
+	    <div class="input-group">
+		    <input type="text" id="note" class="form-control" placeholder="Enter Project Planning Note Here...">
+		    <span class="input-group-btn">
+			    <button id="addNote" class="btn btn-primary" type="submit">Add Note</button>
+		    </span>
+	    </div>
+    </nav>
     {{#each results.doc}}
       <div class="row">
         <div class="col-xs-12">
@@ -151,7 +151,7 @@
                   <td class="col-xs-9">
                     {{#if_not_eq application.email ''}}
                       <a href="mailto:{{application.email}}">{{application.email}}</a>
-                    {{else}}
+        {{else}}
                       None
                     {{/if_not_eq}}
                   </td>
@@ -245,9 +245,9 @@
                 {{/if_not_eq}}
               </p>
 
-<!--               <h4>Map</h4>
-              <iframe width="100%" height="350" frameborder="0" style="border:0"
-              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD2CmgnSECdg_g-aFgp95NUBv2QUEidDvs&q={{googleMapAddr application.address}}"></iframe> -->
+              <!--               <h4>Map</h4>
+                   <iframe width="100%" height="350" frameborder="0" style="border:0"
+                   src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD2CmgnSECdg_g-aFgp95NUBv2QUEidDvs&q={{googleMapAddr application.address}}"></iframe> -->
             </div>
           </div>
         {{/each}}
@@ -308,22 +308,22 @@
                   <td class="col-sm-9">PASS</td>
                 </tr>
 
-               <!--  <tr>
-                  <th class="col-sm-3">Client Can Contrib.</th>
-                  <td class="col-sm-9">
-                    {{#if property.client_can_contribute.value}}
-                      Yes - {{property.client_can_contribute.description}}
-                    {{else}} No {{/if}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Associates Can Contrib.</th>
-                  <td class="col-sm-9">
-                    {{#if property.associates_can_contribute.value}}
-                      Yes - {{property.associates_can_contribute.description}}
-                    {{else}} No{{/if}}
-                  </td>
-                </tr> -->
+                <!--  <tr>
+                     <th class="col-sm-3">Client Can Contrib.</th>
+                     <td class="col-sm-9">
+                     {{#if property.client_can_contribute.value}}
+                     Yes - {{property.client_can_contribute.description}}
+                     {{else}} No {{/if}}
+                     </td>
+                     </tr>
+                     <tr>
+                     <th class="col-sm-3">Associates Can Contrib.</th>
+                     <td class="col-sm-9">
+                     {{#if property.associates_can_contribute.value}}
+                     Yes - {{property.associates_can_contribute.description}}
+                     {{else}} No{{/if}}
+                     </td>
+                     </tr> -->
               </table>
             </div>
             <div class="col-xs-12 col-sm-6">
@@ -336,16 +336,16 @@
       </div><!-- end #projectInfo -->
 
 
-<!-- Partners (needs new data base fields for Org Name, Org Address, Contact Name, Contact Phone, Contact email)  -->
+      <!-- Partners (needs new data base fields for Org Name, Org Address, Contact Name, Contact Phone, Contact email)  -->
       <div class="tab-pane" id="partners" role="tabpanel"><!-- start #partners -->
 
-            {{> partners}}
+        {{> partners}}
 
-            <div class="col-xs-12 col-sm-6">
-              <h4>Summary</h4>
-              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
-              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
-            </div>
+        <div class="col-xs-12 col-sm-6">
+          <h4>Summary</h4>
+          <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
+          <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
+        </div>
       </div><!-- end #partners -->
       
 
@@ -357,10 +357,10 @@
               <h4>Planning Info</h4>
               <table class="table">
 
-<!--                 <tr>
-                  <th class="col-sm-3">Home Type</th>
-                  <td class="col-sm-9">{{property.home_type}}</td>
-                </tr> -->
+                <!--                 <tr>
+                     <th class="col-sm-3">Home Type</th>
+                     <td class="col-sm-9">{{property.home_type}}</td>
+                     </tr> -->
 
                 <tr>
                   <th class="col-sm-3">Church Partner(s)</th>
@@ -391,9 +391,9 @@
                   <td class="col-sm-9">$5,000</td>
                 </tr>
                 <!-- <tr>
-                  <th class="col-sm-3">Requested Repairs</th>
-                  <td class="col-sm-9">{{property.requested_repairs}}</td>
-                </tr> -->
+                     <th class="col-sm-3">Requested Repairs</th>
+                     <td class="col-sm-9">{{property.requested_repairs}}</td>
+                     </tr> -->
                 <tr>
                   <th class="col-sm-3">Client Can Contrib.</th>
                   <td class="col-sm-9">
@@ -430,10 +430,10 @@
               <h4>Leaders Info</h4>
               <table class="table">
 
-<!--                 <tr>
-                  <th class="col-sm-3">Home Type</th>
-                  <td class="col-sm-9">{{property.home_type}}</td>
-                </tr> -->
+                <!--                 <tr>
+                     <th class="col-sm-3">Home Type</th>
+                     <td class="col-sm-9">{{property.home_type}}</td>
+                     </tr> -->
 
                 <tr>
                   <th class="col-sm-3">Church Partner(s)</th>
@@ -464,9 +464,9 @@
                   <td class="col-sm-9">$5,000</td>
                 </tr>
                 <!-- <tr>
-                  <th class="col-sm-3">Requested Repairs</th>
-                  <td class="col-sm-9">{{property.requested_repairs}}</td>
-                </tr> -->
+                     <th class="col-sm-3">Requested Repairs</th>
+                     <td class="col-sm-9">{{property.requested_repairs}}</td>
+                     </tr> -->
                 <tr>
                   <th class="col-sm-3">Client Can Contrib.</th>
                   <td class="col-sm-9">
@@ -497,237 +497,279 @@
 
       <div class="tab-pane" id="wrapUp" role="tabpanel"><!-- start #wrapUp -->
         <br />
-        {{#each results.doc}}
-          <div class="row">
-            <h4>Wrap up Info</h4>
-            <table class="table">
+        <div class="row">
+          <h4>Wrap up Info</h4>
+          <table class="table">
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Return volunteer sign-up sheet to office</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="signup_sheet_office"
-                           {{#if (wrapUp.signup_sheet_office.complete)}} checked="checked" {{/if}}/>
-                    Complete {{ stringify wrapUp.signup_sheet_office}}<span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="signup_sheet_office"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Return volunteer sign-up sheet to office</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{getCompletedDate wrapUp 'signup_sheet_office' }}">
+                  <input type="checkbox" name="signup_sheet_office" value=""
+                         {{#if wrapUp.signup_sheet_office.complete}} checked {{/if}}
+                  />
+                  Complete
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="signup_sheet_office"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Record volunteer hours / info</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="record_volunteer_info" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="record_volunteer_info"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Record volunteer hours / info</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{getCompletedDate wrapUp 'record_volunteer_info' }}">
+                  <input type="checkbox" name="record_volunteer_info" value=""
+                         {{#if wrapUp.record_volunteer_info.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="record_volunteer_info"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">In-kind donations info</th>
-                <td class="col-xs-6 col-sm-2">
-                  TODO
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">In-kind donations info</th>
+              <td class="col-xs-6 col-sm-2">
+                TODO
+              </td>
+              <td class="col-xs-6 col-sm-4">
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Schedule porta pottie pickup
-                  <span class="wrapup-required"></span>
-                </th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="porta_pottie_pickup" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="porta_pottie_pickup"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Schedule porta pottie pickup
+                <span class="wrapup-required"></span>
+              </th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{getCompletedDate wrapUp 'porta_pottie_pickup' }}">
+                  <input type="checkbox" name="porta_pottie_pickup" value=""
+                         {{#if wrapUp.porta_pottie_pickup.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="porta_pottie_pickup"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Schedule waste bin pickup office</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="waste_dumpster_pickup" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="waste_dumpster_pickup"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Schedule waste bin pickup office</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{getCompletedDate wrapUp 'waste_dumpster_pickup' }}">
+                  <input type="checkbox" name="waste_dumpster_pickup" value=""
+                         {{#if wrapUp.waste_dumpster_pickup.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="waste_dumpster_pickup"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Arrange for disposal of waste</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="waste_disposal_arrangement" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="waste_disposal_arrangement"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Arrange for disposal of waste</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{getCompletedDate wrapUp 'waste_disposal_arrangement' }}">
+                  <input type="checkbox" name="waste_disposal_arrangement" value=""
+                         {{#if wrapUp.waste_disposal_arrangement.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="waste_disposal_arrangement"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Return materials and rentals</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="return_materials_rentals" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="return_materials_rentals"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Return materials and rentals</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{ getCompletedDate wrapUp 'return_materials_rentals' }}">
+                  <input type="checkbox" name="return_materials_rentals" value=""
+                         {{#if wrapUp.return_materials_rentals.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="return_materials_rentals"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Turn in receipts and expenses to office</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="turn_in_receipts" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="turn_in_receipts"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Turn in receipts and expenses to office</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{getCompletedDate wrapUp 'turn_in_receipts' }}">
+                  <input type="checkbox" name="turn_in_receipts" value=""
+                         {{#if wrapUp.turn_in_receipts.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="turn_in_receipts"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Process reimbursement checks</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="process_reimbursement_checks" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="process_reimbursement_checks"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Process reimbursement checks</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{getCompletedDate wrapUp 'process_reimbursement_checks' }}">
+                  <input type="checkbox" name="process_reimbursement_checks" value=""
+                         {{#if wrapUp.process_reimbursement_checks.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="process_reimbursement_checks"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Submit photos to Flickr album or send to office</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="upload_photos_flickr" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="upload_photos_flickr"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Submit photos to Flickr album or send to office</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{ getCompletedDate wrapUp 'upload_photos_flickr' }}">
+                  <input type="checkbox" name="upload_photos_flickr" value=""
+                         {{#if wrapUp.upload_photos_flickr.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="upload_photos_flickr"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Project report form submitted to office</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="report_form_submission" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="report_form_submission"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Project report form submitted to office</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{ getCompletedDate wrapUp 'report_form_submission' }}">
+                  <input type="checkbox" name="report_form_submission" value=""
+                         {{#if wrapUp.report_form_submission.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="report_form_submission"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Update the project webpage</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="update_project_webpage" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="update_project_webpage"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Update the project webpage</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{ getCompletedDate wrapUp 'update_project_webpage' }}">
+                  <input type="checkbox" name="update_project_webpage" value=""
+                         {{#if wrapUp.update_project_webpage.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="update_project_webpage"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Call client to ask how project went</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="client_phone_followup" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="client_phone_followup"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Call client to ask how project went</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{getCompletedDate wrapUp 'client_phone_followup' }}">
+                  <input type="checkbox" name="client_phone_followup" value=""
+                         {{#if wrapUp.client_phone_followup.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="client_phone_followup"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Send volunteer thank you email</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="send_thank_you_email" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="send_thank_you_email"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Send volunteer thank you email</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{getCompletedDate wrapUp 'send_thank_you_email' }}">
+                  <input type="checkbox" name="send_thank_you_email" value=""
+                         {{#if wrapUp.send_thank_you_email.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="send_thank_you_email"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Determine if follow-up is needed</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="determine_followup_required" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="determine_followup_required"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Determine if follow-up is needed</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{getCompletedDate wrapUp 'determine_followup_required' }}">
+                  <input type="checkbox" name="determine_followup_required" value=""
+                         {{#if wrapUp.determine_followup_required.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="determine_followup_required"></select>
+              </td>
+            </tr>
 
-              <tr>
-                <th class="col-xs-12 col-sm-6">Send closing recipient letter</th>
-                <td class="col-xs-6 col-sm-2">
-                  <label>
-                    <input type="checkbox" name="send_closing_letter" />
-                    Complete <span class="wrapup-completed-on"></span>
-                  </label>
-                </td>
-                <td class="col-xs-6 col-sm-4">
-                  Owner
-                  <select class="task-owner" data-owner-of="send_closing_letter"></select>
-                </td>
-              </tr>
+            <tr>
+              <th class="col-xs-12 col-sm-6">Send closing recipient letter</th>
+              <td class="col-xs-6 col-sm-2">
+                <label data-toggle="tooltip"
+                       title="{{getCompletedDate wrapUp 'send_closing_letter' }}">
+                  <input type="checkbox" name="send_closing_letter" value=""
+                         {{#if wrapUp.send_closing_letter.complete}} checked {{/if}}
+                  />
+                  Complete <span class="wrapup-completed-on"></span>
+                </label>
+              </td>
+              <td class="col-xs-6 col-sm-4">
+                Owner
+                <select class="task-owner" data-owner-of="send_closing_letter"></select>
+              </td>
+            </tr>
 
 
-            </table>
-          </div>
-        {{/each}}
+          </table>
+        </div>
       </div><!-- end #wrapUp -->
 
 
@@ -735,39 +777,39 @@
         <br />
         <div class="row" id="workItemCards">
           {{!-- <div class="col-xs-12 col-sm-6">
-            <div class="card work-item" name="new">
-            <div class="card-block">             
-            
-            
+             <div class="card work-item" name="new">
+             <div class="card-block">             
+             
+             
 
 
-            <h4 class="card-title">New Work Item</h4>
-            <p class="card-text">
-            <div class="form-group">
-            <label class="form-control-label">Name*</label>
-            <input type="text" class="form-control" name="name"></input>
-            </div>
-            <div class="form-group">
-            <label class="form-control-label">Description*</label>
-            <textarea class="form-control" name="description" rows="5"></textarea>
-            </div>
-            <div class="form-group">
-            <label class="form-control-label">Site Comments*</label>
-            <textarea class="form-control" name="siteComments" rows="5"></textarea>
-            </div>
-            <div class="form-group">
-            <label class="form-control-label">Cost</label>
-            <input type="cost" class="form-control" name="cost"></input>
-            </div>
+             <h4 class="card-title">New Work Item</h4>
+             <p class="card-text">
+             <div class="form-group">
+             <label class="form-control-label">Name*</label>
+             <input type="text" class="form-control" name="name"></input>
+             </div>
+             <div class="form-group">
+             <label class="form-control-label">Description*</label>
+             <textarea class="form-control" name="description" rows="5"></textarea>
+             </div>
+             <div class="form-group">
+             <label class="form-control-label">Site Comments*</label>
+             <textarea class="form-control" name="siteComments" rows="5"></textarea>
+             </div>
+             <div class="form-group">
+             <label class="form-control-label">Cost</label>
+             <input type="cost" class="form-control" name="cost"></input>
+             </div>
 
 
 
-            </p>
-            <a href="#" class="btn btn-primary card-link work-item-new">Save</a>
-            <a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
-            </div>
-            </div> 
-            </div> --}}
+             </p>
+             <a href="#" class="btn btn-primary card-link work-item-new">Save</a>
+             <a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
+             </div>
+             </div> 
+             </div> --}}
 
           {{#each results.work}}
             <div class="col-xs-12 col-sm-6">
@@ -878,6 +920,9 @@
      ]
    });
 
+   // Enable tooltips.
+   $('[data-toggle="tooltip"]').tooltip();
+   
    $('#wrapUp input:checkbox').change(updateWrapup);
    
    // Populate the owner dropdown boxes with assignable users. Save them when changed.
@@ -891,10 +936,9 @@
        var fullName = user.contact_info.user_name.user_first + ' ' +
                       user.contact_info.user_name.user_last;
        $option = $('<option value="' + user._id + '">' + fullName + '</option>');
-       // TODO
-       // if (wrapup record [ taskName ].owner = user._id) {
-       //     $option.prop('selected', 'selected')
-       // }
+       if (wrapUp[ taskName ].owner === user._id) {
+         $option.prop('selected', 'selected')
+       }
        $this.append($option);
      });
 
@@ -1253,19 +1297,45 @@
      wrapUp[ $this.data('owner-of') ]. owner = $this.val() || null;
    });
 
-   console.log(wrapUp);
+   // Strip the MongoDB version field from the record (so that it saves).
    if (typeof wrapUp.__v !== 'undefined') {
      delete wrapUp.__v;
    }
-   
+
+   // Save the new record to the database.
    $.ajax({
      url: '/projectview/wrapup',
      method: 'POST',
      dataType: 'json',
      contentType: 'application/json; charset=utf8',
      data: JSON.stringify(wrapUp),
-     success: function () {
-       console.log("Saved and received: ", arguments)
+     success: function (data) {
+       var w = data.results.projectWrapUp;
+
+       // Update the checkboxes.
+       $('#wrapUp input:checkbox').each(function () {
+         var $this = $(this);
+         var name = $this.attr('name')
+
+         // TODO: does this cause a cascade/infinite loop (trigger onchange) ??
+         $this.prop('checked', w[name].complete);
+
+         var completeDate = '';
+         if (w[name].complete && w[name].completed_on !== null) {
+           var completeDate = new Date(w[name].completed_on).toLocaleDateString();
+         }
+         $this.parent('label').attr('data-original-title', completeDate);
+       });
+
+       // Update the dropdowns.
+       $('#wrapUp select.task-owner').each(function () {
+         var $this = $(this);
+         if (w[$this.data('owner-of')] && w[$this.data('owner-of')].owner !== null) {
+           $this.val(w[$this.data('owner-of')].owner)
+         } else {
+           $this.val('');
+         }
+       });
      }
    });
  }
