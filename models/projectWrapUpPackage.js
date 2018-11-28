@@ -112,7 +112,7 @@ var ProjectWrapUpPackageSchema = new Schema({
 });
 
 ProjectWrapUpPackageSchema.methods.getCompletedDate = function (name) {
-  if (this[name] && this[name].completed_on !== null) {
+  if (this[name] && this[name].completed_on !== null && this[name].completed_on !== undefined) {
     return this[name].completed_on.toLocaleDateString()
   } else {
     return ''
