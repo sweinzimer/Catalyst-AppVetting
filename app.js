@@ -98,6 +98,17 @@ hbs.registerHelper('if_not_eq', function(a, b, opts) {
     }
 });
 
+
+hbs.registerHelper('if_in', function(list, elm, opts) {
+  if(list === undefined)
+    return opts.inverse(this);  
+  if (list.indexOf(elm) > -1) {
+      return opts.fn(this);
+  } else {
+    return opts.inverse(this);
+  }
+})
+
 hbs.registerHelper('googleMapAddr', function(addr) {
   var addrText = ''
   addrText += addr.line_1 + ','
