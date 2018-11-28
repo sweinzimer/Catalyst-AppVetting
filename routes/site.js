@@ -48,6 +48,7 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
+	payload.user_roles = res.locals.user_roles;
 
 	console.log("payload");
 	console.log(payload);
@@ -67,6 +68,7 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
 	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
+	payload.user_roles = res.locals.user_roles;
   if (res.locals.results.assessment && res.locals.results.assessment.length > 0) {
     console.log("Found assessment: ", res.locals.results.assessment);
     payload.assessment = res.locals.results.assessment;
@@ -222,9 +224,17 @@ function isLoggedIn(req, res, next) {
 							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN" || results.user.user_role == "SITE") {
 								res.locals.email = results.user.contact_info.user_email;
 								res.locals.role = results.user.user_role;
+								res.locals.user_roles = results.user.user_roles;
 								return next();
 
 							}
+							else if (results.user.user_roles !== undefined && results.user.user_roles.indexOf("SITE") >-1)
+						{
+							res.locals.email = results.user.contact_info.user_email;								
+							res.locals.role = results.user.user_role;
+							res.locals.user_roles = results.user.user_roles;
+							return next();
+						}
 
 							else {
 								console.log("user is not required role");
@@ -279,6 +289,12 @@ function isLoggedInPost(req, res, next) {
 								res.locals.role = results.user.user_role;
 								return next();
 
+							}
+							else if (results.user.user_roles !== undefined && results.user.user_roles.indexOf("SITE") >-1)
+							{
+								res.locals.role = results.user.user_role;
+								res.locals.user_roles = result.user.user_roles;
+								return next();
 							}
 
 						}
