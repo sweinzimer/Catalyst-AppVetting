@@ -17,31 +17,28 @@ var pafDefinition = {  content: [           // BEGIN PRINT LAYOUT! ***********
 {text: dataPAF.addr2, margin:[101,0,0,0], style:'inText'},   //margin:58
 {text: dataPAF.addr3, margin:[101,0,0,0], style:'inText' },
 
-{ text: [ "\n\nBIO/Project Summary: ", {text: apple, style:'inText' } ], style:'eachLine'},  // <new text field to be added>
+{ text: [ "\n\nBIO/Project Summary: ", {text: dataPAF.summ, style:'inText' } ], style:'eachLine'},  // <new text field to be added>
 
 "\n\nWORK ITEMS / MATERIALS OVERVIEWS / COST ESTIMATES:",           //WORK ITEM AND COST
-    { ul: [
-            { text: [ "WORK ITEM #1 TITLE: ", {text: apple, style:'inText' } ], style:'eachBullet'},
-            { text: [ "WORK ITEM #2 TITLE: ", {text: apple, style:'inText' } ], style:'eachBullet'}
-          ],
-      style: 'list'
-    },
+    { text: [ {text: workItems, style:'inText' } ], style:'eachWorkItem'},
+
 
     "\n\nHAZARD / SAFETY TESTING",
     { ul: [
-            { text: [ "LEAD?: ", {text: apple, style:'inText' } ], style:'eachBullet'},         //yes or no
-            { text: [ "ASBESTOS?: ", {text: apple, style:'inText' } ], style:'eachBullet'},     //yes or no
+            { text: [ "LEAD?: ", {text: dataPAF.hazard.has_lead, style:'inText' } ], style:'eachBullet'},         //yes or no
+            { text: [ "ASBESTOS?: ", {text: dataPAF.hazard.has_asbestos, style:'inText' } ], style:'eachBullet'},     //yes or no
             { text: [ "   If Yes on either, plan & cost estimate: ", {text: apple, style:'inText' } ], style:'eachBullet'}
           ],
       style: 'list'
     },
 "\nPARTNERS: ",                   //<name, in-kind materials description>
 
-{ text: [ "\nSUBCONTRACTOR(S): "], style:'eachLine'},           //<n/a or name, cost>
+{ text: [ "\nSUBCONTRACTOR(S): ", {text: dataPAF.subcontractors, style:'inText' }], style:'eachLine'},
+
 
 "\nOTHER COSTS:",
     { ul: [
-            { text: [ "TOOL RENTALS: ", {text: apple, style:'inText' } ], style:'eachBullet'},      //<y/n, description & cost if “yes”>
+            { text: [ "TOOL RENTALS: ", {text: dataPAF.toolrentals, style:'inText' } ], style:'eachBullet'},      //<y/n, description & cost if “yes”>
             { text: [ "PERMIT Needed: ", {text: apple, style:'inText' } ], style:'eachBullet'},     //<y/n, description & cost if “yes”>
             { text: [ "PORTAPOTTIE: ", {text: apple, style:'inText' } ], style:'eachBullet'},       //<y/n, description & cost if “yes”>
             { text: [ "WASTE: ", {text: apple, style:'inText' } ], style:'eachBullet'}              //<y/n, description & cost if “yes”>
@@ -49,11 +46,11 @@ var pafDefinition = {  content: [           // BEGIN PRINT LAYOUT! ***********
       style: 'list'
     },
 
-{ text: [ "\nTOTAL COST ESTIMATE: ", {text: apple, style:'inText' } ], style:'eachLine'},   //<sum of cost fields> 
+{ text: [ "\nTOTAL COST ESTIMATE: ", {text: dataPAF.estimates.total_cost, style:'inText' } ], style:'eachLine'},   //<sum of cost fields> 
 
-{ text: [ "\nPROPOSED DATES: ", {text: apple, style:'inText' } ], style:'eachLine'},         //<start date, end date>
+{ text: [ "\nPROPOSED DATES: ", {text: dataPAF.dates.start_date, style:'inText' } ], style:'eachLine'},         //<start date, end date>
 
-{ text: [ "\nVOLUNTEERS NEEDED: ", {text: apple, style:'inText' } ], style:'eachLine'},      //< # >
+{ text: [ "\nVOLUNTEERS NEEDED: ", {text: dataPAF.estimates.volunteers_needed, style:'inText' } ], style:'eachLine'},      //< # >
 
 { text: [ "\n\nNOTES: ", {text: apple, style:'inText' } ], style:'eachLine'},                    //<text field>
 
@@ -87,7 +84,9 @@ styles: {
         alignment: 'center'
 
     },
-    eachBullet: {
+    eachWorkItem: {
+        margin: [12, 0, 0, 0],
+        bold: false
     },
     b: {
         fontSize: 12,
