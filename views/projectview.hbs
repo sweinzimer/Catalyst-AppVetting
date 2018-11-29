@@ -19,16 +19,43 @@
  dataPAF.fullName = "{{application.name.first}} {{application.name.middle}} {{application.name.last}}";
  dataPAF.addr1 = "{{application.address.line_1}}, ";
  dataPAF.addr2 = "{{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}";
- dataPAF.addr3 = "{{application.address.city}}, {{application.address.state}}  {{application.address.zip}}"
- //dataPAF.addr2 = apple;
+ dataPAF.addr3 = "{{application.address.city}}, {{application.address.state}}  {{application.address.zip}}";
+ dataPAF.summ = "{{notes.site_summary}}";
+ {{/each}}
+ {{/if}}
+
+var workItems = [];
+
+ {{#if results.work}}
+ //dataPAF.workItems = '';
+   {{#each results.work}}
+// workItems.push([i + '). ' + 'Name: {{name}}']);
+// workItems.push([i + '). ' + 'Description: {{description}}']);
+workItems.push("-     " + "Name:  {{name}}\n");
+workItems.push("-     " + "Description:  {{description}}\n");
+workItems.push("-     " + "Site Comments:  {{siteComments}}\n");
+workItems.push("-     " + "COST:  ${{cost}}\n\n");
+   {{/each}}
+ {{/if}}
+
+ {{#if results.assessment}}
+ {{#each results.assessment}}
+  dataPAF.hazard = "{{hazard_safety}}";
+  dataPAF.materials = "{{materials}}";
+  dataPAF.othercosts = "{{other_costs}}";
+  dataPAF.estimates = "{{estimates}}";
+  dataPAF.subcontractors = "{{subcontractors}}";
+  dataPAF.toolrentals = "{{tool_rentals}}";
+  dataPAF.dates = "{{proposed_dates}}";
 
  {{/each}}
  {{/if}}
+
+
 </script>
 
 <!-- <script src='/javascripts/makePDF/pdfmake.min.js'></script>
      <script src='/javascripts/makePDF/vfs_fonts.js'></script>
-
      <script src='/javascripts/makePDF/exportPAForm.js'></script> -->
 
 <!-- Scripts for loading export PDF functions -->
@@ -917,6 +944,9 @@
        {value: 'projectInProgress', text: 'Project - In Process'},
        {value: 'projectGoBacks', text: 'Project - Go Backs'},
        {value: 'projectCompleted', text: 'Project - Completed'},
+       {value: 'projectCompleted', text: 'Project - Completed'},
+       {value: 'assessComp', text: '(Back to Site Assessment - Pending)'},
+       {value: 'assessComp', text: '(Back to Site Assessment - Complete)'}
      ]
    });
 
