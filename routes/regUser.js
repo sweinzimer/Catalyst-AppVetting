@@ -18,6 +18,7 @@ module.exports = function (passport) {
 			payload.user = req.user._id;
 			payload.user_email = res.locals.email;
 			payload.user_role = res.locals.role;
+			
 			payload.roles = res.locals.results.roles;
 			payload.rolesString = JSON.stringify(res.locals.results.roles);
 
@@ -163,7 +164,7 @@ function isLoggedIn(req, res, next) {
 						res.locals.results = results;
 						res.locals.email = results.user.contact_info.user_email;
 						res.locals.role = results.user.user_role;
-
+						res.locals.user_roles = results.user.user_roles;
 						return next();
 
 					}
