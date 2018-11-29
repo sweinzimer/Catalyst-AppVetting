@@ -300,8 +300,17 @@ function isLoggedIn(req, res, next) {
 					}
 					else {
 						if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
+							
+							res.locals.role = results.user.user_role;
+							res.locals.user_roles = result.user.user_roles;
 							return next();
 
+						}
+						else if (results.user.user_roles !== undefined && results.user.user_roles.indexOf("VET") >-1)
+						{
+							res.locals.role = results.user.user_role;
+							res.locals.user_roles = result.user.user_roles;
+							return next();
 						}
 						else {
 							console.log("user is not vet");
