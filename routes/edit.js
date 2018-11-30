@@ -177,6 +177,12 @@ function isLoggedIn(req, res, next) {
 							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
 								return next();
 
+                            }
+                            else if (results.user.user_roles !== undefined && results.user.user_roles.indexOf('VET') >-1)
+							{
+								res.locals.role = results.user.user_role;
+								res.locals.user_roles = results.user.user_roles;
+								return next();
 							}
 							
 							else {

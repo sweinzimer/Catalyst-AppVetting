@@ -18,6 +18,7 @@ module.exports = function (passport) {
 			payload.user = req.user._id;
 			payload.user_email = res.locals.email;
 			payload.user_role = res.locals.role;
+			
 			payload.roles = res.locals.results.roles;
 			payload.rolesString = JSON.stringify(res.locals.results.roles);
 
@@ -163,7 +164,7 @@ function isLoggedIn(req, res, next) {
 						res.locals.results = results;
 						res.locals.email = results.user.contact_info.user_email;
 						res.locals.role = results.user.user_role;
-
+						res.locals.user_roles = results.user.user_roles;
 						return next();
 
 					}
@@ -203,9 +204,10 @@ function isAdmin(req, res, next) {
 				}
 				else {
 					if (results.user.user_status == "ACTIVE") {
-						if (results.user.user_role == "ADMIN") {
-							res.locals.email = results.user.contact_info.user_email;
+						if(results.user.user_role==="ADMIN" || (results.user.user_roles !== undefined && results.user.user_roles.indexOf('ADMIN') > -1 )){
+						res.locals.email = results.user.contact_info.user_email;
 							res.locals.role = results.user.user_role;
+							res.locals.user_roles = results.user.user_roles;
 							return next();
 
 						}
@@ -255,10 +257,18 @@ function isLoggedInPost(req, res, next) {
 				else {
 
 					if (results.user.user_status == "ACTIVE") {
-						res.locals.email = results.user.contact_info.user_email;
-						res.locals.role = results.user.user_role;
-						return next();
-
+						if(results.user.user_role==="ADMIN" || (results.user.user_roles !== undefined && results.user.user_roles.indexOf('ADMIN') > -1 ))
+						{
+								res.locals.email = results.user.contact_info.user_email;
+							res.locals.role = results.user.user_role;
+							res.locals.user_roles = results.user.user_roles;
+							return next();
+						}
+						else {
+							//user is not a vetting agent or admin, route to error handler
+							res.locals.status = 406;
+							return next('route');
+						}
 					}
 					else {
 						//user is not a vetting agent or admin, route to error handler

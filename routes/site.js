@@ -48,6 +48,7 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
+	payload.user_roles = res.locals.user_roles;
 
 	console.log("payload");
 	console.log(payload);
@@ -67,6 +68,7 @@ router.get('/:id', isLoggedIn, api.getDocumentSite, function(req, res, next) {
 	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
+	payload.user_roles = res.locals.user_roles;
   if (res.locals.results.assessment && res.locals.results.assessment.length > 0) {
     console.log("Found assessment: ", res.locals.results.assessment);
     payload.assessment = res.locals.results.assessment;
@@ -222,9 +224,17 @@ function isLoggedIn(req, res, next) {
 							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN" || results.user.user_role == "SITE") {
 								res.locals.email = results.user.contact_info.user_email;
 								res.locals.role = results.user.user_role;
+								res.locals.user_roles = results.user.user_roles;
 								return next();
 
 							}
+							else if (results.user.user_roles !== undefined && results.user.user_roles.indexOf('SITE') >-1)
+						{
+							res.locals.email = results.user.contact_info.user_email;								
+							res.locals.role = results.user.user_role;
+							res.locals.user_roles = results.user.user_roles;
+							return next();
+						}
 
 							else {
 								console.log("user is not required role");
@@ -265,6 +275,7 @@ function isLoggedInPost(req, res, next) {
 				user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
 			})
 			.then(function (results) {
+				console.log('123');
 				console.log(results);
 
 					if (!results) {
@@ -273,16 +284,23 @@ function isLoggedInPost(req, res, next) {
 						return next('route');
 					}
 					else {
-						if(results.user.user_status == "ACTIVE") {
-							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN" || results.user.user_role == "SITE" || results.user.user_role=="PROJECT_MANAGER") {
+						if(results.user.user_status == "ACTIVE") {							
+							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN" || results.user.user_role == "SITE" || results.user.user_role=="PROJECT_MANAGEMENT") {
 								res.locals.email = results.user.contact_info.user_email;
 								res.locals.role = results.user.user_role;
 								return next();
 
 							}
+							else if (results.user.user_roles !== undefined && results.user.user_roles.indexOf('SITE') >-1)
+							{
+								res.locals.role = results.user.user_role;
+								res.locals.user_roles = results.user.user_roles;
+								return next();
+							}
 
 						}
 						else {
+							console.log('234');
 							//user is not active
 							res.locals.status = 406;
 							return next('route');

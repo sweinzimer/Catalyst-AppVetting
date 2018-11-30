@@ -41,6 +41,15 @@ module.exports = function(passport) {router.get('/', isLoggedIn, api.getDocument
 
 
 
+router.route('/deleteitem')
+	.post(isLoggedInPost, api.deleteWorkItem, function(req, res) {
+	if(res.locals.status != '200'){
+        res.status(500).send("Could not delete field");
+    }
+    else{
+        res.json(res.locals);
+    }
+	});
 
 //same as vetting route.  Shouldn't be issues with logic as is
 router.route('/additem')
@@ -183,6 +192,12 @@ function isLoggedIn(req, res, next) {
 								return next();
 
 							}
+							else if (results.user.user_roles !== undefined && results.user.user_roles.indexOf('PROJECT_MANAGEMENT') >-1)
+							{
+								res.locals.role = results.user.user_role;
+								res.locals.user_roles = results.user.user_roles;
+								return next();
+							}
 
 							else {
 								console.log("user is not required role");
@@ -224,19 +239,31 @@ function isLoggedInPost(req, res, next) {
 			})
 			.then(function (results) {
 				console.log(results);
-
+				console.log('4');
 					if (!results) {
 						//user not found in db.  Route to error handler
 						res.locals.status = 406;
+						console.log('exiting3');
 						return next('route');
 					}
 					else {
-						if(results.user.user_status == "ACTIVE") {
-							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN" || results.user.user_role == "SITE" || results.user.user_role=="PROJECT_MANAGER") {
+						console.log('exitingijsdflhj');
+						if(results.user.user_status === 'ACTIVE') {
+							if(results.user.user_role!== undefined && (results.user.user_role == "VET" || results.user.user_role == "ADMIN" || results.user.user_role == "SITE" || results.user.user_role=="PROJECT_MANAGEMENT")) {
+								console.log('exiting2');
 								res.locals.email = results.user.contact_info.user_email;
 								res.locals.role = results.user.user_role;
+								res.locals.user_roles = results.user.user_roles;
 								return next();
 
+							}
+							else if (results.user.user_roles !== undefined && results.user.user_roles.indexOf('PROJECT_MANAGEMENT') >-1)
+							{
+								console.log('exiting');
+								res.locals.email = results.user.contact_info.user_email;								
+								res.locals.user_roles = results.user.user_roles;
+								console.log('exiting');
+								return next();
 							}
 
 						}

@@ -627,13 +627,21 @@ function isLoggedIn(req, res, next) {
 					}
 					else {
 						if(results.user.user_status == "ACTIVE") {
-							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
+							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN" ) {
 								res.locals.email = results.user.contact_info.user_email;
 								res.locals.role = results.user.user_role;
 								res.locals.user_roles = results.user.user_roles;
 								return next();
 
 							}
+							else if (results.user.user_roles !== undefined && (results.user.user_roles.indexOf('VET') >-1 || results.user.user_roles.indexOf('PROJECT_MANAGEMENT') >-1))
+							{
+								res.locals.email = results.user.contact_info.user_email;
+								res.locals.role = results.user.user_role;
+								res.locals.user_roles = results.user.user_roles;
+								return next();
+							}
+
 
 							else {
 								console.log("user is not vet");
@@ -673,17 +681,26 @@ function isLoggedInPost(req, res, next) {
 			})
 			.then(function (results) {
 					if (!results) {
+						console.log('this2')
 						//user not found in db.  Route to error handler
 						res.locals.status = 406;
 						return next('route');
 					}
 					else {
 
-						if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
+						if(results.user.user_role == "PROJECT_MANAGEMENT" || results.user.user_role == "ADMIN") {
 							return next();
 
 						}
+						else if (results.user.user_roles !== undefined && (results.user.user_roles.indexOf('PROJECT_MANAGEMENT') >-1 || results.user.user_roles.indexOf('VET')  >-1))
+							{
+								
+								return next();
+							}
+
 						else {
+							console.log(results.user.user_roles);
+							console.log(results.user.user_roles.indexOf('PROJECT_MANAGEMENT'));
 							//user is not a vetting agent or admin, route to error handler
 							res.locals.status = 406;
 							return next('route');

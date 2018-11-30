@@ -377,6 +377,7 @@ router.get('/', isLoggedIn, api.getProjectsByStatus, function(req, res, next) {
 	payload.user = req.user._id;
 	payload.user_email = res.locals.email;
 	payload.user_role = res.locals.role;
+	payload.user_roles = res.locals.user_roles;
 
 
 	res.render('projectsummary', payload);
@@ -602,13 +603,20 @@ function isLoggedIn(req, res, next) {
 							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
 								res.locals.email = results.user.contact_info.user_email;
 								res.locals.role = results.user.user_role;
+								res.locals.user_roles = results.user.user_roles;
+								return next();
 
+							}
+							else if(results.user.user_roles !== undefined  && results.user.user_roles.indexOf('PROJECT_MANAGEMENT') > -1) {
+								res.locals.email = results.user.contact_info.user_email;
+								res.locals.role = results.user.user_role;
+								res.locals.user_roles = results.user.user_roles;
 								return next();
 
 							}
 
 							else {
-								console.log("user is not vet");
+								
 								res.redirect('/user/logout');
 							}
 						}
