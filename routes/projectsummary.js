@@ -293,8 +293,9 @@ router.get('/', isLoggedIn, api.getProjectsByStatus, function(req, res, next) {
     payload.nostatus = [];  //add unapproved here
 
 	if (res.locals.results.handleToBeAssigned[0] == null) {
-        console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'handleToBeAssigned\'');
+        // console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'handleToBeAssigned\'');
     } else {
+    	console.log('[ API ] getProjectsByStatus: [' + res.locals.results.handleToBeAssigned.length + '] whose current status: \'handleToBeAssigned\'')
         res.locals.results.handleToBeAssigned.forEach(function (element) {
             element = formatElement(element);
             payload.handleToBeAssigned.push(element);
@@ -302,8 +303,9 @@ router.get('/', isLoggedIn, api.getProjectsByStatus, function(req, res, next) {
     }
 
 	if (res.locals.results.handleAssigned[0] == null) {
-        console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'handleAssigned\'');
+        //console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'handleAssigned\'');
     } else {
+    	console.log('[ API ] getProjectsByStatus: [' + res.locals.results.handleAssigned.length + '] No Project Packages whose current status: \'handleAssigned\'');
         res.locals.results.handleAssigned.forEach(function (element) {
             element = formatElement(element);
             payload.handleAssigned.push(element);

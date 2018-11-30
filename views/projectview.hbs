@@ -951,12 +951,12 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    $('#site_summary').on('keydown', handleSiteSummaryInput)
 
    $('#status').editable({
-     value: docs[0].status,
+     value: docs[0].status,     //POST to /edit/project will update this status in project.status field.
      source: [
-       {value: 'handleToBeAssigned', text: 'Handle-It - To Be Assigned'},
+       {value: 'handle', text: 'Handle-It - To Be Assigned'},         //handleToBeAssigned
        {value: 'handleAssigned', text: 'Handle-It - Assigned'},
        {value: 'handleCompleted', text: 'Handle-It - Completed'},
-       {value: 'projectUpcoming', text: 'Project - Upcoming'},
+       {value: 'project', text: 'Project - Upcoming'},                //projectUpcoming
        {value: 'projectInProgress', text: 'Project - In Process'},
        {value: 'projectGoBacks', text: 'Project - Go Backs'},
        {value: 'projectCompleted', text: 'Project - Completed'},

@@ -16,12 +16,53 @@
     <div class="col-xs-12">
         
     <!-- Section that holds approved documents -->
-        <div role="tablist" aria-multiselectable="true">
+       <div role="tablist" aria-multiselectable="true">
             <div class="card">
                 <div class="card-header bg-pink" role="tab" id="headingOne">
+
                     <h5 class="mb-0">
                         <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="text-white">
-                            Handle: To Be Assigned
+                            Handle-its: Assigned
+                        </a>
+                    </h5>
+
+                </div>
+                <div id="collapseOne" class="collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="card-block">
+                        <table class="table table-sm table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="col-md-2">Name</th>
+                                <th class="col-md-2">Last Edit</th>
+                                <th class="col-md-2">Status</th>
+                <th class="col-md-2">Application Date</th>
+                <th class="col-md-2">Application Number</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each handleAssigned}}
+                                <tr class="clickable-row" data-href="/projectview/{{_id}}">
+                                    <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
+                                    <td class="col-md-2">{{updated}}</td>
+                                    <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
+                  <td class="col-md-2">{{signature.client_date}}</td>
+                  <td class="col-md-2">{{app_name}}</td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div role="tablist" aria-multiselectable="true">
+            <div class="card">
+                <div class="card-header bg-pink" role="tab" id="headingTwo">
+                    <h5 class="mb-0">
+                        <a data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" class="text-white">
+                            Handle-its: Yet to Be Assigned
                         </a>
                     </h5>
 <!--           <div id="year_select">
@@ -35,7 +76,7 @@
           </div> -->
             
                 </div>
-                <div id="collapseOne" class="collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div id="collapseTwo" class="collapse in" role="tabpanel" aria-labelledby="headingTwo">
                     <div class="card-block">
                         <table class="table table-sm table-bordered table-hover" id="project_table">
                             <thead>
@@ -65,47 +106,9 @@
         </div>
 
 
-       <div role="tablist" aria-multiselectable="true">
-            <div class="card">
-                <div class="card-header bg-pink" role="tab" id="headingTwo">
 
-                    <h5 class="mb-0">
-                        <a data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" class="text-white">
-                            Handle: Assigned
-                        </a>
-                    </h5>
 
-                </div>
-                <div id="collapseTwo" class="collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                    <div class="card-block">
-                        <table class="table table-sm table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th class="col-md-2">Name</th>
-                                <th class="col-md-2">Last Edit</th>
-                                <th class="col-md-2">Status</th>
-                <th class="col-md-2">Application Date</th>
-                <th class="col-md-2">Application Number</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {{#each handleAssigned}}
-                                <tr class="clickable-row" data-href="/projectview/{{_id}}">
-                                    <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
-                                    <td class="col-md-2">{{updated}}</td>
-                                    <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                  <td class="col-md-2">{{signature.client_date}}</td>
-                  <td class="col-md-2">{{app_name}}</td>
-                                </tr>
-                            {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-       <div role="tablist" aria-multiselectable="true">
+<!--        <div role="tablist" aria-multiselectable="true">
             <div class="card">
                 <div class="card-header bg-pink" role="tab" id="headingTwo">
 
@@ -143,7 +146,90 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+
+
+        <div role="tablist" aria-multiselectable="true">
+            <div class="card">
+                <div class="card-header bg-primary" role="tab" id="headingTwo">
+
+                    <h5 class="mb-0">
+                        <a data-toggle="collapse" href="#collapseFive" aria-expanded="true" aria-controls="collapseTwo" class="text-white">
+                            Projects: In Progress
+                        </a>
+                    </h5>
+
+                </div>
+                <div id="collapseFive" class="collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="card-block">
+                        <table class="table table-sm table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="col-md-2">Name</th>
+                                <th class="col-md-2">Last Edit</th>
+                                <th class="col-md-2">Status</th>
+                <th class="col-md-2">Application Date</th>
+                <th class="col-md-2">Application Number</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each projectInProgress}}
+                                <tr class="clickable-row" data-href="/projectview/{{_id}}">
+                                    <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
+                                    <td class="col-md-2">{{updated}}</td>
+                                    <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
+                  <td class="col-md-2">{{signature.client_date}}</td>
+                  <td class="col-md-2">{{app_name}}</td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
+        <div role="tablist" aria-multiselectable="true">
+            <div class="card">
+                <div class="card-header bg-primary" role="tab" id="headingTwo">
+
+                    <h5 class="mb-0">
+                        <a data-toggle="collapse" href="#collapseSix" aria-expanded="true" aria-controls="collapseTwo" class="text-white">
+                            Projects: Go Backs
+                        </a>
+                    </h5>
+
+                </div>
+                <div id="collapseSix" class="collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="card-block">
+                        <table class="table table-sm table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="col-md-2">Name</th>
+                                <th class="col-md-2">Last Edit</th>
+                                <th class="col-md-2">Status</th>
+                <th class="col-md-2">Application Date</th>
+                <th class="col-md-2">Application Number</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each projectGoBacks}}
+                                <tr class="clickable-row" data-href="/projectview/{{_id}}">
+                                    <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
+                                    <td class="col-md-2">{{updated}}</td>
+                                    <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
+                  <td class="col-md-2">{{signature.client_date}}</td>
+                  <td class="col-md-2">{{app_name}}</td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <div role="tablist" aria-multiselectable="true">
             <div class="card">
@@ -151,7 +237,7 @@
 
                     <h5 class="mb-0">
                         <a data-toggle="collapse" href="#collapseFour" aria-expanded="true" aria-controls="collapseTwo" class="text-white">
-                            Project: Upcoming
+                            Projects: Upcoming
                         </a>
                     </h5>
 
@@ -186,85 +272,6 @@
         </div>
 
 
-        <div role="tablist" aria-multiselectable="true">
-            <div class="card">
-                <div class="card-header bg-primary" role="tab" id="headingTwo">
-
-                    <h5 class="mb-0">
-                        <a data-toggle="collapse" href="#collapseFive" aria-expanded="true" aria-controls="collapseTwo" class="text-white">
-                            Project: In Progress
-                        </a>
-                    </h5>
-
-                </div>
-                <div id="collapseFive" class="collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                    <div class="card-block">
-                        <table class="table table-sm table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th class="col-md-2">Name</th>
-                                <th class="col-md-2">Last Edit</th>
-                                <th class="col-md-2">Status</th>
-                <th class="col-md-2">Application Date</th>
-                <th class="col-md-2">Application Number</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {{#each projectInProgress}}
-                                <tr class="clickable-row" data-href="/projectview/{{_id}}">
-                                    <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
-                                    <td class="col-md-2">{{updated}}</td>
-                                    <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                  <td class="col-md-2">{{signature.client_date}}</td>
-                  <td class="col-md-2">{{app_name}}</td>
-                                </tr>
-                            {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div role="tablist" aria-multiselectable="true">
-            <div class="card">
-                <div class="card-header bg-primary" role="tab" id="headingTwo">
-
-                    <h5 class="mb-0">
-                        <a data-toggle="collapse" href="#collapseSix" aria-expanded="true" aria-controls="collapseTwo" class="text-white">
-                            Project: Go Backs
-                        </a>
-                    </h5>
-
-                </div>
-                <div id="collapseSix" class="collapse in" role="tabpanel" aria-labelledby="headingTwo">
-                    <div class="card-block">
-                        <table class="table table-sm table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th class="col-md-2">Name</th>
-                                <th class="col-md-2">Last Edit</th>
-                                <th class="col-md-2">Status</th>
-                <th class="col-md-2">Application Date</th>
-                <th class="col-md-2">Application Number</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {{#each projectGoBacks}}
-                                <tr class="clickable-row" data-href="/projectview/{{_id}}">
-                                    <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
-                                    <td class="col-md-2">{{updated}}</td>
-                                    <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                  <td class="col-md-2">{{signature.client_date}}</td>
-                  <td class="col-md-2">{{app_name}}</td>
-                                </tr>
-                            {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Section that holds other documents -->
         <div role="tablist" aria-multiselectable="true">
@@ -272,7 +279,7 @@
                 <div class="card-header bg-success" role="tab" id="headingThree">
                     <h5 class="mb-0">
                         <a data-toggle="collapse" href="#collapseSeven" aria-expanded="true" aria-controls="collapseThree" class="text-white">
-                            Project: Completed
+                            Completed Tasks
                         </a>
                     </h5>
                 </div>
@@ -284,20 +291,29 @@
                                 <th class="col-md-2">Name</th>
                                 <th class="col-md-2">Last Edit</th>
                                 <th class="col-md-2">Status</th>
-                <th class="col-md-2">Application Date</th>
-                <th class="col-md-2">Application Number</th>
+                                <th class="col-md-2">Application Date</th>
+                                <th class="col-md-2">Application Number</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {{#each projectCompleted}}
+                        {{#each projectCompleted}}
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
                                     <td class="col-md-2">{{updated}}</td>
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                  <td class="col-md-2">{{signature.client_date}}</td>
-                  <td class="col-md-2">{{app_name}}</td>
+                                    <td class="col-md-2">{{signature.client_date}}</td>
+                                    <td class="col-md-2">{{app_name}}</td>
                                 </tr>
-                            {{/each}}
+                        {{/each}}
+                        {{#each handleCompleted}}
+                                <tr class="clickable-row" data-href="/projectview/{{_id}}">
+                                    <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
+                                    <td class="col-md-2">{{updated}}</td>
+                                    <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
+                                    <td class="col-md-2">{{signature.client_date}}</td>
+                                    <td class="col-md-2">{{app_name}}</td>
+                                </tr>
+                        {{/each}}
                             </tbody>
                         </table>
                     </div>
