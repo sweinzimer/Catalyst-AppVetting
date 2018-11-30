@@ -48,7 +48,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {{#each handleToBeAssigned}}
+                            {{#each handle}}
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
                                     <td class="col-md-2">{{updated}}</td>
@@ -169,7 +169,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {{#each projectUpcoming}}
+                            {{#each project}}
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
                                     <td class="col-md-2">{{updated}}</td>
@@ -266,8 +266,7 @@
             </div>
         </div>
 
-        <!-- Section that holds processing documents -->
-        <!-- This is a grab bag for any application that is not NEW or DECLINED -->
+        <!-- Section that holds other documents -->
         <div role="tablist" aria-multiselectable="true">
             <div class="card">
                 <div class="card-header bg-success" role="tab" id="headingThree">
@@ -340,7 +339,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {{#each processing}}
+                            {{#each nostatus}}
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
                                     <td class="col-md-2">{{updated}}</td>

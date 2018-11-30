@@ -29,7 +29,6 @@
  * Import any other required modules
  */
 
-
 var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
@@ -411,7 +410,7 @@ getDocumentPlanning: function (req, res, next) {
             withdrawn: DocumentPackage.find({status: "withdrawn"}).lean().execAsync(),
             withdrawnooa: DocumentPackage.find({ status: "withdrawnooa" }).lean().execAsync(),
             approval: DocumentPackage.find({status: "approval"}).lean().execAsync(),
-            handle: DocumentPackage.find({status: "handle"}).lean().execAsync(),
+            handle: DocumentPackage.find({status: "handle", app_year: year}).lean().execAsync(),
             declined: DocumentPackage.find({status: "declined", app_year : year}).lean().execAsync(),
             project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync(),
             handleToBeAssigned: DocumentPackage.find({status: "handleToBeAssigned", app_year : year}).lean().execAsync(),
@@ -440,6 +439,140 @@ getDocumentPlanning: function (req, res, next) {
             })
             .catch(next);
     },
+
+    /**
+     * Description: retrieve all Project Packages from the database and group by status code
+     * Type: GET
+     * Params: none
+     * Address: api.getProjectsByStatus
+     * Returns: results.statuscode[array of Document Packages]
+     * Notes: statuscode is defined as any property of Promise.props (ex: new, phone, assess)
+     */
+    getProjectsByStatus: function(req, res, next) {
+        // Log the api call made to the console
+        console.log('[ API ] getProjectsByStatus :: Call invoked');
+        var currentTime = new Date();
+        var year = currentTime.getFullYear();
+        // Access the returned items as results.<status code>[array index].<what you need>
+        // Example: results.visit[3].address.line_1 = a string
+
+
+        console.log("TRYING");
+
+        Promise.props({
+
+            //handle: DocumentPackage.find({status: "handle", app_year: year}).lean().execAsync(),
+            //project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync(),
+            
+
+            updatedHandle: DocumentPackage.update(
+                // Condition
+                {
+                    status: "handle" ,
+                    app_year : year,
+                    project:  { $exists: false } ,
+                
+                },
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: {"project": {status: "handle"}},
+                },
+                // Options
+                {
+                    multi: true
+                }
+
+                // Callback if needed
+                // { }
+            ).execAsync(),
+
+            updatedProject: DocumentPackage.update(
+                // Condition
+                {
+                    status: "project" ,
+                    app_year : year,
+                    project:  { $exists: false } ,
+                
+                },
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: {project: {status: "project"}},
+                },
+                // Options
+                {
+                    multi: true
+                }
+
+                // Callback if needed
+                // { }
+            ).execAsync()
+
+        }).then(function (firstRes) {
+
+            console.log("TRY1: " + firstRes.updatedHandle.length );
+            console.log("TRY2: " + firstRes.updatedProject.length );
+            // for (var i=0; i < firstRes.handle.length; i++) {
+            //     if ((typeof firstRes.handle[i].project.status === 'undefined') && (firstRes.handle[i].status == "handle" || firstRes.handle[i].status == "project")){
+            //         DocumentPackage.find({project: {status: "handleAssigned"}}).lean().execAsync();
+            //     }
+            // }
+
+            // for (var j=0; j < firstRes.project.length; j++) {
+            //     if ((typeof firstRes.project[j].project.status === 'undefined') && (firstRes.project[j].status == "project")) {
+            //         DocumentPackage.find({project: {status: "handleAssigned"}}).lean().execAsync();
+            //     }
+            // }            
+
+                    Promise.props({
+                        // approval: DocumentPackage.find({status: "approval"}).lean().execAsync(),
+                        
+                        // handle: DocumentPackage.find({status: "handle", app_year : year}).lean().execAsync(),
+                        // project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync(),
+
+                        handle: DocumentPackage.find({project: {status: "handle"}}).lean().execAsync(),
+                        project: DocumentPackage.find({project: {status: "project"}}).lean().execAsync(),
+
+                        handleToBeAssigned: DocumentPackage.find({project: {status: "handleToBeAssigned"}}).lean().execAsync(),
+                        projectUpcoming: DocumentPackage.find({project: {status: "projectUpcoming"}}).lean().execAsync(),
+                        
+                        handleAssigned: DocumentPackage.find({project: {status: "handleAssigned"}}).lean().execAsync(),
+                        projectInProgress: DocumentPackage.find({project: {status: "projectInProgress"}}).lean().execAsync(),
+                        projectGoBacks: DocumentPackage.find({project: {status: "projectGoBacks"}}).lean().execAsync(),
+                        projectCompleted: DocumentPackage.find({project: {status: "projectCompleted"}}).lean().execAsync(),
+                        handleCompleted: DocumentPackage.find({project: {status: "handleCompleted"}}).lean().execAsync(),
+                        nostatus: DocumentPackage.find({project: {status: "nostatus"}}).lean().execAsync()
+
+
+                    })
+                        .then(function (results) {
+                            if (!results) {
+                                console.log('[ API ] getProjectsByStatus :: Project Summary package found: FALSE');
+                            }
+                            else {
+                                console.log('[ API ] getProjectsByStatus :: Project Summary package found: TRUE');
+                            }
+
+
+                            console.log("API :: Results: " + results);
+
+                            res.locals.results = results;
+
+                            // If we are at this line all promises have executed and returned
+                            // Call next() to pass all of this glorious data to the next express router
+                            next();
+                        })
+                        .catch(function(err) {
+                            console.error(err);
+                        })
+                        .catch(next);
+
+
+                })
+    },
+
+
 
   // Fetch only status: "project" documents for this year.
   getProjectDocuments: function(req, res, next) {
@@ -705,13 +838,31 @@ getDocumentPlanning: function (req, res, next) {
 		var id;
 		if(res.locals.role == "SITE") {
 			if(req.body.name == "notes.site_summary") {
-			updates['notes.site_summary'] = req.body.value;
+			     updates['notes.site_summary'] = req.body.value;
 			}
 			else if(req.body.name == "status") {
+                if (req.body.value && (req.body.value == "project") || (req.body.value == "handle")) {
+                    var inStatus = { status: req.body.value };
+                    updates.project = inStatus;
+                }
 				updates['status'] = req.body.value;
 			}
 			id = req.body.id;
 		}
+        else if (req.body.name == "status") {
+                if (req.body.value && (req.body.value == "project") || (req.body.value == "handle")) {
+                    var inStatus = { status: req.body.value };
+                    updates.project = inStatus;
+                }
+                updates['status'] = req.body.value;
+
+                if(req.params.id != null) {
+                    id = req.params.id;
+                }
+                else {
+                    id = req.body.id;
+                }
+            }
 		else {
 		
 			if(req.params.id != null) {
@@ -776,6 +927,95 @@ getDocumentPlanning: function (req, res, next) {
             })
             .catch(next);
     },
+
+
+
+
+    putUpdateProject: function(req, res, next) {
+        // When executed this will apply updates to a doc and return the MODIFIED doc
+
+        // Log the _id, name, and value that are passed to the function
+        console.log('[ API ] putUpdateProject :: Call invoked with _id: ' + req.params.id
+            + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
+        console.log(req.body.name + ' + ' + req.body.value);
+        var updates = {};
+        var id;
+        if(res.locals.role == "SITE") {
+            if(req.body.name == "notes.site_summary") {
+            updates['notes.site_summary'] = req.body.value;
+            }
+            else if(req.body.name == "status") {
+
+                var status = { status: req.body.value };
+                updates['project'] = status;
+            }
+            id = req.body.id;
+        }
+        else {
+        
+            if(req.params.id != null) {
+                id = req.params.id;
+            }
+            else {
+                id = req.body.id;
+            }
+            // Build the name:value pairs to be updated
+            // Since there is only one name and one value, we can use the method below
+            
+            updates[req.body.name] = req.body.value;
+            // Record Update time
+            //filters
+        }
+        var conditions = {};
+        conditions['projectId'] = mongoose.Types.ObjectId(id);
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
+        updates['updated'] = Date.now();
+        console.log(updates);
+
+
+        Promise.props({
+            project: DocumentPackage.findOneAndUpdate(
+                // Condition
+                conditions,
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: updates
+                },
+                // Options
+                {
+                    // new - defaults to false, returns the modified document when true, or the original when false
+                    new: true,
+                    upsert: true
+                }
+                // Callback if needed
+                // { }
+            ).execAsync()
+        })
+            .then(function (results) {
+                // TODO: Confirm true/false is correct
+                if (results) {
+                    console.log('[ API ] putUpdateProject :: Project Doc found: TRUE');
+                }
+                else {
+                    console.log('[ API ] putUpdateProject :: Project Doc found: FALSE, Created new one!');
+                }
+                res.locals.results = results;
+                //sending a status of 200 for now
+                res.locals.status = '200';
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+
 
 	postUser: function(req, res, next) {
         // Data will be submitted using req.body
@@ -1362,7 +1602,7 @@ getDocumentPlanning: function (req, res, next) {
     getProjPartnersLeaders: function(req, res, next) {
         //console.log(req.body);
         
-        var projectId =  ObjectId(req.params.id) || 34 ||req.params.id || req.body.projectId || 223344;        //223344 is a test user                               //TEST NUM
+        var projectId =  ObjectId(req.params.id) ||req.params.id || req.body.projectId;                    
         console.log('[ API ] getProjPartnersLeaders :: Call invoked for: ' + projectId);
 
         res.locals.docId = projectId;
@@ -1503,7 +1743,7 @@ getDocumentPlanning: function (req, res, next) {
         console.log(req.body);
 
         //console.log(req.body);
-        var projectId = req.body.projectId || res.locals.docId;        //223344 is a test user 
+        var projectId = req.body.projectId || res.locals.docId;       
         console.log('[ API ] setProjPartnersLeaders :: Call invoked for: ' + projectId);
         // var item = new ProjectSummaryPackage(req.body);
 
@@ -1514,7 +1754,10 @@ getDocumentPlanning: function (req, res, next) {
                                             "assocPartners": req.body.assocArray
                                           }
                                 },   
-                                { upsert: true }
+                                { 
+                                    upsert: true,
+                                    new: true
+                                }
                             ).execAsync()
         })
         .then(function (thisRes) {
