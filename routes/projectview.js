@@ -78,8 +78,8 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 			 payload.user_role = res.locals.role;
 			 payload.user_roles = res.locals.user_roles;
 	         payload.projectNotes = res.locals.results.projectNotes;
-           payload.assignableUsers = res.locals.assignableUsers;
-           payload.wrapUp = res.locals.wrapUp ? res.locals.wrapUp : ProjectWrapUpPackage.empty(req.params.id);
+           	 payload.assignableUsers = res.locals.assignableUsers;
+             payload.wrapUp = res.locals.wrapUp ? res.locals.wrapUp : ProjectWrapUpPackage.empty(req.params.id);
 	         payload.part = res.locals.results.part||req.partnerTime;			//Data for Partners Tab Partial
 	         payload.partDocId = res.locals.results.doc[0]._id;
 	         console.log("results");
