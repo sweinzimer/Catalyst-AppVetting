@@ -257,35 +257,23 @@ var fileName = req.params.name;
 
 });
 
-router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
+router.get('/', isLoggedIn, api.getProjectsByStatus, function(req, res, next) {
 
     var payload = {};
 
-    if (res.locals.results.new[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'new\'');
+
+	if (res.locals.results.handle[0] == null) {
+        console.log('[ API ] getProjectsByStatus: Unable to find Document Packages with status: \'handle\'');
     } else {
-        res.locals.results.new.forEach(function (element) {
+        res.locals.results.handle.forEach(function (element) {
             element = formatElement(element);
-        });
+		});
     }
-    payload.new = res.locals.results.new;
-
-	// //TEST - HANDLE STATUS
-	// if (res.locals.results.handle[0] == null) {
- //        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'handle\'');
- //    } else {
- //        res.locals.results.handle.forEach(function (element) {
- //            element = formatElement(element);
-	// 	});
- //    }
- //    payload.handle = res.locals.results.handle;
-
-  
-
+    payload.handle = res.locals.results.handle;
 
     //separate bucket for approved applications
 	if (res.locals.results.project[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'project\'');
+        console.log('[ API ] getProjectsByStatus: Unable to find Document Packages with status: \'project\'');
     } else {
         res.locals.results.project.forEach(function (element) {
             element = formatElement(element);
@@ -293,38 +281,6 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
     }
     payload.project = res.locals.results.project;
 
-    //put declined and withdrawn in the same bucket
-    payload.unapproved = [];
-
-    if (res.locals.results.declined[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'declined\'');
-    } else {
-        res.locals.results.declined.forEach(function (element) {
-            element = formatElement(element);
-            payload.unapproved.push(element);
-        });
-    }
-
-    if (res.locals.results.withdrawn[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'withdrawn\'');
-    } else {
-        res.locals.results.withdrawn.forEach(function (element) {
-            element = formatElement(element);
-            payload.unapproved.push(element);
-        });
-	}
-
-	if (res.locals.results.withdrawnooa[0] == null) {
-		console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'withdrawnooa\'');
-	} else {
-		res.locals.results.withdrawnooa.forEach(function (element) {
-			element = formatElement(element);
-			payload.unapproved.push(element);
-		});
-	}
-
-    //add all other existing statuses to processing array
-    payload.processing = [];
 
 
     payload.handleToBeAssigned = [];
@@ -333,74 +289,11 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
     payload.projectUpcoming = [];
     payload.projectInProgress = [];
     payload.projectGoBacks = [];
-    payload.projectCompleted = [];
-
-    if (res.locals.results.phone[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'phone\'');
-    } else {
-        //need to grab each element and push into the 'processing' array
-        res.locals.results.phone.forEach(function (element) {
-            element = formatElement(element);
-            payload.processing.push(element);
-        });
-    }
-
-    if (res.locals.results.handle[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'handle\'');
-    } else {
-        res.locals.results.handle.forEach(function (element) {
-            element = formatElement(element);
-            payload.new.push(element);
-        });
-    }
-
-    if (res.locals.results.documents[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'documents\'');
-    } else {
-        res.locals.results.documents.forEach(function (element) {
-            element = formatElement(element);
-            payload.processing.push(element);
-        });
-    }
-
-    if (res.locals.results.discuss[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'discuss\'');
-    } else {
-        res.locals.results.discuss.forEach(function (element) {
-            element = formatElement(element);
-            payload.processing.push(element);
-        });
-    }
-
-    if (res.locals.results.assess[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'assess\'');
-    } else {
-        res.locals.results.assess.forEach(function (element) {
-            element = formatElement(element);
-            payload.processing.push(element);
-        });
-    }
-
-	if (res.locals.results.assessComp[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'assessComp\'');
-    } else {
-        res.locals.results.assessComp.forEach(function (element) {
-            element = formatElement(element);
-            payload.processing.push(element);
-        });
-    }
-
-    if (res.locals.results.approval[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find Document Packages with status: \'approval\'');
-    } else {
-        res.locals.results.approval.forEach(function (element) {
-            element = formatElement(element);
-            payload.processing.push(element);
-        });
-    }
+    payload.projectCompleted = []; 
+    payload.nostatus = [];  //add unapproved here
 
 	if (res.locals.results.handleToBeAssigned[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'handleToBeAssigned\'');
+        console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'handleToBeAssigned\'');
     } else {
         res.locals.results.handleToBeAssigned.forEach(function (element) {
             element = formatElement(element);
@@ -409,7 +302,7 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
     }
 
 	if (res.locals.results.handleAssigned[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'handleAssigned\'');
+        console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'handleAssigned\'');
     } else {
         res.locals.results.handleAssigned.forEach(function (element) {
             element = formatElement(element);
@@ -418,7 +311,7 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
     }
 
 	if (res.locals.results.handleCompleted[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'handleCompleted\'');
+        console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'handleCompleted\'');
     } else {
         res.locals.results.handleCompleted.forEach(function (element) {
             element = formatElement(element);
@@ -427,7 +320,7 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
     }
 
 	if (res.locals.results.projectUpcoming[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'projectUpcoming\'');
+        console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'projectUpcoming\'');
     } else {
         res.locals.results.projectUpcoming.forEach(function (element) {
             element = formatElement(element);
@@ -436,7 +329,7 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
     }
 
 	if (res.locals.results.projectInProgress[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'projectInProgress\'');
+        console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'projectInProgress\'');
     } else {
         res.locals.results.projectInProgress.forEach(function (element) {
             element = formatElement(element);
@@ -445,7 +338,7 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
     }
 
 	if (res.locals.results.projectGoBacks[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'projectGoBacks\'');
+        console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'projectGoBacks\'');
     } else {
         res.locals.results.projectGoBacks.forEach(function (element) {
             element = formatElement(element);
@@ -454,11 +347,20 @@ router.get('/', isLoggedIn, api.getDocumentByStatus, function(req, res, next) {
     }
 
 	if (res.locals.results.projectCompleted[0] == null) {
-        console.log('[ ROUTER ] /view/status :: Unable to find any Document Packages whose current status: \'projectCompleted\'');
+        console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'projectCompleted\'');
     } else {
         res.locals.results.projectCompleted.forEach(function (element) {
             element = formatElement(element);
             payload.projectCompleted.push(element);
+        });
+    }
+
+	if (res.locals.results.nostatus[0] == null) {
+        console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'nostatus\'');
+    } else {
+        res.locals.results.nostatus.forEach(function (element) {
+            element = formatElement(element);
+            payload.nostatus.push(element);
         });
     }
 
@@ -585,12 +487,14 @@ function formatElement(element) {
 function formatDate(element)
 {
 
-	var Year = element.updated.getFullYear();
-    //get month and day with padding since they are 0 indexed
-    var Day = ( "00" + element.updated.getDate()).slice(-2);
-    var Mon = ("00" + (element.updated.getMonth()+1)).slice(-2);
-    element.updated = Mon + "/" + Day + "/" + Year;
-
+	if (element.updated) {
+		var Year = element.updated.getFullYear();
+	    //get month and day with padding since they are 0 indexed
+	    var Day = ( "00" + element.updated.getDate()).slice(-2);
+	    var Mon = ("00" + (element.updated.getMonth()+1)).slice(-2);
+	    element.updated = Mon + "/" + Day + "/" + Year;
+ 	}
+	
 	//signature date (application date)
 	if(element.signature && element.signature.client_date != "") {
 	var appDate = new Date(element.signature.client_date);
