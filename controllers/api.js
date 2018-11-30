@@ -457,8 +457,6 @@ getDocumentPlanning: function (req, res, next) {
         // Example: results.visit[3].address.line_1 = a string
 
 
-        console.log("TRYING");
-
         Promise.props({
 
             //handle: DocumentPackage.find({status: "handle", app_year: year}).lean().execAsync(),
@@ -511,8 +509,8 @@ getDocumentPlanning: function (req, res, next) {
 
         }).then(function (firstRes) {
 
-            console.log("TRY1: " + firstRes.updatedHandle.length );
-            console.log("TRY2: " + firstRes.updatedProject.length );
+            console.log("New handle-its since last refresh: " + firstRes.updatedHandle );
+            console.log("New projects since last refresh: " + firstRes.updatedProject );
             // for (var i=0; i < firstRes.handle.length; i++) {
             //     if ((typeof firstRes.handle[i].project.status === 'undefined') && (firstRes.handle[i].status == "handle" || firstRes.handle[i].status == "project")){
             //         DocumentPackage.find({project: {status: "handleAssigned"}}).lean().execAsync();
@@ -841,7 +839,7 @@ getDocumentPlanning: function (req, res, next) {
 			     updates['notes.site_summary'] = req.body.value;
 			}
 			else if(req.body.name == "status") {
-                if (req.body.value && (req.body.value == "project") || (req.body.value == "handle")) {
+                if (req.body.value && ((req.body.value == "project") || (req.body.value == "handle"))) {
                     var inStatus = { status: req.body.value };
                     updates.project = inStatus;
                 }
@@ -850,7 +848,7 @@ getDocumentPlanning: function (req, res, next) {
 			id = req.body.id;
 		}
         else if (req.body.name == "status") {
-                if (req.body.value && (req.body.value == "project") || (req.body.value == "handle")) {
+                if (req.body.value && ((req.body.value == "project") || (req.body.value == "handle"))) {
                     var inStatus = { status: req.body.value };
                     updates.project = inStatus;
                 }
@@ -942,14 +940,14 @@ getDocumentPlanning: function (req, res, next) {
         var id;
         if(res.locals.role == "SITE") {
             if(req.body.name == "notes.site_summary") {
-            updates['notes.site_summary'] = req.body.value;
+                updates['notes.site_summary'] = req.body.value;
             }
-            else if(req.body.name == "status") {
+            id = req.body.id;
+        }
+        if(req.body.name == "status") {
 
                 var status = { status: req.body.value };
                 updates['project'] = status;
-            }
-            id = req.body.id;
         }
         else {
         
@@ -966,8 +964,15 @@ getDocumentPlanning: function (req, res, next) {
             // Record Update time
             //filters
         }
+
+        if(req.params.id != null) {
+                id = req.params.id;
+            }
+        else {
+                id = req.body.id || null;
+            }
         var conditions = {};
-        conditions['projectId'] = mongoose.Types.ObjectId(id);
+        conditions['_id'] = mongoose.Types.ObjectId(id);
         console.log("Search Filter:");
         console.log(conditions);
         console.log("Update:");
@@ -988,7 +993,7 @@ getDocumentPlanning: function (req, res, next) {
                 {
                     // new - defaults to false, returns the modified document when true, or the original when false
                     new: true,
-                    upsert: true
+                    //upsert: true
                 }
                 // Callback if needed
                 // { }

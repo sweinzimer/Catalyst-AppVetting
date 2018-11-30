@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 
-var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
+//var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
 // var PartnerPackage = require('../models/partners.js');
 var ProjectWrapUpPackage = require('../models/projectWrapUpPackage.js');
 
