@@ -529,18 +529,27 @@ getDocumentPlanning: function (req, res, next) {
                         // handle: DocumentPackage.find({status: "handle", app_year : year}).lean().execAsync(),
                         // project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync(),
 
-                        handle: DocumentPackage.find({project: {status: "handle"}}).lean().execAsync(),
-                        project: DocumentPackage.find({project: {status: "project"}}).lean().execAsync(),
+                        handle: DocumentPackage.find({project: {status: "handle"}}).sort({ updated: -1 }).lean().execAsync(),
+                        project: DocumentPackage.find({project: {status: "project"}}).sort({ updated: -1 }).lean().execAsync(),
 
-                        handleToBeAssigned: DocumentPackage.find({project: {status: "handleToBeAssigned"}}).lean().execAsync(),
-                        projectUpcoming: DocumentPackage.find({project: {status: "projectUpcoming"}}).lean().execAsync(),
+                        handleToBeAssigned: DocumentPackage.find({project: {status: "handleToBeAssigned"}}).sort({ updated: -1 }).lean().execAsync(),
+                        projectUpcoming: DocumentPackage.find({project: {status: "projectUpcoming"}}).sort({ updated: -1 }).lean().execAsync(),
                         
-                        handleAssigned: DocumentPackage.find({project: {status: "handleAssigned"}}).lean().execAsync(),
-                        projectInProgress: DocumentPackage.find({project: {status: "projectInProgress"}}).lean().execAsync(),
-                        projectGoBacks: DocumentPackage.find({project: {status: "projectGoBacks"}}).lean().execAsync(),
-                        projectCompleted: DocumentPackage.find({project: {status: "projectCompleted"}}).lean().execAsync(),
-                        handleCompleted: DocumentPackage.find({project: {status: "handleCompleted"}}).lean().execAsync(),
-                        nostatus: DocumentPackage.find({project: {status: "nostatus"}}).lean().execAsync()
+                        handleAssigned: DocumentPackage.find({project: {status: "handleAssigned"}}).sort({ updated: -1 }).lean().execAsync(),
+                        projectInProgress: DocumentPackage.find({project: {status: "projectInProgress"}}).sort({ updated: -1 }).lean().execAsync(),
+                        projectGoBacks: DocumentPackage.find({project: {status: "projectGoBacks"}}).sort({ updated: -1 }).lean().execAsync(),
+                        projectCompleted: DocumentPackage.find({project: {status: "projectCompleted"}}).sort({ updated: -1 }).lean().execAsync(),
+                        handleCompleted: DocumentPackage.find({project: {status: "handleCompleted"}}).sort({ updated: -1 }).lean().execAsync(),
+                        nostatus: DocumentPackage.find({project: {status: "nostatus"}}).sort({ updated: -1 }).lean().execAsync(),
+
+                        completed: DocumentPackage.find({
+                                "$or":  [
+                                            {project: {status: "projectCompleted"}}, 
+                                            {project: {status: "handleCompleted"}}
+                                        ]
+                        }).sort({ updated: -1 }).lean().execAsync()
+
+
 
 
                     })
@@ -553,7 +562,7 @@ getDocumentPlanning: function (req, res, next) {
                             }
 
 
-                            console.log("API :: Results: " + results);
+                            console.log("API :: Results: " + JSON.stringify(results));
 
                             res.locals.results = results;
 

@@ -282,7 +282,7 @@ router.get('/', isLoggedIn, api.getProjectsByStatus, function(req, res, next) {
     payload.project = res.locals.results.project;
 
 
-
+	payload.completed = []; 			//Storing handle + project output that was sorted by project.date by DB call
     payload.handleToBeAssigned = [];
     payload.handleAssigned = [];
     payload.handleCompleted = [];
@@ -290,15 +290,50 @@ router.get('/', isLoggedIn, api.getProjectsByStatus, function(req, res, next) {
     payload.projectInProgress = [];
     payload.projectGoBacks = [];
     payload.projectCompleted = []; 
+
+    payload.handle = [];
+    payload.project = []; 
     payload.nostatus = [];  //add unapproved here
+
 
 	if (res.locals.results.handleToBeAssigned[0] == null) {
         // console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'handleToBeAssigned\'');
     } else {
-    	console.log('[ API ] getProjectsByStatus: [' + res.locals.results.handleToBeAssigned.length + '] whose current status: \'handleToBeAssigned\'')
+    	//console.log('[ API ] getProjectsByStatus: [' + res.locals.results.handleToBeAssigned.length + '] whose current status: \'handleToBeAssigned\'')
         res.locals.results.handleToBeAssigned.forEach(function (element) {
             element = formatElement(element);
             payload.handleToBeAssigned.push(element);
+        });
+    }
+
+	if (res.locals.results.handle[0] == null) {
+        // console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'handleToBeAssigned\'');
+    } else {
+    	console.log('[ API ] getProjectsByStatus: [' + res.locals.results.handle.length + '] whose current status: \'handle\'')
+        res.locals.results.handle.forEach(function (element) {
+            element = formatElement(element);
+            payload.handle.push(element);
+        });
+    }
+
+	if (res.locals.results.project[0] == null) {
+        // console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'handleToBeAssigned\'');
+    } else {
+    	console.log('[ API ] getProjectsByStatus: [' + res.locals.results.project.length + '] whose current status: \'project\'')
+        res.locals.results.handle.forEach(function (element) {
+            element = formatElement(element);
+            payload.project.push(element);
+        });
+    }
+
+    // TODO: Result should be sorted by project.date already in the request DB call.
+   	if (res.locals.results.completed[0] == null) {
+        // console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'completed\'');
+    } else {
+    	console.log('[ API ] getProjectsByStatus: [' + res.locals.results.completed.length + '] whose current status: \'completed (both handle-its and projects)\'')
+        res.locals.results.completed.forEach(function (element) {
+            element = formatElement(element);
+            payload.completed.push(element);
         });
     }
 
@@ -629,8 +664,6 @@ function isLoggedIn(req, res, next) {
 						}
 					}
 
-
-
 			})
 
 		.catch(function(err) {
@@ -671,8 +704,6 @@ function isLoggedInPost(req, res, next) {
 							return next('route');
 						}
 					}
-
-
 
 			})
 
