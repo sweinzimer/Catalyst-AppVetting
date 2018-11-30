@@ -97,7 +97,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
 
 <div class="row">
   <div class="col-sm-12">
-    <h5>Project View!  **NEW**<button class="btn btn-success" style="margin-left: 5%" onclick="exportPAFtoPDF()">Export PAF Report</button>
+    <h5 style="padding-left: 21px;">Project View<button class="btn btn-success" style="margin-left: 5%" onclick="exportPAFtoPDF()">Export PAF Report</button>
       <button class="btn btn-success" style="margin-left: 3%" onclick="exportHandletoPDF()">Export Handle-It Report</button>
     </h5>
     <nav class="navbar">
@@ -522,8 +522,8 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
 
 
       <div class="tab-pane" id="wrapUp" role="tabpanel"><!-- start #wrapUp -->
-        <br />
-        <div class="row">
+        <br /> 
+        <div class="col-xs-12 col-sm-12"><!--  <div class="row"> -->
           <h4>Wrap up Info</h4>
           <table class="table">
 
@@ -953,14 +953,14 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    $('#status').editable({
      value: docs[0].project.status,     //POST to /edit/project will update this status in project.status field.
      source: [
-       {value: 'handle', text: 'Handle-It - To Be Assigned'},         //handleToBeAssigned
-       {value: 'handleAssigned', text: 'Handle-It - Assigned'},
-       {value: 'handleCompleted', text: 'Handle-It - Completed'},
-       {value: 'project', text: 'Project - Upcoming'},                //projectUpcoming
-       {value: 'projectInProgress', text: 'Project - In Progress'},
-       {value: 'projectGoBacks', text: 'Project - Go Backs'},
-       {value: 'projectCompleted', text: 'Project - Completed'},
-       {value: 'nostatus', text: '(Send to Yellow Bin - No Status)'},
+        {value: 'handleAssigned', text: 'Handle-It - Assigned'},
+        {value: 'handle', text: 'Handle-It - To Be Assigned'},         //handleToBeAssigned
+        {value: 'projectGoBacks', text: 'Project - Go Backs'},
+        {value: 'projectInProgress', text: 'Project - In Progress'},
+        {value: 'project', text: 'Project - Upcoming'},                //projectUpcoming
+        {value: 'handleCompleted', text: 'Completed handle-it task'},
+        {value: 'projectCompleted', text: 'Completed project'},
+        {value: 'nostatus', text: '(Send to Yellow Bin - No Status)'},
      ]
    });
 
