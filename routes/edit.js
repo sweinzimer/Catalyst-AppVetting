@@ -52,6 +52,20 @@ router.post('/:id', isLoggedInPost, api.putUpdateDocument, function(req, res) {
 
 });
 
+/**
+ * POST Updated Field data
+ * Only handles single line updates (e.g., phone number, Date of birth)
+ **/
+router.post('/project/:id', isLoggedInPost, api.putUpdateProject, function(req, res) {
+
+    if(res.locals.status != '200'){
+        res.status(500).send("Could not update field");
+    }
+    else{
+        res.status(200).send({ status: 'success' });
+    }
+
+});
 
 
 /**

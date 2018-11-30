@@ -25,8 +25,8 @@ var pafDefinition = {  content: [           // BEGIN PRINT LAYOUT! ***********
 
     "\n\nHAZARD / SAFETY TESTING",
     { ul: [
-            { text: [ "LEAD?: ", {text: dataPAF.hazard.has_lead, style:'inText' } ], style:'eachBullet'},         //yes or no
-            { text: [ "ASBESTOS?: ", {text: dataPAF.hazard.has_asbestos, style:'inText' } ], style:'eachBullet'},     //yes or no
+            { text: [ "LEAD?: ", {text: apple, style:'inText' } ], style:'eachBullet'},         //yes or no
+            { text: [ "ASBESTOS?: ", {text: apple, style:'inText' } ], style:'eachBullet'},     //yes or no
             { text: [ "   If Yes on either, plan & cost estimate: ", {text: apple, style:'inText' } ], style:'eachBullet'}
           ],
       style: 'list'
@@ -46,11 +46,11 @@ var pafDefinition = {  content: [           // BEGIN PRINT LAYOUT! ***********
       style: 'list'
     },
 
-{ text: [ "\nTOTAL COST ESTIMATE: ", {text: dataPAF.estimates.total_cost, style:'inText' } ], style:'eachLine'},   //<sum of cost fields> 
+{ text: [ "\nTOTAL COST ESTIMATE: ", {text: apple, style:'inText' } ], style:'eachLine'},   //<sum of cost fields> 
 
-{ text: [ "\nPROPOSED DATES: ", {text: dataPAF.dates.start_date, style:'inText' } ], style:'eachLine'},         //<start date, end date>
+{ text: [ "\nPROPOSED DATES: ", {text: apple, style:'inText' } ], style:'eachLine'},         //<start date, end date>
 
-{ text: [ "\nVOLUNTEERS NEEDED: ", {text: dataPAF.estimates.volunteers_needed, style:'inText' } ], style:'eachLine'},      //< # >
+{ text: [ "\nVOLUNTEERS NEEDED: ", {text: apple, style:'inText' } ], style:'eachLine'},      //< # >
 
 { text: [ "\n\nNOTES: ", {text: apple, style:'inText' } ], style:'eachLine'},                    //<text field>
 

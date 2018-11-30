@@ -38,18 +38,17 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    {{/each}}
  {{/if}}
 
- {{#if results.assessment}}
- {{#each results.assessment}}
-  dataPAF.hazard = "{{hazard_safety}}";
-  dataPAF.materials = "{{materials}}";
-  dataPAF.othercosts = "{{other_costs}}";
-  dataPAF.estimates = "{{estimates}}";
-  dataPAF.subcontractors = "{{subcontractors}}";
-  dataPAF.toolrentals = "{{tool_rentals}}";
-  dataPAF.dates = "{{proposed_dates}}";
-
- {{/each}}
- {{/if}}
+ // {{#if results.assessment}}
+ // {{#each results.assessment}}
+ //  dataPAF.hazard = "{{hazard_safety}}";
+ //  dataPAF.materials = "{{materials}}";
+ //  dataPAF.othercosts = "{{other_costs}}";
+ //  dataPAF.estimates = "{{estimates}}";
+ //  dataPAF.subcontractors = "{{subcontractors}}";
+ //  dataPAF.toolrentals = "{{tool_rentals}}";
+ //  dataPAF.dates = "{{proposed_dates}}";
+ // {{/each}}
+ // {{/if}}
 
 
 </script>
@@ -117,7 +116,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
           <h3 style="float:right;display:inline-block;" class="text-muted">#{{app_name}}</h4>
         </div>
       </div>
-      <h5>Status: <a href="#" id="status" data-type="select" data-pk="{{_id}}" data-url="/edit/{{_id}}" data-name="status" data-title="Select status"></a></h5>
+      <h5>Status: <a href="#" id="status" data-type="select" data-pk="{{_id}}" data-url="/edit/project/{{_id}}" data-name="status" data-title="Select status"></a></h5>
     {{/each}}
 
     <ul class="nav nav-tabs" role="tablist">
@@ -952,18 +951,16 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    $('#site_summary').on('keydown', handleSiteSummaryInput)
 
    $('#status').editable({
-     value: docs[0].status,
+     value: docs[0].project.status,     //POST to /edit/project will update this status in project.status field.
      source: [
-       {value: 'handleToBeAssigned', text: 'Handle-It - To Be Assigned'},
+       {value: 'handle', text: 'Handle-It - To Be Assigned'},         //handleToBeAssigned
        {value: 'handleAssigned', text: 'Handle-It - Assigned'},
        {value: 'handleCompleted', text: 'Handle-It - Completed'},
-       {value: 'projectUpcoming', text: 'Project - Upcoming'},
-       {value: 'projectInProgress', text: 'Project - In Process'},
+       {value: 'project', text: 'Project - Upcoming'},                //projectUpcoming
+       {value: 'projectInProgress', text: 'Project - In Progress'},
        {value: 'projectGoBacks', text: 'Project - Go Backs'},
        {value: 'projectCompleted', text: 'Project - Completed'},
-       {value: 'projectCompleted', text: 'Project - Completed'},
-       {value: 'assessComp', text: '(Back to Site Assessment - Pending)'},
-       {value: 'assessComp', text: '(Back to Site Assessment - Complete)'}
+       {value: 'nostatus', text: '(Send to Yellow Bin - No Status)'},
      ]
    });
 
