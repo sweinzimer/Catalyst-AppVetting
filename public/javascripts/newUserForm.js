@@ -50,6 +50,7 @@ function init() {
   		}
 		
 		 jsonToSend.user_roles = vals ;
+		 jsonToSend.user_role = "";
 		jsonToSend = JSON.stringify(jsonToSend);
 
 		//post to database

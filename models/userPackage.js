@@ -115,7 +115,7 @@ UserPackageSchema.methods.isSite = function() {
 
 //user has project manager privilages
 UserPackageSchema.methods.isProjectManager = function() {
-	if(this.user_role == "PROJECT_MANAGER" || this.user_role == "ADMIN") {
+	if(this.user_role == "PROJECT_MANAGEMENT" || this.user_role == "ADMIN") {
 		return true;
 	}
 	else {

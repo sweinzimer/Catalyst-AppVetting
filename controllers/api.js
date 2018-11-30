@@ -1171,9 +1171,9 @@ getDocumentPlanning: function (req, res, next) {
 		admin.role_name = "ADMIN";
         admin.role_display = "Admin";
         
-        var project_manager = new RolePackage();
-		project_manager.role_name = "PROJECT_MANAGER";
-		project_manager.role_display = "Project Manager";
+        var projectmanger = new RolePackage();
+		projectmanger.role_name = "PROJECT_MANAGEMENT";
+		projectmanger.role_display = "Project Management";
 
 		vet.saveAsync(function (err, doc, numAffected) {
             if (err) {
@@ -1887,7 +1887,15 @@ getDocumentPlanning: function (req, res, next) {
 		}
 		updates.cost = req.body.cost;
 		updates.updated = Date.now();
-		
+        
+        if(res.locals.role === undefined || res.locals.role==='')
+        {
+            if(req.body.siteComments != null) {
+                updates.siteComments = req.body.siteComments;
+            }
+        }
+        else
+        {
 		if(res.locals.role == "ADMIN") {
 			if(req.body.siteComments != null) {
 				updates.siteComments = req.body.siteComments;
@@ -1918,6 +1926,7 @@ getDocumentPlanning: function (req, res, next) {
         if(req.body.siteComments != null) {
             updates.siteComments = req.body.siteComments;
         }
+    }
         //filters
         var conditions = {};
         conditions['_id'] = req.body.id;

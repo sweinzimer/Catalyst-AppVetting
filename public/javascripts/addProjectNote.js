@@ -59,7 +59,7 @@ function addNote(e) {
                 //new column for the new note
                 var newNote = '<td>' + $('#note').val() + '</td>';
 				//new column for vetting agent
-				var newUser = '<td>' + xhr.user + '</td>';
+				var newUser = '<td>' + xhr.projectPlanner + '</td>';
 				//need to get the new note ID so it is available for immediate update/deletion
                 var hiddenNoteId = '<input type="hidden" value="' + xhr.noteId + '" name="noteId" />';
                 //build delete button

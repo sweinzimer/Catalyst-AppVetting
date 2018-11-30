@@ -230,7 +230,7 @@ function isLoggedIn(req, res, next) {
 								return next();
 
 							}
-							else if(results.user.user_roles !== undefined && results.user.user_roles.indexOf("PROJECT_MANAGMENT") > -1) {
+							else if(results.user.user_roles !== undefined && results.user.user_roles.indexOf('PROJECT_MANAGEMENT') > -1) {
 								res.locals.email = results.user.contact_info.user_email;
 								res.locals.role = results.user.user_role;
 								res.locals.user_roles = results.user.user_roles;
@@ -291,6 +291,12 @@ function isLoggedInPost(req, res, next) {
 								res.locals.role = results.user.user_role;
 								return next();
 
+							}
+							else if (results.user.user_roles !== undefined && results.user.user_roles.indexOf('PROJECT_MANAGEMENT') >-1)
+							{
+								res.locals.role = results.user.user_role;
+								res.locals.user_roles = results.user.user_roles;
+								return next();
 							}
 
 						}

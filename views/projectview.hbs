@@ -128,7 +128,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
         <a class="nav-link" data-toggle="tab" href="#contact" role="tab">Contact (DEL)</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#work" role="tab">Work item Status</a>
+        <a class="nav-link" data-toggle="tab" href="#work" role="tab">Work Item Status</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#leaders" role="tab">Leaders</a>
@@ -800,74 +800,90 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
       </div><!-- end #wrapUp -->
 
 
-      <div class="tab-pane" id="work" role="tabpanel"><!-- START #work -->
-        <br />
+      <div class="tab-pane" id="work" role="tabpanel">
+        <!-- START #work -->
+        <br />    
         <div class="row" id="workItemCards">
-          {{!-- <div class="col-xs-12 col-sm-6">
-             <div class="card work-item" name="new">
-             <div class="card-block">             
-             
-             
-
-
-             <h4 class="card-title">New Work Item</h4>
-             <p class="card-text">
-             <div class="form-group">
-             <label class="form-control-label">Name*</label>
-             <input type="text" class="form-control" name="name"></input>
-             </div>
-             <div class="form-group">
-             <label class="form-control-label">Description*</label>
-             <textarea class="form-control" name="description" rows="5"></textarea>
-             </div>
-             <div class="form-group">
-             <label class="form-control-label">Site Comments*</label>
-             <textarea class="form-control" name="siteComments" rows="5"></textarea>
-             </div>
-             <div class="form-group">
-             <label class="form-control-label">Cost</label>
-             <input type="cost" class="form-control" name="cost"></input>
-             </div>
-
-
-
-             </p>
-             <a href="#" class="btn btn-primary card-link work-item-new">Save</a>
-             <a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
-             </div>
-             </div> 
-             </div> --}}
-
-          {{#each results.work}}
+          <div class="panel-group col-md-12 my-1">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                 <h3 class="panel-title">
+                   <a data-toggle="collapse" href="#add-work-item-collapse">Click to Add a Work Item</a>
+                   </h3>
+              </div>
+            
+          
+            <div id="add-work-item-collapse" class="panel panel-collapse collapse work-item col-md-12" name="new">
+              <div class="panel-body">
+                <h4 class="card-title">New Work Item</h4>
+                <p class="card-text">
+                  <div class="form-group">
+                    <label class="form-control-label">Name*</label>
+                    <input type="text" class="form-control" name="name">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Description*</label>
+                    <textarea class="form-control" name="description" rows="3"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Project Comments*</label>
+                    <textarea class="form-control" name="projectComments" rows="3"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label">Cost</label>
+                    <input type="cost" class="form-control" name="cost">
+                  </div>
+                </p>
+                <a href="#" class="btn btn-primary card-link work-item-new">Save</a>
+                <a href="#" class="btn btn-danger card-link work-item-clear">Clear</a>
+              </div>
+            </div>
+          </div>
+            </div>
+                      
+         
+            {{#each results.work}}
             <div class="col-xs-12 col-sm-6">
               <div class="card work-item" name="{{_id}}">
                 <div class="card-block">
                   <h4 class="card-title" name="{{_id}}.name">{{name}}</h4>
                   <p class="text-muted">{{date}}</p>
                   <p class="card-text">
-                    <strong>Description:</strong><br/>
-                    <span name="{{_id}}.description">{{description}}</span><br/>
+                    <strong>Description:</strong>
                     <br/>
-                    <strong>Vetting comments:</strong><br/>
-                    <span name="{{_id}}.vettingComments">{{vettingComments}}</span><br/>
+                    <span name="{{_id}}.description">{{description}}</span>
                     <br/>
-                    <strong>Site comments:</strong><br/>
-                    <span name="{{_id}}.siteComments">{{siteComments}}</span><br/>
                     <br/>
-                    <strong>Project comments:</strong><br/>
-                    <span name="{{_id}}.projectComments">{{projectComments}}</span><br/>
+                    <strong>Vetting comments:</strong>
                     <br/>
-                    <strong>Cost:</strong><br/>
+                    <span name="{{_id}}.vettingComments">{{vettingComments}}</span>
+                    <br/>
+                    <br/>
+                    <strong>Site comments:</strong>
+                    <br/>
+                    <span name="{{_id}}.siteComments">{{siteComments}}</span>
+                    <br/>
+                    <br/>
+                    <strong>Project comments:</strong>
+                    <br/>
+                    <span name="{{_id}}.projectComments">{{projectComments}}</span>
+                    <br/>
+                    <br/>
+                    <strong>Cost:</strong>
+                    <br/>
                     <span name="{{_id}}.cost">{{cost}}</span>
-                  </p>  
-                  <a href="#" class="btn btn-primary card-link work-item-comment">Add Comment</a>                
+                  </p>
+                  <a href="#" class="btn btn-primary card-link work-item-comment">Edit</a>
+                  <a href="#" class="btn btn-warning card-link work-item-delete">Delete</a>
+      
                 </div>
               </div>
             </div>
-          {{/each}}
+            {{/each}}
+          
         </div>
-      </div><!-- END #work -->
-      <div class="tab-pane" id="notes" role="tabpanel">
+      </div>
+        <!-- END #work --><div class="tab-pane" id="notes" role="tabpanel">
         <div class="col-xs-12 col-sm-12">
 			    <!--VETTING NOTES-->
 			    <h3>Project Notes</h3>
@@ -929,7 +945,8 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
  var assignableUsers = {{{ stringify assignableUsers }}};
  var wrapUp = {{{ stringify wrapUp }}};
  $(document).ready(function() {
-   $('.work-item-comment').each(watchEditButton)
+   $('.work-item-comment').each(watchEditButton)   
+   $('.work-item-delete').on('click', showWorkItemDeleteConfirm)
    $('.work-item-new').on('click', handleNewWorkItemSubmission)
    $('.work-item-clear').on('click', handleNewWorkItemClear)
    $('#site_summary').on('keydown', handleSiteSummaryInput)
@@ -999,6 +1016,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    $(this).on('click', showWorkItemEditForm)
  }
 
+
  function showWorkItemEditForm(e) {
    e.preventDefault()
    var workItemParent = this.parentElement
@@ -1012,10 +1030,14 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    })
 
    $(this).toggle();
+   $(this).siblings('.work-item-delete').toggle();
    //workItemContainer.empty()
 
    var fields = [
+    {field: 'name', text:'Name', type: 'textarea'},        
+     {field: 'description', text:'Description', type: 'textarea'},   
      {field: 'projectComments', text:'Project Comments', type: 'textarea'},
+     {field: 'cost', text:'Cost', type: 'text'},
      
    ]
 
@@ -1126,11 +1148,57 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
 
    $('<a></a>').addClass('btn').addClass('btn-primary')
                               .addClass('card-link').addClass('work-item-comment')
-                              .text('Add Comment')
+                              .text('Edit')
                               .attr('href', '#')
                               .on('click', showWorkItemEditForm)
                               .appendTo(cardBlock)
+
+                              
+   $('<a></a>').addClass('btn').addClass('btn-warning')
+                              .addClass('card-link').addClass('work-item-comment')
+                              .text('Delete')
+                              .attr('href', '#')
+                              .on('click', deleteWorkItem)
+                              .appendTo(cardBlock)
  }
+
+
+
+	function showWorkItemDeleteConfirm(e) {
+		e.preventDefault()
+		var workItemParent = this.parentElement
+		var workItemContainer = $(workItemParent)
+		var workItemId = $(workItemParent.parentElement).attr('name')
+
+		var currentData = {}
+		$('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+			var path = $(this).attr('name').replace(workItemId + '.', '')
+			currentData[path] = this.innerText
+		})
+
+		workItemContainer.empty()
+
+		$('<h4>Are you sure?</h4>').appendTo(workItemParent)
+		$('<p>You are about to delete this work item. After selecting confirm, you '
+			+ 'will be unable to recover the item.</p>').appendTo(workItemParent)
+
+		$('<a>Continue</a>').addClass('btn').addClass('btn-primary')
+		.appendTo(workItemParent)
+		.on('click', function(e) {
+			deleteWorkItem(workItemId, workItemParent)
+		})
+
+		$('<a>Cancel</a>').addClass('btn').addClass('btn-danger')
+		.appendTo(workItemParent)
+		.on('click', function(e) {
+			e.preventDefault()
+			for (let i=0; i<workItems.length; i++) {
+				if (workItems[i]._id === workItemId) {
+					showWorkItem(workItems[i], workItemContainer)
+				}
+			}
+		})
+	}
 
  function saveWorkItem(node) {
    var data = {}, id = false
@@ -1143,11 +1211,11 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    // XHR here
    var xhrData = JSON.parse(JSON.stringify(data))
    xhrData.id = id
-
-   xhr(xhrData, 'POST', '/site/updateitem', function(err) {
+  console.log('updating now');
+   xhr(xhrData, 'POST', '/pm/updateitem', function(err) {
      if (err) {
        // TODO: If error, flip the value back and show an error message to the user
-       // alert('Value did not save, please reload the page')
+        alert('Value did not save, please reload the page')
      }
 
      for (var i=0; i<workItems.length; i++) {
@@ -1193,6 +1261,20 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
      next(new Error('Could not complete xhr'))
    });
  }
+function deleteWorkItem(id, node) {
+  console.log(id);
+  console.log({itemId: id});
+		xhr({itemId: id}, 'POST', '/pm/deleteitem', function(err, data) {
+			if (err) { alert('Unable to delete item') }
+			else {
+				var workItemRoot = $('[name="' + id + '"]')
+				workItemRoot.remove()
+				for (var i=0; i<workItems.length; i++) {
+					if (workItems[i]._id == id) { workItems.splice(i, 1) }
+				}
+			}
+		})
+	}
 
  function handleNewWorkItemSubmission(e) {
    var newWorkItem = {}, error = false
@@ -1218,7 +1300,8 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    $('input, textarea', (e ? e.target.parentNode : node)).each(function(idx) {
      $(this).val('')
      $(this.parentNode).removeClass('has-danger')
-   })
+   });
+   $('#add-work-item-collapse').collapse('hide');
  }
 
  function createNewWorkItem(w, next) {
@@ -1229,7 +1312,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    w.updated = rightNow
    w.applicationId = id
 
-   xhr(w, 'POST', '/site/additem', function(err, data) {
+   xhr(w, 'POST', '/pm/additem', function(err, data) {
      // TODO: Handle error
      if (err) { alert('There was an error saving your work item') }
 
@@ -1290,6 +1373,13 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    $('<p></p>').text(w.siteComments).appendTo(cardText)
    $('<br></br>').appendTo(cardText)
 
+   
+   $('<strong>Project Comments:</strong>').appendTo(cardText)
+   // $('<br></br>').appendTo(cardText)
+
+   $('<p></p>').text(w.projectComments).appendTo(cardText)
+   $('<br></br>').appendTo(cardText)
+
    $('<strong>Cost:</strong>').appendTo(cardText)
    $('<br></br>').appendTo(cardText)
 
@@ -1303,6 +1393,13 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
                               .text('Edit')
                               .attr('href', '#')
                               .on('click', showWorkItemEditForm)
+                              .appendTo(cardBlock)
+
+  $('<a></a>').addClass('btn').addClass('btn-warning')
+                              .addClass('card-link').addClass('work-item-delete')
+                              .text('Delete')
+                              .attr('href', '#')
+                              .on('click', showWorkItemDeleteConfirm)
                               .appendTo(cardBlock)
 
    return cardBlock

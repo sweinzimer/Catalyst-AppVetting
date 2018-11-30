@@ -823,7 +823,7 @@
    $('<strong>Site Comments:</strong>').appendTo(cardText)
    // $('<br></br>').appendTo(cardText)
 
-   $('<p></p>').text(w.siteComments).appendTo(cardText)
+   $('<p></p>').text(w.siteComments).attr('name', w._id + '.siteComments').appendTo(cardText)
    $('<br></br>').appendTo(cardText)
 
   $('<strong>Project Comments:</strong>').appendTo(cardText)

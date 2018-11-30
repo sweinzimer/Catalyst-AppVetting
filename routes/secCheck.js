@@ -73,7 +73,7 @@ function isLoggedInPost(req, res, next) {
                 }
                 else {
                     if(results.user.user_status == "ACTIVE") {
-                        if(results.user.user_role == "PROJECT_MANAGER" || results.user.user_role == "ADMIN") {
+                        if(results.user.user_role == "PROJECT_MANAGEMENT" || results.user.user_role == "ADMIN") {
                             res.locals.email = results.user.contact_info.user_email;
                             res.locals.role = results.user.user_role;
                             return next();
