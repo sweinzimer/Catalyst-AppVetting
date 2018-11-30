@@ -264,6 +264,13 @@ function isLoggedInPost(req, res, next) {
 							res.locals.user_roles = results.user.user_roles;
 							return next();
 						}
+						else if (results.user.user_roles !== undefined && results.user.user_roles.indexOf('admin') >-1)
+                        {
+							res.locals.email = results.user.contact_info.user_email;
+							res.locals.role = results.user.user_role;
+							res.locals.user_roles = results.user.user_roles;
+                            return next();
+                        }
 						else {
 							//user is not a vetting agent or admin, route to error handler
 							res.locals.status = 406;
