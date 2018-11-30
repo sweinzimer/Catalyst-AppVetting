@@ -562,9 +562,11 @@ getDocumentPlanning: function (req, res, next) {
                             }
 
 
-                            console.log("API :: Results: " + JSON.stringify(results));
+                            
 
                             res.locals.results = results;
+
+                            console.log("API :: Results: " + JSON.stringify(results));
 
                             // If we are at this line all promises have executed and returned
                             // Call next() to pass all of this glorious data to the next express router
@@ -947,41 +949,41 @@ getDocumentPlanning: function (req, res, next) {
         console.log(req.body.name + ' + ' + req.body.value);
         var updates = {};
         var id;
-        if(res.locals.role == "SITE") {
-            if(req.body.name == "notes.site_summary") {
-                updates['notes.site_summary'] = req.body.value;
-            }
-            id = req.body.id;
-        }
+        // if(res.locals.role == "SITE") {
+        //     if(req.body.name == "notes.site_summary") {
+        //         updates['notes.site_summary'] = req.body.value;
+        //     }
+        //     id = req.body.id;
+        // }
         if(req.body.name == "status") {
 
                 var status = { status: req.body.value };
                 updates['project'] = status;
         }
-        else {
+        // else {
         
-            if(req.params.id != null) {
-                id = req.params.id;
-            }
-            else {
-                id = req.body.id;
-            }
-            // Build the name:value pairs to be updated
-            // Since there is only one name and one value, we can use the method below
+        //     if(req.params.id != null) {
+        //         id = req.params.id;
+        //     }
+        //     else {
+        //         id = req.body.id;
+        //     }
+        //     // Build the name:value pairs to be updated
+        //     // Since there is only one name and one value, we can use the method below
             
-            updates[req.body.name] = req.body.value;
-            // Record Update time
-            //filters
-        }
+        //     updates[req.body.name] = req.body.value;
+        //     // Record Update time
+        //     //filters
+        // }
 
-        if(req.params.id != null) {
-                id = req.params.id;
-            }
-        else {
-                id = req.body.id || null;
-            }
+        // if(req.params.id != null) {
+        //         id = req.params.id;
+        //     }
+        // else {
+        //         id = req.body.id || null;
+        //     }
         var conditions = {};
-        conditions['_id'] = mongoose.Types.ObjectId(id);
+        conditions['_id'] = req.params.id || mongoose.Types.ObjectId(id);
         console.log("Search Filter:");
         console.log(conditions);
         console.log("Update:");

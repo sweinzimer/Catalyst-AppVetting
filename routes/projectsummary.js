@@ -311,7 +311,7 @@ router.get('/', isLoggedIn, api.getProjectsByStatus, function(req, res, next) {
     } else {
     	console.log('[ API ] getProjectsByStatus: [' + res.locals.results.handle.length + '] whose current status: \'handle\'')
         res.locals.results.handle.forEach(function (element) {
-            element = formatElement(element);
+            //element = formatElement(element);
             payload.handle.push(element);
         });
     }
@@ -320,8 +320,8 @@ router.get('/', isLoggedIn, api.getProjectsByStatus, function(req, res, next) {
         // console.log('[ API ] getProjectsByStatus: No Project Packages whose current status: \'handleToBeAssigned\'');
     } else {
     	console.log('[ API ] getProjectsByStatus: [' + res.locals.results.project.length + '] whose current status: \'project\'')
-        res.locals.results.handle.forEach(function (element) {
-            element = formatElement(element);
+        res.locals.results.project.forEach(function (element) {
+            //element = formatElement(element);
             payload.project.push(element);
         });
     }
