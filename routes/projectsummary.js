@@ -698,7 +698,7 @@ function isLoggedInPost(req, res, next) {
 							return next();
 
 						}
-						else if (results.user.user_roles !== undefined && (results.user.user_roles.indexOf('VET') >-1|| results.user.user_roles.indexOf('PROJECT_MANAGEMNT') >-1)
+						else if (results.user.user_roles !== undefined && (results.user.user_roles.indexOf('VET') >-1|| results.user.user_roles.indexOf('PROJECT_MANAGEMNT') >-1))
                         {
                             
                             return next();
