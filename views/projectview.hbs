@@ -12,6 +12,13 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 
 <script>
+// Shorten a string to less than maxLen characters without truncating words.
+function shorten(str, maxLen, separator = ' ') {
+  if (str.length <= maxLen) return str;
+  return str.substr(0, str.lastIndexOf(separator, maxLen));
+}
+
+
  var dataPAF = {};
  var apple = "...data...";
  {{#if results.doc}}
@@ -27,10 +34,7 @@
 var workItems = [];
 
  {{#if results.work}}
- //dataPAF.workItems = '';
    {{#each results.work}}
-// workItems.push([i + '). ' + 'Name: {{name}}']);
-// workItems.push([i + '). ' + 'Description: {{description}}']);
 workItems.push("-     " + "Name:  {{name}}\n");
 workItems.push("-     " + "Description:  {{description}}\n");
 workItems.push("-     " + "Site Comments:  {{siteComments}}\n");
@@ -38,17 +42,120 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    {{/each}}
  {{/if}}
 
- // {{#if results.assessment}}
- // {{#each results.assessment}}
- //  dataPAF.hazard = "{{hazard_safety}}";
- //  dataPAF.materials = "{{materials}}";
- //  dataPAF.othercosts = "{{other_costs}}";
- //  dataPAF.estimates = "{{estimates}}";
- //  dataPAF.subcontractors = "{{subcontractors}}";
- //  dataPAF.toolrentals = "{{tool_rentals}}";
- //  dataPAF.dates = "{{proposed_dates}}";
- // {{/each}}
- // {{/if}}
+var partnerItems = [];
+
+ {{#if results.part}}
+   {{#each results.part.pAssoc}}
+partnerItems.push("-     " + "Org Name:  {{org_name}}\n");
+partnerItems.push("-     " + "Address:   {{org_address}}\n");
+partnerItems.push("-     " + "Contact:   {{contact_name}}\n");
+partnerItems.push("-     " + "Email:     {{contact_email}}\n");
+partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
+   {{/each}}
+ {{/if}}
+
+
+ {{#if results.assessment}}
+ {{#each results.assessment}}
+  dataPAF.hasAsbestos = "{{hazard_safety.has_asbestos}}";
+  dataPAF.hasLead = "{{hazard_safety.has_lead}}";
+  dataPAF.safety = "{{hazard_safety.safety_plan}}";
+
+  dataPAF.subcontractors = "{{subcontractors}}";
+
+  dataPAF.materials = "{{materials}}";
+  dataPAF.volunteers = "{{estimates.volunteers_needed}}";
+  dataPAF.estimates = "{{estimates.total_cost}}";
+
+
+  dataPAF.dumpsterRequired = "{{other_costs.waste_dumpster.required}}";
+  dataPAF.dumpsterCost = "{{other_costs.waste_dumpster.cost}}";
+
+
+  dataPAF.portaPottieRequired = "{{other_costs.porta_pottie.required}}";
+  dataPAF.portaPottieCost = "{{other_costs.porta_pottie.cost}}";
+  dataPAF.portaAggregated = dataPAF.portaPottieRequired + "   " +dataPAF.portaPottieCost;
+  
+  dataPAF.permitName = "{{other_costs.permit.name}}";
+  dataPAF.permitCost = "{{other_costs.permit.cost}}";
+
+
+  dataPAF.toolrentals = "{{tool_rentals}}";
+
+  dataPAF.getEndDate = "{{proposed_dates.end_date}}";
+  dataPAF.getStartDate = "{{proposed_dates.start_date}}";
+
+
+ {{/each}}
+
+  if(dataPAF.dumpsterRequired) {
+     if (dataPAF.dumpsterRequired == 'true' && (dataPAF.dumpsterCost)){
+        dataPAF.dumpsterAggregated = 'Yes' + "   $" +dataPAF.dumpsterCost;
+     }
+    else if (dataPAF.dumpsterRequired == 'false') {
+        dataPAF.dumpsterAggregated = 'Not Required';
+
+        if (dataPAF.dumpsterCost !== '') {
+            dataPAF.dumpsterAggregated = 'Not Required' + "   $" +dataPAF.dumpsterCost;
+        }
+    }
+  } else {
+      var dollarVal;
+      if (dataPAF.dumpsterCost !== '') {
+        dollarVal = "$" + dataPAF.dumpsterCost;
+      }
+      dataPAF.dumpsterAggregated = dataPAF.dumpsterRequired + "   " +dollarVal;
+  }
+
+
+
+  if(dataPAF.portaPottieRequired) {
+     if (dataPAF.portaPottieRequired == 'true' && (dataPAF.portaPottieCost)){
+        dataPAF.portaAggregated = 'Yes' + "   $" +dataPAF.portaPottieCost;
+     }
+    else if (dataPAF.portaPottieRequired == 'false') {
+        dataPAF.portaAggregated = 'Not Required';
+
+        if (dataPAF.portaPottieCost !== '') {
+            dataPAF.portaAggregated = 'Not Required' + "   $" +dataPAF.portaPottieCost;
+        }
+    }
+  } else {
+      var dollarVal;
+      if (dataPAF.portaPottieCost !== '') {
+        dollarVal = "$" + dataPAF.portaPottieCost;
+      }
+      dataPAF.portaAggregated = dataPAF.portaPottieRequired + "   " +dollarVal;
+  }
+
+
+
+  if (dataPAF.permitCost !== '') {
+    dataPAF.permitAggregated = dataPAF.permitName + "   $" +dataPAF.permitCost;
+  } else {
+    dataPAF.permitAggregated = dataPAF.permitName + "   " +dataPAF.permitCost;
+  }
+
+
+    var startD;
+    var endD;
+
+  if (dataPAF.getStartDate !== '') {
+    startD = shorten(dataPAF.getStartDate, 21);
+    dataPAF.dateAggregated = startD;
+
+    if (dataPAF.getEndDate !== '') {
+        endD = shorten(dataPAF.getEndDate, 21);
+        dataPAF.dateAggregated = startD + " to " + endD;
+    }
+  } else if (dataPAF.getEndDate !== '') {
+      endD = shorten(dataPAF.getEndDate, 21);
+      dataPAF.dateAggregated = "Proposed End Date: " + endD;
+  } 
+
+
+ {{/if}}
+
 
 
 </script>
@@ -97,7 +204,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
 
 <div class="row">
   <div class="col-sm-12">
-    <h5>Project View!  **NEW**<button class="btn btn-success" style="margin-left: 5%" onclick="exportPAFtoPDF()">Export PAF Report</button>
+    <h5 style="padding-left: 21px;">Project View<button class="btn btn-success" style="margin-left: 5%" onclick="exportPAFtoPDF()">Export PAF Report</button>
       <button class="btn btn-success" style="margin-left: 3%" onclick="exportHandletoPDF()">Export Handle-It Report</button>
     </h5>
     <nav class="navbar">
@@ -522,8 +629,8 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
 
 
       <div class="tab-pane" id="wrapUp" role="tabpanel"><!-- start #wrapUp -->
-        <br />
-        <div class="row">
+        <br /> 
+        <div class="col-xs-12 col-sm-12"><!--  <div class="row"> -->
           <h4>Wrap up Info</h4>
           <table class="table">
 
@@ -953,14 +1060,14 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    $('#status').editable({
      value: docs[0].project.status,     //POST to /edit/project will update this status in project.status field.
      source: [
-       {value: 'handle', text: 'Handle-It - To Be Assigned'},         //handleToBeAssigned
-       {value: 'handleAssigned', text: 'Handle-It - Assigned'},
-       {value: 'handleCompleted', text: 'Handle-It - Completed'},
-       {value: 'project', text: 'Project - Upcoming'},                //projectUpcoming
-       {value: 'projectInProgress', text: 'Project - In Progress'},
-       {value: 'projectGoBacks', text: 'Project - Go Backs'},
-       {value: 'projectCompleted', text: 'Project - Completed'},
-       {value: 'nostatus', text: '(Send to Yellow Bin - No Status)'},
+        {value: 'handleAssigned', text: 'Handle-It - Assigned'},
+        {value: 'handle', text: 'Handle-It - To Be Assigned'},         //handleToBeAssigned
+        {value: 'projectGoBacks', text: 'Project - Go Backs'},
+        {value: 'projectInProgress', text: 'Project - In Progress'},
+        {value: 'project', text: 'Project - Upcoming'},                //projectUpcoming
+        {value: 'handleCompleted', text: 'Completed handle-it task'},
+        {value: 'projectCompleted', text: 'Completed project'},
+        {value: 'nostatus', text: '(Send to Yellow Bin - No Status)'},
      ]
    });
 

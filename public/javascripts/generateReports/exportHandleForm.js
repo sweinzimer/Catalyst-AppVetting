@@ -13,49 +13,49 @@ var handleDefinition = {  content: [           // BEGIN PRINT LAYOUT! **********
 
 { text: [ "\n\n\nRECIPIENT NAME: ", {text: dataPAF.fullName, style:'inText' } ], style:'eachLine'},
 
-{ text: [ "APPL. ADDRESS:   ", {text: dataPAF.addr1, style:'inText' }], style:'eachLine'},
+{ text: [ "RECP. ADDRESS:   ", {text: dataPAF.addr1, style:'inText' }], style:'eachLine'},
 {text: dataPAF.addr2, margin:[101,0,0,0], style:'inText'},   //margin:58
 {text: dataPAF.addr3, margin:[101,0,0,0], style:'inText' },
 
-{ text: [ "\n\nBIO/Project Summary: ", {text: apple, style:'inText' } ], style:'eachLine'},  // <new text field to be added>
+{ text: [ "BIO/Project Summary: ", {text: dataPAF.summ, style:'inText' } ], style:'eachLine'},  // <new text field to be added>
 
-"\n\nWORK ITEMS / MATERIALS OVERVIEWS / COST ESTIMATES:",           //WORK ITEM AND COST
-    { ul: [
-            { text: [ "WORK ITEM #1 TITLE: ", {text: apple, style:'inText' } ], style:'eachBullet'},
-            { text: [ "WORK ITEM #2 TITLE: ", {text: apple, style:'inText' } ], style:'eachBullet'}
-          ],
-      style: 'list'
-    },
+"WORK ITEMS / MATERIALS OVERVIEWS / COST ESTIMATES:",           //WORK ITEM AND COST
+    { text: [ {text: workItems, style:'inText' } ], style:'eachWorkItem'},
+    { text: [ "Materials: ", {text: dataPAF.materials, style:'inText' } ], style:'eachLine'},
+    // { text: [ "Volunteers Needed: ", {text: dataPAF.volunteers, style:'inText' } ], style:'eachLine'},
+    
 
-//     "\n\nHAZARD / SAFETY TESTING",
+// "HAZARD / SAFETY TESTING:",
 //     { ul: [
-//             { text: [ "LEAD?: ", {text: apple, style:'inText' } ], style:'eachBullet'},         //yes or no
-//             { text: [ "ASBESTOS?: ", {text: apple, style:'inText' } ], style:'eachBullet'},     //yes or no
-//             { text: [ "   If Yes on either, plan & cost estimate: ", {text: apple, style:'inText' } ], style:'eachBullet'}
+//             { text: [ "LEAD?: ", {text: dataPAF.hasLead, style:'inText' } ], style:'eachBullet'},         //yes or no
+//             { text: [ "ASBESTOS?: ", {text: dataPAF.hasAsbestos, style:'inText' } ], style:'eachBullet'},     //yes or no
+//             { text: [ "   If Yes on either, plan & cost estimate: ", {text: dataPAF.safety, style:'inText' } ], style:'eachBullet'}
 //           ],
 //       style: 'list'
 //     },
+
 // "\nPARTNERS: ",                   //<name, in-kind materials description>
+//     { text: [ {text: partnerItems, style:'inText' } ], style:'eachWorkItem'},
 
-// { text: [ "\nSUBCONTRACTOR(S): "], style:'eachLine'},           //<n/a or name, cost>
+// { text: [ "SUBCONTRACTOR(S): ", {text: dataPAF.subcontractors, style:'inText' }], style:'eachLine'},
 
-"\nOTHER COSTS:",
+"OTHER COSTS:",
     { ul: [
-            { text: [ "TOOL RENTALS: ", {text: apple, style:'inText' } ], style:'eachBullet'},      //<y/n, description & cost if “yes”>
-            { text: [ "PERMIT Needed: ", {text: apple, style:'inText' } ], style:'eachBullet'},     //<y/n, description & cost if “yes”>
-            { text: [ "PORTAPOTTIE: ", {text: apple, style:'inText' } ], style:'eachBullet'},       //<y/n, description & cost if “yes”>
-            { text: [ "WASTE: ", {text: apple, style:'inText' } ], style:'eachBullet'}              //<y/n, description & cost if “yes”>
+            { text: [ "TOOL RENTALS: ", {text: dataPAF.toolrentals, style:'inText' } ], style:'eachBullet'},      //<y/n, description & cost if “yes”>
+            { text: [ "PERMIT Needed: ", {text:  dataPAF.permitAggregated, style:'inText' } ], style:'eachBullet'},     //<y/n, description & cost if “yes”>
+            { text: [ "PORTAPOTTIE: ", {text: dataPAF.portaAggregated, style:'inText' } ], style:'eachBullet'},       //<y/n, description & cost if “yes”>
+            { text: [ "WASTE: ", {text: dataPAF.dumpsterAggregated, style:'inText' } ], style:'eachBullet'}              //<y/n, description & cost if “yes”>
           ],
       style: 'list'
     },
 
-{ text: [ "\nTOTAL COST ESTIMATE: ", {text: apple, style:'inText' } ], style:'eachLine'},   //<sum of cost fields> 
+{ text: [ "\nTOTAL COST ESTIMATE:   $", {text: dataPAF.estimates, style:'inText' } ], style:'eachLine'},   //<sum of cost fields> 
 
-{ text: [ "\nPROPOSED DATES: ", {text: apple, style:'inText' } ], style:'eachLine'},         //<start date, end date>
+// { text: [ "VOLUNTEERS NEEDED: ", {text: dataPAF.volunteers, style:'inText' } ], style:'eachLine'},      //< # >
 
-// { text: [ "\nVOLUNTEERS NEEDED: ", {text: apple, style:'inText' } ], style:'eachLine'},      //< # >
+{ text: [ "PROPOSED DATES: ", {text: dataPAF.dateAggregated, style:'inText' } ], style:'eachLine'},         //<start date, end date>
 
-{ text: [ "\n\nNOTES: ", {text: apple, style:'inText' } ], style:'eachLine'},                    //<text field>
+{ text: [ "NOTES: ", {text: '', style:'inText' } ], style:'eachLine'},                    //<text field>
 
 
 { text: '\n\n*****', style: 'center' }
