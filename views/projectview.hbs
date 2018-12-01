@@ -8,7 +8,11 @@
 
 <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
 <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-
+<!-- Scripts for loading export PDF functions -->
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.39/pdfmake.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.39/vfs_fonts.js'></script>
+<script src='/javascripts/generateReports/exportPAForm.js'></script>
+<script src='/javascripts/generateReports/exportHandleForm.js'></script>
 <script>
 // Shorten a string to less than maxLen characters without truncating words.
 function shorten(str, maxLen, separator = ' ') {
@@ -415,11 +419,7 @@ info: {
      <script src='/javascripts/makePDF/vfs_fonts.js'></script>
      <script src='/javascripts/makePDF/exportPAForm.js'></script> -->
 
-<!-- Scripts for loading export PDF functions -->
-<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.39/pdfmake.min.js'></script>
-<script src='//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.39/vfs_fonts.js'></script>
-<script src='/javascripts/generateReports/exportPAForm.js'></script>
-<script src='/javascripts/generateReports/exportHandleForm.js'></script>
+
 
 <script src="/javascript/xedit.js" type="text/javascript"></script>
 <script src="/javascript/addProjectNote.js" type="text/javascript"></script>
