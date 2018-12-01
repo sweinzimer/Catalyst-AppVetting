@@ -156,6 +156,7 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
   } 
 
 
+
  {{/if}}
 
 // ***  PROJECT ASSESSMENT FORM - Using pdfmake from github.com/bpampuch/pdfmake - MIT License.
@@ -460,12 +461,12 @@ info: {
       <button class="btn btn-success" style="margin-left: 3%" onclick="exportHandletoPDF()">Export Handle-It Report</button> -->
     </h5>
     <nav class="navbar">
-	    <div class="input-group">
-		    <input type="text" id="note" class="form-control" placeholder="Enter Project Planning Note Here...">
-		    <span class="input-group-btn">
-			    <button id="addNote" class="btn btn-primary" type="submit">Add Note</button>
-		    </span>
-	    </div>
+      <div class="input-group">
+        <input type="text" id="note" class="form-control" placeholder="Enter Project Planning Note Here...">
+        <span class="input-group-btn">
+          <button id="addNote" class="btn btn-primary" type="submit">Add Note</button>
+        </span>
+      </div>
     </nav>
     {{#each results.doc}}
       <div class="row">
@@ -482,18 +483,15 @@ info: {
       <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#projectInfo" role="tab">Project Info</a>
       </li>
-<!--       <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#contact" role="tab">Contact (DEL)</a>
-      </li> -->
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#work" role="tab">Work Item Status</a>
       </li>
 <!--       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#leaders" role="tab">Leaders</a>
       </li> -->
-<!--       <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#planning" role="tab">Planning</a>
-      </li> -->
+      </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#partners" role="tab">Partners</a>
       </li>
@@ -508,12 +506,30 @@ info: {
 
     <!-- Tab panes -->
     <div class="tab-content">
-      <div class="tab-pane" id="contact" role="tabpanel">
+      <div class="tab-pane active" id="projectInfo" role="tabpanel">
         <br />
         {{#each results.doc}}
           <div class="row">
             <div class="col-xs-12 col-sm-6" style="float:left;">
-              <h4>Applicant Contact Info</h4>
+              
+              <h4>Property Information</h4>
+              <table class="table">
+
+                <tr>
+                  <th class="col-sm-3">Property Type</th>
+                  <td class="col-sm-9">{{property.home_type}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Year Constructed</th>
+                  <td class="col-sm-9">{{property.year_constructed}}</td>
+                </tr>
+                
+                <tr> 
+                </tr>
+              </table>
+
+
+              <h5>Address and contact</h5>
               <table class="table">
                 <tr>
                   <th class="col-xs-3">Address</th>
@@ -621,100 +637,25 @@ info: {
             </div>
 
             <div class="col-xs-12 col-sm-6" style="float:left;">
+              {{#if notes.vet_summary}}
               <h4>Vetting Summary</h4>
               <p>
-                {{#if_not_eq notes.vet_summary ''}}
                   {{notes.vet_summary}}
-                {{else}}
-                  [no vetting summary]
-                {{/if_not_eq}}
+                
               </p>
+               {{/if}}
 
-              <!--               <h4>Map</h4>
+               <!--  <div class="col-xs-12 col-sm-6"> -->
+                  <h4>Summary</h4>
+                  <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
+                  <textarea id="site_summary" rows="3" class="form-control">{{notes.site_summary}}</textarea>
+                
+               <!--  </div> -->
+
+
+                  <h4 style="padding-top: 15px;">Map</h4>
                    <iframe width="100%" height="350" frameborder="0" style="border:0"
-                   src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD2CmgnSECdg_g-aFgp95NUBv2QUEidDvs&q={{googleMapAddr application.address}}"></iframe> -->
-            </div>
-          </div>
-        {{/each}}
-      </div><!-- end #contact -->
-
-      <div class="tab-pane active" id="projectInfo" role="tabpanel"><!-- start #projectInfo -->
-        <br />
-        {{#each results.doc}}
-          <div class="row">
-            <div class="col-xs-12 col-sm-6">
-              <h4>Property Information</h4>
-              <table class="table">
-
-                <tr>
-                  <th class="col-sm-3">Property Type</th>
-                  <td class="col-sm-9">{{property.home_type}}</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Year Constructed</th>
-                  <td class="col-sm-9">{{property.year_constructed}}</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Days/Volunteers Needed</th>
-                  <td class="col-sm-9">11</td>
-                  <!-- <td class="col-sm-9">{{property.requested_repairs}}</td> -->
-                </tr>
-                <tr>
-                  <th class="col-sm-3">EST. Cost</th>
-                  <td class="col-sm-9">$1,200</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Funding Sources</th>
-                  <td class="col-sm-9">Funds raised</td>
-                </tr>
-
-                <tr>
-                  <th class="col-sm-3">Crew Chief</th>
-                  <td class="col-sm-9">FirstName LastName</td>
-                </tr>
-
-                <tr>
-                  <th class="col-sm-3">Project Advocate</th>
-                  <td class="col-sm-9">FirstName LastName</td>
-                </tr>
-
-                <tr>
-                  <th class="col-sm-3">Site Host</th>
-                  <td class="col-sm-9">FirstName LastName</td>
-                </tr>
-
-                <tr>
-                  <th class="col-sm-3">Project # (yr/total)</th>
-                  <td class="col-sm-9">551</td>
-                </tr>
-
-                <tr>
-                  <th class="col-sm-3">Lead / Asbestos Result</th>
-                  <td class="col-sm-9">PASS</td>
-                </tr>
-
-                <!--  <tr>
-                     <th class="col-sm-3">Client Can Contrib.</th>
-                     <td class="col-sm-9">
-                     {{#if property.client_can_contribute.value}}
-                     Yes - {{property.client_can_contribute.description}}
-                     {{else}} No {{/if}}
-                     </td>
-                     </tr>
-                     <tr>
-                     <th class="col-sm-3">Associates Can Contrib.</th>
-                     <td class="col-sm-9">
-                     {{#if property.associates_can_contribute.value}}
-                     Yes - {{property.associates_can_contribute.description}}
-                     {{else}} No{{/if}}
-                     </td>
-                     </tr> -->
-              </table>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-              <h4>Summary</h4>
-              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
-              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
+                   src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD2CmgnSECdg_g-aFgp95NUBv2QUEidDvs&q={{googleMapAddr application.address}}"></iframe>
             </div>
           </div>
         {{/each}}
@@ -723,7 +664,7 @@ info: {
 
       <!-- Partners (needs new data base fields for Org Name, Org Address, Contact Name, Contact Phone, Contact email)  -->
       <div class="tab-pane" id="partners" role="tabpanel"><!-- start #partners -->
-
+      <h5></h5>
         {{> partners}}
 
         <div class="col-xs-12 col-sm-6">
@@ -736,32 +677,75 @@ info: {
 
       <div class="tab-pane" id="planning" role="tabpanel"><!-- start #planning -->
         <br />
-        {{#each results.doc}}
+        {{#each results.assessment}}
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <h4>Planning Info</h4>
               <table class="table">
+                <tr>
+                  <th class="col-sm-3">Lead: </th>
+                  <td class="col-sm-9">{{hazard_safety.has_lead}}</td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Asbestos: </th>
+                  <td class="col-sm-9">{{hazard_safety.has_asbestos}}</td>
+                </tr>
+              {{#if hazard_safety.safety_plan}}
+                <tr>
+                  <th class="col-sm-3">Safety Plan: </th>
+                  <td class="col-sm-9">{{hazard_safety.safety_plan}}</td>
+                </tr>
+              {{/if}}
+              {{#if subcontractors}}
+                <tr>
+                  <th class="col-sm-3">Subcontractors: </th>
+                  <td class="col-sm-9">{{subcontractors}}</td>
+                </tr>
+              {{/if}}
 
-                <!--                 <tr>
-                     <th class="col-sm-3">Home Type</th>
-                     <td class="col-sm-9">{{property.home_type}}</td>
-                     </tr> -->
+              {{#if estimates.volunteers_needed}}
+                <tr>
+                  <th class="col-sm-3">Req. Volunteers: </th>
+                  <td class="col-sm-9">{{estimates.volunteers_needed}}</td>
+                </tr>
+              {{/if}}
+
+              {{#if materials}}
+                <tr>
+                  <th class="col-sm-3">Materials Required: </th>
+                  <td class="col-sm-9">{{materials}}</td>
+                </tr>
+              {{/if}}
+
+              {{#if tool_rentals}}
+                <tr>
+                  <th class="col-sm-3">Tool Rentals: </th>
+                  <td class="col-sm-9">{{tool_rentals}}</td>
+                </tr>
+              {{/if}}
+
+
+              {{#if estimates.total_cost}}
+                <tr>
+                  <th class="col-sm-3">Est. Total Cost: </th>
+                  <td class="col-sm-9">{{estimates.total_cost}}</td>
+                </tr>
+              {{/if}}
+     
+      
 
                 <tr>
-                  <th class="col-sm-3">Church Partner(s)</th>
-                  <td class="col-sm-9">Church Name #1....</td>
+                  <th class="col-sm-3">Waste Req.</th>
+                  <td class="col-sm-9" class="wasteDetail">{{other_costs.waste_dumpster.required}}{{#if other_costs.waste_dumpster.cost}}   (${{other_costs.waste_dumpster.cost}}){{/if}}</td>
                 </tr>
 
                 <tr>
-                  <th class="col-sm-3"></th>
-                  <td class="col-sm-9">Church Name #2....</td>
+                  <th class="col-sm-3">Portapotty Req.</th>
+                  <td class="col-sm-9" class="portaDetail">{{other_costs.porta_pottie.required}}{{#if_not_eq other_costs.porta_pottie.cost ''}}   (${{other_costs.porta_pottie.cost}}){{/if_not_eq}}</td>
                 </tr>
 
-                <tr>
-                  <th class="col-sm-3">Other Partner(s)</th>
-                  <td class="col-sm-9">Test Realtor Ltd.</td>
-                </tr>
-
+      {{/each}}
+      {{#each results.doc}}
                 <tr>
                   <!-- TODO: Clairify "length" unit -->
                   <th class="col-sm-3">Final Volunteer Count</th>
@@ -772,26 +756,18 @@ info: {
                   <td class="col-sm-9">{{property.year_constructed}}</td>
                 </tr>
                 <tr>
-                  <th class="col-sm-3">Final $ in kind given</th>
-                  <td class="col-sm-9">$5,000</td>
-                </tr>
-                <!-- <tr>
-                     <th class="col-sm-3">Requested Repairs</th>
-                     <td class="col-sm-9">{{property.requested_repairs}}</td>
-                     </tr> -->
-                <tr>
-                  <th class="col-sm-3">Client Can Contrib.</th>
+                  <th class="col-sm-3">Client Can Contribute</th>
                   <td class="col-sm-9">
-                    {{#if property.client_can_contribute.value}}
-                      Yes - {{property.client_can_contribute.description}}
+                    {{#if doc.property.client_can_contribute.value}}
+                      Yes - {{doc.property.client_can_contribute.description}}
                     {{else}} No {{/if}}
                   </td>
                 </tr>
                 <tr>
-                  <th class="col-sm-3">Associates Can Contrib.</th>
+                  <th class="col-sm-3">Associates Can Contribute</th>
                   <td class="col-sm-9">
-                    {{#if property.associates_can_contribute.value}}
-                      Yes - {{property.associates_can_contribute.description}}
+                    {{#if doc.property.associates_can_contribute.value}}
+                      Yes - {{doc.property.associates_can_contribute.description}}
                     {{else}} No{{/if}}
                   </td>
                 </tr>
@@ -806,8 +782,8 @@ info: {
         {{/each}}
       </div><!-- end #planning -->
 
-
-      <div class="tab-pane" id="leaders" role="tabpanel"><!-- start #leaders -->
+<!-- start #leaders -->
+  <!--     <div class="tab-pane" id="leaders" role="tabpanel">
         <br />
         {{#each results.doc}}
           <div class="row">
@@ -815,43 +791,22 @@ info: {
               <h4>Leaders Info</h4>
               <table class="table">
 
-                <!--                 <tr>
-                     <th class="col-sm-3">Home Type</th>
-                     <td class="col-sm-9">{{property.home_type}}</td>
-                     </tr> -->
-
-                <tr>
-                  <th class="col-sm-3">Church Partner(s)</th>
-                  <td class="col-sm-9">Church Name #1....</td>
+                 <tr>
+                  <th class="col-sm-3">Crew Chief</th>
+                  <td class="col-sm-9"></td>
                 </tr>
 
                 <tr>
-                  <th class="col-sm-3"></th>
-                  <td class="col-sm-9">Church Name #2....</td>
+                  <th class="col-sm-3">Project Advocate</th>
+                  <td class="col-sm-9"></td>
                 </tr>
 
                 <tr>
-                  <th class="col-sm-3">Other Partner(s)</th>
-                  <td class="col-sm-9">Test Realtor Ltd.</td>
+                  <th class="col-sm-3">Site Host</th>
+                  <td class="col-sm-9"></td>
                 </tr>
 
-                <tr>
-                  <!-- TODO: Clairify "length" unit -->
-                  <th class="col-sm-3">Final Volunteer Count</th>
-                  <td class="col-sm-9">{{property.ownership_length}}</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Final Labour-Hrs Count</th>
-                  <td class="col-sm-9">{{property.year_constructed}}</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Final $ in kind given</th>
-                  <td class="col-sm-9">$5,000</td>
-                </tr>
-                <!-- <tr>
-                     <th class="col-sm-3">Requested Repairs</th>
-                     <td class="col-sm-9">{{property.requested_repairs}}</td>
-                     </tr> -->
+
                 <tr>
                   <th class="col-sm-3">Client Can Contrib.</th>
                   <td class="col-sm-9">
@@ -877,7 +832,8 @@ info: {
             </div>
           </div>
         {{/each}}
-      </div><!-- end #leaders -->
+      </div> -->
+      <!-- end #leaders -->
 
 
       <div class="tab-pane" id="wrapUp" role="tabpanel"><!-- start #wrapUp -->
@@ -920,14 +876,14 @@ info: {
               </td>
             </tr>
 
-            <tr>
+<!--             <tr>
               <th class="col-xs-12 col-sm-6">In-kind donations info</th>
               <td class="col-xs-6 col-sm-2">
                 TODO
               </td>
               <td class="col-xs-6 col-sm-4">
               </td>
-            </tr>
+            </tr> -->
 
             <tr>
               <th class="col-xs-12 col-sm-6">Schedule porta pottie pickup
@@ -1166,7 +1122,7 @@ info: {
             <div class="panel panel-default">
               <div class="panel-heading">
                  <h3 class="panel-title">
-                   <a data-toggle="collapse" href="#add-work-item-collapse">Click to Add a Work Item</a>
+                   <a data-toggle="collapse" href="#add-work-item-collapse" class="btn btn-info" style="margin-left: 14px" onclick="hideWorkAddBtn()" id="workAddBtn">Click to Add a Work Item</a>
                    </h3>
               </div>
             
@@ -1243,50 +1199,50 @@ info: {
       </div>
         <!-- END #work --><div class="tab-pane" id="notes" role="tabpanel">
         <div class="col-xs-12 col-sm-12">
-			    <!--VETTING NOTES-->
-			    <h3>Project Notes</h3>
-	        <div class="form-group">
-	          <form method="post">
-	            <input type="hidden" value="{{doc._id}}" id="appId"/>
-				      <input type="hidden" value="{{user}}" id="userId"/>
-	            <table class="table table-striped">
-	              <thead>
-	                <tr>
-	                  <th >Date</th>
-	                  <th>Note</th>
-						        <th>Submitted By</th>
-	                  <th             </tr>
-	              </thead>
-	              <tbody id="notes-body">
-	                {{#if projectNotes}}
-	                  {{#each projectNotes}}
-	                    <tr>
-	                      <td>{{this.date}}</td>
-	                      <td class="note-descrip">{{this.description}}</td>
-								        <td class="note-vetAgent">{{this.projectPlanner}}</td>
-	                      <td>
-	                        <form>
-	                          <input type="hidden" value="{{this._id}}" name="noteId" />
-	                          <input type="submit" class="update-note btn btn-info" value="Update Note"/>
-	                          <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
-	                        </form>
-	                      </td>
-	                    </tr>
-	                  {{/each}}
-	                {{else}}
-	                  <tr>
-	                    <td id="empty-notes" class="alert-danger danger" colspan="3">
-	                      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
-	                    </td>
-	                  </tr>
-	                {{/if}}
+          <!--VETTING NOTES-->
+          <h3>Project Notes</h3>
+          <div class="form-group">
+            <form method="post">
+              <input type="hidden" value="{{doc._id}}" id="appId"/>
+              <input type="hidden" value="{{user}}" id="userId"/>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th >Date</th>
+                    <th>Note</th>
+                    <th>Submitted By</th>
+                    <th             </tr>
+                </thead>
+                <tbody id="notes-body">
+                  {{#if projectNotes}}
+                    {{#each projectNotes}}
+                      <tr>
+                        <td>{{this.date}}</td>
+                        <td class="note-descrip">{{this.description}}</td>
+                        <td class="note-vetAgent">{{this.projectPlanner}}</td>
+                        <td>
+                          <form>
+                            <input type="hidden" value="{{this._id}}" name="noteId" />
+                            <input type="submit" class="update-note btn btn-info" value="Update Note"/>
+                            <input type="submit" class="delete-button2 btn btn-danger" value="Delete Note"/>
+                          </form>
+                        </td>
+                      </tr>
+                    {{/each}}
+                  {{else}}
+                    <tr>
+                      <td id="empty-notes" class="alert-danger danger" colspan="3">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
+                      </td>
+                    </tr>
+                  {{/if}}
 
-					        <tr><!--THIS EMPTY ROW IS NECESSARY FOR addProjectNote.js TO WORK ON MULTIPLE PAGES--></tr>
-	              </tbody>
-	            </table>
-	          </form>
-	        </div>
-	      </div>
+                  <tr><!--THIS EMPTY ROW IS NECESSARY FOR addProjectNote.js TO WORK ON MULTIPLE PAGES--></tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+        </div>
       </div>
 
 
@@ -1298,6 +1254,7 @@ info: {
 </div>
 
 <script>
+
  var workItems = {{{stringify results.work}}};
  var docs = {{{stringify results.doc}}};
  var assignableUsers = {{{ stringify assignableUsers }}};
@@ -1307,7 +1264,8 @@ info: {
    $('.work-item-delete').on('click', showWorkItemDeleteConfirm)
    $('.work-item-new').on('click', handleNewWorkItemSubmission)
    $('.work-item-clear').on('click', handleNewWorkItemClear)
-   $('#site_summary').on('keydown', handleSiteSummaryInput)
+   $('#site_summary').on('keyup', handleSiteSummaryInput)
+
 
    $('#status').editable({
      value: docs[0].project.status,     //POST to /edit/project will update this status in project.status field.
@@ -1520,41 +1478,41 @@ info: {
 
 
 
-	function showWorkItemDeleteConfirm(e) {
-		e.preventDefault()
-		var workItemParent = this.parentElement
-		var workItemContainer = $(workItemParent)
-		var workItemId = $(workItemParent.parentElement).attr('name')
+  function showWorkItemDeleteConfirm(e) {
+    e.preventDefault()
+    var workItemParent = this.parentElement
+    var workItemContainer = $(workItemParent)
+    var workItemId = $(workItemParent.parentElement).attr('name')
 
-		var currentData = {}
-		$('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
-			var path = $(this).attr('name').replace(workItemId + '.', '')
-			currentData[path] = this.innerText
-		})
+    var currentData = {}
+    $('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+      var path = $(this).attr('name').replace(workItemId + '.', '')
+      currentData[path] = this.innerText
+    })
 
-		workItemContainer.empty()
+    workItemContainer.empty()
 
-		$('<h4>Are you sure?</h4>').appendTo(workItemParent)
-		$('<p>You are about to delete this work item. After selecting confirm, you '
-			+ 'will be unable to recover the item.</p>').appendTo(workItemParent)
+    $('<h4>Are you sure?</h4>').appendTo(workItemParent)
+    $('<p>You are about to delete this work item. After selecting confirm, you '
+      + 'will be unable to recover the item.</p>').appendTo(workItemParent)
 
-		$('<a>Continue</a>').addClass('btn').addClass('btn-primary')
-		.appendTo(workItemParent)
-		.on('click', function(e) {
-			deleteWorkItem(workItemId, workItemParent)
-		})
+    $('<a>Continue</a>').addClass('btn').addClass('btn-primary')
+    .appendTo(workItemParent)
+    .on('click', function(e) {
+      deleteWorkItem(workItemId, workItemParent)
+    })
 
-		$('<a>Cancel</a>').addClass('btn').addClass('btn-danger')
-		.appendTo(workItemParent)
-		.on('click', function(e) {
-			e.preventDefault()
-			for (let i=0; i<workItems.length; i++) {
-				if (workItems[i]._id === workItemId) {
-					showWorkItem(workItems[i], workItemContainer)
-				}
-			}
-		})
-	}
+    $('<a>Cancel</a>').addClass('btn').addClass('btn-danger')
+    .appendTo(workItemParent)
+    .on('click', function(e) {
+      e.preventDefault()
+      for (let i=0; i<workItems.length; i++) {
+        if (workItems[i]._id === workItemId) {
+          showWorkItem(workItems[i], workItemContainer)
+        }
+      }
+    })
+  }
 
  function saveWorkItem(node) {
    var data = {}, id = false
@@ -1620,17 +1578,17 @@ info: {
 function deleteWorkItem(id, node) {
   console.log(id);
   console.log({itemId: id});
-		xhr({itemId: id}, 'POST', '/pm/deleteitem', function(err, data) {
-			if (err) { alert('Unable to delete item') }
-			else {
-				var workItemRoot = $('[name="' + id + '"]')
-				workItemRoot.remove()
-				for (var i=0; i<workItems.length; i++) {
-					if (workItems[i]._id == id) { workItems.splice(i, 1) }
-				}
-			}
-		})
-	}
+    xhr({itemId: id}, 'POST', '/pm/deleteitem', function(err, data) {
+      if (err) { alert('Unable to delete item') }
+      else {
+        var workItemRoot = $('[name="' + id + '"]')
+        workItemRoot.remove()
+        for (var i=0; i<workItems.length; i++) {
+          if (workItems[i]._id == id) { workItems.splice(i, 1) }
+        }
+      }
+    })
+  }
 
  function handleNewWorkItemSubmission(e) {
    var newWorkItem = {}, error = false
@@ -1658,6 +1616,8 @@ function deleteWorkItem(id, node) {
      $(this.parentNode).removeClass('has-danger')
    });
    $('#add-work-item-collapse').collapse('hide');
+
+   document.getElementById("workAddBtn").style.display = "initial";
  }
 
  function createNewWorkItem(w, next) {
@@ -1824,4 +1784,7 @@ function deleteWorkItem(id, node) {
  }
 
 
+function hideWorkAddBtn() {
+     document.getElementById("workAddBtn").style.display = "none";
+}
 </script>
