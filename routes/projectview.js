@@ -63,7 +63,7 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 
   router
     .get('/:id', isLoggedIn, api.getDocumentSite, api.getProjPartnersLeaders,
-         api.getAssignableUsers, api.getWrapUpDoc,
+         api.getAssignableUsers, api.getWrapUpDoc, api.getProjectPlanDoc,
          function(req, res, next) {
            //Checking what's in params
            //console.log("Rendering application " + ObjectId(req.params.id));
@@ -132,10 +132,20 @@ router.route('/wrapup')
         else{
           res.json(res.locals);
         }
+      });
+router.route('/plan')
+      .post(isLoggedInPost, api.saveProjectPlan, function(req, res) {
+	      if(res.locals.status != '200'){
+          res.status(500).send("Could not update plan");
+        }
+        else{
+          res.json(res.locals);
+        }
       })
+
 	
-//route catches invalid post requests.
-router.use('*', function route2(req, res, next) {
+  //route catches invalid post requests.
+  router.use('*', function route2(req, res, next) {
 	if(res.locals.status == '406'){
 		console.log("in error function");
         res.status(406).send("Could not update note");

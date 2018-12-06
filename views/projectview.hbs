@@ -377,74 +377,260 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
 
       <div class="tab-pane" id="planning" role="tabpanel"><!-- start #planning -->
         <br />
-        {{#each results.doc}}
-          <div class="row">
-            <div class="col-xs-12 col-sm-6">
-              <h4>Planning Info</h4>
-              <table class="table">
+        <h4>Project Plan Checklist</h4>
+        <table class="table">
+          <tr>
+            <th class="col-xs-12 col-sm-6">Start Date</th>
+            <td class="col-xs-6 col-sm-6">
+              <input type="date" />
+            </td>
+          </tr>
+          <tr>
+            <th class="col-xs-12 col-sm-6">End Date</th>
+            <td colspan="2" class="col-xs-6 col-sm-6">
+              <input type="date" />
+            </td>
+          </tr>
 
-                <!--                 <tr>
-                     <th class="col-sm-3">Home Type</th>
-                     <td class="col-sm-9">{{property.home_type}}</td>
-                     </tr> -->
+          <tr>
+            <th class="col-xs-12 col-sm-6">Project postal mailed to client</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'contract' }}">
+                <input type="checkbox" name="contract" value=""
+                       {{#if plan.contract.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="contract"></select>
+            </td>
+          </tr>
 
-                <tr>
-                  <th class="col-sm-3">Church Partner(s)</th>
-                  <td class="col-sm-9">Church Name #1....</td>
-                </tr>
+          <tr>
+            <th class="col-xs-12 col-sm-6">Project activated</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'activated' }}">
+                <input type="checkbox" name="activated" value=""
+                       {{#if plan.activated.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="activated"></select>
+            </td>
+          </tr>
 
-                <tr>
-                  <th class="col-sm-3"></th>
-                  <td class="col-sm-9">Church Name #2....</td>
-                </tr>
+          <tr>
+            <th class="col-xs-12 col-sm-6">Planning visit completed</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'planning_visit' }}">
+                <input type="checkbox" name="planning_visit" value=""
+                       {{#if plan.planning_visit.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="planning_visit"></select>
+            </td>
+          </tr>
 
-                <tr>
-                  <th class="col-sm-3">Other Partner(s)</th>
-                  <td class="col-sm-9">Test Realtor Ltd.</td>
-                </tr>
+          <tr>
+            <th class="col-xs-12 col-sm-6">Rent porta-pottie</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'rent_porta_pottie' }}">
+                <input type="checkbox" name="rent_porta_pottie" value=""
+                       {{#if plan.rent_porta_pottie.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="rent_porta_pottie"></select>
+            </td>
+          </tr>
 
-                <tr>
-                  <!-- TODO: Clairify "length" unit -->
-                  <th class="col-sm-3">Final Volunteer Count</th>
-                  <td class="col-sm-9">{{property.ownership_length}}</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Final Labour-Hrs Count</th>
-                  <td class="col-sm-9">{{property.year_constructed}}</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Final $ in kind given</th>
-                  <td class="col-sm-9">$5,000</td>
-                </tr>
-                <!-- <tr>
-                     <th class="col-sm-3">Requested Repairs</th>
-                     <td class="col-sm-9">{{property.requested_repairs}}</td>
-                     </tr> -->
-                <tr>
-                  <th class="col-sm-3">Client Can Contrib.</th>
-                  <td class="col-sm-9">
-                    {{#if property.client_can_contribute.value}}
-                      Yes - {{property.client_can_contribute.description}}
-                    {{else}} No {{/if}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Associates Can Contrib.</th>
-                  <td class="col-sm-9">
-                    {{#if property.associates_can_contribute.value}}
-                      Yes - {{property.associates_can_contribute.description}}
-                    {{else}} No{{/if}}
-                  </td>
-                </tr>
-              </table>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-              <h4>Summary</h4>
-              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
-              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
-            </div>
-          </div>
-        {{/each}}
+          <tr>
+            <th class="col-xs-12 col-sm-6">Rent waste bin</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'rent_waste_dumpster' }}">
+                <input type="checkbox" name="rent_waste_dumpster" value=""
+                       {{#if plan.rent_waste_dumpster.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="rent_waste_dumpster"></select>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="col-xs-12 col-sm-6">Create project webpage, calendar event, and volunteer schedule in Endis</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'create_page_event_schedule' }}">
+                <input type="checkbox" name="create_page_event_schedule" value=""
+                       {{#if plan.create_page_event_schedule.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="create_page_event_schedule"></select>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="col-xs-12 col-sm-6">Send out initial email requesting volunteers</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'volunteer_request_initial' }}">
+                <input type="checkbox" name="volunteer_request_initial" value=""
+                       {{#if plan.volunteer_request_initial.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="volunteer_request_initial"></select>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="col-xs-12 col-sm-6">Send follow-up emails requesting volunteers</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'volunteer_request_followup' }}">
+                <input type="checkbox" name="volunteer_request_followup" value=""
+                       {{#if plan.volunteer_request_followup.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="volunteer_request_followup"></select>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="col-xs-12 col-sm-6">Send final email to signed up volunteers 3-5 days before project</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'volunteer_request_final' }}">
+                <input type="checkbox" name="volunteer_request_final" value=""
+                       {{#if plan.volunteer_request_final.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="volunteer_request_final"></select>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="col-xs-12 col-sm-6">Report list of materials, rentals &amp; supplies needed</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'report_materials_supplies' }}">
+                <input type="checkbox" name="report_materials_supplies" value=""
+                       {{#if plan.report_materials_supplies.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="report_materials_supplies"></select>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="col-xs-12 col-sm-6">Arrange for purchase &amp; delivery of all materials, rentals, supplies, etc.</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'arrange_purchase_delivery' }}">
+                <input type="checkbox" name="arrange_purchase_delivery" value=""
+                       {{#if plan.arrange_purchase_delivery.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="arrange_purchase_delivery"></select>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="col-xs-12 col-sm-6">Check the weather forecast and make plans accordingly</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'check_weather_forecast' }}">
+                <input type="checkbox" name="check_weather_forecast" value=""
+                       {{#if plan.check_weather_forecast.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="check_weather_forecast"></select>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="col-xs-12 col-sm-6">Verify number of volunteers signed up</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'verify_volunteer_count' }}">
+                <input type="checkbox" name="verify_volunteer_count" value=""
+                       {{#if plan.verify_volunteer_count.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="verify_volunteer_count"></select>
+            </td>
+          </tr>
+
+          <tr>
+            <th class="col-xs-12 col-sm-6">Verify site resources needed</th>
+            <td class="col-xs-6 col-sm-2">
+              <label data-toggle="tooltip"
+                     title="{{getCompletedDate plan 'verify_site_resources' }}">
+                <input type="checkbox" name="verify_site_resources" value=""
+                       {{#if plan.verify_site_resources.complete}} checked {{/if}}
+                />
+                Complete
+              </label>
+            </td>
+            <td class="col-xs-6 col-sm-4">
+              Owner
+              <select class="task-owner plan" data-owner-of="verify_site_resources"></select>
+            </td>
+          </tr>
+          
+        </table>
       </div><!-- end #planning -->
 
 
@@ -540,7 +726,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="signup_sheet_office"></select>
+                <select class="wrapup task-owner" data-owner-of="signup_sheet_office"></select>
               </td>
             </tr>
 
@@ -557,7 +743,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="record_volunteer_info"></select>
+                <select class="wrapup task-owner" data-owner-of="record_volunteer_info"></select>
               </td>
             </tr>
 
@@ -585,7 +771,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="porta_pottie_pickup"></select>
+                <select class="wrapup task-owner" data-owner-of="porta_pottie_pickup"></select>
               </td>
             </tr>
 
@@ -602,7 +788,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="waste_dumpster_pickup"></select>
+                <select class="wrapup task-owner" data-owner-of="waste_dumpster_pickup"></select>
               </td>
             </tr>
 
@@ -619,7 +805,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="waste_disposal_arrangement"></select>
+                <select class="wrapup task-owner" data-owner-of="waste_disposal_arrangement"></select>
               </td>
             </tr>
 
@@ -636,7 +822,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="return_materials_rentals"></select>
+                <select class="wrapup task-owner" data-owner-of="return_materials_rentals"></select>
               </td>
             </tr>
 
@@ -653,7 +839,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="turn_in_receipts"></select>
+                <select class="wrapup task-owner" data-owner-of="turn_in_receipts"></select>
               </td>
             </tr>
 
@@ -670,7 +856,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="process_reimbursement_checks"></select>
+                <select class="wrapup task-owner" data-owner-of="process_reimbursement_checks"></select>
               </td>
             </tr>
 
@@ -687,7 +873,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="upload_photos_flickr"></select>
+                <select class="wrapup task-owner" data-owner-of="upload_photos_flickr"></select>
               </td>
             </tr>
 
@@ -704,7 +890,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="report_form_submission"></select>
+                <select class="wrapup task-owner" data-owner-of="report_form_submission"></select>
               </td>
             </tr>
 
@@ -721,7 +907,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="update_project_webpage"></select>
+                <select class="wrapup task-owner" data-owner-of="update_project_webpage"></select>
               </td>
             </tr>
 
@@ -738,7 +924,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="client_phone_followup"></select>
+                <select class="wrapup task-owner" data-owner-of="client_phone_followup"></select>
               </td>
             </tr>
 
@@ -755,7 +941,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="send_thank_you_email"></select>
+                <select class="wrapup task-owner" data-owner-of="send_thank_you_email"></select>
               </td>
             </tr>
 
@@ -772,7 +958,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="determine_followup_required"></select>
+                <select class="wrapup task-owner" data-owner-of="determine_followup_required"></select>
               </td>
             </tr>
 
@@ -789,7 +975,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
               </td>
               <td class="col-xs-6 col-sm-4">
                 Owner
-                <select class="task-owner" data-owner-of="send_closing_letter"></select>
+                <select class="wrapup task-owner" data-owner-of="send_closing_letter"></select>
               </td>
             </tr>
 
@@ -943,6 +1129,8 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
  var docs = {{{stringify results.doc}}};
  var assignableUsers = {{{ stringify assignableUsers }}};
  var wrapUp = {{{ stringify wrapUp }}};
+ var plan = {{{ stringify plan }}};
+
  $(document).ready(function() {
    $('.work-item-comment').each(watchEditButton)   
    $('.work-item-delete').on('click', showWorkItemDeleteConfirm)
@@ -968,29 +1156,36 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    $('[data-toggle="tooltip"]').tooltip();
    
    $('#wrapUp input:checkbox').change(updateWrapup);
+   $('#planning input:checkbox').change(updatePlan);
    
    // Populate the owner dropdown boxes with assignable users. Save them when changed.
-   $('.task-owner').each(function () {
-     var $this = $(this);
-     var taskName = $this.data('owner-of');
-     $this.empty();
-     $this.append('<option value="">Unassigned</option>');
+   $('#wrapUp .task-owner').each(function () {
+     populateOwners($(this), wrapUp, updateWrapup);
+   });
+   $('#planning .task-owner').each(function () {
+     populateOwners($(this), plan, updatePlan);
+   });
 
-     $.each(assignableUsers, function (i, user) {
-       var fullName = user.contact_info.user_name.user_first + ' ' +
-                      user.contact_info.user_name.user_last;
-       $option = $('<option value="' + user._id + '">' + fullName + '</option>');
-       if (wrapUp[ taskName ].owner === user._id) {
-         $option.prop('selected', 'selected')
-       }
-       $this.append($option);
-     });
+ });
 
-     $this.change(updateWrapup);
-   })
+ function populateOwners($select, checklist, onChange) {
+   var taskName = $select.data('owner-of');
+   $select.empty();
+   $select.append('<option value="">Unassigned</option>');
+   $.each(assignableUsers, function (i, user) {
+     var fullName = user.contact_info.user_name.user_first + ' ' +
+                    user.contact_info.user_name.user_last;
+     $option = $('<option value="' + user._id + '">' + fullName + '</option>');
+     if (typeof checklist[taskName] !== 'undefined' &&
+         checklist[taskName].owner === user._id) {
+       $option.prop('selected', 'selected')
+     }
+     $select.append($option);
+   });
 
- })
-
+   $select.change(onChange);
+ }
+ 
  function handleSiteSummaryInput(e) {
    if (window.siteSummaryTimeout) {
      window.clearTimeout(window.siteSummaryTimeout)
@@ -1031,7 +1226,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    //workItemContainer.empty()
 
    var fields = [
-    {field: 'name', text:'Name', type: 'textarea'},        
+     {field: 'name', text:'Name', type: 'textarea'},        
      {field: 'description', text:'Description', type: 'textarea'},   
      {field: 'projectComments', text:'Project Comments', type: 'textarea'},
      {field: 'cost', text:'Cost', type: 'text'},
@@ -1150,7 +1345,7 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
                               .on('click', showWorkItemEditForm)
                               .appendTo(cardBlock)
 
-                              
+   
    $('<a></a>').addClass('btn').addClass('btn-warning')
                               .addClass('card-link').addClass('work-item-comment')
                               .text('Delete')
@@ -1161,41 +1356,41 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
 
 
 
-	function showWorkItemDeleteConfirm(e) {
-		e.preventDefault()
-		var workItemParent = this.parentElement
-		var workItemContainer = $(workItemParent)
-		var workItemId = $(workItemParent.parentElement).attr('name')
+ function showWorkItemDeleteConfirm(e) {
+	 e.preventDefault()
+	 var workItemParent = this.parentElement
+	 var workItemContainer = $(workItemParent)
+	 var workItemId = $(workItemParent.parentElement).attr('name')
 
-		var currentData = {}
-		$('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
-			var path = $(this).attr('name').replace(workItemId + '.', '')
-			currentData[path] = this.innerText
-		})
+	 var currentData = {}
+	 $('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+		 var path = $(this).attr('name').replace(workItemId + '.', '')
+		 currentData[path] = this.innerText
+	 })
 
-		workItemContainer.empty()
+	 workItemContainer.empty()
 
-		$('<h4>Are you sure?</h4>').appendTo(workItemParent)
-		$('<p>You are about to delete this work item. After selecting confirm, you '
-			+ 'will be unable to recover the item.</p>').appendTo(workItemParent)
+	 $('<h4>Are you sure?</h4>').appendTo(workItemParent)
+	 $('<p>You are about to delete this work item. After selecting confirm, you '
+	 + 'will be unable to recover the item.</p>').appendTo(workItemParent)
 
-		$('<a>Continue</a>').addClass('btn').addClass('btn-primary')
-		.appendTo(workItemParent)
-		.on('click', function(e) {
-			deleteWorkItem(workItemId, workItemParent)
-		})
+	 $('<a>Continue</a>').addClass('btn').addClass('btn-primary')
+		                                                   .appendTo(workItemParent)
+		                                                   .on('click', function(e) {
+			                                                   deleteWorkItem(workItemId, workItemParent)
+		                                                   })
 
-		$('<a>Cancel</a>').addClass('btn').addClass('btn-danger')
-		.appendTo(workItemParent)
-		.on('click', function(e) {
-			e.preventDefault()
-			for (let i=0; i<workItems.length; i++) {
-				if (workItems[i]._id === workItemId) {
-					showWorkItem(workItems[i], workItemContainer)
-				}
-			}
-		})
-	}
+	 $('<a>Cancel</a>').addClass('btn').addClass('btn-danger')
+		                                                   .appendTo(workItemParent)
+		                                                   .on('click', function(e) {
+			                                                   e.preventDefault()
+			                                                   for (let i=0; i<workItems.length; i++) {
+				                                                   if (workItems[i]._id === workItemId) {
+					                                                   showWorkItem(workItems[i], workItemContainer)
+				                                                   }
+			                                                   }
+		                                                   })
+ }
 
  function saveWorkItem(node) {
    var data = {}, id = false
@@ -1208,11 +1403,11 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
    // XHR here
    var xhrData = JSON.parse(JSON.stringify(data))
    xhrData.id = id
-  console.log('updating now');
+   console.log('updating now');
    xhr(xhrData, 'POST', '/pm/updateitem', function(err) {
      if (err) {
        // TODO: If error, flip the value back and show an error message to the user
-        alert('Value did not save, please reload the page')
+       alert('Value did not save, please reload the page')
      }
 
      for (var i=0; i<workItems.length; i++) {
@@ -1258,20 +1453,20 @@ workItems.push("-     " + "COST:  ${{cost}}\n\n");
      next(new Error('Could not complete xhr'))
    });
  }
-function deleteWorkItem(id, node) {
-  console.log(id);
-  console.log({itemId: id});
-		xhr({itemId: id}, 'POST', '/pm/deleteitem', function(err, data) {
-			if (err) { alert('Unable to delete item') }
-			else {
-				var workItemRoot = $('[name="' + id + '"]')
-				workItemRoot.remove()
-				for (var i=0; i<workItems.length; i++) {
-					if (workItems[i]._id == id) { workItems.splice(i, 1) }
-				}
-			}
-		})
-	}
+ function deleteWorkItem(id, node) {
+   console.log(id);
+   console.log({itemId: id});
+	 xhr({itemId: id}, 'POST', '/pm/deleteitem', function(err, data) {
+		 if (err) { alert('Unable to delete item') }
+		 else {
+			 var workItemRoot = $('[name="' + id + '"]')
+			 workItemRoot.remove()
+			 for (var i=0; i<workItems.length; i++) {
+				 if (workItems[i]._id == id) { workItems.splice(i, 1) }
+			 }
+		 }
+	 })
+ }
 
  function handleNewWorkItemSubmission(e) {
    var newWorkItem = {}, error = false
@@ -1392,7 +1587,7 @@ function deleteWorkItem(id, node) {
                               .on('click', showWorkItemEditForm)
                               .appendTo(cardBlock)
 
-  $('<a></a>').addClass('btn').addClass('btn-warning')
+   $('<a></a>').addClass('btn').addClass('btn-warning')
                               .addClass('card-link').addClass('work-item-delete')
                               .text('Delete')
                               .attr('href', '#')
@@ -1403,7 +1598,6 @@ function deleteWorkItem(id, node) {
  }
 
  function updateWrapup () {
-   
    $('#wrapUp input:checkbox').each(function () {
      var $this = $(this);
      var name = $this.attr('name')
@@ -1441,7 +1635,6 @@ function deleteWorkItem(id, node) {
          var $this = $(this);
          var name = $this.attr('name')
 
-         // TODO: does this cause a cascade/infinite loop (trigger onchange) ??
          $this.prop('checked', w[name].complete);
 
          var completeDate = '';
@@ -1464,5 +1657,67 @@ function deleteWorkItem(id, node) {
    });
  }
 
+ function updatePlan() {
+   console.log(arguments)
+   $('#planning input:checkbox').each(function () {
+     var $this = $(this);
+     var name = $this.attr('name')
+
+     console.log(name, plan[name]);
+     plan[name].complete = $this.prop('checked');
+     if (plan[name].complete && !plan[name].completed_on) {
+       plan[name].completed_on = Date.now();
+     } else if (!plan[name].complete) {
+       plan[name].completed_on = null;
+     }
+   });
+
+   $('#planning select.task-owner').each(function () {
+     var $this = $(this);
+     plan[ $this.data('owner-of') ].owner = $this.val() || null;
+   });
+
+   // Strip the MongoDB version field from the record (so that it saves).
+   if (typeof plan.__v !== 'undefined') {
+     delete plan.__v;
+   }
+   console.log('sending post to save: ', plan);
+
+   // Save the new record to the database.
+   $.ajax({
+     url: '/projectview/plan',
+     method: 'POST',
+     dataType: 'json',
+     contentType: 'application/json; charset=utf8',
+     data: JSON.stringify(plan),
+     success: function (data) {
+       var p = data.results.plan;
+
+       // Update the checkboxes.
+       $('#planning input:checkbox').each(function () {
+         var $this = $(this);
+         var name = $this.attr('name')
+
+         $this.prop('checked', p[name].complete);
+
+         var completeDate = '';
+         if (p[name].complete && p[name].completed_on !== null) {
+           var completeDate = new Date(p[name].completed_on).toLocaleDateString();
+         }
+         $this.parent('label').attr('data-original-title', completeDate);
+       });
+
+       // Update the dropdowns.
+       $('#planning select.task-owner').each(function () {
+         var $this = $(this);
+         if (p[$this.data('owner-of')] && p[$this.data('owner-of')].owner !== null) {
+           $this.val(p[$this.data('owner-of')].owner)
+         } else {
+           $this.val('');
+         }
+       });
+     }
+   });
+ }
 
 </script>
