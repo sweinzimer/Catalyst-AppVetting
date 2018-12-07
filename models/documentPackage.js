@@ -195,7 +195,10 @@ var DocumentPackageSchema = new Schema({
 	//Note above is done, along with timestamp
     project:    {
         // TODO: Complete after application, status, vetting notes, etc -- THIS IS LAST
-        status: String
+        status: String,
+        crew_chief: String,
+        project_advocate: String,
+        site_host: String
     }
 });
 
