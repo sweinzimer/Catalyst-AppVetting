@@ -235,9 +235,9 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#work" role="tab">Work Item Status</a>
       </li>
-<!--       <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#leaders" role="tab">Leaders</a>
-      </li> -->
+      </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#planning" role="tab">Planning</a>
       </li>
@@ -481,8 +481,6 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
                 </tr>
               {{/if}}
      
-      
-
                 <tr>
                   <th class="col-sm-3">Waste Req.</th>
                   <td class="col-sm-9" class="wasteDetail">{{other_costs.waste_dumpster.required}}{{#if other_costs.waste_dumpster.cost}}   (${{other_costs.waste_dumpster.cost}}){{/if}}</td>
@@ -504,22 +502,24 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
                   <th class="col-sm-3">Final Labour-Hrs Count</th>
                   <td class="col-sm-9">{{property.year_constructed}}</td>
                 </tr>
+                
                 <tr>
                   <th class="col-sm-3">Client Can Contribute</th>
                   <td class="col-sm-9">
-                    {{#if doc.property.client_can_contribute.value}}
-                      Yes - {{doc.property.client_can_contribute.description}}
+                    {{#if property.client_can_contribute.value}}
+                      Yes - {{property.client_can_contribute.description}}
                     {{else}} No {{/if}}
                   </td>
                 </tr>
                 <tr>
                   <th class="col-sm-3">Associates Can Contribute</th>
                   <td class="col-sm-9">
-                    {{#if doc.property.associates_can_contribute.value}}
-                      Yes - {{doc.property.associates_can_contribute.description}}
+                    {{#if property.associates_can_contribute.value}}
+                      Yes - {{property.associates_can_contribute.description}}
                     {{else}} No{{/if}}
                   </td>
                 </tr>
+
               </table>
             </div>
             <div class="col-xs-12 col-sm-6">
@@ -532,7 +532,7 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
       </div><!-- end #planning -->
 
 <!-- start #leaders -->
-  <!--     <div class="tab-pane" id="leaders" role="tabpanel">
+      <div class="tab-pane" id="leaders" role="tabpanel">
         <br />
         {{#each results.doc}}
           <div class="row">
@@ -540,36 +540,23 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
               <h4>Leaders Info</h4>
               <table class="table">
 
-                 <tr>
+                <tr>
                   <th class="col-sm-3">Crew Chief</th>
-                  <td class="col-sm-9"></td>
+                  <td class="col-sm-9">
+                    <a href="#" id="crew_chief" data-type="text" data-pk="{{_id}}" data-url="/edit/project/{{_id}}" data-name="crew_chief" data-title="Crew Chief">{{project.crew_chief}}</a>
                 </tr>
 
                 <tr>
                   <th class="col-sm-3">Project Advocate</th>
-                  <td class="col-sm-9"></td>
+                  <td class="col-sm-9">
+                    <a href="#" id="project_advocate" data-type="text" data-pk="{{_id}}" data-url="/edit/project/{{_id}}" data-name="project_advocate" data-title="Project Advocate">{{project.project_advocate}}</a>
+                  </td>
                 </tr>
 
                 <tr>
                   <th class="col-sm-3">Site Host</th>
-                  <td class="col-sm-9"></td>
-                </tr>
-
-
-                <tr>
-                  <th class="col-sm-3">Client Can Contrib.</th>
                   <td class="col-sm-9">
-                    {{#if property.client_can_contribute.value}}
-                      Yes - {{property.client_can_contribute.description}}
-                    {{else}} No {{/if}}
-                  </td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Associates Can Contrib.</th>
-                  <td class="col-sm-9">
-                    {{#if property.associates_can_contribute.value}}
-                      Yes - {{property.associates_can_contribute.description}}
-                    {{else}} No{{/if}}
+                    <a href="#" id="site_host" data-type="text" data-pk="{{_id}}" data-url="/edit/project/{{_id}}" data-name="site_host" data-title="Site Host">{{project.site_host}}</a>
                   </td>
                 </tr>
               </table>
@@ -581,7 +568,7 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
             </div>
           </div>
         {{/each}}
-      </div> -->
+      </div>
       <!-- end #leaders -->
 
 
@@ -1016,6 +1003,9 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
    $('.work-item-clear').on('click', handleNewWorkItemClear)
    $('#site_summary').on('keyup', handleSiteSummaryInput)
 
+    $('#crew_chief').editable();
+    $('#project_advocate').editable();
+    $('#site_host').editable();
 
    $('#status').editable({
      value: docs[0].project.status,     //POST to /edit/project will update this status in project.status field.
