@@ -4,8 +4,10 @@ var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 
+
 //var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
 // var PartnerPackage = require('../models/partners.js');
+var ProjectPlanPackage = require('../models/projectPlanPackage.js');
 var ProjectWrapUpPackage = require('../models/projectWrapUpPackage.js');
 
 var api = require('../controllers/api');
@@ -75,12 +77,13 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 	         payload.work = res.locals.results.work;
 	         payload.user = req.user._id;
 	         payload.user_email = res.locals.email;
-			 payload.user_role = res.locals.role;
-			 payload.user_roles = res.locals.user_roles;
+			     payload.user_role = res.locals.role;
+			     payload.user_roles = res.locals.user_roles;
 	         payload.projectNotes = res.locals.results.projectNotes;
-           	 payload.assignableUsers = res.locals.assignableUsers;
-             payload.wrapUp = res.locals.wrapUp ? res.locals.wrapUp : ProjectWrapUpPackage.empty(req.params.id);
+           payload.assignableUsers = res.locals.assignableUsers;
+           payload.wrapUp = res.locals.wrapUp ? res.locals.wrapUp : ProjectWrapUpPackage.empty(req.params.id);
 	         payload.part = res.locals.results.part||req.partnerTime;			//Data for Partners Tab Partial
+           payload.plan = res.locals.plan || ProjectPlanPackage.empty(req.params.id)
 	         payload.partDocId = res.locals.results.doc[0]._id;
 	         console.log("results");
            console.log(payload);

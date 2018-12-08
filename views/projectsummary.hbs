@@ -42,9 +42,11 @@
                             <tr>
                                 <th class="col-md-2">Name</th>
                                 <th class="col-md-2">Address</th>
-                                <th class="col-md-2">Last Edit</th>
+                                <!-- <th class="col-md-2">Last Edit</th> -->
                                 <th class="col-md-2">Status</th>
-                <th class="col-md-2">Application Date</th>
+                <th class="col-md-2">Crew Chief</th>
+                <th class="col-md-2">Project Advocate</th>
+                <th class="col-md-2">Site Host</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -52,9 +54,11 @@
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
                                     <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
-                                    <td class="col-md-2">{{updated}}</td>
+                                    <!-- <td class="col-md-2">{{updated}}</td> -->
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                  <td class="col-md-2">{{signature.client_date}}</td>
+                  <td class="col-md-2">{{project.crew_chief}}</td>
+                  <td class="col-md-2">{{project.project_advocate}}</td>
+                   <td class="col-md-2">{{project.site_host}}</td>
                   <!-- <td class="col-md-2">{{app_name}}</td> -->
                                 </tr>
                             {{/each}}
@@ -64,7 +68,6 @@
                 </div>
             </div>
         </div>
-
 
       <div role="tablist" aria-multiselectable="true">
             <div class="card">

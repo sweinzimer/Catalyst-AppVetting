@@ -529,23 +529,23 @@ getDocumentPlanning: function (req, res, next) {
                         // handle: DocumentPackage.find({status: "handle", app_year : year}).lean().execAsync(),
                         // project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync(),
 
-                        handle: DocumentPackage.find({project: {status: "handle"}}).sort({ updated: -1 }).lean().execAsync(),
-                        project: DocumentPackage.find({project: {status: "project"}}).sort({ updated: -1 }).lean().execAsync(),
+                        handle: DocumentPackage.find({"project.status": "handle"}).sort({ updated: -1 }).lean().execAsync(),
+                        project: DocumentPackage.find({"project.status": "project"}).sort({ updated: -1 }).lean().execAsync(),
 
-                        handleToBeAssigned: DocumentPackage.find({project: {status: "handleToBeAssigned"}}).sort({ updated: -1 }).lean().execAsync(),
-                        projectUpcoming: DocumentPackage.find({project: {status: "projectUpcoming"}}).sort({ updated: -1 }).lean().execAsync(),
+                        handleToBeAssigned: DocumentPackage.find({"project.status": "handleToBeAssigned"}).sort({ updated: -1 }).lean().execAsync(),
+                        projectUpcoming: DocumentPackage.find({"project.status": "projectUpcoming"}).sort({ updated: -1 }).lean().execAsync(),
                         
-                        handleAssigned: DocumentPackage.find({project: {status: "handleAssigned"}}).sort({ updated: -1 }).lean().execAsync(),
-                        projectInProgress: DocumentPackage.find({project: {status: "projectInProgress"}}).sort({ updated: -1 }).lean().execAsync(),
-                        projectGoBacks: DocumentPackage.find({project: {status: "projectGoBacks"}}).sort({ updated: -1 }).lean().execAsync(),
-                        projectCompleted: DocumentPackage.find({project: {status: "projectCompleted"}}).sort({ updated: -1 }).lean().execAsync(),
-                        handleCompleted: DocumentPackage.find({project: {status: "handleCompleted"}}).sort({ updated: -1 }).lean().execAsync(),
-                        nostatus: DocumentPackage.find({project: {status: "nostatus"}}).sort({ updated: -1 }).lean().execAsync(),
+                        handleAssigned: DocumentPackage.find({"project.status": "handleAssigned"}).sort({ updated: -1 }).lean().execAsync(),
+                        projectInProgress: DocumentPackage.find({"project.status": "projectInProgress"}).sort({ updated: -1 }).lean().execAsync(),
+                        projectGoBacks: DocumentPackage.find({"project.status": "projectGoBacks"}).sort({ updated: -1 }).lean().execAsync(),
+                        projectCompleted: DocumentPackage.find({"project.status": "projectCompleted"}).sort({ updated: -1 }).lean().execAsync(),
+                        handleCompleted: DocumentPackage.find({"project.status": "handleCompleted"}).sort({ updated: -1 }).lean().execAsync(),
+                        nostatus: DocumentPackage.find({"project.status": "nostatus"}).sort({ updated: -1 }).lean().execAsync(),
 
                         completed: DocumentPackage.find({
                                 "$or":  [
-                                            {project: {status: "projectCompleted"}}, 
-                                            {project: {status: "handleCompleted"}}
+                                            {"project.status": "projectCompleted"}, 
+                                            {"project.status": "handleCompleted"}
                                         ]
                         }).sort({ updated: -1 }).lean().execAsync()
 
@@ -956,10 +956,19 @@ getDocumentPlanning: function (req, res, next) {
         //     id = req.body.id;
         // }
         if(req.body.name == "status") {
-
-                var status = { status: req.body.value };
-                updates['project'] = status;
+                updates = {"project.status":req.body.value };
+                //updates = {project: {"status": req.body.value}};
         }
+        else if (req.body.name == "crew_chief") {
+                updates = {"project.crew_chief":req.body.value };
+        }
+        else if (req.body.name == "project_advocate") {
+                updates = {"project.project_advocate":req.body.value };
+        }
+        else if (req.body.name == "site_host") {
+                updates = {"project.site_host":req.body.value };
+        }
+
         // else {
         
         //     if(req.params.id != null) {
