@@ -15,87 +15,47 @@
 <div class="row">
     <div class="col-xs-12">
         
-    <!-- Section that holds approved documents -->
-       <div role="tablist" aria-multiselectable="true">
+        <!-- Section that holds approved documents -->
+         <div role="tablist" aria-multiselectable="true">
             <div class="card">
                 <div class="card-header bg-pink" role="tab" id="headingOne">
-
                     <h5 class="mb-0">
                         <a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="text-white">
-                            Handle-its: Assigned <div style="float: right;">{{handleAssigned.length}}</div>
+                            Handle-its: To Be Assigned <div style="float: right;">{{handle.length}}</div>
                         </a>
                     </h5>
-
-                </div>
-                <div id="collapseOne" class="collapse in" role="tabpanel" aria-labelledby="headingOne">
-                    <div class="card-block">
-                        <table class="table table-sm table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th class="col-md-2">Name</th>
-                                <th class="col-md-2">Last Edit</th>
-                                <th class="col-md-2">Status</th>
-                <th class="col-md-2">Application Date</th>
-                <th class="col-md-2">Application Number</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {{#each handleAssigned}}
-                                <tr class="clickable-row" data-href="/projectview/{{_id}}">
-                                    <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
-                                    <td class="col-md-2">{{updated}}</td>
-                                    <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                  <td class="col-md-2">{{signature.client_date}}</td>
-                  <td class="col-md-2">{{app_name}}</td>
-                                </tr>
-                            {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div role="tablist" aria-multiselectable="true">
-            <div class="card">
-                <div class="card-header bg-pink" role="tab" id="headingTwo">
-                    <h5 class="mb-0">
-                        <a data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" class="text-white">
-                            Handle-its: Yet to Be Assigned <div style="float: right;">{{handle.length}}</div>
-                        </a>
-                    </h5>
-<!--           <div id="year_select">
-          <form class="display_year">
-            <select name="year" id="displayYear">
-              {{#each year}}
-              <option value={{yearValue}}>{{yearValue}}</option>
-              {{/each}}
-            </select>
-          </form>
-          </div> -->
+                                <!--           <div id="year_select">
+                                          <form class="display_year">
+                                            <select name="year" id="displayYear">
+                                              {{#each year}}
+                                              <option value={{yearValue}}>{{yearValue}}</option>
+                                              {{/each}}
+                                            </select>
+                                          </form>
+                                          </div> -->
             
                 </div>
-                <div id="collapseTwo" class="collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                <div id="collapseOne" class="collapse in" role="tabpanel" aria-labelledby="headingOne">
                     <div class="card-block">
                         <table class="table table-sm table-bordered table-hover" id="project_table">
                             <thead>
                             <tr>
                                 <th class="col-md-2">Name</th>
+                                <th class="col-md-2">Address</th>
                                 <th class="col-md-2">Last Edit</th>
                                 <th class="col-md-2">Status</th>
                 <th class="col-md-2">Application Date</th>
-                <th class="col-md-2">Application Number</th>
                             </tr>
                             </thead>
                             <tbody>
                             {{#each handle}}
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
+                                    <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                     <td class="col-md-2">{{updated}}</td>
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
                   <td class="col-md-2">{{signature.client_date}}</td>
-                  <td class="col-md-2">{{app_name}}</td>
+                  <!-- <td class="col-md-2">{{app_name}}</td> -->
                                 </tr>
                             {{/each}}
                             </tbody>
@@ -106,6 +66,45 @@
         </div>
 
 
+      <div role="tablist" aria-multiselectable="true">
+            <div class="card">
+                <div class="card-header bg-pink" role="tab" id="headingTwo">
+
+                    <h5 class="mb-0">
+                        <a data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" class="text-white">
+                            Handle-its: Assigned <div style="float: right;">{{handleAssigned.length}}</div>
+                        </a>
+                    </h5>
+
+                </div>
+                <div id="collapseTwo" class="collapse in" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="card-block">
+                        <table class="table table-sm table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="col-md-2">Name</th>
+                                <th class="col-md-2">Address</th>
+                                <th class="col-md-2">Last Edit</th>
+                                <th class="col-md-2">Status</th>
+                <th class="col-md-2">Application Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#each handleAssigned}}
+                                <tr class="clickable-row" data-href="/projectview/{{_id}}">
+                                    <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
+                                    <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
+                                    <td class="col-md-2">{{updated}}</td>
+                                    <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
+                  <td class="col-md-2">{{signature.client_date}}</td>
+                                </tr>
+                            {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 <!--        <div role="tablist" aria-multiselectable="true">
@@ -139,7 +138,7 @@
                             {{#each completed}}
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
-                                    <td class="col-md-2">{{city}}</td>
+                                    <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
                   <td class="col-md-2">{{signature.client_date}}</td>
                   <td class="col-md-2">{{app_name}}</td>
@@ -170,20 +169,22 @@
                             <thead>
                             <tr>
                                 <th class="col-md-2">Name</th>
+                                <th class="col-md-2">Address</th>
                                 <th class="col-md-2">Last Edit</th>
                                 <th class="col-md-2">Status</th>
                 <th class="col-md-2">Application Date</th>
-                <th class="col-md-2">Application Number</th>
+                <!-- <th class="col-md-2">Application Number</th> -->
                             </tr>
                             </thead>
                             <tbody>
                             {{#each projectInProgress}}
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
+                                    <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                     <td class="col-md-2">{{updated}}</td>
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
                   <td class="col-md-2">{{signature.client_date}}</td>
-                  <td class="col-md-2">{{app_name}}</td>
+                 <!--  <td class="col-md-2">{{app_name}}</td> -->
                                 </tr>
                             {{/each}}
                             </tbody>
@@ -211,20 +212,22 @@
                             <thead>
                             <tr>
                                 <th class="col-md-2">Name</th>
+                                <th class="col-md-2">Address</th>
                                 <th class="col-md-2">Last Edit</th>
                                 <th class="col-md-2">Status</th>
                 <th class="col-md-2">Application Date</th>
-                <th class="col-md-2">Application Number</th>
+                <!-- <th class="col-md-2">Application Number</th> -->
                             </tr>
                             </thead>
                             <tbody>
                             {{#each projectGoBacks}}
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
+                                    <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                     <td class="col-md-2">{{updated}}</td>
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
                   <td class="col-md-2">{{signature.client_date}}</td>
-                  <td class="col-md-2">{{app_name}}</td>
+                  <!-- <td class="col-md-2">{{app_name}}</td> -->
                                 </tr>
                             {{/each}}
                             </tbody>
@@ -252,20 +255,22 @@
                             <thead>
                             <tr>
                                 <th class="col-md-2">Name</th>
+                                <th class="col-md-2">Address</th>
                                 <th class="col-md-2">Last Edit</th>
                                 <th class="col-md-2">Status</th>
                 <th class="col-md-2">Application Date</th>
-                <th class="col-md-2">Application Number</th>
+                <!-- <th class="col-md-2">Application Number</th> -->
                             </tr>
                             </thead>
                             <tbody>
                             {{#each project}}
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
+                                    <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                     <td class="col-md-2">{{updated}}</td>
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
                   <td class="col-md-2">{{signature.client_date}}</td>
-                  <td class="col-md-2">{{app_name}}</td>
+                  <!-- <td class="col-md-2">{{app_name}}</td> -->
                                 </tr>
                             {{/each}}
                             </tbody>
@@ -302,10 +307,11 @@
                             <thead>
                             <tr>
                                 <th class="col-md-2">Name</th>
+                                <th class="col-md-2">Address</th>
                                 <th class="col-md-2">Last Edit</th>
                                 <th class="col-md-2">Status</th>
                                 <th class="col-md-2">Application Date</th>
-                                <th class="col-md-2">Application Number</th>
+                                <!-- <th class="col-md-2">Application Number</th> -->
                             </tr>
                             </thead>
                             <tbody>
@@ -313,10 +319,11 @@
                         {{#each completed}}
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
+                                    <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                     <td class="col-md-2">{{updated}}</td>
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
                                     <td class="col-md-2">{{signature.client_date}}</td>
-                                    <td class="col-md-2">{{app_name}}</td>
+                                    <!-- <td class="col-md-2">{{app_name}}</td> -->
                                 </tr>
                         {{/each}}
                 </div>
@@ -378,7 +385,7 @@
                 <div class="card-header bg-warning" role="tab" id="headingFour">
                     <h5 class="mb-0">
                         <a data-toggle="collapse" href="#collapseEight" aria-expanded="true" aria-controls="collapseFour" class="text-white">
-                            Others (Please give a Project status) <div style="float: right;">{{nostatus.length}}</div>
+                            Others (Yellow Bin) <div style="float: right;">{{nostatus.length}}</div>
                         </a>
                     </h5>
          
@@ -399,20 +406,22 @@
                             <thead>
                             <tr>
                                 <th class="col-md-2">Name</th>
+                                <th class="col-md-2">Address</th>
                                 <th class="col-md-2">Last Edit</th>
                                 <th class="col-md-2">Status</th>
                 <th class="col-md-2">Application Date</th>
-                <th class="col-md-2">Application Number</th>
+                <!-- <th class="col-md-2">Application Number</th> -->
                             </tr>
                             </thead>
                             <tbody>
                             {{#each nostatus}}
                                 <tr class="clickable-row" data-href="/projectview/{{_id}}">
                                     <td class="col-md-2"><a href="/projectview/{{_id}}">{{application.name.first}} {{application.name.last}}</a></td>
+                                    <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                     <td class="col-md-2">{{updated}}</td>
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
                   <td class="col-md-2">{{signature.client_date}}</td>
-                  <td class="col-md-2">{{app_name}}</td>
+                  <!-- <td class="col-md-2">{{app_name}}</td> -->
                                 </tr>
                             {{/each}}
                             </tbody>
@@ -467,6 +476,8 @@
             all[0].style.display = 'block';
         }
     }
+
+
 </script>
 
 <style type="text/css">

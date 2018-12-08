@@ -698,6 +698,11 @@ function isLoggedInPost(req, res, next) {
 							return next();
 
 						}
+						else if (results.user.user_roles !== undefined && (results.user.user_roles.indexOf('VET') >-1|| results.user.user_roles.indexOf('PROJECT_MANAGEMENT') >-1))
+                        {
+                            
+                            return next();
+                        }
 						else {
 							//user is not a vetting agent or admin, route to error handler
 							res.locals.status = 406;
