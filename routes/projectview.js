@@ -4,8 +4,10 @@ var mongoose = require('mongoose');
 var db = require('../mongoose/connection');
 var DocumentPackage = require('../models/documentPackage');
 
+
 //var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
 // var PartnerPackage = require('../models/partners.js');
+var ProjectPlanPackage = require('../models/projectPlanPackage.js');
 var ProjectWrapUpPackage = require('../models/projectWrapUpPackage.js');
 
 var api = require('../controllers/api');
@@ -63,7 +65,7 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 
   router
     .get('/:id', isLoggedIn, api.getDocumentSite, api.getProjPartnersLeaders,
-         api.getAssignableUsers, api.getWrapUpDoc,
+         api.getAssignableUsers, api.getWrapUpDoc, api.getProjectPlanDoc,
          function(req, res, next) {
            //Checking what's in params
            //console.log("Rendering application " + ObjectId(req.params.id));
@@ -75,12 +77,13 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
 	         payload.work = res.locals.results.work;
 	         payload.user = req.user._id;
 	         payload.user_email = res.locals.email;
-			 payload.user_role = res.locals.role;
-			 payload.user_roles = res.locals.user_roles;
+			     payload.user_role = res.locals.role;
+			     payload.user_roles = res.locals.user_roles;
 	         payload.projectNotes = res.locals.results.projectNotes;
-           	 payload.assignableUsers = res.locals.assignableUsers;
-             payload.wrapUp = res.locals.wrapUp ? res.locals.wrapUp : ProjectWrapUpPackage.empty(req.params.id);
+           payload.assignableUsers = res.locals.assignableUsers;
+           payload.wrapUp = res.locals.wrapUp ? res.locals.wrapUp : ProjectWrapUpPackage.empty(req.params.id);
 	         payload.part = res.locals.results.part||req.partnerTime;			//Data for Partners Tab Partial
+           payload.plan = res.locals.plan || ProjectPlanPackage.empty(req.params.id)
 	         payload.partDocId = res.locals.results.doc[0]._id;
 	         console.log("results");
            console.log(payload);
@@ -132,10 +135,20 @@ router.route('/wrapup')
         else{
           res.json(res.locals);
         }
+      });
+router.route('/plan')
+      .post(isLoggedInPost, api.saveProjectPlan, function(req, res) {
+	      if(res.locals.status != '200'){
+          res.status(500).send("Could not update plan");
+        }
+        else{
+          res.json(res.locals);
+        }
       })
+
 	
-//route catches invalid post requests.
-router.use('*', function route2(req, res, next) {
+  //route catches invalid post requests.
+  router.use('*', function route2(req, res, next) {
 	if(res.locals.status == '406'){
 		console.log("in error function");
         res.status(406).send("Could not update note");
@@ -223,6 +236,8 @@ function isLoggedIn(req, res, next) {
 					}
 					else {
 						if(results.user.user_status == "ACTIVE") {
+              res.locals.assign_tasks = results.user.assign_tasks;
+
 							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN" || results.user.user_role == "SITE") {
 								res.locals.email = results.user.contact_info.user_email;
 								res.locals.role = results.user.user_role;

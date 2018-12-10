@@ -51,7 +51,11 @@
                 <a class="nav-link" href="/application/add">Apply</a>
             </li>
 
-           
+            {{#if assign_tasks}}
+            <li class="nav-item">
+              <a class="nav-link" href="/tasks">Tasks</a>
+            </li>
+            {{/if}}
           
             {{#if_in user_roles "VET"}}
             <li class="nav-item">
@@ -77,6 +81,7 @@
               <a class="nav-link" href="/projectsummary">Project Summary</a>
             </li>
             {{/if_in}}
+
 
         </ul>
         <div class="navbar-right">

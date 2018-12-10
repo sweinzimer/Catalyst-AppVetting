@@ -2979,7 +2979,7 @@ getDocumentPlanning: function (req, res, next) {
     }).catch(next);
   },
 
-  // Create / Update Assessment Checklist record
+  // Create / Update Project WrapUp record
   saveProjectWrapUp: function(req, res, next) {
     console.log('Saving Project Summary Status for: ' + req.body.applicationId);
 
@@ -2995,11 +2995,71 @@ getDocumentPlanning: function (req, res, next) {
       ).execAsync()
     }).then(function (results) {
       console.log(results);
-      if (results.assessment !== null) {
+      if (results.projectWrapUp !== null) {
         console.log('[ API ] saveProjectWrapUp :: Project found: TRUE');
         res.locals.status = '200';
       } else {
         console.log('[ API ] saveProjectWrapUp :: Project found: FALSE');
+        res.locals.status = '500';
+      }
+      res.locals.results = results
+
+      next();
+
+    }).catch(function (err) {
+      console.error(err)
+      
+    }).catch(next);
+  },
+
+  // Find the project plan document for a project.
+  getProjectPlanDoc: function (req, res, next) {
+    Promise.props({
+      plan: ProjectPlanPackage.find({ applicationId: ObjectId(req.params.id) }).execAsync()
+
+    }).then(function (results) {
+      if (results.plan.length <= 0) {
+        console.log('Req Params [getProjectPlanDoc] ', req.params);
+        // Create new ProjectPlan and set that as new ProjectPlan.
+        ProjectPlanPackage.create(
+          ProjectPlanPackage.empty( ObjectId(req.params.id) ),
+          function(err, plan) {
+            if (err) {
+              next(err)
+            } else {
+              res.locals.plan = plan
+              next()
+            }
+          })
+      } else {
+        // Just set the existing ProjectPlan
+        res.locals.plan = results.plan[0]
+        next();
+      }
+    }).catch(next);
+  },
+
+  // Create / Update Project Plan record
+  saveProjectPlan: function(req, res, next) {
+    console.log('Saving Project Plan Status for: ' + req.body.applicationId);
+
+    Promise.props({
+      plan: ProjectPlanPackage.findOneAndUpdate(
+        { applicationId: req.body.applicationId },
+        { $set: req.body },
+        { new: true,
+          upsert: true,
+          runValidators: true,
+          setDefaultsOnInsert: true
+        }
+      ).execAsync()
+    }).then(function (results) {
+      console.log(results);
+      if (results.plan !== null) {
+        console.log('[ API ] saveProjectPlan :: Project found: TRUE');
+        res.locals.status = '200';
+      } else {
+        console.log('[ API ] saveProjectPlan :: Project found: FALSE');
         res.locals.status = '500';
       }
       res.locals.results = results

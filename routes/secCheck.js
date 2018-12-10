@@ -127,7 +127,9 @@ function isLoggedInPost(req, res, next, targetRole) {
                 }
                 else {
                     if(results.user.user_status == "ACTIVE") {
-                       if( results.user.user_roles.includes(targetRole) || results.user.user_roles.includes('ADMIN')) {
+                      res.locals.assign_tasks = results.user.assign_tasks;
+
+                      if( results.user.user_roles.includes(targetRole) || results.user.user_roles.includes('ADMIN')) {
                             res.locals.email = results.user.contact_info.user_email;
                             res.locals.role = results.user.user_role;
                             return next();

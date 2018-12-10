@@ -637,6 +637,8 @@ function isLoggedIn(req, res, next) {
 					}
 					else {
 						if(results.user.user_status == "ACTIVE") {
+              res.locals.assign_tasks = results.user.assign_tasks;
+              
 							if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
 								res.locals.email = results.user.contact_info.user_email;
 								res.locals.role = results.user.user_role;
