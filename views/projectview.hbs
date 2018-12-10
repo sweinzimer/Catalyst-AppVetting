@@ -397,7 +397,7 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
                <!--  <div class="col-xs-12 col-sm-6"> -->
                   <h4>Summary</h4>
                   <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
-                  <textarea id="site_summary" rows="3" class="form-control">{{notes.site_summary}}</textarea>
+                  <textarea id="site_summary" readonly rows="3" class="form-control">{{notes.site_summary}}</textarea>
                 
                <!--  </div> -->
 
@@ -417,19 +417,52 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
         {{> partners}}
 
         <div class="col-xs-12 col-sm-6">
-          <h4>Summary</h4>
-          <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
-          <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
+          <!--VETTING NOTES-->
+          <h3>Project Notes</h3>
+          <div class="form-group">
+            <form method="post">
+              <input type="hidden" value="{{doc._id}}" id="appId"/>
+              <input type="hidden" value="{{user}}" id="userId"/>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th >Date</th>
+                    <th>Note</th>
+                    <th>Submitted By</th>
+                 </tr>
+                </thead>
+                <tbody id="notes-body">
+                  {{#if projectNotes}}
+                    {{#each projectNotes}}
+                      <tr>
+                        <td>{{this.date}}</td>
+                        <td class="note-descrip">{{this.description}}</td>
+                        <td class="note-vetAgent">{{this.projectPlanner}}</td>                       
+                      </tr>
+                    {{/each}}
+                  {{else}}
+                    <tr>
+                      <td id="empty-notes" class="alert-danger danger" colspan="3">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
+                      </td>
+                    </tr>
+                  {{/if}}
+
+                  <tr><!--THIS EMPTY ROW IS NECESSARY FOR addProjectNote.js TO WORK ON MULTIPLE PAGES--></tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
         </div>
       </div><!-- end #partners -->
       
 
       <div class="tab-pane" id="planning" role="tabpanel"><!-- start #planning -->
         <br />
-        {{#each results.assessment}}
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <h4>Planning Info</h4>
+               {{#each results.assessment}}       
               <table class="table">
                 <tr>
                   <th class="col-sm-3">Lead: </th>
@@ -521,20 +554,54 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
                 </tr>
 
               </table>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-              <h4>Summary</h4>
-              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
-              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
-            </div>
-          </div>
+              
         {{/each}}
+            </div>
+            
+        <div class="col-xs-12 col-sm-6">
+          <!--VETTING NOTES-->
+          <h3>Project Notes</h3>
+          <div class="form-group">
+            <form method="post">
+              <input type="hidden" value="{{doc._id}}" id="appId"/>
+              <input type="hidden" value="{{user}}" id="userId"/>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th >Date</th>
+                    <th>Note</th>
+                    <th>Submitted By</th>
+                 </tr>
+                </thead>
+                <tbody id="notes-body">
+                  {{#if projectNotes}}
+                    {{#each projectNotes}}
+                      <tr>
+                        <td>{{this.date}}</td>
+                        <td class="note-descrip">{{this.description}}</td>
+                        <td class="note-vetAgent">{{this.projectPlanner}}</td>                       
+                      </tr>
+                    {{/each}}
+                  {{else}}
+                    <tr>
+                      <td id="empty-notes" class="alert-danger danger" colspan="3">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
+                      </td>
+                    </tr>
+                  {{/if}}
+
+                  <tr><!--THIS EMPTY ROW IS NECESSARY FOR addProjectNote.js TO WORK ON MULTIPLE PAGES--></tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+        </div>
+          </div>
       </div><!-- end #planning -->
 
 <!-- start #leaders -->
       <div class="tab-pane" id="leaders" role="tabpanel">
-        <br />
-        {{#each results.doc}}
+        <br />      
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <h4>Leaders Info</h4>
@@ -543,31 +610,65 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
                 <tr>
                   <th class="col-sm-3">Crew Chief</th>
                   <td class="col-sm-9">
-                    <a href="#" id="crew_chief" data-type="text" data-pk="{{_id}}" data-url="/edit/project/{{_id}}" data-name="crew_chief" data-title="Crew Chief">{{project.crew_chief}}</a>
+                    <a href="#" id="crew_chief" data-type="text" data-pk="{{doc._id}}" data-url="/edit/project/{{doc._id}}" data-name="crew_chief" data-title="Crew Chief">{{doc.project.crew_chief}}</a>
                 </tr>
 
                 <tr>
                   <th class="col-sm-3">Project Advocate</th>
                   <td class="col-sm-9">
-                    <a href="#" id="project_advocate" data-type="text" data-pk="{{_id}}" data-url="/edit/project/{{_id}}" data-name="project_advocate" data-title="Project Advocate">{{project.project_advocate}}</a>
+                    <a href="#" id="project_advocate" data-type="text" data-pk="{{doc._id}}" data-url="/edit/project/{{doc._id}}" data-name="project_advocate" data-title="Project Advocate">{{doc.project.project_advocate}}</a>
                   </td>
                 </tr>
 
                 <tr>
                   <th class="col-sm-3">Site Host</th>
                   <td class="col-sm-9">
-                    <a href="#" id="site_host" data-type="text" data-pk="{{_id}}" data-url="/edit/project/{{_id}}" data-name="site_host" data-title="Site Host">{{project.site_host}}</a>
+                    <a href="#" id="site_host" data-type="text" data-pk="{{doc._id}}" data-url="/edit/project/{{doc._id}}" data-name="site_host" data-title="Site Host">{{doc.project.site_host}}</a>
                   </td>
                 </tr>
               </table>
             </div>
-            <div class="col-xs-12 col-sm-6">
-              <h4>Summary</h4>
-              <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
-              <textarea id="site_summary" rows="10" class="form-control">{{notes.site_summary}}</textarea>
-            </div>
+           
+        <div class="col-xs-12 col-sm-6">
+          <!--VETTING NOTES-->
+          <h3>Project Notes</h3>
+          <div class="form-group">
+            <form method="post">
+              <input type="hidden" value="{{doc._id}}" id="appId"/>
+              <input type="hidden" value="{{user}}" id="userId"/>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th >Date</th>
+                    <th>Note</th>
+                    <th>Submitted By</th>
+                 </tr>
+                </thead>
+                <tbody id="notes-body">
+                  {{#if projectNotes}}
+                    {{#each projectNotes}}
+                      <tr>
+                        <td>{{this.date}}</td>
+                        <td class="note-descrip">{{this.description}}</td>
+                        <td class="note-vetAgent">{{this.projectPlanner}}</td>                       
+                      </tr>
+                    {{/each}}
+                  {{else}}
+                    <tr>
+                      <td id="empty-notes" class="alert-danger danger" colspan="3">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No Notes To Display
+                      </td>
+                    </tr>
+                  {{/if}}
+
+                  <tr><!--THIS EMPTY ROW IS NECESSARY FOR addProjectNote.js TO WORK ON MULTIPLE PAGES--></tr>
+                </tbody>
+              </table>
+            </form>
           </div>
-        {{/each}}
+        </div>
+          </div>
+        
       </div>
       <!-- end #leaders -->
 
@@ -1001,7 +1102,7 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
    $('.work-item-delete').on('click', showWorkItemDeleteConfirm)
    $('.work-item-new').on('click', handleNewWorkItemSubmission)
    $('.work-item-clear').on('click', handleNewWorkItemClear)
-   $('#site_summary').on('keyup', handleSiteSummaryInput)
+   
 
     $('#crew_chief').editable();
     $('#project_advocate').editable();
