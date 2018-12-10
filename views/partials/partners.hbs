@@ -440,7 +440,7 @@
 
         xhr(sendData, 'POST', '/partners/createPartner', function(err) {
             if (err) {
-                alert('Value did not save, please reload the page');
+            	console.log(err);
             }
             else {
                 window.location.reload(true);
@@ -509,7 +509,7 @@
 
       //check for error
       posting.done(function (xhr) {
-       alert("Posted!");
+       //alert("Posted!");
         if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
           next(null, xhr)
         } else {
@@ -518,7 +518,7 @@
       });
 
       posting.fail(function (res) {
-      alert("Posting Failed!");
+      //alert("Posting Failed!");
         next(new Error('Could not complete xhr'))
       });
     }
