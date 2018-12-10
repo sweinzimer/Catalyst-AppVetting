@@ -101,7 +101,8 @@ router.route('/createPartner', isLoggedIn)
     }
     else {
     	console.log("res: " + res);
-        res.json(res.locals);
+        //res.json(res.locals);
+        res.status(200).end();
     }
 });
 
