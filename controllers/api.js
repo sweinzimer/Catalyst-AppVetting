@@ -1560,9 +1560,10 @@ getDocumentPlanning: function (req, res, next) {
                 console.log('[ API ] createPartner :: New Partner created with _id: ' + item._id);
                 console.log(item);
                 //send note ID so it can be referenced without page refresh
-                res.send( { status : 200, _id: item._id } );
+                //res.send( { status : 200, _id: item._id } );
+                res.locals.status = '200';
             } else {
-                console.log ('[ API ] :: createPartner error.')
+                console.log ('[ API ] :: createPartner error.');
             }
             next();
         });
