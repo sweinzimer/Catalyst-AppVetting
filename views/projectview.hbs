@@ -222,7 +222,7 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
         <div class="col-xs-12">
           <h1 style="display:inline-block;">{{application.name.first}} {{application.name.middle}} {{application.name.last}}</h1>
           <h4 style="float:center;margin-left:50px;display:inline-block;">{{application.address.line_1}}{{#if_not_eq application.address.line_2 ''}}, {{application.address.line_2}}{{/if_not_eq}}, {{application.address.city}}, {{application.address.state}} {{application.address.zip}}</h4> 
-          <h3 style="float:right;display:inline-block;" class="text-muted">#{{app_name}}</h4>
+          <h3 style="float:right;display:inline-block;" class="text-muted">#{{app_name}}</h3>
         </div>
       </div>
       <h5>Status: <a href="#" id="status" data-type="select" data-pk="{{_id}}" data-url="/edit/project/{{_id}}" data-name="status" data-title="Select status"></a></h5>
