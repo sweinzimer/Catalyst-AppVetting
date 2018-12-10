@@ -956,8 +956,23 @@ getDocumentPlanning: function (req, res, next) {
         //     id = req.body.id;
         // }
         if(req.body.name == "status") {
+
+            if (req.body.value == 'projWithdrawn') {
+
+                updates =   {   "status":"withdrawn",
+                                "project.status":req.body.value 
+                            };
+            } else if (req.body.value == 'projDeclined') {
+
+                updates =   { 
+                                "status":"declined",
+                                "project.status":req.body.value 
+                            };
+            } else {
                 updates = {"project.status":req.body.value };
-                //updates = {project: {"status": req.body.value}};
+            }
+
+            //updates = {project: {"status": req.body.value}};
         }
         else if (req.body.name == "crew_chief") {
                 updates = {"project.crew_chief":req.body.value };
