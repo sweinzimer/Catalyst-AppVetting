@@ -509,6 +509,7 @@
 
       //check for error
       posting.done(function (xhr) {
+       alert("Posted!");
         if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
           next(null, xhr)
         } else {
@@ -517,6 +518,7 @@
       });
 
       posting.fail(function (res) {
+      alert("Posting Failed!");
         next(new Error('Could not complete xhr'))
       });
     }
