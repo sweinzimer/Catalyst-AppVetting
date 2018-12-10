@@ -541,13 +541,13 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
         <tr>
           <th class="col-xs-12 col-sm-6">Start Date</th>
           <td class="col-xs-6 col-sm-6">
-            <input type="date" />
+            <input type="date" name="start_date" class="start_date" />
           </td>
         </tr>
         <tr>
           <th class="col-xs-12 col-sm-6">End Date</th>
           <td colspan="2" class="col-xs-6 col-sm-6">
-            <input type="date" />
+            <input type="date" name="end_date" class="end_date" />
           </td>
         </tr>
 
@@ -1266,29 +1266,29 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
    $('.work-item-clear').on('click', handleNewWorkItemClear)
    $('#site_summary').on('keyup', handleSiteSummaryInput)
 
-    $('#crew_chief').editable();
-    $('#project_advocate').editable();
-    $('#site_host').editable();
+   $('#crew_chief').editable();
+   $('#project_advocate').editable();
+   $('#site_host').editable();
 
    $('#status').editable({
      value: docs[0].project.status,     //POST to /edit/project will update this status in project.status field.
      source: [
-        {value: 'handleAssigned', text: 'Handle-It - Assigned'},
-        {value: 'handle', text: 'Handle-It - To Be Assigned'},         //handleToBeAssigned
-        {value: 'projectGoBacks', text: 'Project - Go Backs'},
-        {value: 'projectInProgress', text: 'Project - In Progress'},
-        {value: 'project', text: 'Project - Upcoming'},                //projectUpcoming
-        {value: 'handleCompleted', text: 'Completed handle-it task'},
-        {value: 'projectCompleted', text: 'Completed project'},
-        {value: 'nostatus', text: '(Send to Yellow Bin - No Status)'},
+       {value: 'handleAssigned', text: 'Handle-It - Assigned'},
+       {value: 'handle', text: 'Handle-It - To Be Assigned'},         //handleToBeAssigned
+       {value: 'projectGoBacks', text: 'Project - Go Backs'},
+       {value: 'projectInProgress', text: 'Project - In Progress'},
+       {value: 'project', text: 'Project - Upcoming'},                //projectUpcoming
+       {value: 'handleCompleted', text: 'Completed handle-it task'},
+       {value: 'projectCompleted', text: 'Completed project'},
+       {value: 'nostatus', text: '(Send to Yellow Bin - No Status)'},
      ]
    });
 
    // Enable tooltips.
    $('[data-toggle="tooltip"]').tooltip();
    
-   $('#wrapUp input:checkbox').change(updateWrapup);
-   $('#planning input:checkbox').change(updatePlan);
+   $('#wrapUp input:checkbox, #wrapUp input[type="date"]').change(updateWrapup);
+   $('#planning input:checkbox, #planning input[type="date"]').change(updatePlan);
    
    // Populate the owner dropdown boxes with assignable users. Save them when changed.
    $('#wrapUp .task-owner').each(function () {
@@ -1488,41 +1488,41 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
 
 
 
-  function showWorkItemDeleteConfirm(e) {
-    e.preventDefault()
-    var workItemParent = this.parentElement
-    var workItemContainer = $(workItemParent)
-    var workItemId = $(workItemParent.parentElement).attr('name')
+ function showWorkItemDeleteConfirm(e) {
+   e.preventDefault()
+   var workItemParent = this.parentElement
+   var workItemContainer = $(workItemParent)
+   var workItemId = $(workItemParent.parentElement).attr('name')
 
-    var currentData = {}
-    $('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
-      var path = $(this).attr('name').replace(workItemId + '.', '')
-      currentData[path] = this.innerText
-    })
+   var currentData = {}
+   $('[name*="' + workItemId + '"]', workItemContainer).each(function(idx) {
+     var path = $(this).attr('name').replace(workItemId + '.', '')
+     currentData[path] = this.innerText
+   })
 
-    workItemContainer.empty()
+   workItemContainer.empty()
 
-    $('<h4>Are you sure?</h4>').appendTo(workItemParent)
-    $('<p>You are about to delete this work item. After selecting confirm, you '
-      + 'will be unable to recover the item.</p>').appendTo(workItemParent)
+   $('<h4>Are you sure?</h4>').appendTo(workItemParent)
+   $('<p>You are about to delete this work item. After selecting confirm, you '
+   + 'will be unable to recover the item.</p>').appendTo(workItemParent)
 
-    $('<a>Continue</a>').addClass('btn').addClass('btn-primary')
-    .appendTo(workItemParent)
-    .on('click', function(e) {
-      deleteWorkItem(workItemId, workItemParent)
-    })
+   $('<a>Continue</a>').addClass('btn').addClass('btn-primary')
+                                                       .appendTo(workItemParent)
+                                                       .on('click', function(e) {
+                                                         deleteWorkItem(workItemId, workItemParent)
+                                                       })
 
-    $('<a>Cancel</a>').addClass('btn').addClass('btn-danger')
-    .appendTo(workItemParent)
-    .on('click', function(e) {
-      e.preventDefault()
-      for (let i=0; i<workItems.length; i++) {
-        if (workItems[i]._id === workItemId) {
-          showWorkItem(workItems[i], workItemContainer)
-        }
-      }
-    })
-  }
+   $('<a>Cancel</a>').addClass('btn').addClass('btn-danger')
+                                                       .appendTo(workItemParent)
+                                                       .on('click', function(e) {
+                                                         e.preventDefault()
+                                                         for (let i=0; i<workItems.length; i++) {
+                                                           if (workItems[i]._id === workItemId) {
+                                                             showWorkItem(workItems[i], workItemContainer)
+                                                           }
+                                                         }
+                                                       })
+ }
 
 
  function saveWorkItem(node) {
@@ -1794,7 +1794,11 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
  }
 
  function updatePlan() {
-   console.log(arguments)
+
+   plan.start_date = $('#planning .start_date').val();
+   plan.end_date = $('#planning .end_date').val();
+   console.log('Start: ', plan.start_date, ', End: ', plan.end_date);
+   
    $('#planning input:checkbox').each(function () {
      var $this = $(this);
      var name = $this.attr('name')
@@ -1856,7 +1860,7 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
    });
  }
 
-// function hideWorkAddBtn() {
-//      document.getElementById("workAddBtn").style.display = "none";
-// }
+ // function hideWorkAddBtn() {
+ //      document.getElementById("workAddBtn").style.display = "none";
+ // }
 </script>

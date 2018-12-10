@@ -298,8 +298,9 @@ function isLoggedIn(req, res, next) {
 					if (!results) {
 						res.redirect('/user/login');
 					}
-					else {
-						if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
+				else {
+          res.locals.assign_tasks = results.user.assign_tasks;
+					if(results.user.user_role == "VET" || results.user.user_role == "ADMIN") {
 							
 							res.locals.role = results.user.user_role;
 							res.locals.user_roles = results.user.user_roles;

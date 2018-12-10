@@ -137,6 +137,31 @@ ProjectPlanPackageSchema.methods.getCompletedDate = function (name) {
   }
 }
 
+ProjectPlanPackageSchema.statics.filterOwnedTasks = function (userId) {
+  var f = { $ne: null };
+  if (userId) {
+    f = ObjectId(userId)
+  }
+  return {
+    $or: [
+      { "contract.owner": f },
+      { "activated.owner": f },
+      { "planning_visit.owner": f },
+      { "rent_porta_pottie.owner": f },
+      { "rent_waste_dumpster.owner": f },
+      { "create_page_schedule_event.owner": f },
+      { "volunteer_request_initial.owner": f },
+      { "volunteer_request_followup.owner": f },
+      { "volunteer_request_final.owner": f },
+      { "report_materials_supplies.owner": f },
+      { "arrange_purchase_delivery.owner": f },
+      { "check_weather_forecast.owner": f },
+      { "verify_volunteer_count.owner": f },
+      { "verify_site_resources.owner": f }
+    ]
+  }
+}
+
 
 var ProjectPlanPackage = mongoose.model('ProjectPlanPackage', ProjectPlanPackageSchema);
 

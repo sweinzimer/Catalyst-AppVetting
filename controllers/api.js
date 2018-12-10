@@ -3054,7 +3054,6 @@ getDocumentPlanning: function (req, res, next) {
       console.error(err)
       
     }).catch(next);
-  },
-
+  }
 
 };

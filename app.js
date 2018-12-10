@@ -32,6 +32,7 @@ var routes = require('./routes/index')(passport);
 var test = require('./routes/test');
 var view = require('./routes/view')(passport);
 var edit = require('./routes/edit')(passport);
+var tasks = require('./routes/tasks.js')(passport);
 var appform = require('./routes/appform')(passport);
 var vettingworksheet = require('./routes/vettingworksheet')(passport);
 var regUser = require('./routes/regUser')(passport);
@@ -181,6 +182,24 @@ hbs.registerHelper('getCompletedDate', function (item, name) {
   return item.getCompletedDate(name);
 })
 
+hbs.registerHelper('getAppNameForPlan', function(apps, appid) {
+  return apps[appid].app_name
+});
+hbs.registerHelper('getPlanLeadTime', function(plan) {
+  return 'todo: put lead time here'
+});
+hbs.registerHelper('getPlanStartTime', function (plan) {
+  if (plan.start_date === null) {
+    return ''
+  } else {
+    return new Date(plan.start_date).toLocaleDateString();
+  }
+});
+hbs.registerHelper('getPlanTaskAssignments', function(plan, userId) {
+  return 'todo: put all plan task names here'
+});
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Middleware
 // Use any middleware for the application that is needed. bodyParse allows parsing to
@@ -232,6 +251,7 @@ app.use('/pm', planning);
 app.use('/projectsummary', projectsummary);
 app.use('/partners', partners);
 app.use('/projectview', projectview);
+app.use('/tasks/', tasks);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries
 // Links to jQuery and Boots strap files
