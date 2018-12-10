@@ -1405,6 +1405,7 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
 
    //check for error
    posting.done(function (xhr) {
+     console.log(xhr);
      if(xhr.status === 'success' || xhr.status === 200 || xhr.status ==='200') {
        next(null, xhr)
      } else {
@@ -1413,6 +1414,7 @@ partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
    });
 
    posting.fail(function (res) {
+     console.log(res);
      next(new Error('Could not complete xhr'))
    });
  }

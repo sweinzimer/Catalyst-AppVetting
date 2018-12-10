@@ -44,11 +44,11 @@
                                 <th class="col-md-2">Address</th>
                                 <!-- <th class="col-md-2">Last Edit</th> -->
                                 <th class="col-md-2">Status</th>
-                <th class="col-md-1">CC</th>
+                <th class="col-md-2">CC</th>
                 <th class="col-md-1">PA</th>
                 <th class="col-md-1">SH</th>
-                 <th class="col-md-1">App Date</th>
-                <th class="col-md-1">App Number</th>              
+                 <th class="col-md-1">Date</th>
+                <th class="col-md-1">#</th>              
                             </tr>
                             </thead>
                             <tbody>
@@ -58,11 +58,11 @@
                                     <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                    {{!-- <td class="col-md-2">{{updated}}</td> --}}
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                                     <td title="{{project.crew_chief}}" class="col-md-1 cell-overflow">{{project.crew_chief}}</td>
+                                     <td title="{{project.crew_chief}}" class="col-md-2 cell-overflow">{{project.crew_chief}}</td>
                   <td title="{{project.project_advocate}}" class="col-md-1 cell-overflow">{{project.project_advocate}}</td>
                    <td title="{{project.site_host}}" class="col-md-1 cell-overflow">{{project.site_host}}</td>
-                  <td class="col-md-1 ">{{signature.client_date}}</td>
-                  <td class="col-md-1">{{app_name}}</td> 
+                  <td class="col-md-1 cell-overflow">{{signature.client_date}}</td>
+                  <td class="col-md-1 cell-overflow">{{app_name}}</td> 
                                 </tr>
                             {{/each}}                            </tbody>
                         </table>
@@ -91,11 +91,11 @@
                                 <th class="col-md-2">Address</th>
                                 <!-- <th class="col-md-2">Last Edit</th> -->
                                 <th class="col-md-2">Status</th>
-                <th class="col-md-1">CC</th>
+                <th class="col-md-2">CC</th>
                 <th class="col-md-1">PA</th>
                 <th class="col-md-1">SH</th>
-                <th class="col-md-1">App Date</th>
-                <th class="col-md-1">App Number</th>             
+                <th class="col-md-1">Date</th>
+                <th class="col-md-1">#</th>             
                      </tr>
                             </thead>
                             <tbody>
@@ -105,11 +105,11 @@
                                     <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                     {{!-- <td class="col-md-2">{{updated}}</td> --}}
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                                     <td title="{{project.crew_chief}}" class="col-md-1 cell-overflow">{{project.crew_chief}}</td>
+                                     <td title="{{project.crew_chief}}" class="col-md-2 cell-overflow">{{project.crew_chief}}</td>
                   <td title="{{project.project_advocate}}" class="col-md-1 cell-overflow">{{project.project_advocate}}</td>
                    <td title="{{project.site_host}}" class="col-md-1 cell-overflow">{{project.site_host}}</td>
-                  <td class="col-md-1 ">{{signature.client_date}}</td>
-                  <td class="col-md-1">{{app_name}}</td>
+                  <td class="col-md-1 cell-overflow">{{signature.client_date}}</td>
+                  <td class="col-md-1 cell-overflow">{{app_name}}</td>
                                 </tr>
                             {{/each}}
                             </tbody>
@@ -185,11 +185,11 @@
                                 <th class="col-md-2">Address</th>
                                 <!-- <th class="col-md-2">Last Edit</th> -->
                                 <th class="col-md-2">Status</th>
-                <th class="col-md-1">CC</th>
+                <th class="col-md-2">CC</th>
                 <th class="col-md-1">PA</th>
                 <th class="col-md-1">SH</th>
-                 <th class="col-md-1">App Date</th>
-                <th class="col-md-1">App Number</th>             
+                 <th class="col-md-1">Date</th>
+                <th class="col-md-1">#</th>             
                  
                             </tr>
                             </thead>
@@ -200,11 +200,11 @@
                                     <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                    {{!-- <td class="col-md-2">{{updated}}</td> --}}
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                                     <td title="{{project.crew_chief}}" class="col-md-1 cell-overflow">{{project.crew_chief}}</td>
+                                     <td title="{{project.crew_chief}}" class="col-md-2 cell-overflow">{{project.crew_chief}}</td>
                   <td title="{{project.project_advocate}}" class="col-md-1 cell-overflow">{{project.project_advocate}}</td>
                    <td title="{{project.site_host}}" class="col-md-1 cell-overflow">{{project.site_host}}</td>
-                  <td class="col-md-2 ">{{signature.client_date}}</td>
-                  <!-- <td class="col-md-2">{{app_name}}</td> -->
+                  <td class="col-md-1 cell-overflow">{{signature.client_date}}</td>
+                  <td class="col-md-1 cell-overflow">{{app_name}}</td>
                                 </tr>
                             {{/each}}
                             </tbody>
@@ -235,11 +235,11 @@
                                 <th class="col-md-2">Address</th>
                                 <!-- <th class="col-md-2">Last Edit</th> -->
                                 <th class="col-md-2">Status</th>
-                <th class="col-md-1">CC</th>
+                <th class="col-md-2">CC</th>
                 <th class="col-md-1">PA</th>
                 <th class="col-md-1">SH</th>
-                <th class="col-md-1">App Date</th>
-                <th class="col-md-1">App Number</th>              
+                <th class="col-md-1">Date</th>
+                <th class="col-md-1">#</th>              
                   </tr>
                             </thead>
                             <tbody>
@@ -249,11 +249,11 @@
                                     <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                    {{!-- <td class="col-md-2">{{updated}}</td> --}}
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                                     <td title="{{project.crew_chief}}" class="col-md-1 cell-overflow">{{project.crew_chief}}</td>
+                                     <td title="{{project.crew_chief}}" class="col-md-2 cell-overflow">{{project.crew_chief}}</td>
                   <td title="{{project.project_advocate}}" class="col-md-1 cell-overflow">{{project.project_advocate}}</td>
                    <td title="{{project.site_host}}" class="col-md-1 cell-overflow">{{project.site_host}}</td>
-                  <td class="col-md-1">{{signature.client_date}}</td>
-                  <td class="col-md-1">{{app_name}}</td>
+                  <td class="col-md-1 cell-overflow">{{signature.client_date}}</td>
+                  <td class="col-md-1 cell-overflow">{{app_name}}</td>
                                 </tr>
                             {{/each}}
                             </tbody>
@@ -284,11 +284,11 @@
                                 <th class="col-md-2">Address</th>
                                 {{!-- <th class="col-md-2">Last Edit</th> --}}
                                 <th class="col-md-2">Status</th>
-                                <th class="col-md-1 cell-overflow">CC</th>
+                                <th class="col-md-2 cell-overflow">CC</th>
                 <th  class="col-md-1 cell-overflow">PA</th>
                 <th class="col-md-1 cell-overflow">SH</th>
-                <th class="col-md-1">App Date</th>
-                <th class="col-md-1">App Number</th>
+                <th class="col-md-1">Date</th>
+                <th class="col-md-1">#</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -298,11 +298,11 @@
                                     <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                     {{!-- <td class="col-md-2">{{updated}}</td> --}}
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                                     <td title="{{project.crew_chief}}" class="col-md-1 cell-overflow">{{project.crew_chief}}</td>
+                                     <td title="{{project.crew_chief}}" class="col-md-2 cell-overflow">{{project.crew_chief}}</td>
                   <td title="{{project.project_advocate}}" class="col-md-1 cell-overflow">{{project.project_advocate}}</td>
                    <td title="{{project.site_host}}" class="col-md-1 cell-overflow">{{project.site_host}}</td>
-                  <td class="col-md-1">{{signature.client_date}}</td>
-                   <td class="col-md-1">{{app_name}}</td> 
+                  <td class="col-md-1 cell-overflow">{{signature.client_date}}</td>
+                   <td class="col-md-1 cell-overflow">{{app_name}}</td> 
                                 </tr>
                             {{/each}}
                             </tbody>
@@ -343,11 +343,11 @@
                                 <th class="col-md-2">Address</th>
                                 <!-- <th class="col-md-2">Last Edit</th> -->
                                 <th class="col-md-2">Status</th>
-                <th class="col-md-1">CC</th>
+                <th class="col-md-2">CC</th>
                 <th class="col-md-1">PA</th>
                 <th class="col-md-1">SH</th>
-               <th class="col-md-1">App Date</th>
-                <th class="col-md-1">App Number</th>
+               <th class="col-md-1">Date</th>
+                <th class="col-md-1">#</th>
                            </tr>
                             </thead>
                             <tbody>
@@ -358,11 +358,11 @@
                                     <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                     {{!-- <td class="col-md-2">{{updated}}</td> --}}
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                                     <td title="{{project.crew_chief}}" class="col-md-1 cell-overflow">{{project.crew_chief}}</td>
+                                     <td title="{{project.crew_chief}}" class="col-md-2 cell-overflow">{{project.crew_chief}}</td>
                   <td title="{{project.project_advocate}}" class="col-md-1 cell-overflow">{{project.project_advocate}}</td>
                    <td title="{{project.site_host}}" class="col-md-1 cell-overflow">{{project.site_host}}</td>
-                  <td class="col-md-1 ">{{signature.client_date}}</td>
-                <td class="col-md-1">{{app_name}}</td>
+                  <td class="col-md-1 cell-overflow">{{signature.client_date}}</td>
+                <td class="col-md-1 cell-overflow">{{app_name}}</td>
                                 </tr>
                             {{/each}}
                 </div>
@@ -449,11 +449,11 @@
                                 <th class="col-md-2">Address</th>
                                 <!-- <th class="col-md-2">Last Edit</th> -->
                                 <th class="col-md-2">Status</th>
-                <th class="col-md-1">CC</th>
+                <th class="col-md-2">CC</th>
                 <th class="col-md-1">PA</th>
                 <th class="col-md-1">SH</th>
-                 <th class="col-md-1">App Date</th>
-                <th class="col-md-1">App Number</th>
+                 <th class="col-md-1">Date</th>
+                <th class="col-md-1">#</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -463,11 +463,11 @@
                                     <td class="col-md-2"><a href="http://maps.google.com/?q={{application.address.line_1}}, {{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}{{application.address.city}}, {{application.address.state}}, {{application.address.zip}}" target="_blank">{{application.address.city}}, {{application.address.state}}</a></td>
                                     {{!-- <td class="col-md-2">{{updated}}</td> --}}
                                     <td class="col-md-2"><span class="text-danger">{{status}}</span></td>
-                                     <td title="{{project.crew_chief}}" class="col-md-1 cell-overflow">{{project.crew_chief}}</td>
+                                     <td title="{{project.crew_chief}}" class="col-md-2 cell-overflow">{{project.crew_chief}}</td>
                   <td title="{{project.project_advocate}}" class="col-md-1 cell-overflow">{{project.project_advocate}}</td>
                    <td title="{{project.site_host}}" class="col-md-1 cell-overflow">{{project.site_host}}</td>
-                  <td class="col-md-1">{{signature.client_date}}</td>
-                  <td class="col-md-1">{{app_name}}</td> 
+                  <td class="col-md-1 cell-overflow">{{signature.client_date}}</td>
+                  <td class="col-md-1 cell-overflow">{{app_name}}</td> 
                                 </tr>
                             {{/each}}
                             </tbody>
@@ -492,7 +492,7 @@
     });
 
 
-    filter(inStr) {
+    function filter(inStr) {
         if (inStr =='compP') {
             var p = document.getElementsByClassName("compP");
             var h = document.getElementsByClassName("compH");
