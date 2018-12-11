@@ -1,10 +1,5 @@
 
 
-<!-- <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script> -->
-<!-- <script src="/javascript/xedit.js" type="text/javascript"></script> -->
-
-
 <!--        Btn: #addAssocPartners
         [ THIS = CURRENT PARTNERS ]     -->
 <span name="currentPartnersViewSpan" style="display:block;">        <!-- currentPartnersViewSpan -->
@@ -138,8 +133,9 @@
 <span name="twoTable" style="display:none;">
           <table class="table">
             <thead> 
-                  <th class="col-sm-4">Organization</th>
-                  <th class="col-sm-7">Information</th>
+                  <th class="col-sm-5">Name</th>
+                  <th class="col-sm-4">Address</th>
+                  <th class="col-sm-3">Contact Person</th>
             </thead> 
             <tbody>
               
@@ -147,19 +143,21 @@
                   {{#each part.pAssoc}}
                     <div class="{{_id}}" name="p_{{_id}}">
                       <tr class="{{_id}}" name="p_{{_id}}">
-                        <th class="col-sm-4" name="p_{{_id}}">{{org_name}}</th>
-                          <td class="col-sm-7" name="p_{{_id}}"><strong>{{org_address}}</strong></td>
+                          <td class="col-sm-5" name="p_{{_id}}">
+                              <button name="PisAssoc" style="display:none;" class="btn btn-danger btn-sm isAssoc" id="assoc{{_id}}" onclick="miniSubmit('remove','{{_id}}')" value="{{_id}}">&check;</button>
+                              <button name="PisNotAssoc" style="display:none;" class="btn btn-success btn-sm isNotAssoc" id="nAssoc{{_id}}" onclick="miniSubmit('add','{{_id}}')">&nbsp;&nbsp;&nbsp;</button>{{org_name}}</td>
+                          <td class="col-sm-4" name="p_{{_id}}">{{org_address}}</td>
+                          <td class="col-sm-3" name="p_{{_id}}">{{contact_name}}</td>
                       </tr>
                       
-                      <tr class="{{_id}}" name="p_{{_id}}">
-                        <th class="col-sm-4" name="p_{{_id}}">
+<!--                       <tr class="{{_id}}" name="p_{{_id}}">
+                        <td class="col-sm-4" name="p_{{_id}}">
                           <button name="PisAssoc" style="display:none;" class="btn btn-danger btn-sm isAssoc" id="assoc{{_id}}" onclick="miniSubmit('remove','{{_id}}')" value="{{_id}}">- Remove from Project</button>
                           <button name="PisNotAssoc" style="display:none;" class="btn btn-success btn-sm isNotAssoc" id="nAssoc{{_id}}" onclick="miniSubmit('add','{{_id}}')">+ Add to Project</button>
-                        </th>
-                          <td class="col-sm-7" name="{{_id}}">Contact: {{contact_name}}</td>
-                      </tr>
+                        </td>
+                      </tr> -->
 
-                      <tr>
+<!--                       <tr>
                         <th class="col-sm-4" name="p_{{_id}}"></th>
                           <td class="col-sm-7" name="p_{{_id}}">Phone: <a href="tel:{{contact_phone}}">{{contact_phone}}</a></td>
                       </tr>
@@ -167,7 +165,7 @@
                       <tr>
                         <th class="col-sm-4" name="p_{{_id}}"></th>
                           <td class="col-sm-7" name="p_{{_id}}">Email: <a href="mailto:{{contact_email}}">{{contact_email}}</a></td>
-                      </tr>
+                      </tr> -->
                     </div>
                   {{/each}}
                 {{/if}}
@@ -176,19 +174,22 @@
                   {{#each part.uAssoc}}
                     <div class="{{_id}}" name="u_{{_id}}">
                       <tr class="{{_id}}" name="u_{{_id}}">
-                        <th class="col-sm-4" name="u_{{_id}}">{{org_name}}</th>
-                          <td class="col-sm-7" name="u_{{_id}}"><strong>{{org_address}}</strong></td>
+                          <td class="col-sm-5" name="u_{{_id}}">
+                              <button name="UisNotAssoc" style="display:none;" class="btn btn-success btn-sm isNotAssoc" id="nAssoc{{_id}}" onclick="miniSubmit('add','{{_id}}')">&nbsp;&nbsp;&nbsp;</button>
+                              <button name="UisAssoc" style="display:none;" class="btn btn-danger btn-sm isAssoc" id="assoc{{_id}}" onclick="miniSubmit('remove','{{_id}}')" value="{{_id}}">&check;</button>{{org_name}}</td>
+                          <td class="col-sm-4" name="u_{{_id}}">{{org_address}}</td>
+                          <td class="col-sm-3" name="u_{{_id}}">{{contact_name}}</td>
                       </tr>
                       
-                      <tr class="{{_id}}" name="{{_id}}">
+  <!--                     <tr class="{{_id}}" name="{{_id}}">
                         <th class="col-sm-4" name="{{_id}}">
                           <button name="UisNotAssoc" style="display:none;" class="btn btn-success btn-sm isNotAssoc" id="nAssoc{{_id}}" onclick="miniSubmit('add','{{_id}}')">+ Add to Project</button>
                           <button name="UisAssoc" style="display:none;" class="btn btn-danger btn-sm isAssoc" id="assoc{{_id}}" onclick="miniSubmit('remove','{{_id}}')" value="{{_id}}">- Remove from Project</button>
                         </th>
                           <td class="col-sm-7" name="u_{{_id}}">Contact: {{contact_name}}</td>
-                      </tr>
+                      </tr> -->
 
-                      <tr>
+<!--                       <tr>
                         <th class="col-sm-4" name="u_{{_id}}"></th>
                           <td class="col-sm-7" name="u_{{_id}}">Phone: <a href="tel:{{contact_phone}}">{{contact_phone}}</a></td>
                       </tr>
@@ -196,7 +197,7 @@
                       <tr>
                         <th class="col-sm-4" name="u_{{_id}}"></th>
                           <td class="col-sm-7" name="u_{{_id}}">Email: <a href="mailto:{{contact_email}}">{{contact_email}}</a></td>
-                      </tr>
+                      </tr> -->
                     </div>
                   {{/each}}
                 {{/if}}
@@ -268,16 +269,20 @@
 
             if (remBtn.style.display === "none") {
                   addBtn.style.display = "none";
-                  remBtn.style.display = "block";
-            } else if (remBtn.style.display === "block") {
-                  addBtn.style.display = "block";
+                  // remBtn.style.marginRight = "8px";
+                  remBtn.style.display = "inline";
+            } else if (remBtn.style.display === "inline") {
+                  addBtn.style.display = "inline";
+                  // addBtn.style.marginRight = "8px";
                   remBtn.style.display = "none";
             } else if (addBtn.style.display === "none") {
                   addBtn.style.display = "none";
-                  remBtn.style.display = "block";
-            } else if (addBtn.style.display === "block") {
-                  addBtn.style.display = "block";
+                  // remBtn.style.marginRight = "8px";
+                  remBtn.style.display = "inline";
+            } else if (addBtn.style.display === "inline") {
+                  addBtn.style.display = "inline";
                   remBtn.style.display = "none";
+                  // addBtn.style.marginRight = "8px";
             }
 
           //Since Toggle change was made, we can now RE-ENABLE Confirm Changes Btn
@@ -357,7 +362,7 @@
 
 
           for (var i = 0; i < assocCnt.length; i++) {
-              if (assocCnt[i].style.display === "block") {
+              if (assocCnt[i].style.display === "inline") {
                   selected.push(String(assocCnt[i].value));
               }
           }
@@ -383,11 +388,11 @@
             var eachNotU = document.getElementsByName("UisNotAssoc");
 
             for (var c1 = 0; c1 < eachP.length; c1++) {              //Show assoc buttons
-              eachP[c1].style.display = "block";
+              eachP[c1].style.display = "inline";
             }
 
-            for (var c2 = 0; c2 < eachNotU.length; c2++) {        //Show assoc buttons
-              eachNotU[c2].style.display = "block";
+            for (var c2 = 0; c2 < eachNotU.length; c2++) {        //Show unassoc buttons
+              eachNotU[c2].style.display = "inline";
             }
 
         } else if (inSubmit === 'goToSpanThree') {        //Show Global List (Span #3)
@@ -580,6 +585,10 @@
 
   .returnBackBtn {
     margin-left: 6rem;
+  }
+
+  button.btn-sm {
+    margin-right: 4px;
   }
 
   button.btn.btn-primary.btn-sm.editable-submit {
