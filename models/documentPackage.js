@@ -198,7 +198,9 @@ var DocumentPackageSchema = new Schema({
         status: String,
         crew_chief: String,
         project_advocate: String,
-        site_host: String
+        site_host: String,
+        project_start: Date,
+        project_end: Date
     }
 });
 
