@@ -4,6 +4,7 @@
 // ***                                     (2) cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.39/vfs_fonts.js
 // ***     TESTED WORKING IN: Safari 12.0, Chrome 70.0.3538.102
 
+
 function exportPAFtoPDF() {
      pdfMake.createPdf(pafDefinition).open();
 }
@@ -114,7 +115,7 @@ styles: {
     }
 }, //END STYLES
 
-pageSize: 'LETTER',
+// pageSize: 'LETTER',
 info: {
     title: 'PAF Form Catalyst',
     author: 'Catalyst',
