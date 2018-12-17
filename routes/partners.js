@@ -40,25 +40,6 @@ router.get('/', isLoggedIn, api.getProjPartnersLeaders, function(req, res, next)
 });
 
 
-// //router.get('/', isLoggedIn, api.getDocumentSite, function(req, res, next) {
-// router.get('/', api.getPartner, function(req, res, next) {
-// 	console.log("RENDERING PARTNERS PAGE");
-	
-// 	//var results = {};
-// 	//res.render('partners', payload);
-// 	.post(api.getPartner, function(req, res) {
-
-// 	console.log("\n/partners/getPartner POST TRIGGERED...\nreq:\n" + req);
-// 	if(res.locals.status != '200'){
-//         res.status(500).send("Could not get partners");
-//     }
-//     else{
-//     	console.log(res);
-//         res.json(res.locals);
-//     }
-
-// });
-
 
 //isLoggedInPost, 
 router.route('/getPartnerAssoc', isLoggedIn)									// FOR getProjPartnersLeaders
@@ -90,7 +71,7 @@ router.route('/createPartnerAssoc', isLoggedIn)
 });
 
 
-//R - create Partners  -  localhost:8000/partners/createPartner
+//Create Partners  
 // ADD BACK isLoggedInPost to EACH ONE!		//.post(isLoggedInPost, api.addPartner, function(req, res) {
 router.route('/createPartner', isLoggedIn)
 	.post(api.createPartner, function(req, res) {
@@ -133,18 +114,6 @@ router.route('/getPartner')
     }
 });
 
-// //isLoggedInPost, 
-// router.route('/updatePartner')
-// 	.post(api.updatePartner, function(req, res) {
-
-// 	console.log("\n/partners/updatePartner POST TRIGGERED...\nreq:\n" + req);
-// 	if(res.locals.status != '200'){
-//         res.status(500).send("Could not update partner");
-//     }
-//     else{
-//         res.json(res.locals);
-//     }
-// });
 
 	
 //route catches invalid post requests.
