@@ -1,4 +1,16 @@
-<h3>Assigned Tasks</h3>
+<div class="row">
+  <div class="col-md-9">
+    <h3>Assigned Tasks</h3>
+  </div>
+  <div class="col-md-3" style="text-align: right;">
+    {{#if_in user_roles "PROJECT_MANAGEMENT"}}
+      <a class="btn btn-primary" href="/leadtime">Lead Time Default Settings</a>
+     <!--  <a class="btn btn-success" href="/tasks/all">All Tasks</a> -->
+    {{/if_in}}
+  </div>
+</div>
+
+<br/>
 
 <div role="tablist" aria-multiselectable="true">
   <div class="card">
@@ -15,9 +27,8 @@
           <thead>
             <tr>
               <th class="col-md-2">Application</th>
-              <th class="col-md-2">Lead Time</th>
               <th class="col-md-2">Start Date</th>
-              <th class="col-md-6">Task</th>
+              <th class="col-md-8">Task</th>
             </tr>
           </thead>
           <tbody>
@@ -25,13 +36,15 @@
             {{#each plan}}
               <tr>
                 <td class="col-md-2">
-                  <a href="/projectview/{{applicationId}}" target="_new">
-                    {{getAppNameForPlan ../applications applicationId}}
-                  </a>
+                  <a href="/projectview/{{applicationId}}" target="_new">{{
+                    getAppNameForPlan ../applications applicationId
+                    }}</a>
+                  {{getSignatureName ../applications applicationId}}
                 </td>
-                <td class="col-md-2">{{getPlanLeadTime this}}</td>
-                <td class="col-md-2">{{getPlanStartTime this}}</td>
-                <td class="col-md-6">{{getPlanTaskAssignments this userId}}</td>
+                <td class="col-md-2">{{getApplicationStartTime ../applications applicationId}}</td>
+                <td class="col-md-8">{{
+                  getPlanTaskAssignments this ../userId ../applications applicationId
+                  }}</td>
               </tr>
             {{/each}}
 

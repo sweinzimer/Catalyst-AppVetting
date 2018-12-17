@@ -8,52 +8,24 @@ var db = require('../mongoose/connection');
 var api = require('../controllers/api');
 var User = require('../models/userPackage');
 var DocumentPackage = require('../models/documentPackage.js');
-var ProjectPlanPackage = require('../models/projectPlanPackage.js');
-var ProjectWrapUpPackage = require('../models/projectWrapUpPackage.js');
 
 
 module.exports = function(passport) {
   var router = express.Router();
-  
-  router.get('/', isLoggedIn,  function (req, res) {
 
-    Promise.props({
-      plan: ProjectPlanPackage.find(ProjectPlanPackage.filterOwnedTasks(req.params.id)).execAsync()
-    }).then(function(results) {
-      var plans = results.plan;
-      console.log(plans);
-      appids = [];
-      for (var i = 0; i < results.plan.length; i++) {
-        var oid = mongoose.Types.ObjectId(results.plan[i].applicationId);
-        appids.push(oid);
-      }
+  router.get('/', isLoggedIn, api.getLeadtimeDefaults, function (req, res) {
+    console.log(res.locals.leadtime);
+    res.render('leadtime', res.locals.leadtime)
+  })
 
-      if (appids.length > 0) {
-        applications = DocumentPackage.find({ "_id": { $in: appids } }, function (err, applications) {
-          var apps = {}
-          for (var i = 0; i < applications.length; i++) {
-            apps[ applications[i]._id ] = applications[i]
-          }
-          
-          res.render('usertasks', {
-            userId: req.user._id,
-            plan: plans,
-            applications: apps
-          });
-        });
-      } else {
-        res.render('usertasks', {
-          user_roles: req.user.user_roles,
-          userId: req.user._id,
-          plan: plans,
-          applications: []
-        });
-      }
-    });
-  });
+  router.post('/', isLoggedInPost, api.setLeadtimeDefaults, function (req, res) {
+    res.json(res.locals.leadtime)
+  })
 
   return router;
 }
+
+
 
 
 

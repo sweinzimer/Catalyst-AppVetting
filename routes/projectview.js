@@ -66,6 +66,7 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
   router
     .get('/:id', isLoggedIn, api.getDocumentSite, api.getProjPartnersLeaders,
          api.getAssignableUsers, api.getWrapUpDoc, api.getProjectPlanDoc,
+         api.getLeadtimeDefaults,
          function(req, res, next) {
            //Checking what's in params
            //console.log("Rendering application " + ObjectId(req.params.id));
@@ -84,6 +85,7 @@ router.get('/', isLoggedIn, api.getDocumentStatusSite, function(req, res, next) 
            payload.wrapUp = res.locals.wrapUp ? res.locals.wrapUp : ProjectWrapUpPackage.empty(req.params.id);
 	         payload.part = res.locals.results.part||req.partnerTime;			//Data for Partners Tab Partial
            payload.plan = res.locals.plan || ProjectPlanPackage.empty(req.params.id)
+           payload.leadtime = res.locals.leadtime;
 	         payload.partDocId = res.locals.results.doc[0]._id;
 	         console.log("results");
            console.log(payload);

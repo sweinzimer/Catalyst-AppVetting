@@ -44,6 +44,7 @@ var RolePackage = require('../models/rolePackage');
 var ProjectWrapUpPackage = require('../models/projectWrapUpPackage.js');
 var ProjectSummaryPackage = require('../models/projectSummaryPackage.js');
 var PartnerPackage = require('../models/partnerPackage.js');
+var LeadtimeDefaults = require('../models/leadtimeDefaults.js');
 
 var FinancialPackage = require('../models/finPackage');
 var crypto = require('crypto');
@@ -3134,6 +3135,38 @@ getDocumentPlanning: function (req, res, next) {
       console.error(err)
       
     }).catch(next);
+  },
+
+  getLeadtimeDefaults: function (req, res, next) {
+    LeadtimeDefaults.findOne(null, function(err, lt) {
+      if (typeof lt === 'object' && lt !== null) {
+        res.locals.leadtime = lt
+        next()
+
+      } else {
+        LeadtimeDefaults.findOneAndUpdate({}, {}, {
+          'new': true,
+          upsert: true,
+          setDefaultsOnInsert: true
+        }, function (err, lt) {
+          res.locals.leadtime = lt
+          next()
+        })
+      }
+    })
+  },
+
+  setLeadtimeDefaults: function (req, res, next) {
+    console.log('Finding with criteria: ', req.body)
+    LeadtimeDefaults.findOneAndUpdate({}, { $set: req.body }, {
+      'new': true,
+      upsert: true,
+      setDefaultsOnInsert: true
+    }, function (err, lt) {
+      console.log('Lead time updated: ', lt)
+      res.locals.leadtime = lt
+      next()
+    })
   }
 
 };
