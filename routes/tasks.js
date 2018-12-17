@@ -43,13 +43,13 @@ module.exports = function(passport) {
         });
       } else {
         res.render('usertasks', {
+          user_roles: req.user.user_roles,
           userId: req.user._id,
           plan: plans,
           applications: []
         });
       }
     });
-    
   });
 
   return router;

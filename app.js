@@ -15,7 +15,10 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var morgan = require('morgan');
 var session = require('express-session');
+var ProjectPlanPackage = require('./models/projectPlanPackage.js');
+
 var app = express();
+
 //configure passport
 app.use(session({ secret: 'hidethissomewhere', resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
@@ -189,15 +192,22 @@ hbs.registerHelper('getAppNameForPlan', function(apps, appid) {
 hbs.registerHelper('getPlanLeadTime', function(plan) {
   return 'todo: put lead time here'
 });
-hbs.registerHelper('getPlanStartTime', function (plan) {
-  if (plan.start_date === null) {
-    return ''
+hbs.registerHelper('getApplicationStartTime', function (apps, appid) {
+  if (apps[appid].project && apps[appid].project.project_start) {
+    return new Date(apps[appid].project.project_start).toLocaleDateString();
   } else {
-    return new Date(plan.start_date).toLocaleDateString();
+    return 'Not set'
   }
 });
-hbs.registerHelper('getPlanTaskAssignments', function(plan, userId) {
-  return 'todo: put all plan task names here'
+hbs.registerHelper('getPlanTaskAssignments', function(plan, userId, apps, appid) {
+  var assigned = ProjectPlanPackage.getOnlyAssigned(plan, userId);
+  var labels = [];
+  for (var i = 0; i < assigned.length; i++) {
+    if (!assigned[i].complete) {
+      labels.push(assigned[i].label);
+    }
+  }
+  return new hbs.handlebars.SafeString(labels.join("<br/>"))
 });
 hbs.registerHelper('getSignatureName', function(apps, appid) {
   if (apps[appid] && apps[appid].signature) {
