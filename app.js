@@ -199,6 +199,19 @@ hbs.registerHelper('getApplicationStartTime', function (apps, appid) {
     return 'Not set'
   }
 });
+hbs.registerHelper('dateToLocaleDate', function (date) {
+  console.log('dateToLocaleDate', arguments);
+  var d = new Date(date)
+  var month = (d.getMonth() + 1).toString();
+  if (month.length !== 2) {
+    month = '0' + month;
+  }
+  var day = d.getDate().toString()
+  if (day.length !== 2) {
+    day = '0' + day;
+  }
+  return d.getFullYear() + '-' + month + '-' + day
+});
 hbs.registerHelper('getPlanTaskAssignments', function(plan, userId, apps, appid) {
   var assigned = ProjectPlanPackage.getOnlyAssigned(plan, userId);
   var labels = [];
