@@ -33,6 +33,7 @@ var test = require('./routes/test');
 var view = require('./routes/view')(passport);
 var edit = require('./routes/edit')(passport);
 var tasks = require('./routes/tasks.js')(passport);
+var leadtime = require('./routes/leadtime.js')(passport);
 var appform = require('./routes/appform')(passport);
 var vettingworksheet = require('./routes/vettingworksheet')(passport);
 var regUser = require('./routes/regUser')(passport);
@@ -198,6 +199,13 @@ hbs.registerHelper('getPlanStartTime', function (plan) {
 hbs.registerHelper('getPlanTaskAssignments', function(plan, userId) {
   return 'todo: put all plan task names here'
 });
+hbs.registerHelper('getSignatureName', function(apps, appid) {
+  if (apps[appid] && apps[appid].signature) {
+    return apps[appid].signature.client_sig;
+  } else {
+    return '';
+  }
+});
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -252,6 +260,7 @@ app.use('/projectsummary', projectsummary);
 app.use('/partners', partners);
 app.use('/projectview', projectview);
 app.use('/tasks/', tasks);
+app.use('/leadtime', leadtime);
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server Side Libraries
 // Links to jQuery and Boots strap files

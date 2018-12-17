@@ -15,9 +15,10 @@
           <thead>
             <tr>
               <th class="col-md-2">Application</th>
+              <th class="col-md-2">Name</th>
               <th class="col-md-2">Lead Time</th>
               <th class="col-md-2">Start Date</th>
-              <th class="col-md-6">Task</th>
+              <th class="col-md-4">Task</th>
             </tr>
           </thead>
           <tbody>
@@ -29,9 +30,10 @@
                     {{getAppNameForPlan ../applications applicationId}}
                   </a>
                 </td>
+                <td class="col-md-2">{{getSignatureName ../applications applicationId}}</td>
                 <td class="col-md-2">{{getPlanLeadTime this}}</td>
                 <td class="col-md-2">{{getPlanStartTime this}}</td>
-                <td class="col-md-6">{{getPlanTaskAssignments this userId}}</td>
+                <td class="col-md-4">{{getPlanTaskAssignments this userId}}</td>
               </tr>
             {{/each}}
 
