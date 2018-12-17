@@ -1058,6 +1058,7 @@ getDocumentPlanning: function (req, res, next) {
     },
 
 
+
 	postUser: function(req, res, next) {
         // Data will be submitted using req.body
         console.log('[ API ] postUser :: Call invoked');
@@ -1612,6 +1613,69 @@ getDocumentPlanning: function (req, res, next) {
             console.error(err);
         });
     },
+
+    putUpdatePartner: function(req, res, next) {
+        // When executed this will apply updates to a doc and return the MODIFIED doc
+
+        // Log the _id, name, and value that are passed to the function
+        console.log('[ API ] putUpdatePartner :: Call invoked with _id: ' + req.params.id
+            + ' | key: ' + req.body.name + ' | value: ' + req.body.value);
+        console.log(req.body.name + ' + ' + req.body.value);
+
+   
+        var conditions = {};
+        conditions['_id'] = req.params.id;
+
+        var updates = {};
+        updates[req.body.name] = req.body.value;
+
+        console.log("Search Filter:");
+        console.log(conditions);
+        console.log("Update:");
+        console.log(updates);
+
+
+        Promise.props({
+            project: PartnerPackage.findOneAndUpdate(
+                // Condition
+                conditions,
+                // Updates
+                {
+                    // $set: {name: value}
+                    $set: updates
+                },
+                // Options
+                {
+                    // new - defaults to false, returns the modified document when true, or the original when false
+                    new: true,
+                    //upsert: true
+                }
+                // Callback if needed
+                // { }
+            ).execAsync()
+        })
+            .then(function (results) {
+                // TODO: Confirm true/false is correct
+                if (results) {
+                    console.log('[ API ] putUpdatePartner :: Partner found: TRUE');
+                }
+                else {
+                    console.log('[ API ] putUpdatePartner :: Cannot update - This Partner ID does not exist');
+                }
+                res.locals.results = results;
+                //sending a status of 200 for now
+                res.locals.status = '200';
+
+                // If we are at this line all promises have executed and returned
+                // Call next() to pass all of this glorious data to the next express router
+                next();
+            })
+            .catch(function (err) {
+                console.error(err);
+            })
+            .catch(next);
+    },
+
 
 
     //post get all Partners

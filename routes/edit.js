@@ -67,6 +67,21 @@ module.exports = function(passport) {
 
   });
 
+ /**
+   * POST Updated Field data
+   * Only handles single line updates (e.g., phone number, Date of birth)
+   **/
+  router.post('/putUpdatePartner/:id', isLoggedInPost, api.putUpdatePartner, function(req, res) {
+    console.log("Triggered Partner Edit");
+
+    if(res.locals.status != '200'){
+      res.status(500).send("Could not update field");
+    }
+    else{
+      res.status(200).send({ status: 'success' });
+    }
+
+  });
 
   /**
    * Handles Updates of elements in arrays

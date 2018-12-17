@@ -2,6 +2,7 @@
 
 <!--        Btn: #addAssocPartners
         [ THIS = CURRENT PARTNERS ]     -->
+
 <span name="currentPartnersViewSpan" style="display:block;">        <!-- currentPartnersViewSpan -->
   <div class="col-xs-12 col-sm-6">
     <input type="hidden" value="{{partDocId}}" name="partAppId1" style="display:none;">
@@ -221,26 +222,32 @@
                   {{#each part.pAll}}
                     <div class="{{_id}}" name="{{_id}}">
                       <tr class="{{_id}}" name="{{_id}}">
-                        <th class="col-sm-4" name="{{_id}}">{{org_name}}</th>
-                          <td class="col-sm-7" name="{{_id}}"><strong>{{org_address}}</strong></td>
+                          <th class="col-sm-4" name="{{_id}}">         <!--  RED -->
+                              <a href="#" id="org_name" data-type="text" data-pk="{{_id}}" data-url="/edit/putUpdatePartner/{{_id}}" data-name="org_name" data-title="Organization Name" class="p_editable">{{org_name}}</a>
+                          </th>
+
+                          <td class="col-sm-7" name="{{_id}}"><a href="#" id="org_address" data-type="text" data-pk="{{_id}}" data-url="/edit/putUpdatePartner/{{_id}}" data-name="org_address" data-title="Organization Address" class="p_editable"><strong>{{org_address}}</strong></a>
+                          </td>
                       </tr>
                       
                       <tr class="{{_id}}" name="{{_id}}">
                         <th class="col-sm-4" name="{{_id}}">
                           <button name="removeThisPartner" style="display:none;" class="btn btn-danger btn-sm" onclick="removeThisBtn('{{_id}}')">Remove this [make sure it's not in use]</button>
-                         <!--  <button name="isAssoc" style="display:none;" class="btn btn-danger btn-sm" id="{{_id}}" onclick="showAssignedButtons('{{_id}}')">Please Refresh Page</button> -->
                         </th>
-                          <td class="col-sm-7" name="{{_id}}">Contact: {{contact_name}}</td>
+                          <td class="col-sm-7" name="{{_id}}">Contact: <a href="#" id="contact_name" data-type="text" data-pk="{{_id}}" data-url="/edit/putUpdatePartner/{{_id}}" data-name="contact_name" data-title="Name" class="p_editable">{{contact_name}}</a>
+                          </td>
                       </tr>
 
                       <tr>
                         <th class="col-sm-4" name="{{_id}}"></th>
-                          <td class="col-sm-7" name="{{_id}}">Phone: <a href="tel:{{contact_phone}}">{{contact_phone}}</a></td>
+                          <td class="col-sm-7" name="{{_id}}">Phone: <a href="#" id="contact_phone" data-type="text" data-pk="{{_id}}" data-url="/edit/putUpdatePartner/{{_id}}" data-name="contact_phone" data-title="Number" class="p_editable">{{contact_phone}}</a>
+                          </td>
                       </tr>
 
                       <tr>
                         <th class="col-sm-4" name="{{_id}}"></th>
-                          <td class="col-sm-7" name="{{_id}}">Email: <a href="mailto:{{contact_email}}">{{contact_email}}</a></td>
+                          <td class="col-sm-7" name="{{_id}}">Email: <a href="#" id="contact_email" data-type="text" data-pk="{{_id}}" data-url="/edit/putUpdatePartner/{{_id}}" data-name="contact_email" data-title="Contact Email" class="p_editable">{{contact_email}}</a>
+                          </td>
                       </tr>
                     </div>
                   {{/each}}
@@ -249,13 +256,16 @@
             </tbody>
           </table>
 </span>
-                        <!-- <td class="col-sm-9"><select>Select from list...</select></td> -->
-                      <!-- <h5>Status: <a href="#" id="status" data-type="select" data-pk="{{_id}}" data-url="/edit/{{_id}}" data-name="status" data-title="Select status"></a></h5> -->
+         
                    
-
+<script src="/javascript/xedit.js" type="text/javascript"></script>
 <script src="/javascript/searchYear.js" type="text/javascript"></script>
 <!-- Make entire table rows clickable! -->
 <script>
+
+ $(document).ready(function() {
+     $('.p_editable').editable();
+ });
 
      function miniSubmit (action, someID) {
         // if (action == 'remove') {                  //RIGHT NOW TOGGLES RED-/+GREEN BUTTONS 
