@@ -468,7 +468,7 @@ getDocumentPlanning: function (req, res, next) {
                 // Condition
                 {
                     status: "handle" ,
-                    app_year : year,
+                    // app_year : year,
                     project:  { $exists: false } ,
                 
                 },
@@ -490,7 +490,7 @@ getDocumentPlanning: function (req, res, next) {
                 // Condition
                 {
                     status: "project" ,
-                    app_year : year,
+                    // app_year : year,
                     project:  { $exists: false } ,
                 
                 },
@@ -530,27 +530,25 @@ getDocumentPlanning: function (req, res, next) {
                         // handle: DocumentPackage.find({status: "handle", app_year : year}).lean().execAsync(),
                         // project: DocumentPackage.find({status: "project", app_year : year}).lean().execAsync(),
 
-                        handle: DocumentPackage.find({"project.status": "handle"}).sort({ updated: -1 }).lean().execAsync(),
-                        project: DocumentPackage.find({"project.status": "project"}).sort({ updated: -1 }).lean().execAsync(),
+                        handle: DocumentPackage.find({"project.status": "handle"}).sort({ "project.project_start": 1 }).lean().execAsync(),
+                        project: DocumentPackage.find({"project.status": "project"}).sort({ "project.project_start": 1 }).lean().execAsync(),
 
-                        handleToBeAssigned: DocumentPackage.find({"project.status": "handleToBeAssigned"}).sort({ updated: -1 }).lean().execAsync(),
-                        projectUpcoming: DocumentPackage.find({"project.status": "projectUpcoming"}).sort({ updated: -1 }).lean().execAsync(),
+                        handleToBeAssigned: DocumentPackage.find({"project.status": "handleToBeAssigned"}).sort({ "project.project_start": 1 }).lean().execAsync(),
+                        projectUpcoming: DocumentPackage.find({"project.status": "projectUpcoming"}).sort({ "project.project_start": 1 }).lean().execAsync(),
                         
-                        handleAssigned: DocumentPackage.find({"project.status": "handleAssigned"}).sort({ updated: -1 }).lean().execAsync(),
-                        projectInProgress: DocumentPackage.find({"project.status": "projectInProgress"}).sort({ updated: -1 }).lean().execAsync(),
-                        projectGoBacks: DocumentPackage.find({"project.status": "projectGoBacks"}).sort({ updated: -1 }).lean().execAsync(),
-                        projectCompleted: DocumentPackage.find({"project.status": "projectCompleted"}).sort({ updated: -1 }).lean().execAsync(),
-                        handleCompleted: DocumentPackage.find({"project.status": "handleCompleted"}).sort({ updated: -1 }).lean().execAsync(),
-                        nostatus: DocumentPackage.find({"project.status": "nostatus"}).sort({ updated: -1 }).lean().execAsync(),
+                        handleAssigned: DocumentPackage.find({"project.status": "handleAssigned"}).sort({ "project.project_start": 1 }).lean().execAsync(),
+                        projectInProgress: DocumentPackage.find({"project.status": "projectInProgress"}).sort({ "project.project_start": 1 }).lean().execAsync(),
+                        projectGoBacks: DocumentPackage.find({"project.status": "projectGoBacks"}).sort({ "project.project_start": 1 }).lean().execAsync(),
+                        projectCompleted: DocumentPackage.find({"project.status": "projectCompleted"}).sort({ "project.project_start": 1 }).lean().execAsync(),
+                        handleCompleted: DocumentPackage.find({"project.status": "handleCompleted"}).sort({ "project.project_start": 1 }).lean().execAsync(),
+                        nostatus: DocumentPackage.find({"project.status": "nostatus"}).sort({ "project.project_start": 1 }).lean().execAsync(),
 
                         completed: DocumentPackage.find({
                                 "$or":  [
                                             {"project.status": "projectCompleted"}, 
                                             {"project.status": "handleCompleted"}
                                         ]
-                        }).sort({ updated: -1 }).lean().execAsync()
-
-
+                        }).sort({ "project.project_start": 1 }).lean().execAsync()
 
 
                     })
@@ -563,6 +561,109 @@ getDocumentPlanning: function (req, res, next) {
                             }
 
 
+                            if (results) {
+
+                                if (results.handle) {
+                                    var obj = results.handle;
+                                    obj.forEach(function(v, i) {
+                                        if (v.project.project_start == null) {//test to see if the id is 3
+                                            obj.push(obj[i]);//push the object to the last position
+                                            obj.splice(i, 1);//remove the object from the current position
+                                        }
+                                        results.handle = obj;    
+                                    });                                    
+                                }
+                                if (results.project) {
+                                    var obj = results.project;
+                                    obj.forEach(function(v, i) {
+                                        if (v.project.project_start == null) {//test to see if the id is 3
+                                            obj.push(obj[i]);//push the object to the last position
+                                            obj.splice(i, 1);//remove the object from the current position
+                                        }
+                                        results.project = obj;    
+                                    });                                    
+                                }
+                                if (results.handleToBeAssigned) {
+                                    var obj = results.handleToBeAssigned;
+                                    obj.forEach(function(v, i) {
+                                        if (v.project.project_start == null) {//test to see if the id is 3
+                                            obj.push(obj[i]);//push the object to the last position
+                                            obj.splice(i, 1);//remove the object from the current position
+                                        }
+                                        results.handleToBeAssigned = obj;    
+                                    });                                    
+                                }
+                                if (results.projectUpcoming) {
+                                    var obj = results.projectUpcoming;
+                                    obj.forEach(function(v, i) {
+                                        if (v.project.project_start == null) {//test to see if the id is 3
+                                            obj.push(obj[i]);//push the object to the last position
+                                            obj.splice(i, 1);//remove the object from the current position
+                                        }
+                                        results.projectUpcoming = obj;    
+                                    });                                    
+                                }
+                                if (results.handleAssigned) {
+                                    var obj = results.handleAssigned;
+                                    obj.forEach(function(v, i) {
+                                        if (v.project.project_start == null) {//test to see if the id is 3
+                                            obj.push(obj[i]);//push the object to the last position
+                                            obj.splice(i, 1);//remove the object from the current position
+                                        }
+                                        results.handleAssigned = obj;    
+                                    });                                    
+                                }
+                                if (results.projectInProgress) {
+                                    var obj = results.projectInProgress;
+                                    obj.forEach(function(v, i) {
+                                        if (v.project.project_start == null) {//test to see if the id is 3
+                                            obj.push(obj[i]);//push the object to the last position
+                                            obj.splice(i, 1);//remove the object from the current position
+                                        }
+                                        results.projectInProgress = obj;    
+                                    });                                    
+                                }
+                                if (results.projectGoBacks) {
+                                    var obj = results.projectGoBacks;
+                                    obj.forEach(function(v, i) {
+                                        if (v.project.project_start == null) {//test to see if the id is 3
+                                            obj.push(obj[i]);//push the object to the last position
+                                            obj.splice(i, 1);//remove the object from the current position
+                                        }
+                                        results.projectGoBacks = obj;    
+                                    });                                    
+                                }
+                                if (results.projectCompleted) {
+                                    var obj = results.projectCompleted;
+                                    obj.forEach(function(v, i) {
+                                        if (v.project.project_start == null) {//test to see if the id is 3
+                                            obj.push(obj[i]);//push the object to the last position
+                                            obj.splice(i, 1);//remove the object from the current position
+                                        }
+                                        results.projectCompleted = obj;    
+                                    });                                    
+                                }
+                                if (results.handleCompleted) {
+                                    var obj = results.handleCompleted;
+                                    obj.forEach(function(v, i) {
+                                        if (v.project.project_start == null) {//test to see if the id is 3
+                                            obj.push(obj[i]);//push the object to the last position
+                                            obj.splice(i, 1);//remove the object from the current position
+                                        }
+                                        results.handleCompleted = obj;    
+                                    });                                    
+                                }
+                                if (results.nostatus) {
+                                    var obj = results.nostatus;
+                                    obj.forEach(function(v, i) {
+                                        if (v.project.project_start == null) {//test to see if the id is 3
+                                            obj.push(obj[i]);//push the object to the last position
+                                            obj.splice(i, 1);//remove the object from the current position
+                                        }
+                                        results.nostatus = obj;    
+                                    });                                    
+                                }
+                            }
                             
 
                             res.locals.results = results;
