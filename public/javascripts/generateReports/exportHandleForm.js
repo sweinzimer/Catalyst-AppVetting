@@ -1,5 +1,5 @@
-// ***  HANDLE-IT FORM - Using pdfmake from github.com/bpampuch/pdfmake - MIT License.
-// ***  BELOW CODE BY ROHIN ADALJA (github.com/rohinadalja), USING CLIENT-SIZE PDF TOOL (pdfmake).
+// ***  HANDLE-IT FORM - Using Node pdfmake Module - MIT License.
+// ***  BELOW CODE BY ROHIN ADALJA (github.com/rohinadalja), USING SERVER-SIDE PDF TOOL (pdfmake).
 // ***     Use Dependant on the following: (1) cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.39/pdfmake.min.js
 // ***                                     (2) cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.39/vfs_fonts.js
 // ***     TESTED WORKING IN: Safari 12.0, Chrome 70.0.3538.102
@@ -9,7 +9,7 @@ function exportHandletoPDF() {
 }
 
 var handleDefinition = {  content: [           // BEGIN PRINT LAYOUT! ***********
-{ text: 'CATALYST PARTNERSHIPS                                                         HANDLE-IT REPORT', style: 'h2b' },
+{ text: 'CATALYST PARTNERSHIPS                                                        HANDLE-IT REPORT', style: 'h2b' },
 
 { text: [ "\n\n\nRECIPIENT NAME: ", {text: dataPAF.fullName, style:'inText' } ], style:'eachLine'},
 
