@@ -230,9 +230,10 @@ hbs.registerHelper('getPlanTaskAssignments', function(plan, userId, apps, appid)
   }
   return new hbs.handlebars.SafeString(labels.join("<br/>"))
 });
-hbs.registerHelper('getSignatureName', function(apps, appid) {
-  if (apps[appid] && apps[appid].signature) {
-    return apps[appid].signature.client_sig;
+hbs.registerHelper('getPreferredName', function(apps, appid) {
+  if (apps[appid] && apps[appid].application && apps[appid].application.name) {
+    return (apps[appid].application.name.preferred || apps[appid].application.name.first) +
+           ' ' + apps[appid].application.name.last
   } else {
     return '';
   }
