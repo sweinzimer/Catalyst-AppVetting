@@ -24,10 +24,10 @@ function shorten(str, maxLen, separator = ' ') {
  var apple = "...data...";
  {{#if results.doc}}
  {{#each results.doc}}
- dataPAF.fullName = "{{{application.name.first}}} {{{application.name.middle}}} {{{application.name.last}}}";
- dataPAF.addr1 = "{{{application.address.line_1}}}, ";
+ dataPAF.fullName = "{{{escape application.name.first}}} {{{application.name.middle}}} {{{escape application.name.last}}}";
+ dataPAF.addr1 = "{{{escape application.address.line_1}}}, ";
  dataPAF.addr2 = "{{{application.address.line_2}}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}";
- dataPAF.addr3 = "{{{application.address.city}}}, {{{application.address.state}}}  {{{application.address.zip}}}";
+ dataPAF.addr3 = "{{{escape application.address.city}}}, {{{escape application.address.state}}}  {{{escape application.address.zip}}}";
  dataPAF.summ = "{{{escape notes.site_summary}}}";
  {{/each}}
  {{/if}}
@@ -36,10 +36,10 @@ var workItems = [];
 
  {{#if results.work}}
    {{#each results.work}}
-workItems.push("-     " + "Name:  {{{name}}}\n");
-workItems.push("-     " + "Description:  {{{description}}}\n");
-workItems.push("-     " + "Site Comments:  {{{siteComments}}}\n");
-workItems.push("-     " + "COST:  ${{{cost}}}\n\n");
+workItems.push("-     " + "Name:  {{{escape name}}}\n");
+workItems.push("-     " + "Description:  {{{escape description}}}\n");
+workItems.push("-     " + "Site Comments:  {{{escape siteComments}}}\n");
+workItems.push("-     " + "COST:  {{{escape cost}}}\n\n");
    {{/each}}
  {{/if}}
 
@@ -47,44 +47,44 @@ var partnerItems = [];
 
  {{#if results.part}}
    {{#each results.part.pAssoc}}
-partnerItems.push("-     " + "Org Name:  {{{org_name}}}\n");
-partnerItems.push("-     " + "Address:   {{{org_address}}}\n");
-partnerItems.push("-     " + "Contact:   {{{contact_name}}}\n");
-partnerItems.push("-     " + "Email:     {{{contact_email}}}\n");
-partnerItems.push("-     " + "Phone:     {{{contact_phone}}}\n\n");
+partnerItems.push("-     " + "Org Name:  {{{escape org_name}}}\n");
+partnerItems.push("-     " + "Address:   {{{escape org_address}}}\n");
+partnerItems.push("-     " + "Contact:   {{{escape contact_name}}}\n");
+partnerItems.push("-     " + "Email:     {{{escape contact_email}}}\n");
+partnerItems.push("-     " + "Phone:     {{{escape contact_phone}}}\n\n");
    {{/each}}
  {{/if}}
 
 
  {{#if results.assessment}}
  {{#each results.assessment}}
-  dataPAF.hasAsbestos = "{{{hazard_safety.has_asbestos}}}";
-  dataPAF.hasLead = "{{{hazard_safety.has_lead}}}";
-  dataPAF.safety = "{{{escape hazard_safety.safety_plan}}}";
+  dataPAF.hasAsbestos = "{{{escape hazard_safety.has_asbestos}}}";
+  dataPAF.hasLead = "{{{escape hazard_safety.has_lead}}}";
+  dataPAF.safety = "{{{escape escape hazard_safety.safety_plan}}}";
 
   dataPAF.subcontractors = "{{{escape subcontractors}}}";
 
   dataPAF.materials = "{{{escape materials}}}";
-  dataPAF.volunteers = "{{{estimates.volunteers_needed}}}";
-  dataPAF.estimates = "{{{estimates.total_cost}}}";
+  dataPAF.volunteers = "{{{escape estimates.volunteers_needed}}}";
+  dataPAF.estimates = "{{{escape estimates.total_cost}}}";
 
 
   dataPAF.dumpsterRequired = "{{{other_costs.waste_dumpster.required}}}";
-  dataPAF.dumpsterCost = "{{{other_costs.waste_dumpster.cost}}}";
+  dataPAF.dumpsterCost = "{{{escape other_costs.waste_dumpster.cost}}}";
 
 
   dataPAF.portaPottieRequired = "{{{other_costs.porta_pottie.required}}}";
-  dataPAF.portaPottieCost = "{{{other_costs.porta_pottie.cost}}}";
+  dataPAF.portaPottieCost = "{{{escape other_costs.porta_pottie.cost}}}";
   dataPAF.portaAggregated = dataPAF.portaPottieRequired + "   " +dataPAF.portaPottieCost;
   
   dataPAF.permitName = "{{{escape other_costs.permit.name}}}";
-  dataPAF.permitCost = "{{{other_costs.permit.cost}}}";
+  dataPAF.permitCost = "{{{escape other_costs.permit.cost}}}";
 
 
-  dataPAF.toolrentals = "{{{tool_rentals}}}";
+  dataPAF.toolrentals = "{{{escape tool_rentals}}}";
 
-  dataPAF.getEndDate = "{{{proposed_dates.end_date}}}";
-  dataPAF.getStartDate = "{{{proposed_dates.start_date}}}";
+  dataPAF.getEndDate = "{{{escape proposed_dates.end_date}}}";
+  dataPAF.getStartDate = "{{{escape proposed_dates.start_date}}}";
 
 
  {{/each}}
@@ -128,7 +128,6 @@ partnerItems.push("-     " + "Phone:     {{{contact_phone}}}\n\n");
       }
       dataPAF.portaAggregated = dataPAF.portaPottieRequired + "   " +dollarVal;
   }
-
 
 
   if (dataPAF.permitCost !== '') {
