@@ -26,23 +26,23 @@
         <table class="table table-sm table-bordered table-hover">
           <thead>
             <tr>
-              <th class="col-md-2">Application</th>
+              <th class="col-md-3">Application</th>
               <th class="col-md-2">Start Date</th>
-              <th class="col-md-8">Task</th>
+              <th class="col-md-7">Task</th>
             </tr>
           </thead>
           <tbody>
 
             {{#each plan}}
               <tr>
-                <td class="col-md-2">
+                <td class="col-md-3">
                   <a href="/projectview/{{applicationId}}" target="_new">{{
                     getAppNameForPlan ../applications applicationId
                     }}</a>
                   {{getSignatureName ../applications applicationId}}
                 </td>
                 <td class="col-md-2">{{getApplicationStartTime ../applications applicationId}}</td>
-                <td class="col-md-8">{{
+                <td class="col-md-7">{{
                   getPlanTaskAssignments this ../userId ../applications applicationId
                   }}</td>
               </tr>
