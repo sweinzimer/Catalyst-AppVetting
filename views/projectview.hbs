@@ -712,8 +712,8 @@ info: {
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <h4>Planning Info</h4>
-               {{#each results.assessment}}       
               <table class="table">
+        {{#each results.assessment}}       
                 <tr>
                   <th class="col-sm-3">Lead: </th>
                   <td class="col-sm-9">{{hazard_safety.has_lead}}</td>
@@ -781,7 +781,6 @@ info: {
       {{/each}}
       {{#each results.doc}}
                 <tr>
-                  <!-- TODO: Clairify "length" unit -->
                   <th class="col-sm-3">Final Volunteer Count</th>
                   <td class="col-sm-9">{{property.ownership_length}}</td>
                 </tr>
@@ -792,24 +791,16 @@ info: {
                 
                 <tr>
                   <th class="col-sm-3">Client Can Contribute</th>
-                  <td class="col-sm-9">
-                    {{#if property.client_can_contribute.value}}
-                      Yes - {{property.client_can_contribute.description}}
-                    {{else}} No {{/if}}
-                  </td>
+                  <td class="col-sm-9">{{#if property.client_can_contribute.value}}Yes - {{property.client_can_contribute.description}}{{else}} No {{/if}}</td>
                 </tr>
                 <tr>
                   <th class="col-sm-3">Associates Can Contribute</th>
-                  <td class="col-sm-9">
-                    {{#if property.associates_can_contribute.value}}
-                      Yes - {{property.associates_can_contribute.description}}
-                    {{else}} No{{/if}}
+                  <td class="col-sm-9">{{#if property.associates_can_contribute.value}}Yes - {{property.associates_can_contribute.description}}{{else}} No{{/if}}
                   </td>
                 </tr>
-
-              </table>
-              
+        
         {{/each}}
+          </table>
             </div>
             
         <div class="col-xs-12 col-sm-6">
