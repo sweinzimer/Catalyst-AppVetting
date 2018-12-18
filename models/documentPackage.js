@@ -200,7 +200,9 @@ var DocumentPackageSchema = new Schema({
         project_advocate: String,
         site_host: String,
         project_start: Date,
-        project_end: Date
+        project_end: Date,
+        actual_volunteer_count: String,
+        actual_labor_count: String
     }
 });
 
