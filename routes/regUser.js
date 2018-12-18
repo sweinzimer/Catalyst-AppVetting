@@ -151,6 +151,8 @@ function isLoggedIn(req, res, next) {
 				}
 				else {
 					if (results.user.user_status == "ACTIVE") {
+            res.locals.assign_tasks = results.user.assign_tasks;
+
 						//format user data to send to front end
 						results.user.salt = "";
 						results.user.hash = "";
@@ -205,6 +207,8 @@ function isAdmin(req, res, next) {
 				}
 				else {
 					if (results.user.user_status == "ACTIVE") {
+            res.locals.assign_tasks = results.user.assign_tasks;
+
 						if(results.user.user_role==="ADMIN" || (results.user.user_roles !== undefined && results.user.user_roles.indexOf('ADMIN') > -1 )){
 						res.locals.email = results.user.contact_info.user_email;
 							res.locals.role = results.user.user_role;
