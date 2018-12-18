@@ -985,6 +985,14 @@ getDocumentPlanning: function (req, res, next) {
                 updates = {"project.site_host":req.body.value };
         }
 
+        else if (req.body.name == "actual_volunteer_count") {
+                updates = {"project.actual_volunteer_count":req.body.value };
+        }
+
+        else if (req.body.name == "actual_labor_count") {
+                updates = {"project.actual_labor_count":req.body.value };
+        }      
+
         // else {
         
         //     if(req.params.id != null) {

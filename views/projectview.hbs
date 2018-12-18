@@ -779,16 +779,7 @@ info: {
                 </tr>
 
       {{/each}}
-      {{#each results.doc}}
-                <tr>
-                  <th class="col-sm-3">Final Volunteer Count</th>
-                  <td class="col-sm-9">{{property.ownership_length}}</td>
-                </tr>
-                <tr>
-                  <th class="col-sm-3">Final Labor-Hrs Count</th>
-                  <td class="col-sm-9">{{property.year_constructed}}</td>
-                </tr>
-                
+      {{#each results.doc}}                
                 <tr>
                   <th class="col-sm-3">Client Can Contribute</th>
                   <td class="col-sm-9">{{#if property.client_can_contribute.value}}Yes - {{property.client_can_contribute.description}}{{else}} No {{/if}}</td>
@@ -798,7 +789,16 @@ info: {
                   <td class="col-sm-9">{{#if property.associates_can_contribute.value}}Yes - {{property.associates_can_contribute.description}}{{else}} No{{/if}}
                   </td>
                 </tr>
-        
+
+                <tr>
+                  <th class="col-sm-3">Final Volunteer Count</th>
+                  <td class="col-sm-9"><a href="#" id="actual_volunteer_count" data-type="text" data-pk="{{_id}}" data-url="/edit/project/{{_id}}" data-name="actual_volunteer_count" data-title="Actual Volunteer Count">{{project.actual_volunteer_count}}</a></td>
+                </tr>
+                <tr>
+                  <th class="col-sm-3">Final Labor-Hrs Count</th>
+                  <td class="col-sm-9"><a href="#" id="actual_labor_count" data-type="text" data-pk="{{_id}}" data-url="/edit/project/{{_id}}" data-name="actual_labor_count" data-title="Actual Labor Hrs Count">{{project.actual_labor_count}}</a></td>
+                </tr>
+                
         {{/each}}
           </table>
             </div>
@@ -1613,6 +1613,9 @@ info: {
      $('#crew_chief').editable();
      $('#project_advocate').editable();
      $('#site_host').editable();
+
+     $('#actual_volunteer_count').editable();
+     $('#actual_labor_count').editable();
 
      $('#status').editable({
        value: docs[0].project.status,     //POST to /edit/project will update this status in project.status field.
