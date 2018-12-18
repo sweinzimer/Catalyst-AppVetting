@@ -21,13 +21,12 @@ function shorten(str, maxLen, separator = ' ') {
 // START PDF EXPORT WRITEUP ------------------------------------------------------------------------
 
  var dataPAF = {};
- var apple = "...data...";
  {{#if results.doc}}
  {{#each results.doc}}
- dataPAF.fullName = "{{{application.name.first}}} {{{application.name.middle}}} {{{application.name.last}}}";
- dataPAF.addr1 = "{{{application.address.line_1}}}, ";
- dataPAF.addr2 = "{{{application.address.line_2}}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}";
- dataPAF.addr3 = "{{{application.address.city}}}, {{{application.address.state}}}  {{{application.address.zip}}}";
+ dataPAF.fullName = "{{{escape application.name.first}}} {{{escape application.name.middle}}} {{{escape application.name.last}}}";
+ dataPAF.addr1 = "{{{escape application.address.line_1}}}, ";
+ dataPAF.addr2 = "{{{escape application.address.line_2}}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}";
+ dataPAF.addr3 = "{{{escape application.address.city}}}, {{{escape application.address.state}}}  {{{escape application.address.zip}}}";
  dataPAF.summ = "{{{escape notes.site_summary}}}";
  {{/each}}
  {{/if}}
@@ -65,26 +64,26 @@ partnerItems.push("-     " + "Phone:     {{{escape contact_phone}}}\n\n");
   dataPAF.subcontractors = "{{{escape subcontractors}}}";
 
   dataPAF.materials = "{{{escape materials}}}";
-  dataPAF.volunteers = "{{{estimates.volunteers_needed}}}";
-  dataPAF.estimates = "{{{estimates.total_cost}}}";
+  dataPAF.volunteers = "{{{escape estimates.volunteers_needed}}}";
+  dataPAF.estimates = "{{{escape estimates.total_cost}}}";
 
 
-  dataPAF.dumpsterRequired = "{{{other_costs.waste_dumpster.required}}}";
-  dataPAF.dumpsterCost = "{{{other_costs.waste_dumpster.cost}}}";
+  dataPAF.dumpsterRequired = "{{{escape other_costs.waste_dumpster.required}}}";
+  dataPAF.dumpsterCost = "{{{escape other_costs.waste_dumpster.cost}}}";
 
 
-  dataPAF.portaPottieRequired = "{{{other_costs.porta_pottie.required}}}";
-  dataPAF.portaPottieCost = "{{{other_costs.porta_pottie.cost}}}";
+  dataPAF.portaPottieRequired = "{{{escape other_costs.porta_pottie.required}}}";
+  dataPAF.portaPottieCost = "{{{escape other_costs.porta_pottie.cost}}}";
   dataPAF.portaAggregated = dataPAF.portaPottieRequired + "   " +dataPAF.portaPottieCost;
   
-  dataPAF.permitName = "{{{other_costs.permit.name}}}";
-  dataPAF.permitCost = "{{{other_costs.permit.cost}}}";
+  dataPAF.permitName = "{{{escape other_costs.permit.name}}}";
+  dataPAF.permitCost = "{{{escape other_costs.permit.cost}}}";
 
 
   dataPAF.toolrentals = "{{{escape tool_rentals}}}";
 
-  dataPAF.getEndDate = "{{{proposed_dates.end_date}}}";
-  dataPAF.getStartDate = "{{{proposed_dates.start_date}}}";
+  dataPAF.getEndDate = "{{{escape proposed_dates.end_date}}}";
+  dataPAF.getStartDate = "{{{escape proposed_dates.start_date}}}";
 
 
  {{/each}}
@@ -787,7 +786,7 @@ info: {
                   <td class="col-sm-9">{{property.ownership_length}}</td>
                 </tr>
                 <tr>
-                  <th class="col-sm-3">Final Labour-Hrs Count</th>
+                  <th class="col-sm-3">Final Labor-Hrs Count</th>
                   <td class="col-sm-9">{{property.year_constructed}}</td>
                 </tr>
                 

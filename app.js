@@ -127,7 +127,8 @@ hbs.registerHelper('googleMapAddr', function(addr) {
 
 hbs.registerHelper('escape', function(variable) {
   if (variable) {
-    return new hbs.handlebars.SafeString(variable.replace(/(['"\n\r])/g, '\\$1'));
+
+    return new hbs.handlebars.SafeString(variable.toString().replace(/(['"\n\r])/g, '\\$1'));
   } else return '';
   
 });
