@@ -23,11 +23,11 @@ function shorten(str, maxLen, separator = ' ') {
  var apple = "...data...";
  {{#if results.doc}}
  {{#each results.doc}}
- dataPAF.fullName = "{{application.name.first}} {{application.name.middle}} {{application.name.last}}";
- dataPAF.addr1 = "{{application.address.line_1}}, ";
- dataPAF.addr2 = "{{application.address.line_2}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}";
- dataPAF.addr3 = "{{application.address.city}}, {{application.address.state}}  {{application.address.zip}}";
- dataPAF.summ = "{{notes.site_summary}}";
+ dataPAF.fullName = "{{{application.name.first}}} {{{application.name.middle}}} {{{application.name.last}}}";
+ dataPAF.addr1 = "{{{application.address.line_1}}}, ";
+ dataPAF.addr2 = "{{{application.address.line_2}}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}";
+ dataPAF.addr3 = "{{{application.address.city}}}, {{{application.address.state}}}  {{{application.address.zip}}}";
+ dataPAF.summ = "{{{notes.site_summary}}}";
  {{/each}}
  {{/if}}
 
@@ -35,10 +35,10 @@ var workItems = [];
 
  {{#if results.work}}
    {{#each results.work}}
-workItems.push("-     " + "Name:  {{name}}\n");
-workItems.push("-     " + "Description:  {{description}}\n");
-workItems.push("-     " + "Site Comments:  {{siteComments}}\n");
-workItems.push("-     " + "COST:  ${{cost}}\n\n");
+workItems.push("-     " + "Name:  {{{name}}}\n");
+workItems.push("-     " + "Description:  {{{description}}}\n");
+workItems.push("-     " + "Site Comments:  {{{siteComments}}}\n");
+workItems.push("-     " + "COST:  ${{{cost}}}\n\n");
    {{/each}}
  {{/if}}
 
@@ -46,44 +46,44 @@ var partnerItems = [];
 
  {{#if results.part}}
    {{#each results.part.pAssoc}}
-partnerItems.push("-     " + "Org Name:  {{org_name}}\n");
-partnerItems.push("-     " + "Address:   {{org_address}}\n");
-partnerItems.push("-     " + "Contact:   {{contact_name}}\n");
-partnerItems.push("-     " + "Email:     {{contact_email}}\n");
-partnerItems.push("-     " + "Phone:     {{contact_phone}}\n\n");
+partnerItems.push("-     " + "Org Name:  {{{org_name}}}\n");
+partnerItems.push("-     " + "Address:   {{{org_address}}}\n");
+partnerItems.push("-     " + "Contact:   {{{contact_name}}}\n");
+partnerItems.push("-     " + "Email:     {{{contact_email}}}\n");
+partnerItems.push("-     " + "Phone:     {{{contact_phone}}}\n\n");
    {{/each}}
  {{/if}}
 
 
  {{#if results.assessment}}
  {{#each results.assessment}}
-  dataPAF.hasAsbestos = "{{hazard_safety.has_asbestos}}";
-  dataPAF.hasLead = "{{hazard_safety.has_lead}}";
-  dataPAF.safety = "{{hazard_safety.safety_plan}}";
+  dataPAF.hasAsbestos = "{{{hazard_safety.has_asbestos}}}";
+  dataPAF.hasLead = "{{{hazard_safety.has_lead}}}";
+  dataPAF.safety = "{{{hazard_safety.safety_plan}}}";
 
-  dataPAF.subcontractors = "{{subcontractors}}";
+  dataPAF.subcontractors = "{{{subcontractors}}}";
 
-  dataPAF.materials = "{{materials}}";
-  dataPAF.volunteers = "{{estimates.volunteers_needed}}";
-  dataPAF.estimates = "{{estimates.total_cost}}";
-
-
-  dataPAF.dumpsterRequired = "{{other_costs.waste_dumpster.required}}";
-  dataPAF.dumpsterCost = "{{other_costs.waste_dumpster.cost}}";
+  dataPAF.materials = "{{{materials}}}";
+  dataPAF.volunteers = "{{{estimates.volunteers_needed}}}";
+  dataPAF.estimates = "{{{estimates.total_cost}}}";
 
 
-  dataPAF.portaPottieRequired = "{{other_costs.porta_pottie.required}}";
-  dataPAF.portaPottieCost = "{{other_costs.porta_pottie.cost}}";
+  dataPAF.dumpsterRequired = "{{{other_costs.waste_dumpster.required}}}";
+  dataPAF.dumpsterCost = "{{{other_costs.waste_dumpster.cost}}}";
+
+
+  dataPAF.portaPottieRequired = "{{{other_costs.porta_pottie.required}}}";
+  dataPAF.portaPottieCost = "{{{other_costs.porta_pottie.cost}}}";
   dataPAF.portaAggregated = dataPAF.portaPottieRequired + "   " +dataPAF.portaPottieCost;
   
-  dataPAF.permitName = "{{other_costs.permit.name}}";
-  dataPAF.permitCost = "{{other_costs.permit.cost}}";
+  dataPAF.permitName = "{{{other_costs.permit.name}}}";
+  dataPAF.permitCost = "{{{other_costs.permit.cost}}}";
 
 
-  dataPAF.toolrentals = "{{tool_rentals}}";
+  dataPAF.toolrentals = "{{{tool_rentals}}}";
 
-  dataPAF.getEndDate = "{{proposed_dates.end_date}}";
-  dataPAF.getStartDate = "{{proposed_dates.start_date}}";
+  dataPAF.getEndDate = "{{{proposed_dates.end_date}}}";
+  dataPAF.getStartDate = "{{{proposed_dates.start_date}}}";
 
 
  {{/each}}
