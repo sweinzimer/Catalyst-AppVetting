@@ -28,7 +28,7 @@ function shorten(str, maxLen, separator = ' ') {
  dataPAF.addr1 = "{{{application.address.line_1}}}, ";
  dataPAF.addr2 = "{{{application.address.line_2}}}{{#if_not_eq application.address.line_2 ''}}, {{/if_not_eq}}";
  dataPAF.addr3 = "{{{application.address.city}}}, {{{application.address.state}}}  {{{application.address.zip}}}";
- dataPAF.summ = "{{{notes.site_summary}}}";
+ dataPAF.summ = "{{{escape notes.site_summary}}}";
  {{/each}}
  {{/if}}
 
@@ -60,11 +60,11 @@ partnerItems.push("-     " + "Phone:     {{{contact_phone}}}\n\n");
  {{#each results.assessment}}
   dataPAF.hasAsbestos = "{{{hazard_safety.has_asbestos}}}";
   dataPAF.hasLead = "{{{hazard_safety.has_lead}}}";
-  dataPAF.safety = "{{{hazard_safety.safety_plan}}}";
+  dataPAF.safety = "{{{escape hazard_safety.safety_plan}}}";
 
-  dataPAF.subcontractors = "{{{subcontractors}}}";
+  dataPAF.subcontractors = "{{{escape subcontractors}}}";
 
-  dataPAF.materials = "{{{materials}}}";
+  dataPAF.materials = "{{{escape materials}}}";
   dataPAF.volunteers = "{{{estimates.volunteers_needed}}}";
   dataPAF.estimates = "{{{estimates.total_cost}}}";
 
@@ -77,7 +77,7 @@ partnerItems.push("-     " + "Phone:     {{{contact_phone}}}\n\n");
   dataPAF.portaPottieCost = "{{{other_costs.porta_pottie.cost}}}";
   dataPAF.portaAggregated = dataPAF.portaPottieRequired + "   " +dataPAF.portaPottieCost;
   
-  dataPAF.permitName = "{{{other_costs.permit.name}}}";
+  dataPAF.permitName = "{{{escape other_costs.permit.name}}}";
   dataPAF.permitCost = "{{{other_costs.permit.cost}}}";
 
 

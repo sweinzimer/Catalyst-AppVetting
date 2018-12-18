@@ -125,6 +125,10 @@ hbs.registerHelper('googleMapAddr', function(addr) {
   return addrText.replace(' ', '+')
 })
 
+hbs.registerHelper('escape', function(variable) {
+  return new hbs.handlebars.SafeString(variable.replace(/(['"\n\r])/g, '\\$1'));
+});
+
 hbs.registerHelper('assetsValueAndName', function(assets) {
   var returnText = ''
   assets.value.forEach(function(v, i) {
