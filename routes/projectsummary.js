@@ -311,7 +311,7 @@ router.get('/', isLoggedIn, api.getProjectsByStatus, function(req, res, next) {
     } else {
     	console.log('[ API ] getProjectsByStatus: [' + res.locals.results.handle.length + '] whose current status: \'handle\'')
         res.locals.results.handle.forEach(function (element) {
-            //element = formatElement(element);
+            element = formatDate(element);
             payload.handle.push(element);
         });
     }
@@ -321,7 +321,7 @@ router.get('/', isLoggedIn, api.getProjectsByStatus, function(req, res, next) {
     } else {
     	console.log('[ API ] getProjectsByStatus: [' + res.locals.results.project.length + '] whose current status: \'project\'')
         res.locals.results.project.forEach(function (element) {
-            //element = formatElement(element);
+            element = formatDate(element);
             payload.project.push(element);
         });
     }
@@ -524,21 +524,30 @@ function formatElement(element) {
 function formatDate(element)
 {
 
-	if (element.updated) {
-		var Year = element.updated.getFullYear();
-	    //get month and day with padding since they are 0 indexed
-	    var Day = ( "00" + element.updated.getDate()).slice(-2);
-	    var Mon = ("00" + (element.updated.getMonth()+1)).slice(-2);
-	    element.updated = Mon + "/" + Day + "/" + Year;
- 	}
+	// if (element.updated) {
+	// 	var Year = element.updated.getFullYear();
+	//     //get month and day with padding since they are 0 indexed
+	//     var Day = ( "00" + element.updated.getDate()).slice(-2);
+	//     var Mon = ("00" + (element.updated.getMonth()+1)).slice(-2);
+	//     element.updated = Mon + "/" + Day + "/" + Year;
+ // 	}
 	
-	//signature date (application date)
-	if(element.signature && element.signature.client_date != "") {
-	var appDate = new Date(element.signature.client_date);
+	// //signature date (application date)
+	// if(element.signature && element.signature.client_date != "") {
+	// var appDate = new Date(element.signature.client_date);
+	// var appYear = appDate.getFullYear();
+	// var appDay = ("00" + appDate.getDate()).slice(-2);
+	// var appMon = ("00" + (appDate.getMonth()+1)).slice(-2);
+	// element.signature.client_date = appMon + "/" + appDay + "/" + appYear;
+
+	// }
+
+	if(element.project && element.project.project_start && element.project.project_start != "") {
+	var appDate = new Date(element.project.project_start);
 	var appYear = appDate.getFullYear();
 	var appDay = ("00" + appDate.getDate()).slice(-2);
 	var appMon = ("00" + (appDate.getMonth()+1)).slice(-2);
-	element.signature.client_date = appMon + "/" + appDay + "/" + appYear;
+	element.project.project_start = appMon + "/" + appDay + "/" + appYear;
 
 	}
     return element;
