@@ -47,30 +47,50 @@ function addNote(e) {
         posting.done(function (xhr) {
             if(xhr.status == 200) {
                 //check if the 'empty notes' row exists and delete if so
-                var emptyNotes = $('#empty-notes');
-                if(emptyNotes != null)
-                {
-                    emptyNotes.closest('tr').remove();
-                }
+                var emptyNotes = $('.empty-notes-container');
+                
+                    emptyNotes.each(function() {
+                        
+                            $(this).closest('tr').remove();
+                        });
+                
+               
 
-                //build the new row
-                //the date column to display
-                var date = '<td>' + getDate() + '</td>';
-                //new column for the new note
-                var newNote = '<td>' + $('#note').val() + '</td>';
-				//new column for vetting agent
-				var newUser = '<td>' + xhr.projectPlanner + '</td>';
-				//need to get the new note ID so it is available for immediate update/deletion
-                var hiddenNoteId = '<input type="hidden" value="' + xhr.noteId + '" name="noteId" />';
-                //build delete button
-                var deleteButton = '<button type="submit" class="delete-button2 btn btn-danger">Delete Note</button>';
-                //assemble all parts to build the new note row
-                var newRow = '<tr class="success">' + date + newNote + newUser + '<td><form>' + hiddenNoteId + deleteButton + '</form></td></tr>';
-                //add new row before the very last row in the table (input form row)
-                $('#notes-body tr:last').before(newRow);
-                //clear text area to prepare for new note
-                $('#note').val("");
-            }
+                              //add new row before the very last row in the table (input form row)
+                        $('.notes-body-container').each(function () {
+                             //build the new row
+                        //the date column to display
+                        var date = '<td>' + getDate() + '</td>';
+                        //new column for the new note
+                        var newNote = '<td>' + $('#note').val() + '</td>';
+                        //new column for vetting agent
+                        var newUser = '<td>' + xhr.projectPlanner + '</td>';
+                        //need to get the new note ID so it is available for immediate update/deletion
+                        var hiddenNoteId = '<input type="hidden" value="' + xhr.noteId + '" name="noteId" />';
+                        //build delete button
+                        
+                        var deleteButton = '<button type="submit" class="delete-button2 btn btn-danger">Delete Note</button>';
+                        //assemble all parts to build the new note row
+                        if($(this).hasClass('note-editor-container'))
+                        {
+                            var newRow = '<tr class="success">' + date + newNote + newUser + '<td><form>' + hiddenNoteId + deleteButton + '</form></td></tr>';
+                  
+                        }
+                        else{
+                            var newRow = '<tr class="success">' + date + newNote + newUser + '<td><form>' + hiddenNoteId  + '</form></td></tr>';
+                  
+                        }
+                       
+                           $(this).find('tr:last').before(newRow);
+                        });
+                        //clear text area to prepare for new note
+                        $('#note').val("");
+                    }     
+                
+               
+
+               
+            
             else{
                 console.log("API submission for new note failed");
             }
