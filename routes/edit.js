@@ -56,7 +56,7 @@ module.exports = function(passport) {
    * POST Updated Field data
    * Only handles single line updates (e.g., phone number, Date of birth)
    **/
-  router.post('/project/:id', isLoggedInPost, api.putUpdateProject, function(req, res) {
+  router.post('/project/:id', isLoggedInProjectRole, api.putUpdateProject, function(req, res) {
 
     if(res.locals.status != '200'){
       res.status(500).send("Could not update field");
@@ -71,7 +71,7 @@ module.exports = function(passport) {
    * POST Updated Field data
    * Only handles single line updates (e.g., phone number, Date of birth)
    **/
-  router.post('/putUpdatePartner/:id', isLoggedInPost, api.putUpdatePartner, function(req, res) {
+  router.post('/putUpdatePartner/:id', isLoggedInProjectRole, api.putUpdatePartner, function(req, res) {
     console.log("Triggered Partner Edit");
 
     if(res.locals.status != '200'){
@@ -281,4 +281,58 @@ function isLoggedInPost(req, res, next) {
 			res.locals.status = 406;
 			return next('route');
 		}
+}
+
+//post request authenticator.  Checks if user is an admin or vetting agent
+function isLoggedInProjectRole(req, res, next) {
+  if(req.isAuthenticated()) {
+    console.log(req.user._id);
+    var userID = req.user._id.toString();
+    
+    var ObjectId = require('mongodb').ObjectID;
+    
+    Promise.props({
+      user: User.findOne({'_id' : ObjectId(userID)}).lean().execAsync()
+    })
+           .then(function (results) {
+             console.log(results);
+             
+             if (!results) {
+               //user not found in db.  Route to error handler
+               res.locals.status = 406;
+               return next('route');
+             }
+             else {
+               
+               if(results.user.user_role == "PROJECT_MANAGEMENT" || results.user.user_role == "ADMIN") {
+                 return next();
+
+               }
+               else if (results.user.user_roles !== undefined && results.user.user_roles.indexOf('PROJECT_MANAGEMENT') >-1)
+                 {
+                   
+                   return next();
+                 }
+               else {
+                 //user is not a vetting agent or admin, route to error handler
+                 res.locals.status = 406;
+                 return next('route');
+               }
+             }
+             
+             
+             
+           })
+    
+           .catch(function(err) {
+             console.error(err);
+           })
+           .catch(next);
+  }
+  else {
+    //user is not logged in
+    console.log("no user id");
+      res.locals.status = 406;
+      return next('route');
+    }
 }
