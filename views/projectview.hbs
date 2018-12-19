@@ -636,6 +636,9 @@ info: {
             </div>
 
             <div class="col-xs-12 col-sm-6" style="float:left;">
+
+               <h4>Summary</h4>
+               <br/>
               {{#if notes.vet_summary}}
               <h4>Vetting Summary</h4>
               <p>
@@ -643,11 +646,14 @@ info: {
                 
               </p>
                {{/if}}
-
+               {{#if notes.site_summary}}
                <!--  <div class="col-xs-12 col-sm-6"> -->
-                  <h4>Summary</h4>
-                  <p>Use this space for any free text notes or summaries. The text saves a second after you stop typing.</p>
-                  <textarea id="site_summary" readonly rows="3" class="form-control">{{notes.site_summary}}</textarea>
+                <h4>Site Assessment Summary</h4>
+              <p>
+                  {{notes.site_summary}}
+                
+              </p>
+               {{/if}}
                 
                <!--  </div> -->
 
