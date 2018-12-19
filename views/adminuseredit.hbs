@@ -339,8 +339,12 @@ $('#user_roles').on('change', function(e)
  $.post('/user/editUserRoles/', {
       Id: '{{ user._id }}',
 	  user_roles: JSON.stringify(vals)
- });
-	  
+    }).done(function() {
+      // alert( "Done" );
+    }).fail(function() {
+      alert( "Error, did not save - please try again." );
+      window.location.reload(true); 
+    }) 
 });
 
 $('.bootstrap-select').click(function(e)
