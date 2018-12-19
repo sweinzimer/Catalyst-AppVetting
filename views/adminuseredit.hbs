@@ -172,7 +172,7 @@
 
       <dt class="col-xs-4">Roles</dt>
       <dd class="col-xs-8">
-        <select class="selectpicker showtick" id="user_roles" title="{{user.user_roles}}" multiple>
+        <select class="selectpicker showtick" data-mobile="true" id="user_roles" title="{{user.user_roles}}" multiple>
           <option value="VET">Vetting Agent</option>
           <option value="SITE">Site Assement</option>
           <option value="PROJECT_MANAGEMENT">Project Management</option>
@@ -310,7 +310,14 @@
       ]
     })
 
-$('#user_roles').selectpicker();
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
+                $('#user_roles').selectpicker('mobile');
+            }
+            else {
+                $('#user_roles').selectpicker();
+            }
+
+// $('#user_roles').selectpicker();
 
 
 $('#user_roles option').each(function(f) {
