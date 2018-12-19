@@ -353,14 +353,16 @@ $('.bootstrap-select').click(function(e)
 {
   $(this).addClass('open');
   //console.log('hit');
-  e.stopPropagation();
+  // e.stopPropagation();
 });
 
 $('body').click(function(e) {
    if(e.target.id != 'user_roles') {
-        if ( $('#user_roles').hasClass('open') ) $('#user_roles').removeClass('open');
+        if ( $('#user_roles').hasClass('open') ) {
+          $('#user_roles').removeClass('open');
+        }        
+        if ( $('#user_roles').is('open') ) $('#user_roles').removeClass('open');
         if ( $('#user_roles').is('.open') ) $('#user_roles').removeClass('open');
-        if ( $('#user_roles').is(':open') ) $('#user_roles').removeClass('open');
    }
 });
 
