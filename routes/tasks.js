@@ -16,9 +16,9 @@ module.exports = function(passport) {
   var router = express.Router();
   
   router.get('/', isLoggedIn,  function (req, res) {
-
+		
     Promise.props({
-      plan: ProjectPlanPackage.find(ProjectPlanPackage.filterOwnedTasks(req.params.id)).execAsync()
+      plan: ProjectPlanPackage.find(ProjectPlanPackage.filterOwnedTasks(req.user.id)).execAsync()
     }).then(function(results) {
       var plans = results.plan;
       console.log(plans);
@@ -28,23 +28,31 @@ module.exports = function(passport) {
         appids.push(oid);
       }
 
+			
+			console.log("user item is : " + req.user.contact_info.user_email);
+			console.log("user item is : " + req);
+
       if (appids.length > 0) {
         applications = DocumentPackage.find({ "_id": { $in: appids } }, function (err, applications) {
           var apps = {}
           for (var i = 0; i < applications.length; i++) {
             apps[ applications[i]._id ] = applications[i]
           }
-          
+					
           res.render('usertasks', {
-            userId: req.user._id,
+						userId: req.user._id,
+						user: req.user._id, //for nav bar compat
+						user_email : req.user.contact_info.user_email,
             plan: plans,
             applications: apps
           });
         });
       } else {
         res.render('usertasks', {
-          user_roles: req.user.user_roles,
-          userId: req.user._id,
+					user_roles: req.user.user_roles,					
+					user_email : req.user.contact_info.user_email,
+					userId: req.user._id,
+					user: req.user._id, //for nav bar compat
           plan: plans,
           applications: []
         });
