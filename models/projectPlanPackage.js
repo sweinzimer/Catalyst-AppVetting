@@ -141,9 +141,9 @@ ProjectPlanPackageSchema.methods.getCompletedDate = function (name) {
 ProjectPlanPackageSchema.statics.filterOwnedTasks = function (userId) {
   console.log("user is " + userId);
   var owner = { $ne: null };
-  if (userId) {
-    owner = ObjectId(userId)
-  }
+  // if (userId) {                      //COMMENTED OUT TEMPORARILY TO SHOW ALL TASKS REGARDLESS OF USER
+  //   owner = ObjectId(userId)
+  // }
   return {
     $or: [
       {        
