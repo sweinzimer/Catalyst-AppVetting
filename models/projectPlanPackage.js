@@ -139,40 +139,83 @@ ProjectPlanPackageSchema.methods.getCompletedDate = function (name) {
 
 // This filters tasks either unassigned or assigned to a particular userId.
 ProjectPlanPackageSchema.statics.filterOwnedTasks = function (userId) {
+  console.log("user is " + userId);
   var owner = { $ne: null };
   if (userId) {
     owner = ObjectId(userId)
   }
   return {
     $or: [
-      { "contract.owner": owner,
-        "contract.complete": false },
-      { "activated.owner": owner,
-        "activated.complete": false },
-      { "planning_visit.owner": owner,
-        "planning_visit.complete": false },
-      { "rent_porta_pottie.owner": owner,
-        "rent_porta_pottie.complete": false },
-      { "rent_waste_dumpster.owner": owner,
-        "rent_waste_dumpster.complete": false },
-      { "create_page_schedule_event.owner": owner,
-        "create_page_schedule_event.complete": false },
-      { "volunteer_request_initial.owner": owner,
-        "volunteer_request_initial.complete": false },
-      { "volunteer_request_followup.owner": owner,
-        "volunteer_request_followup.complete": false },
-      { "volunteer_request_final.owner": owner,
-        "volunteer_request_final.complete": false },
-      { "report_materials_supplies.owner": owner,
-        "report_materials_supplies.complete": false },
-      { "arrange_purchase_delivery.owner": owner,
-        "arrange_purchase_delivery.complete": false },
-      { "check_weather_forecast.owner": owner,
-        "check_weather_forecast.complete": false },
-      { "verify_volunteer_count.owner": owner,
-        "verify_volunteer_count.complete": false },
-      { "verify_site_resources.owner": owner,
-        "verify_site_resources.complete": false }
+      {        
+        "contract.owner": { $ne: null },
+        "contract.owner": userId,
+        "contract.complete": false
+      },     
+      {        
+        "activated.owner": { $ne: null },
+        "activated.owner": userId,
+        "activated.complete": false
+      },      
+      {
+        "planning_visit.owner": { $ne: null },
+        "planning_visit.owner": userId,
+        "planning_visit.complete": false
+      },     
+      {
+        "rent_porta_pottie.owner": { $ne: null },
+        "rent_porta_pottie.owner": userId,
+        "rent_porta_pottie.complete": false
+      },      
+      {
+        "rent_waste_dumpster.owner": { $ne: null },
+        "rent_waste_dumpster.owner": userId,
+        "rent_waste_dumpster.complete": false
+      },      
+      {        
+        "create_page_event_schedule.owner": { $ne: null },
+       "create_page_event_schedule.owner": userId,
+        "create_page_event_schedule.complete": false
+      },
+       {        
+         "volunteer_request_initial.owner": { $ne: null },
+         "volunteer_request_initial.owner": userId,
+         "volunteer_request_initial.complete": false
+      },     
+      {        
+         "volunteer_request_followup.owner": { $ne: null },
+        "volunteer_request_followup.owner": userId,
+         "volunteer_request_followup.complete": false
+      },    
+       {        
+         "volunteer_request_final.owner": { $ne: null },
+         "volunteer_request_final.owner": userId,
+        "volunteer_request_final.complete": false
+       },    
+      {        
+         "report_materials_supplies.owner": { $ne: null },
+         "report_materials_supplies.owner": userId,
+        "report_materials_supplies.complete": false
+       },    
+       {
+        "arrange_purchase_delivery.owner": { $ne: null },
+        "arrange_purchase_delivery.owner": userId,
+        "arrange_purchase_delivery.complete": false
+       },     
+      {        
+         "check_weather_forecast.owner": { $ne: null },
+        "check_weather_forecast.owner": userId,
+         "check_weather_forecast.complete": false
+       },    
+      {        
+        "verify_volunteer_count.owner": { $ne: null },
+        "verify_volunteer_count.owner": userId,
+         "verify_volunteer_count.complete": false
+       },      
+       {        
+        "verify_site_resources.owner": { $ne: null },
+        "verify_site_resources.owner": userId,
+        "verify_site_resources.complete": false
+       }      
     ]
   }
 }
