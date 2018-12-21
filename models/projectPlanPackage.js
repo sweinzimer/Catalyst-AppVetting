@@ -220,6 +220,60 @@ ProjectPlanPackageSchema.statics.filterOwnedTasks = function (userId) {
   }
 }
 
+ProjectPlanPackageSchema.statics.filterOpenTasks = function () {
+  
+  return {
+    $or: [
+      {        
+        
+        "contract.complete": false
+      },     
+      {        
+        
+        "activated.complete": false
+      },      
+      {
+     
+        "planning_visit.complete": false
+      },     
+      {
+
+        "rent_porta_pottie.complete": false
+      },      
+      {
+        "rent_waste_dumpster.complete": false
+      },      
+      {        
+        "create_page_event_schedule.complete": false
+      },
+       {        
+         "volunteer_request_initial.complete": false
+      },     
+      {        
+         "volunteer_request_followup.complete": false
+      },    
+       {        
+        "volunteer_request_final.complete": false
+       },    
+      {        
+        "report_materials_supplies.complete": false
+       },    
+       {
+        "arrange_purchase_delivery.complete": false
+       },     
+      {        
+         "check_weather_forecast.complete": false
+       },    
+      {     
+         "verify_volunteer_count.complete": false
+       },      
+       {        
+        "verify_site_resources.complete": false
+       }      
+    ]
+  }
+}
+
 // Mapping of db names to UI presentation names
 var labels = {
   contract: "Project postal mailed to client",
@@ -259,6 +313,34 @@ ProjectPlanPackageSchema.statics.getOnlyAssigned = function (plan, userId) {
   }
 
   return assigned;
+}
+
+ProjectPlanPackageSchema.statics.getTopXOpen = function (plan, taskCount) {
+  var taskNames = Object.keys(labels);
+  var open = [];
+var count = 0;
+  for (var i = 0; i < taskNames.length-1; i++) {
+    var name = taskNames[i]
+    
+
+      if (plan[name].complete === false) {
+        open.push(Object.assign({}, plan[name], { label: labels[name] }));
+        count++;
+        if(count === taskCount)
+        {
+          break;
+        }
+      }
+    
+  }
+
+  return open.sort(function(a,b) {
+    console.log(a.lead_time);
+    console.log(b.lead_time);
+    a = new Date(a.lead_time);
+    b = new Date(b.lead_time);
+    return a > b ?-1 : a<b ? 1:0;
+  });
 }
 
 
