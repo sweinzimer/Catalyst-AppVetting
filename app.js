@@ -214,7 +214,7 @@ hbs.registerHelper('dateToLocaleDate', function (date) {
   if (month.length !== 2) {
     month = '0' + month;
   }
-  var day = (d.getDate() + 1).toString()
+  var day = d.getDate().toString()
   if (day.length !== 2) {
     day = '0' + day;
   }
