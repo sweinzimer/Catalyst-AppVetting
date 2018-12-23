@@ -230,6 +230,35 @@ hbs.registerHelper('getPlanTaskAssignments', function(plan, userId, apps, appid)
   }
   return new hbs.handlebars.SafeString(labels.join("<br/>"))
 });
+
+
+hbs.registerHelper('getPlanTop3Tasks', function(plan, apps, appid, assignableUsers) {  
+  var open = ProjectPlanPackage.getTopXOpen(plan, 3);
+  var labels = [];
+  for (var i = 0; i < open.length; i++) {
+    if (!open[i].complete) {    
+      var user;
+      var userName = "";
+      if(open[i].owner !== null)
+      {
+      
+        user =  assignableUsers.find(function(x){
+        
+          return x._id.toString() === open[i].owner.toString();});
+        
+          userName = user.contact_info.user_name.user_first + " " + user.contact_info.user_name.user_last;
+      
+          labels.push(open[i].label + " - " + userName); 
+      }  
+      else{
+        labels.push(open[i].label); 
+      }    
+    
+    }
+  }
+  return new hbs.handlebars.SafeString(labels.join("<br/>"))
+});
+
 hbs.registerHelper('getPreferredName', function(apps, appid) {
   if (apps[appid] && apps[appid].application && apps[appid].application.name) {
     return (apps[appid].application.name.preferred || apps[appid].application.name.first) +

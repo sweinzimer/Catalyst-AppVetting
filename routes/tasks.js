@@ -15,38 +15,62 @@ var ProjectWrapUpPackage = require('../models/projectWrapUpPackage.js');
 module.exports = function(passport) {
   var router = express.Router();
   
-  router.get('/', isLoggedIn,  function (req, res) {
+  router.get('/', isLoggedIn, api.getAssignableUsers,  function (req, res, next ) {
 		
     Promise.props({
-      plan: ProjectPlanPackage.find(ProjectPlanPackage.filterOwnedTasks(req.user.id)).execAsync()
+			plan: ProjectPlanPackage.find(ProjectPlanPackage.filterOwnedTasks(req.user.id)).execAsync(),
+			open: ProjectPlanPackage.find(ProjectPlanPackage.filterOpenTasks()).execAsync()
     }).then(function(results) {
-      var plans = results.plan;
-      console.log(plans);
-      appids = [];
+			var plans = results.plan;
+			var open = results.open;
+			console.log(plans);
+			console.log(open);
+			userappids = [];
+			openappIds = [];
       for (var i = 0; i < results.plan.length; i++) {
         var oid = mongoose.Types.ObjectId(results.plan[i].applicationId);
-        appids.push(oid);
-      }
+        userappids.push(oid);
+			}
+			for (var i = 0; i < results.open.length; i++) {
+        var oid = mongoose.Types.ObjectId(results.open[i].applicationId);
+        openappIds.push(oid);
+			}
 
 			
-			console.log("user item is : " + req.user.contact_info.user_email);
-			console.log("user item is : " + req);
 
-      if (appids.length > 0) {
-        applications = DocumentPackage.find({ "_id": { $in: appids } }, function (err, applications) {
-          var apps = {}
-          for (var i = 0; i < applications.length; i++) {
-            apps[ applications[i]._id ] = applications[i]
-          }
+      if (userappids.length > 0 || openappIds.length> 0) {
+				
+				applications = DocumentPackage.find({ "_id": { $in: userappids }}, function(err, applications) {
+					openApplications = DocumentPackage.find({ "_id": { $in: openappIds }} , function(err, openApplications) {
+						
+		
+						console.log(res.locals.assignableUsers);
+						var apps = {}
+						for (var i = 0; i < applications.length; i++) {
+							apps[ applications[i]._id ] = applications[i]
+						}
+						var openApps = {}
+						for (var i = 0; i < openApplications.length; i++) {
+							openApps[ openApplications[i]._id ] = openApplications[i]
+						}
+						
+						res.render('usertasks', {
+							userId: req.user._id,
+							user: req.user._id, //for nav bar compat
+							user_email : req.user.contact_info.user_email,
+							plan: plans,
+							applications: apps,
+							open: open,						
+							openApplications: openApps,
+							assignableUsers: res.locals.assignableUsers
+						});
+
+
+					});
+		
 					
-          res.render('usertasks', {
-						userId: req.user._id,
-						user: req.user._id, //for nav bar compat
-						user_email : req.user.contact_info.user_email,
-            plan: plans,
-            applications: apps
-          });
-        });
+				});
+					        
       } else {
         res.render('usertasks', {
 					user_roles: req.user.user_roles,					
