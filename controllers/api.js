@@ -1092,7 +1092,11 @@ getDocumentPlanning: function (req, res, next) {
 
         else if (req.body.name == "actual_labor_count") {
                 updates = {"project.actual_labor_count":req.body.value };
-        }      
+        } else if (req.body.name == "project.project_start") {
+                updates = {"project.project_start":req.body.value };
+        } else if (req.body.name == "project.project_end") {
+                updates = {"project.project_end":req.body.value };
+        }    
 
         // else {
         
